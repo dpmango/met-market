@@ -40,6 +40,7 @@ export default class BrowserInfo {
   };
 
   setBodyTags = () => {
+    if (!document) return;
     const body = document.querySelector('body');
 
     if (this.msieversion()) {

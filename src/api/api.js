@@ -22,17 +22,13 @@ const api = axios.create({
 const interceptorId = rax.attach(api);
 
 api.interceptors.request.use((x) => {
-  if (x.url.indexOf('version.txt') === -1) {
-    console.log(`${x.method.toUpperCase()} | ${x.url}`, x.params, x.data);
-  }
+  console.log(`${x.method.toUpperCase()} | ${x.url}`, x.params, x.data);
 
   return x;
 });
 
 api.interceptors.response.use((x) => {
-  if (x.config.url.indexOf('version.txt') === -1) {
-    console.log(`${x.status} | ${x.config.url}`, x.data);
-  }
+  console.log(`${x.status} | ${x.config.url}`, x.data);
 
   return x;
 });
