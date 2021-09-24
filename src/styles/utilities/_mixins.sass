@@ -1,0 +1,100 @@
+// width
+=r($width)
+  @media only screen and (max-width: $width+ "px")
+    @content
+
+=rmin($width)
+  @media only screen and (min-width: $width+ "px")
+    @content
+
+// height
+=rh($height)
+  @media only screen and (max-height: $height + "px")
+    @content
+
+=rhmin($height)
+  @media only screen and (min-height: $height + "px")
+    @content
+
+=text-overflow
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+// retina
+=retina
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2)
+    @content
+
+// vertical-align at center
+=vcenter
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%,-50%)
+
+// photoshop to em
+=letter-spacing($letter-spacing, $fontSize: 16)
+  letter-spacing: ($letter-spacing / 1000) + em
+
+// sketch to em
+@function em($pixels, $fontSize: 16)
+  @return #{$pixels / $fontSize}em
+
+=prevent-text
+  word-break: break-all
+  word-break: break-word
+  hyphens: auto
+
+=scrollbar
+  &::-webkit-scrollbar
+    @content
+
+=scrollbar-track
+  &::-webkit-scrollbar-track
+    @content
+
+=scrollbar-thumb
+  &::-webkit-scrollbar-thumb
+    @content
+
+=scrollbar-track-piece
+  &::-webkit-scrollbar-track-piece
+    @content
+
+//triangle
+=arr($width, $height, $bg, $direction)
+  width: 0px
+  height: 0px
+  border-style: solid
+  @if $direction == t
+    border-width: 0 $width / 2 + px $height + px $width / 2 + px
+    border-color: transparent transparent $bg transparent
+  @if $direction == r
+    border-width: $height / 2 + px 0 $height / 2 + px $width + px
+    border-color: transparent transparent transparent $bg
+  @if $direction == b
+    border-width: $height + px $width / 2 + px 0 $width / 2 + px
+    border-color: $bg transparent transparent transparent
+  @if $direction == l
+    border-width: $height / 2 + px $width + px $height / 2 + px 0
+    border-color: transparent $bg transparent transparent
+  @if $direction == tl
+    border-width: $height + px $width + px 0 0
+    border-color: $bg transparent transparent transparent
+  @if $direction == tr
+    border-width: 0 $width + px $height + px 0
+    border-color: transparent $bg transparent transparent
+  @if $direction == br
+    border-width: 0 0 $height + px $width + px
+    border-color: transparent transparent $bg transparent
+  @if $direction == bl
+    border-width: $width + px 0 0 $height + px
+    border-color: transparent transparent transparent $bg
+// example
+// +arr(500,50, #000, l)
+// +arr(500,50, #000, bl)
+
+=better-blur($radius)
+  -webkit-filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a' x='0' y='0' width='1' height='1' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='#{$radius}' result='b'/%3E%3CfeMorphology operator='dilate' radius='#{$radius}'/%3E %3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='b'/%3E%3C/feMerge%3E%3C/filter%3E %3C/svg%3E#a")
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a' x='0' y='0' width='1' height='1' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='#{$radius}' result='b'/%3E%3CfeMorphology operator='dilate' radius='#{$radius}'/%3E %3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='b'/%3E%3C/feMerge%3E%3C/filter%3E %3C/svg%3E#a")

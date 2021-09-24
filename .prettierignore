@@ -1,0 +1,4 @@
+*.md
+*.min.*
+src/styles/**/*.sass
+src/assets/svg-sprite/**/*.*

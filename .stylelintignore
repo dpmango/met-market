@@ -1,0 +1,3 @@
+src/styles/**/*.sass
+src/styles/vendor/**/*.*
+src/assets/svg-sprite/**/*.*

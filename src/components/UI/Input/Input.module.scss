@@ -1,0 +1,95 @@
+.input {
+  display: block;
+  &._mw-160 {
+    max-width: 160px;
+  }
+  &_wrapper {
+    position: relative;
+    z-index: 1;
+  }
+  textarea {
+    resize: vertical;
+  }
+  &_input {
+    -webkit-appearance: none;
+    display: block;
+    width: 100%;
+    background: white;
+    font-family: $baseFont;
+    font-size: 16px;
+    color: $fontColor;
+    border: 1px solid $borderColor;
+    border-radius: 12px;
+    padding: 14px 15px;
+    transition: border 0.25s $ease, color 0.25s $ease, background 0.25s $ease;
+    &::placeholder {
+      color: rgba($fontColor, 0.5);
+    }
+    &:focus {
+      border-color: $colorPrimary;
+    }
+    &._withClear,
+    &._withIcon {
+      padding-right: 40px;
+    }
+    &._withIcon {
+      &._posleft {
+        padding-right: 15px;
+        padding-left: 48px;
+      }
+    }
+    &._withError {
+      border-color: $colorRed;
+      color: $colorRed;
+      &::placeholder {
+        color: rgba($colorRed, 0.5);
+      }
+    }
+  }
+  &_icon,
+  &_clear {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &_icon {
+    opacity: 0.5;
+    &._posleft {
+      right: auto;
+      left: 15px;
+    }
+  }
+  &_clear {
+    transition: color 0.25s $ease;
+    padding: 5px;
+    right: 10px;
+    &:hover {
+      color: $colorRed;
+    }
+  }
+  &._small {
+    .input_input {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+}
+
+.label {
+  display: block;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 8px;
+}
+
+.error {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  display: inline-block;
+  font-size: 12px;
+  color: $colorRed;
+  font-weight: 500;
+}

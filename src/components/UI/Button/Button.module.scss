@@ -1,0 +1,108 @@
+.btn {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  padding: 14px 25px;
+  border-radius: 12px;
+  transition: background 0.25s $ease, color 0.25s $ease;
+  &._primary {
+    background: $colorPrimary;
+    color: white;
+    &:hover {
+      background: rgba($colorPrimary, 0.8);
+    }
+    &._outline {
+      background: transparent;
+      border: 1px solid $colorPrimary;
+      color: $colorPrimary;
+      &:hover {
+        color: white;
+        background: $colorPrimary;
+      }
+    }
+  }
+  &._accent {
+    background: $colorAccent;
+    color: white;
+    &:hover {
+      background: rgba($colorAccent, 0.8);
+    }
+    &._outline {
+      background: transparent;
+      border: 1px solid $colorAccent;
+      color: $colorAccent;
+      &:hover {
+        color: white;
+        background: $colorAccent;
+      }
+    }
+  }
+  &._danger {
+    background: $colorRed;
+    color: white;
+    &:hover {
+      background: rgba($colorRed, 0.8);
+    }
+    &._outline {
+      background: transparent;
+      border: 1px solid $colorRed;
+      color: $colorRed;
+      &:hover {
+        color: white;
+        background: $colorRed;
+      }
+    }
+  }
+  &._success {
+    background: $colorGreen;
+    color: white;
+    &:hover {
+      background: rgba($colorGreen, 0.8);
+    }
+    &._outline {
+      background: transparent;
+      border: 1px solid $colorGreen;
+      color: $colorGreen;
+      &:hover {
+        color: white;
+        background: $colorGreen;
+      }
+    }
+  }
+  &._dark {
+    background: $fontColor;
+    color: white;
+    &:hover {
+      background: rgba($fontColor, 0.8);
+    }
+    &._outline {
+      background: transparent;
+      border: 1px solid $fontColor;
+      color: $fontColor;
+      &:hover {
+        color: white;
+        background: $fontColor;
+      }
+    }
+  }
+  // variants
+  &._small {
+    padding: 7px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+  &._big {
+    padding: 18px 15px;
+    border-radius: 12px;
+  }
+  &._block {
+    display: block;
+    width: 100%;
+  }
+  &[disabled] {
+    background: $colorBg;
+    color: $fontColor;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

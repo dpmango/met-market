@@ -1,0 +1,28 @@
+.header {
+  display: block;
+  border-bottom: 1px solid $borderColor;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  min-height: 60px;
+}
+
+.menu {
+  margin: 0 0 0 auto;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.link {
+  font-size: 15px;
+  padding: 10px;
+  transition: color 0.25s $ease;
+  &:hover {
+    color: $colorPrimary;
+  }
+}
