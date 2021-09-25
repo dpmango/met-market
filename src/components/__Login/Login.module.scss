@@ -1,0 +1,20 @@
+.error {
+  margin-bottom: 12px;
+  padding: 10px;
+  font-size: 14px;
+  color: $colorRed;
+  border: 1px solid $colorRed;
+  background: rgba($colorRed, 0.05);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.wrapper {
+  max-width: 400px;
+  margin: auto;
+}
+.title {
+  font-weight: 500;
+  font-size: 32px;
+  margin-bottom: 48px;
+}

@@ -12,6 +12,10 @@ const api = axios.create({
     noResponseRetries: 3,
     backoffType: 'static',
   },
+  auth: {
+    username: '123',
+    password: '123',
+  },
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',

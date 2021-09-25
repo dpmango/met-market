@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cns from 'classnames';
 
-import Header from '@components/Layout/Header';
+import Header from '@c/Layout/Header';
 
 import styles from './Layout.module.scss';
 

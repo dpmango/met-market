@@ -1,19 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Helmet } from 'react-helmet';
 
-import { AuthStoreContext } from '@store';
+import { CatalogStoreContext } from '@store';
+import { CatalogTable } from '@c/Catalog';
 
 const HomePage = observer(() => {
-  const { userEmail } = useContext(AuthStoreContext);
+  const catalog = useContext(CatalogStoreContext);
+
+  useEffect(async () => {
+    await catalog.getCatalog();
+  }, []);
 
   return (
     <>
       <div className="container">
-        <div className="h1-title">Hey there {userEmail}!</div>
+        <CatalogTable />
       </div>
       <Helmet>
-        <title>Homepage</title>
+        <title>Главная</title>
       </Helmet>
     </>
   );

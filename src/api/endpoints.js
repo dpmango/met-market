@@ -1,5 +1,5 @@
 export default {
-  auth: {
-    base: '/auth',
+  catalog: {
+    export: 'catalog/export-collapsed-flat.json',
   },
 };

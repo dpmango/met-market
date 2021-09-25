@@ -1,1 +1,1 @@
-export { auth, AuthStoreContext } from './AuthStore';
+export { catalog, CatalogStoreContext } from './CatalogStore';
