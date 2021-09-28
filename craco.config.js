@@ -1,5 +1,6 @@
 const path = require('path');
-const { ESLINT_MODES } = require('@craco/craco');
+const { ESLINT_MODES, loaderByName, addBeforeLoader } = require('@craco/craco');
+
 const alias = require('./src/config/aliases');
 
 const SRC = './src';
@@ -12,6 +13,30 @@ const resolvedAliases = Object.fromEntries(
 module.exports = {
   webpack: {
     alias: resolvedAliases,
+    configure: function (webpackConfig) {
+      const svgLoader = {
+        test: /\.svg$/i,
+        oneOf: [
+          {
+            resourceQuery: /raw/,
+            use: {
+              loader: 'raw-loader',
+              options: { esModule: false },
+            },
+          },
+          {
+            use: {
+              loader: 'file-loader',
+              options: { esModule: false },
+            },
+          },
+        ],
+      };
+
+      addBeforeLoader(webpackConfig, loaderByName('file-loader'), svgLoader);
+
+      return webpackConfig;
+    },
   },
   eslint: {
     mode: ESLINT_MODES.file,

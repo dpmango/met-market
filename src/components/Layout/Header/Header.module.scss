@@ -1,10 +1,76 @@
 .header {
   display: block;
-  border-bottom: 1px solid $borderColor;
+  border-bottom: 1px solid rgba(47, 47, 47, 0.3);
+}
+
+.topbar {
+  background: $colorPrimary;
+  color: white;
+}
+
+.topbarWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: -10px;
+  margin-right: -10px;
+  min-height: 45px;
+}
+
+.colMain {
+  flex: 0 0 267px;
+  max-width: 267px;
+}
+
+.colSecond {
+  flex: 0 0 205px;
+  max-width: 205px;
+}
+
+.colThrid {
+  flex: 1 1 auto;
+  max-width: 100%;
+  display: flex;
+}
+
+.topbarAction {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px;
+  height: 45px;
+  transition: background 0.25s $ease;
+  :global {
+    .svg-icon {
+      font-size: 16px;
+      margin-right: 10px;
+    }
+  }
+  span {
+    display: inline-block;
+    font-size: 14px;
+  }
+  &:hover {
+    background: $colorLink;
+  }
+}
+
+.topbarLinks {
+  justify-content: flex-end;
+}
+
+// .location {
+// }
+
+.price {
+  :global {
+    .svg-icon {
+      font-size: 20px;
+    }
+  }
 }
 
 .wrapper {
   display: flex;
   align-items: center;
-  min-height: 60px;
+  padding: 44px 0 32px;
 }

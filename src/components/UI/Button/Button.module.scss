@@ -6,18 +6,18 @@
   border-radius: 12px;
   transition: background 0.25s $ease, color 0.25s $ease;
   &._primary {
-    background: $colorPrimary;
+    background: $colorLink;
     color: white;
     &:hover {
-      background: rgba($colorPrimary, 0.8);
+      background: #4d74fd;
     }
     &._outline {
       background: transparent;
-      border: 1px solid $colorPrimary;
-      color: $colorPrimary;
+      border: 1px solid $colorLink;
+      color: $colorLink;
       &:hover {
         color: white;
-        background: $colorPrimary;
+        background: #4d74fd;
       }
     }
   }
