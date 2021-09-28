@@ -15,7 +15,7 @@
   "rules": {
     "quotes": ["error", "single"],
     "prettier/prettier": "error",
-    // "react/prop-types": 1,
+    "react/prop-types": "off",
     "react/state-in-constructor": ["error", "never"],
     "react/display-name": ["off"]
   }

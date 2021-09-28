@@ -13,8 +13,37 @@ export default class CatalogStore {
     makeAutoObservable(this);
   }
 
-  get getCatalog() {
+  get catalogList() {
     return this.catalog;
+  }
+
+  get categoriesList() {
+    if (this.categories.length === 0) {
+      return [];
+    }
+
+    const simpleList = this.categories.map((cat1) => ({
+      id: cat1.id,
+      name: cat1.name,
+      categories:
+        cat1.categories &&
+        cat1.categories.map((cat2) => ({
+          id: cat2.id,
+          name: cat2.name,
+          categories:
+            cat2.categories &&
+            cat2.categories.map((cat3) => ({
+              id: cat3.id,
+              name: cat3.name,
+            })),
+        })),
+    }));
+
+    const sorting = ['sortovoy', 'listovoy', 'nerzhaveyuschy', 'metizy', 'steel', 'prokat_trub', 'sudovaya_stal'];
+
+    return sorting.map((key) => ({
+      ...simpleList.find((x) => x.id === key),
+    }));
   }
 
   // actions
@@ -28,7 +57,7 @@ export default class CatalogStore {
     runInAction(() => {
       this.date = date;
       this.catalog = data;
-      this.categories = categories;
+      this.categories = categories.categories;
     });
 
     return result;

@@ -12,10 +12,9 @@ import styles from './CatalogTable.module.scss';
 
 const CatalogTable = observer(() => {
   const history = useHistory();
-  const { categories, catalog } = useContext(CatalogStoreContext);
+  const { catalog } = useContext(CatalogStoreContext);
 
   // console.log({ catalog });
-
   const columns = useMemo(() => {
     return [
       {
@@ -83,7 +82,6 @@ const CatalogTable = observer(() => {
 
   return (
     <div className="catalog mt-2 mb-2">
-      <pre className="dev-log">{JSON.stringify(categories, null, 2)}</pre>
       <h1>Каталог</h1>
       <table {...getTableProps()} className={styles.table}>
         <thead>
