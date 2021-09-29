@@ -25,7 +25,6 @@ export default class CatalogStore {
     if (cat_id) {
       const items = this.catalog.filter((x) => x.idUnique.includes(cat_id));
 
-      console.log(items);
       if (items && items.length > 0) {
         return items.map((x) => mappingFunction(x));
       }

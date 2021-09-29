@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cns from 'classnames';
 
 import Header from '@c/Layout/Header';
+import Footer from '@c/Layout/Footer';
 
 import styles from './Layout.module.scss';
 
@@ -20,6 +21,8 @@ const Layout = ({ variant, children }) => {
       <Header className={styles.header} />
 
       <main className={styles.main}>{children}</main>
+
+      <Footer />
     </div>
   );
 };
