@@ -3,8 +3,8 @@ export default {
     // export: 'catalog/export-collapsed-flat.json',
   },
   cart: {
-    addItem: '/cart/addItem',
     getItems: '/cart/getItems',
+    addItem: '/cart/addItem',
     updateItem: '/cart/updateItem',
     removeItem: '/cart/removeItem',
     submit: '/cart/submit',

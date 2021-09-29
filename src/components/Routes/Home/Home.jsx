@@ -11,7 +11,7 @@ const HomePage = observer(() => {
 
   useEffect(async () => {
     await catalog.getCatalog();
-    await session.createSession();
+    // await session.createSession();
   }, []);
 
   return (
@@ -20,6 +20,7 @@ const HomePage = observer(() => {
         <CatalogCategories />
         <CatalogTable />
       </div>
+
       <Helmet>
         <title>Главная</title>
       </Helmet>

@@ -8,6 +8,7 @@ const aliases = (prefix = 'src') => ({
   '@config': `${prefix}/config`,
   '@styles': `${prefix}/styles`,
   '@store': `${prefix}/store`,
+  '@hooks': `${prefix}/hooks`,
   '@api': `${prefix}/api`,
   '@assets': `${prefix}/assets`,
 });

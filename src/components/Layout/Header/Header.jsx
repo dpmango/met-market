@@ -5,14 +5,13 @@ import cns from 'classnames';
 
 import routes from '@config/routes';
 import { SvgIcon, Button } from '@ui';
-// import { AuthStoreContext } from '@store';
+import { SessionStoreContext } from '@store';
 
 import styles from './Header.module.scss';
 import { ReactComponent as Logo } from '@assets/logo.svg';
 
 const Header = observer(({ className }) => {
-  // const { isAuthenticated } = useContext(AuthStoreContext);
-  // const auth = useContext(AuthStoreContext);
+  const { sessionId, cartId, cartNumber } = useContext(SessionStoreContext);
 
   return (
     <header className={cns(styles.header, className)}>
@@ -55,11 +54,14 @@ const Header = observer(({ className }) => {
         <div className="container">
           <div className={styles.wrapper}>
             <div className={styles.colMain}>
-              <Logo />
+              <Link to="/">
+                <Logo />
+              </Link>
             </div>
             <div className={styles.colSecond}>
               <Button>Каталог</Button>
             </div>
+            <div className={styles.colThrid}>Корзина: {cartNumber}</div>
           </div>
         </div>
       </div>

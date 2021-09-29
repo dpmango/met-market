@@ -1,0 +1,24 @@
+.filters {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filterImage {
+  flex: 0 0 250px;
+  max-width: 250px;
+  padding-right: 10px;
+}
+
+.filterContent {
+  flex: 0 0 calc(100% - 240px);
+  max-width: calc(100% - 240px);
+  height: 100%;
+  background: #eaecf5;
+  border-radius: 5px;
+  padding: 30px;
+}
+
+.filterContentRow {
+  align-items: center;
+}

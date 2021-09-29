@@ -8,6 +8,7 @@ import styles from './Button.module.scss';
 const Themes = {
   PRIMARY: 'primary',
   ACCENT: 'accent',
+  OUTLINE: 'outline',
   DANGER: 'danger',
   SUCCESS: 'success',
   DARK: 'dark',

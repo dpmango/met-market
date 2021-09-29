@@ -6,13 +6,15 @@ import { useTable, usePagination } from 'react-table';
 import cns from 'classnames';
 
 import { CatalogStoreContext } from '@store/CatalogStore';
-import { formatPrice } from '@helpers';
+import { useQuery } from '@hooks';
 
 import styles from './CatalogTable.module.scss';
 
 const CatalogTable = observer(() => {
   const history = useHistory();
-  const { catalog } = useContext(CatalogStoreContext);
+  const query = useQuery();
+  const { catalog, catalogList } = useContext(CatalogStoreContext);
+  const categoryQuery = query.get('category');
 
   // console.log({ catalog });
   const columns = useMemo(() => {
@@ -45,14 +47,8 @@ const CatalogTable = observer(() => {
   }, []);
 
   const data = useMemo(() => {
-    return catalog.map((item) => ({
-      name: item.name,
-      size: item.size[0],
-      mark: item.mark[0],
-      length: item.length[0],
-      price: formatPrice(item.price),
-    }));
-  }, [catalog]);
+    return catalogList(categoryQuery);
+  }, [catalog, categoryQuery]);
 
   const {
     getTableProps,
