@@ -6,3 +6,129 @@
 .empty {
   position: relative;
 }
+
+.head {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 24px;
+}
+
+.headTitle {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
+  color: $colorPrimary;
+  span {
+    color: #888;
+  }
+}
+
+.table {
+  width: 100%;
+  border-spacing: 0;
+  th,
+  td {
+    font-size: 14px;
+    padding: 15px 8px;
+    &:nth-child(1) {
+      width: 45%;
+    }
+    &:nth-child(2) {
+      width: 15%;
+    }
+    &:nth-child(3) {
+      width: 15%;
+    }
+    &:nth-child(4) {
+      width: 15%;
+    }
+    &:nth-child(5) {
+      width: 10%;
+      text-align: right;
+    }
+    &:first-child {
+      padding-left: 16px;
+      border-left: 1px solid transparent;
+    }
+    &:last-child {
+      padding-right: 16px;
+      border-right: 1px solid transparent;
+    }
+  }
+  thead {
+    text-align: left;
+    th {
+      font-weight: 600;
+      border-top: 1px solid rgba(black, 0.1);
+      border-bottom: 1px solid rgba(black, 0.1);
+      background: #f5f5f5;
+      &:first-child {
+        border-left-color: rgba(black, 0.1);
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+      &:last-child {
+        border-right-color: rgba(black, 0.1);
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+    }
+  }
+  tbody {
+    tr:hover {
+      td {
+        background: #f5f5f5;
+
+        &:first-child {
+          border-left-color: rgba(black, 0.1);
+          // border-top-left-radius: 5px;
+          // border-bottom-left-radius: 5px;
+        }
+        &:last-child {
+          border-right-color: rgba(black, 0.1);
+          // border-top-right-radius: 5px;
+          // border-bottom-right-radius: 5px;
+        }
+      }
+    }
+    td {
+      font-size: 14px;
+      border-bottom: 1px solid $borderColor;
+      transition: background 0.15s $ease, border 0.15s $ease;
+    }
+  }
+}
+
+.numInput {
+  width: 83px;
+  :global input {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+
+.delete {
+  cursor: pointer;
+  transition: color 0.25s $ease;
+  &:hover {
+    color: $colorRed;
+  }
+}
+
+.count {
+  padding-top: 26px;
+  padding-bottom: 30px;
+  text-align: right;
+}
+
+.countMain {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+.countVAT {
+  margin-top: 4px;
+  font-size: 16px;
+  line-height: 22px;
+}

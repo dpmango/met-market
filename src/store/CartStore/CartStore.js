@@ -24,6 +24,10 @@ export default class CartStore {
     return this.cart.map((x) => x.itemId);
   }
 
+  get cartTotal() {
+    return this.cart.reduce((acc, x) => (acc += x.pricePerItem * x.count), 0);
+  }
+
   // actions
   async getCart(req) {
     const [err, data] = await service.get(req);
