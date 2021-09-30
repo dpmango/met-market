@@ -35,6 +35,7 @@ export default class CatalogStore {
     const filterFunction = (item) => {
       let someMatched = null;
 
+      // TODO - refactor to all match vs ANY
       if (filters.size && filters.size.length) {
         someMatched = item.size.some((x) => filters.size.map((v) => v.value).includes(x));
       }

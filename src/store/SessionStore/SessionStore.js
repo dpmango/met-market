@@ -21,17 +21,12 @@ export default class SessionStore {
       const lsObj = JSON.parse(localStorage.getItem('metMarketSession'));
       const { sessionId, cartId, cartNumber } = lsObj;
 
+      await this.aliveSession({ sessionId, cartId });
+      await cart.getCart({ cartId });
+
       this.sessionId = sessionId;
       this.cartId = cartId;
       this.cartNumber = cartNumber;
-
-      try {
-        await this.aliveSession({ sessionId, cartId });
-      } catch (e) {
-        console.log('CORS?');
-      }
-
-      await cart.getCart({ cartId });
     } else {
       localStorage.clear();
       await this.createSession();

@@ -7,6 +7,6 @@ export default {
   alive: (req) => {
     // @sessionId string
     // @cartId string
-    return api.post(endpoints.session.alive, req);
+    return api.post(endpoints.session.alive, null, { params: { ...req } });
   },
 };

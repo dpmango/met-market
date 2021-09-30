@@ -30,19 +30,16 @@ export default class CartStore {
 
     if (err) throw err;
 
+    const { items } = data;
+
     runInAction(() => {
-      this.cart = data;
+      this.cart = items;
     });
 
-    return data;
+    return items;
   }
 
   async addCartItem(req) {
-    // todo - temp action on top
-    runInAction(() => {
-      this.cart = [...this.cart, ...[req]];
-    });
-
     const [err, data] = await service.add({
       cartId: session.cartId,
       ...req,
@@ -50,21 +47,16 @@ export default class CartStore {
 
     if (err) throw err;
 
+    const { items } = data;
+
+    runInAction(() => {
+      this.cart = items;
+    });
+
     return data;
   }
 
   async updateCartItem(req) {
-    runInAction(() => {
-      this.cart = this.cart.map((x) =>
-        x.itemId === req.itemId
-          ? {
-              ...x,
-              ...req,
-            }
-          : x
-      );
-    });
-
     const [err, data] = await service.update({
       cartId: session.cartId,
       ...req,
@@ -72,15 +64,14 @@ export default class CartStore {
 
     if (err) throw err;
 
+    runInAction(() => {
+      this.cart = items;
+    });
+
     return data;
   }
 
   async removeCartItem(req) {
-    // todo - temp action on top
-    runInAction(() => {
-      this.cart = this.cart.filter((x) => x.itemId !== req.itemId);
-    });
-
     const [err, data] = await service.remove({
       cartId: session.cartId,
       ...req,
@@ -88,9 +79,9 @@ export default class CartStore {
 
     if (err) throw err;
 
-    // runInAction(() => {
-    //   this.cart = data;
-    // });
+    runInAction(() => {
+      this.cart = this.cart.filter((x) => x.itemId !== req.itemId);
+    });
 
     return data;
   }
