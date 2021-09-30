@@ -41,8 +41,7 @@ const Header = observer(({ className }) => {
                   href="https://whatsapp.com/"
                   target="_blank"
                   className={cns(styles.topbarAction, styles.price)}
-                  rel="noreferrer"
-                >
+                  rel="noreferrer">
                   <SvgIcon name="social-whatsapp" />
                   <span className="w-600">Whatsapp</span>
                 </a>
@@ -50,8 +49,7 @@ const Header = observer(({ className }) => {
                   href="https://t.me/"
                   target="_blank"
                   className={cns(styles.topbarAction, styles.price)}
-                  rel="noreferrer"
-                >
+                  rel="noreferrer">
                   <SvgIcon name="social-telegram" />
                   <span className="w-600">Telegram</span>
                 </a>

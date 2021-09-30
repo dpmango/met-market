@@ -31,8 +31,7 @@ const CategoryTags = ({ data }) => {
           <button
             key={cat.id}
             className={cns(styles.button, categoryQuery === cat.id && 'is-active')}
-            onClick={() => handleCategoryClick(cat.id)}
-          >
+            onClick={() => handleCategoryClick(cat.id)}>
             {cat.name}
           </button>
         ))}
