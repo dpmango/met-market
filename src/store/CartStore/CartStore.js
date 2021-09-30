@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-// import { computedFn } from 'mobx-utils';
+import { computedFn } from 'mobx-utils';
 
+import { session } from '@store';
 import service from './api-service';
 
 export default class CartStore {
@@ -10,6 +11,20 @@ export default class CartStore {
     makeAutoObservable(this);
   }
 
+  // getters
+  getItemInCart = computedFn((item_id) => {
+    return this.cart.find((x) => x.itemId === item_id);
+  });
+
+  get cartCount() {
+    return this.cart.length;
+  }
+
+  get cartItemIds() {
+    return this.cart.map((x) => x.itemId);
+  }
+
+  // actions
   async getCart(req) {
     const [err, data] = await service.get(req);
 
@@ -23,31 +38,53 @@ export default class CartStore {
   }
 
   async addCartItem(req) {
-    const [err, data] = await service.add(req);
+    // todo - temp action on top
+    runInAction(() => {
+      this.cart = [...this.cart, ...[req]];
+    });
+
+    const [err, data] = await service.add({
+      cartId: session.cartId,
+      ...req,
+    });
 
     if (err) throw err;
-
-    // runInAction(() => {
-    //   this.cart = data;
-    // });
 
     return data;
   }
 
   async updateCartItem(req) {
-    const [err, data] = await service.update(req);
+    runInAction(() => {
+      this.cart = this.cart.map((x) =>
+        x.itemId === req.itemId
+          ? {
+              ...x,
+              ...req,
+            }
+          : x
+      );
+    });
+
+    const [err, data] = await service.update({
+      cartId: session.cartId,
+      ...req,
+    });
 
     if (err) throw err;
-
-    // runInAction(() => {
-    //   this.cart = data;
-    // });
 
     return data;
   }
 
   async removeCartItem(req) {
-    const [err, data] = await service.remove(req);
+    // todo - temp action on top
+    runInAction(() => {
+      this.cart = this.cart.filter((x) => x.itemId !== req.itemId);
+    });
+
+    const [err, data] = await service.remove({
+      cartId: session.cartId,
+      ...req,
+    });
 
     if (err) throw err;
 
@@ -59,7 +96,10 @@ export default class CartStore {
   }
 
   async submitCart(req) {
-    const [err, data] = await service.submit(req);
+    const [err, data] = await service.submit({
+      cartId: session.cartId,
+      ...req,
+    });
 
     if (err) throw err;
 

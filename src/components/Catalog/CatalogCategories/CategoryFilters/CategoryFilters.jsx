@@ -1,18 +1,22 @@
 /* eslint-disable react/jsx-key */
-import React, { memo } from 'react';
+import React, { memo, useCallback, useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { observer } from 'mobx-react';
 import Select from 'react-select';
 import cns from 'classnames';
 
-import { Button } from '@ui';
+import { Button, Spinner } from '@ui';
+import { CatalogStoreContext } from '@store';
 import { useQuery } from '@hooks';
 
 import styles from './CategoryFilters.module.scss';
 
-const CategoryFilters = ({ data }) => {
+const CategoryFilters = observer(({ data }) => {
   const history = useHistory();
   const location = useLocation();
   const query = useQuery();
+  const { filters } = useContext(CatalogStoreContext);
+  const catalogContext = useContext(CatalogStoreContext);
 
   const createOpitons = (options) => {
     return options
@@ -40,13 +44,37 @@ const CategoryFilters = ({ data }) => {
       <div className={styles.filterContent}>
         <div className={cns('row', styles.filterContentRow)}>
           <div className="col col-3">
-            {data.size && <Select options={createOpitons(data.size)} placeholder="Размеры" />}
+            {data.size && (
+              <Select
+                isMulti
+                value={filters.size}
+                options={createOpitons(data.size)}
+                onChange={(v) => catalogContext.setFilters(v, 'size')}
+                placeholder="Размеры"
+              />
+            )}
           </div>
           <div className="col col-3">
-            {data.mark && <Select options={createOpitonsMark(data.mark)} placeholder="Марка" />}
+            {data.mark && (
+              <Select
+                isMulti
+                value={filters.mark}
+                options={createOpitonsMark(data.mark)}
+                onChange={(v) => catalogContext.setFilters(v, 'mark')}
+                placeholder="Марка"
+              />
+            )}
           </div>
           <div className="col col-3">
-            {data.length && <Select options={createOpitons(data.length)} placeholder="Длина" />}
+            {data.length && (
+              <Select
+                isMulti
+                value={filters.length}
+                options={createOpitons(data.length)}
+                onChange={(v) => catalogContext.setFilters(v, 'length')}
+                placeholder="Длина"
+              />
+            )}
           </div>
           <div className="col col-3">
             <Button outline={true}>Сбросить фильтры</Button>
@@ -54,7 +82,9 @@ const CategoryFilters = ({ data }) => {
         </div>
       </div>
     </div>
-  ) : null;
-};
+  ) : (
+    <Spinner />
+  );
+});
 
 export default memo(CategoryFilters);

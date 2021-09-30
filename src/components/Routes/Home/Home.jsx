@@ -2,24 +2,19 @@ import React, { useContext, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Helmet } from 'react-helmet';
 
-import { CatalogStoreContext, SessionStoreContext } from '@store';
+// import { CatalogStoreContext, SessionStoreContext } from '@store';
 import { CatalogCategories, CatalogTable } from '@c/Catalog';
+import { AddToCart } from '@c/Cart';
 
 const HomePage = observer(() => {
-  const catalog = useContext(CatalogStoreContext);
-  const session = useContext(SessionStoreContext);
-
-  useEffect(async () => {
-    await catalog.getCatalog();
-    // await session.createSession();
-  }, []);
-
   return (
     <>
       <div className="container">
         <CatalogCategories />
         <CatalogTable />
       </div>
+
+      <AddToCart />
 
       <Helmet>
         <title>Главная</title>

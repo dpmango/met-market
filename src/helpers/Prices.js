@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 // 1000.00 -> 1 000.00
 export const formatPrice = (num, digits) => {
-  let defaultDigits = 2;
+  let trailingZeros = digits !== undefined ? digits : 2;
 
   const spacesRegex = /\B(?=(\d{3})+(?!\d))/g;
   if (num === null || num === undefined) {
@@ -9,13 +9,11 @@ export const formatPrice = (num, digits) => {
   }
 
   if (typeof num === 'number') {
-    return num.toFixed(digits || defaultDigits).replace(spacesRegex, ' ');
+    return num.toFixed(trailingZeros).replace(spacesRegex, ' ');
   }
 
   if (typeof num === 'string') {
-    return parseFloat(num)
-      .toFixed(digits || defaultDigits)
-      .replace(spacesRegex, ' ');
+    return parseFloat(num).toFixed(trailingZeros).replace(spacesRegex, ' ');
   }
 
   return '';

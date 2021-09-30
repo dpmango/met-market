@@ -1,0 +1,112 @@
+.cart {
+  position: relative;
+  padding: 30px 20px;
+}
+
+.head {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid #c4c4c4;
+}
+
+.headTitle {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+.body {
+  padding: 26px 20px 30px;
+  display: flex;
+}
+
+.bodyImage {
+  flex: 0 1 260px;
+  max-width: 260px;
+  padding-right: 20px;
+  font-size: 0;
+  img {
+    width: 100%;
+  }
+}
+
+.bodyTable {
+  flex: 0 0 360px;
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.rowLabel {
+  flex: 0 0 200px;
+  max-width: 200px;
+  padding-right: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: (19 / 14);
+  color: #909090;
+}
+
+.rowContent {
+  font-size: 14px;
+  line-height: (19 / 14);
+}
+
+.incart {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #c4c4c4;
+}
+
+.incartIcon {
+  color: $colorPrimary;
+  font-size: 18px;
+  margin-right: 20px;
+}
+
+.incartTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.incartDelete {
+  color: $fontColor;
+  cursor: pointer;
+  transition: color 0.25s $ease;
+  &:hover {
+    color: $colorRed;
+  }
+}
+
+.actions {
+  padding: 28px 20px 0;
+  border-top: 1px solid #c4c4c4;
+}
+
+.actionsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: -10px;
+}
+
+.actionCol {
+  flex: 0 0 140px;
+  max-width: 140px;
+  padding: 10px;
+  &.wide {
+    flex-basis: 240px;
+    max-width: 240px;
+  }
+}

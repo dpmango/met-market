@@ -1,0 +1,25 @@
+.ReactModal__Overlay {
+  background: rgba($fontColor, 0) !important;
+  will-change: background;
+  backface-visibility: hidden;
+  transition: background 300ms ease-in-out;
+  &--after-open {
+    background: rgba($fontColor, 0.5) !important;
+  }
+  &--before-close {
+    background: rgba($fontColor, 0) !important;
+  }
+}
+
+.ReactModal__Content {
+  opacity: 0;
+  will-change: background;
+  backface-visibility: hidden;
+  transition: opacity 200ms ease-in-out;
+  &--after-open {
+    opacity: 1;
+  }
+  &--before-close {
+    opacity: 0;
+  }
+}

@@ -3,20 +3,25 @@ import React, { useRef, useEffect, useReducer, useContext, useMemo, useCallback,
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useTable, usePagination } from 'react-table';
+import Select from 'react-select';
 import cns from 'classnames';
 
-import { CatalogStoreContext } from '@store/CatalogStore';
+import { Pagination, Spinner, SvgIcon } from '@ui';
+import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
+import { Plurize } from '@helpers';
 
 import styles from './CatalogTable.module.scss';
 
 const CatalogTable = observer(() => {
   const history = useHistory();
   const query = useQuery();
-  const { catalog, catalogList } = useContext(CatalogStoreContext);
   const categoryQuery = query.get('category');
 
-  // console.log({ catalog });
+  const { loading, catalog, catalogList, getCatalogItem, filters } = useContext(CatalogStoreContext);
+  const { cartItemIds } = useContext(CartStoreContext);
+  const uiStore = useContext(UiStoreContext);
+
   const columns = useMemo(() => {
     return [
       {
@@ -33,22 +38,22 @@ const CatalogTable = observer(() => {
       },
       {
         Header: 'Длина',
-        accessor: 'clengthol2',
+        accessor: 'length',
       },
       {
         Header: 'Цена с НДС',
         accessor: 'price',
       },
-      // {
-      //   Header: '',
-      //   accessor: '',
-      // },
+      {
+        Header: '',
+        accessor: 'id',
+      },
     ];
   }, []);
 
   const data = useMemo(() => {
-    return catalogList(categoryQuery);
-  }, [catalog, categoryQuery]);
+    return catalogList(categoryQuery, filters);
+  }, [catalog, categoryQuery, filters]);
 
   const {
     getTableProps,
@@ -60,11 +65,8 @@ const CatalogTable = observer(() => {
     page,
     canPreviousPage,
     canNextPage,
-    pageOptions,
     pageCount,
     gotoPage,
-    nextPage,
-    previousPage,
     setPageSize,
     state: { pageIndex, pageSize },
   } = useTable(
@@ -76,9 +78,28 @@ const CatalogTable = observer(() => {
     usePagination
   );
 
-  return (
-    <div className="catalog mt-2 mb-2">
-      <h1>Каталог</h1>
+  const metaItemsCount = useMemo(() => {
+    const showing = pageSize >= data.length ? data.length : pageSize;
+    const plural = Plurize(showing, 'товар', 'товара', 'товаров');
+
+    return `Показано ${showing} ${plural} из ${data.length}`;
+  }, [data, pageSize]);
+
+  const handleAddToCartClick = useCallback(
+    (id) => {
+      const item = getCatalogItem(id);
+
+      uiStore.setModal('cart-add', { ...item });
+    },
+    [uiStore]
+  );
+
+  return !loading ? (
+    <div className={styles.catalog}>
+      <div className={styles.head}>
+        <div className={styles.metaCount}>{metaItemsCount}</div>
+      </div>
+
       <table {...getTableProps()} className={styles.table}>
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -96,7 +117,25 @@ const CatalogTable = observer(() => {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                  const isIdRow = cell.column.id === 'id';
+
+                  if (!isIdRow) {
+                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                  } else {
+                    return (
+                      <td {...cell.getCellProps()}>
+                        {!cartItemIds.includes(cell.value) ? (
+                          <button className={styles.add} onClick={() => handleAddToCartClick(cell.value)}>
+                            <SvgIcon name="cart-add" />
+                          </button>
+                        ) : (
+                          <div className={styles.addedItem}>
+                            <SvgIcon name="checkmark" />
+                          </div>
+                        )}
+                      </td>
+                    );
+                  }
                 })}
               </tr>
             );
@@ -104,39 +143,33 @@ const CatalogTable = observer(() => {
         </tbody>
       </table>
 
-      <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
-        </button>
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>
-        <span>
-          Страница
-          <strong>
-            {pageIndex + 1} из {pageOptions.length}
-          </strong>
-        </span>
-        Показать
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[25, 50, 100, 250].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {pageSize}
-            </option>
-          ))}
-        </select>
+      <div className={styles.pagination}>
+        <Pagination
+          page={pageIndex + 1}
+          count={pageCount}
+          onChange={(page) => gotoPage(page - 1)}
+          canPreviousPage={canPreviousPage}
+          canNextPage={canNextPage}
+        />
+
+        <div className={styles.paginationPer}>
+          <span className={styles.paginationPerLabel}>Покаывать</span>
+          <Select
+            value={{ label: pageSize, value: pageSize }}
+            onChange={(v) => setPageSize(v.value)}
+            options={[
+              { value: 25, label: 25 },
+              { value: 50, label: 50 },
+              { value: 100, label: 100 },
+              { value: 250, label: 250 },
+            ]}
+          />
+        </div>
       </div>
+    </div>
+  ) : (
+    <div className={styles.loading}>
+      <Spinner />
     </div>
   );
 });

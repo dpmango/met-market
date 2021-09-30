@@ -1,0 +1,63 @@
+.container {
+  position: relative;
+  z-index: 1;
+  &._full {
+    min-height: -webkit-calc(100vh - 16px);
+    min-height: calc(100vh - 16px);
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.close {
+  position: absolute;
+  z-index: 5;
+  top: 22px;
+  right: 26px;
+  padding: 10px;
+  font-size: 0;
+  cursor: pointer;
+  color: $fontColor;
+  transition: color 0.25s $ease;
+  svg {
+    font-size: 18px;
+  }
+  &:hover {
+    color: $colorRed;
+  }
+}
+
+.content {
+  display: block;
+  &._full {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+._narrow {
+  padding: 24px;
+  .close {
+    top: 8px;
+    right: 8px;
+  }
+}
+
+@include r($sm) {
+  .container {
+    padding: 24px 16px;
+  }
+  .head {
+    flex-wrap: wrap;
+    &_title {
+      order: 2;
+      flex: 0 0 100%;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+  }
+  .close {
+    order: 1;
+  }
+}
