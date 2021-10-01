@@ -114,7 +114,7 @@ const AddToCart = observer(() => {
                 </div>
                 <div className={styles.incartTitle}>
                   В корзине {cartItem.count} {modalParams.priceQuantityUnit} на сумму{' '}
-                  {formatPrice(cartItem.pricePerItem * count, 0)} ₽/{modalParams.priceQuantityUnit}
+                  {formatPrice(cartItem.pricePerItem * cartItem.count, 0)} ₽/{modalParams.priceQuantityUnit}
                 </div>
                 <div className={styles.incartDelete} onClick={handleCartDelete}>
                   <SvgIcon name="delete" />
@@ -153,9 +153,13 @@ const AddToCart = observer(() => {
                 </div>
                 <div className={cns(styles.actionCol, styles.wide)}>
                   {!cartItem ? (
-                    <Button type="submit">Добавить в корзину</Button>
+                    <Button theme="link" type="submit">
+                      Добавить в корзину
+                    </Button>
                   ) : (
-                    <Button type="submit">Обновить в корзине</Button>
+                    <Button theme="link" type="submit">
+                      Обновить в корзине
+                    </Button>
                   )}
                 </div>
               </div>
