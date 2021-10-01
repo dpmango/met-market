@@ -155,7 +155,7 @@ const CatalogTable = observer(() => {
         />
 
         <div className={styles.paginationPer}>
-          <span className={styles.paginationPerLabel}>Покаывать</span>
+          <span className={styles.paginationPerLabel}>Показывать</span>
           <Select
             value={{ label: pageSize, value: pageSize }}
             onChange={(v) => setPageSize(v.value)}

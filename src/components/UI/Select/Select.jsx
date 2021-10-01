@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
+import Select from 'react-select';
 import cns from 'classnames';
 import uniqueId from 'lodash/uniqueId';
 
-import { SvgIcon, Select } from '@ui';
+import { SvgIcon } from '@ui';
 import styles from './Select.module.scss';
 import stylesGlobal from './Select.scss';
 
@@ -22,14 +23,11 @@ const SelectComponent = ({ label, value, className, options, onChange, variant, 
     return uniqueId();
   }, []);
 
-  const onSelectChange = useCallback(
-    (e) => {
-      if (onChange) {
-        onChange(e);
-      }
-    },
-    [onChange]
-  );
+  const onSelectChange = useCallback((e) => {
+    if (onChange) {
+      onChange(e);
+    }
+  }, []);
 
   return (
     <div className={cns(styles.select, className)}>
