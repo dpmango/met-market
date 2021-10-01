@@ -16,14 +16,15 @@
     width: 100%;
     background: white;
     font-family: $baseFont;
-    font-size: 16px;
+    font-size: 12px;
+    line-height: 16px;
     color: $fontColor;
     border: 1px solid $borderColor;
-    border-radius: 12px;
-    padding: 14px 15px;
+    border-radius: 5px;
+    padding: 14px 15px 13px;
     transition: border 0.25s $ease, color 0.25s $ease, background 0.25s $ease;
     &::placeholder {
-      color: rgba($fontColor, 0.5);
+      color: $colorGray;
     }
     &:focus {
       border-color: $colorPrimary;

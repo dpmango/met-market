@@ -57,7 +57,7 @@ export default class CartStore {
       this.cart = items;
     });
 
-    return data;
+    return items;
   }
 
   async updateCartItem(req) {
@@ -68,11 +68,13 @@ export default class CartStore {
 
     if (err) throw err;
 
+    const { items } = data;
+
     runInAction(() => {
       this.cart = items;
     });
 
-    return data;
+    return items;
   }
 
   async removeCartItem(req) {

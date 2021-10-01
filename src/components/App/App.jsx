@@ -1,15 +1,18 @@
 import React from 'react';
+import { ToastProvider } from 'react-toast-notifications';
 
-import { Loader, LoaderContextProvider } from '@ui';
+import { Toast, Loader, LoaderContextProvider } from '@ui';
 import Routes from '@c/Routes';
 
 const App = () => {
   return (
     <>
-      <LoaderContextProvider>
-        <Routes />
-        <Loader />
-      </LoaderContextProvider>
+      <ToastProvider autoDismiss={true} autoDismissTimeout={10000} components={{ Toast: Toast }}>
+        <LoaderContextProvider>
+          <Routes />
+          <Loader />
+        </LoaderContextProvider>
+      </ToastProvider>
     </>
   );
 };

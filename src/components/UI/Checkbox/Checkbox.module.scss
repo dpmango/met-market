@@ -1,0 +1,65 @@
+.checkbox {
+  position: relative;
+  display: inline-block;
+  &._withError {
+    border-color: $colorRed;
+    color: $colorRed;
+    &::placeholder {
+      color: rgba($colorRed, 0.5);
+    }
+  }
+  &_wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-start;
+    z-index: 1;
+  }
+  &_input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.1px;
+    height: 0.1px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+  &_box {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    font-size: 8px;
+    border: 2px solid $fontColor;
+    cursor: pointer;
+    color: white;
+    transition: background 0.25s $ease, border 0.25s $ease;
+    &._isChecked {
+      background: $colorLink;
+      border-color: $colorLink;
+      .checkbox_icon {
+        opacity: 1;
+      }
+    }
+  }
+  &_icon {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  &_label {
+    font-size: 12px;
+    line-height: 18px;
+    padding-left: 10px;
+    a {
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

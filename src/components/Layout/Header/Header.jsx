@@ -70,7 +70,7 @@ const Header = observer(({ className }) => {
                 </Link>
               </div>
               <div className={styles.colSecond}>
-                <Button>Каталог</Button>
+                <Button theme="link">Каталог</Button>
               </div>
               <div className={styles.colThrid}>
                 <div className={styles.cart} onClick={() => uiContext.setModal('cart')}>
@@ -83,7 +83,7 @@ const Header = observer(({ className }) => {
                     )}
                   </div>
 
-                  <span>Коризна ({cartNumber})</span>
+                  <span>Коризна</span>
                 </div>
               </div>
             </div>

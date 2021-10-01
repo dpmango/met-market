@@ -14,10 +14,11 @@ const sharedStyles = {
   content: {
     position: 'absolute',
     background: 'white',
-    borderRadius: '16px',
+    borderRadius: '5px',
     padding: 0,
     overflowY: 'auto',
     maxHeight: 'calc(100% - 16px)',
+    boxShadow: '5px 5px 20px rgba(0, 0, 0, 0.25)',
   },
   overlay: {
     zIndex: 99,
@@ -41,7 +42,7 @@ const mainStyles = {
 const narrowStyles = {
   content: {
     width: 'calc(100% - 16px)',
-    maxWidth: '560px',
+    maxWidth: '496px',
     top: '50%',
     left: '50%',
     right: 'auto',
