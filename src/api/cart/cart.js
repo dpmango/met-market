@@ -31,6 +31,12 @@ export default {
     // @deliveryInfo string
     // @comment string
     // @totalPrice integer(int32)
-    return api.post(endpoints.cart.submit, req);
+
+    const formData = new FormData();
+
+    Object.keys(req).forEach((key) => {
+      formData.append(key, req[key]);
+    });
+    return api.post(endpoints.cart.submit, formData);
   },
 };

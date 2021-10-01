@@ -222,7 +222,7 @@
 }
 
 .emptyIcon {
-  svg {
+  :global .svg-icon {
     color: #d3d3d3;
     font-size: 124px;
   }
@@ -255,7 +255,7 @@
   margin-top: 44px;
   margin-bottom: 16px;
   min-width: 240px;
-  svg {
+  :global .svg-icon {
     font-size: 8px;
     margin-top: 2px;
   }

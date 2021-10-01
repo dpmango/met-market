@@ -20,6 +20,7 @@ const Cart = observer(() => {
   const { cart, cartCount, cartTotal } = useContext(CartStoreContext);
   const { cartNumber } = useContext(SessionStoreContext);
   const cartContext = useContext(CartStoreContext);
+  const sessionContext = useContext(SessionStoreContext);
   const uiContext = useContext(UiStoreContext);
 
   const [loading, setLoading] = useState(false);
@@ -31,7 +32,8 @@ const Cart = observer(() => {
 
   const handleCartDelete = useCallback(async (id) => {
     if (id === 'batch') {
-      // todo API batch mehod
+      sessionContext.createSession();
+      uiContext.resetModal();
       return;
     }
     setLoading(true);
@@ -69,8 +71,8 @@ const Cart = observer(() => {
 
     await cartContext
       .submitCart({ phone, deliveryInfo: delivery, comment, totalPrice: cartTotal })
-      .then((_res) => {
-        // addToast('Заказ оформлен', { appearance: 'success' });
+      .then((orderNumber) => {
+        uiContext.setModal('cartsuccess', { orderNumber });
       })
       .catch((_error) => {
         addToast('Ошибка при отправке', { appearance: 'error' });
@@ -193,7 +195,11 @@ const Cart = observer(() => {
                   )}
                 </div>
                 <div className="col col-4">
-                  <Input placeholder="Телефон" value={phone} onChange={(v) => setPhone(v)}></Input>
+                  <Input
+                    maskPlaceholder="Телефон"
+                    mask="+7 999 999-99-99"
+                    value={phone}
+                    onChange={(v) => setPhone(v)}></Input>
                   <Checkbox className={styles.actionBtnCta} isChecked={agree} onChange={() => setAgree(!agree)}>
                     <span>
                       Подтверждаю свое согласие на{' '}

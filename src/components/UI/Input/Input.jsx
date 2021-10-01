@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import cns from 'classnames';
 import uniqueId from 'lodash/uniqueId';
+import InputMask from 'react-input-mask';
 
 import styles from './Input.module.scss';
 
@@ -15,7 +16,19 @@ const VariantClasses = {
   [Variants.SMALL]: styles._small,
 };
 
-const Input = ({ className, label, inputRef, variant, modifier, allowClear, value, onChange, error, ...props }) => {
+const Input = ({
+  className,
+  label,
+  inputRef,
+  variant,
+  modifier,
+  allowClear,
+  value,
+  onChange,
+  mask,
+  error,
+  ...props
+}) => {
   const id = useMemo(() => {
     return uniqueId();
   }, []);
@@ -64,7 +77,13 @@ const Input = ({ className, label, inputRef, variant, modifier, allowClear, valu
       )}
 
       <div className={styles.input_wrapper}>
-        {props.type === 'textarea' ? <textarea {...inputProps} /> : <input {...inputProps} />}
+        {props.type === 'textarea' ? (
+          <textarea {...inputProps} />
+        ) : mask ? (
+          <InputMask mask={mask} maskPlaceholder={props.maskPlaceholder} {...inputProps} />
+        ) : (
+          <input {...inputProps} />
+        )}
 
         {clearIcon}
 
@@ -85,6 +104,7 @@ Input.propTypes = {
   variant: PropTypes.string,
   error: PropTypes.string,
   onChange: PropTypes.func,
+  mask: PropTypes.string,
   style: PropTypes.object,
 };
 

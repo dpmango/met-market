@@ -19,7 +19,7 @@
   cursor: pointer;
   color: $colorPrimary;
   transition: color 0.25s $ease;
-  svg {
+  :global .svg-icon {
     font-size: 18px;
   }
   &:hover {
@@ -41,6 +41,14 @@
   .close {
     top: 8px;
     right: 8px;
+  }
+}
+
+._thanks {
+  padding: 32px 24px 40px;
+  .close {
+    top: 10px;
+    right: 10px;
   }
 }
 

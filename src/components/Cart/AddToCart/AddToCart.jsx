@@ -79,7 +79,7 @@ const AddToCart = observer(() => {
   return (
     <Modal name="cart-add">
       <div className={styles.cart}>
-        {modalParams ? (
+        {modalParams && activeModal === 'cart-add' ? (
           <>
             <div className={styles.head}>
               <div className={styles.headTitle}>{modalParams.nameFull}</div>

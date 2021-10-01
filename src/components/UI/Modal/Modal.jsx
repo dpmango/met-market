@@ -52,21 +52,37 @@ const narrowStyles = {
   },
 };
 
+const thanksStyles = {
+  content: {
+    width: 'calc(100% - 16px)',
+    maxWidth: '384px',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+    margin: '0px auto',
+  },
+};
+
 Modal.setAppElement('#root');
 
 const Variants = {
   MAIN: 'main',
   NARROW: 'narrow',
+  THANKS: 'thanks',
 };
 
 const VariantStyles = {
   [Variants.MAIN]: mainStyles,
   [Variants.NARROW]: narrowStyles,
+  [Variants.THANKS]: thanksStyles,
 };
 
 const VariantClasses = {
   [Variants.MAIN]: '',
   [Variants.NARROW]: styles._narrow,
+  [Variants.THANKS]: styles._thanks,
 };
 
 const Modifiers = {

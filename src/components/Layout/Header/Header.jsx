@@ -5,7 +5,7 @@ import cns from 'classnames';
 
 import { SvgIcon, Button } from '@ui';
 import { SessionStoreContext, CartStoreContext, UiStoreContext } from '@store';
-import { Cart } from '@c/Cart';
+import { Cart, CartSuccess } from '@c/Cart';
 
 import styles from './Header.module.scss';
 import { ReactComponent as Logo } from '@assets/logo.svg';
@@ -92,6 +92,7 @@ const Header = observer(({ className }) => {
       </header>
 
       <Cart />
+      <CartSuccess />
     </>
   );
 });

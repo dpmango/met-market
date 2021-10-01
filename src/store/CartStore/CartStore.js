@@ -100,10 +100,14 @@ export default class CartStore {
 
     if (err) throw err;
 
-    // runInAction(() => {
-    //   this.cart = data;
-    // });
+    const { orderNumber, newSession } = data;
 
-    return data;
+    session.setSession(newSession);
+
+    runInAction(() => {
+      this.cart = [];
+    });
+
+    return orderNumber;
   }
 }
