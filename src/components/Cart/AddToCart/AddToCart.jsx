@@ -14,7 +14,7 @@ import styles from './AddToCart.module.scss';
 const AddToCart = observer(() => {
   const history = useHistory();
   const query = useQuery();
-  const { modalParams } = useContext(UiStoreContext);
+  const { activeModal, modalParams } = useContext(UiStoreContext);
   const cartContext = useContext(CartStoreContext);
 
   const [count, setCount] = useState(1);
@@ -69,6 +69,12 @@ const AddToCart = observer(() => {
         // dispatch({ key: 'error', value: _error });
       });
   }, [modalParams]);
+
+  useEffect(() => {
+    if (activeModal === null) {
+      setCount(1);
+    }
+  }, [activeModal]);
 
   return (
     <Modal name="cart-add">

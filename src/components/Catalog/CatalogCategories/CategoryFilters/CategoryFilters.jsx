@@ -2,10 +2,9 @@
 import React, { memo, useCallback, useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import Select from 'react-select';
 import cns from 'classnames';
 
-import { Button, Spinner } from '@ui';
+import { Button, Select, Spinner } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useQuery } from '@hooks';
 

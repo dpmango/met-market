@@ -1,0 +1,85 @@
+.select-container {
+  .react-select {
+    &__control {
+      font-size: 16px;
+      color: $fontColor;
+      border: 1px solid $borderColor;
+      min-height: 48px;
+      border-radius: 12px;
+      &--menu-is-open {
+        z-index: 10;
+      }
+      &--is-focused,
+      &--menu-is-open,
+      &:hover {
+        border-color: transparent;
+        box-shadow: 0 0 0 1px $fontColor;
+      }
+    }
+    &__value-container {
+      padding: 10px 0 10px 15px;
+      font-size: 16px;
+    }
+    &__indicator-separator {
+      display: none;
+    }
+    &__menu {
+      z-index: 9999;
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
+      margin-top: 4px;
+      margin-bottom: 0;
+    }
+    &__menu-list {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+    &__option {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: (19 / 16);
+      padding: 14px 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background 0.1s $ease;
+      &--is-selected {
+        background: rgba(0, 0, 0, 0.04);
+        color: $fontColor;
+      }
+      &--is-focused {
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &.small {
+    .react-select {
+      &__control {
+        border: 0;
+        min-height: 24px;
+        border-radius: 12px;
+        background: transparent;
+      }
+      &__value-container {
+        padding: 0 0 0 8px;
+      }
+      &__option {
+        font-weight: normal;
+        font-size: 14px;
+        padding: 10px 8px;
+      }
+    }
+  }
+}
+
+body.is-mobile {
+  .select-container {
+    .react-select {
+      &__control {
+        box-shadow: 0 0 0 1px $fontColor;
+      }
+    }
+  }
+}

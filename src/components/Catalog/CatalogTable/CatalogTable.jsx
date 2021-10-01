@@ -3,10 +3,9 @@ import React, { useRef, useEffect, useReducer, useContext, useMemo, useCallback,
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useTable, usePagination } from 'react-table';
-import Select from 'react-select';
 import cns from 'classnames';
 
-import { Pagination, Spinner, SvgIcon } from '@ui';
+import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
 import { Plurize } from '@helpers';
@@ -98,6 +97,9 @@ const CatalogTable = observer(() => {
     <div className={styles.catalog}>
       <div className={styles.head}>
         <div className={styles.metaCount}>{metaItemsCount}</div>
+        <Button theme="accent" className={styles.headCta}>
+          Заказать металлопродукцию
+        </Button>
       </div>
 
       <table {...getTableProps()} className={styles.table}>

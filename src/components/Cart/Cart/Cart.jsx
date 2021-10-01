@@ -22,50 +22,61 @@ const Cart = observer(() => {
   const cartContext = useContext(CartStoreContext);
   const uiContext = useContext(UiStoreContext);
 
+  const [loading, setLoading] = useState(false);
   const [phone, setPhone] = useState('');
   const [delivery, setDelivery] = useState(false);
   const [comment, setComment] = useState(false);
   const [agree, setAgree] = useState(false);
   const [resetContext, setResetContext] = useState(false);
 
-  const handleCartDelete = useCallback((id) => {
+  const handleCartDelete = useCallback(async (id) => {
     if (id === 'batch') {
-      setResetContext(false);
+      // todo API batch mehod
       return;
     }
+    setLoading(true);
+    setResetContext(false);
 
-    cartContext
+    await cartContext
       .removeCartItem({ itemId: id })
-      .then((_res) => {
-        // history.push(routes.HOME);
-      })
+      .then((_res) => null)
       .catch((_error) => {
-        // dispatch({ key: 'error', value: _error });
+        addToast('Ошибка при удалении', { appearance: 'error' });
       });
+
+    setLoading(false);
   }, []);
 
-  const handleCartUpdate = useCallback((count, item) => {
+  const handleCartUpdate = useCallback(async (count, item) => {
     const { itemId, pricePerItem } = item;
 
-    cartContext
+    setLoading(true);
+
+    await cartContext
       .updateCartItem({ itemId, count, pricePerItem })
       .then((_res) => {
-        addToast('Корзина обновлена', { appearance: 'success' });
+        // addToast('Корзина обновлена', { appearance: 'success' });
       })
       .catch((_error) => {
         addToast('Ошибка при обновлении', { appearance: 'error' });
       });
+
+    setLoading(false);
   }, []);
 
-  const handleCartSubmit = useCallback(() => {
-    cartContext
+  const handleCartSubmit = useCallback(async () => {
+    setLoading(true);
+
+    await cartContext
       .submitCart({ phone, deliveryInfo: delivery, comment, totalPrice: cartTotal })
       .then((_res) => {
-        // history.push(routes.HOME);
+        // addToast('Заказ оформлен', { appearance: 'success' });
       })
       .catch((_error) => {
-        // dispatch({ key: 'error', value: _error });
+        addToast('Ошибка при отправке', { appearance: 'error' });
       });
+
+    setLoading(false);
   }, [phone, agree, delivery, comment, cartTotal]);
 
   return (
@@ -136,7 +147,7 @@ const Cart = observer(() => {
 
             <div className={styles.count}>
               <div className={styles.countMain}>ИТОГО: {formatPrice(cartTotal, 0)} ₽</div>
-              <div className={styles.countVAT}>В том числе НДС: {formatPrice(cartTotal * 0.2, 0)} ₽</div>
+              <div className={styles.countVAT}>В том числе НДС: {formatPrice((cartTotal / 120) * 20, 0)} ₽</div>
             </div>
 
             <div className={styles.actions}>

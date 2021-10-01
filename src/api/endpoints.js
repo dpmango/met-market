@@ -2,6 +2,10 @@ export default {
   catalog: {
     // export: 'catalog/export-collapsed-flat.json',
   },
+  session: {
+    create: '/session/create',
+    alive: '/session/alive',
+  },
   cart: {
     getItems: '/cart/getItems',
     addItem: '/cart/addItem',
@@ -15,9 +19,5 @@ export default {
   },
   log: {
     addSearchTerm: '/log/addSearchTerm',
-  },
-  session: {
-    create: '/session/create',
-    alive: '/session/alive',
   },
 };
