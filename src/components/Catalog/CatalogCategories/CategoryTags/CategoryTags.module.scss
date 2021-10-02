@@ -35,7 +35,7 @@
     background: $colorLink;
     color: white;
   }
-  &.is-active {
+  &._active {
     &::after {
       right: 0;
     }

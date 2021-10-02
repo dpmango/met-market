@@ -128,10 +128,32 @@ export default class CatalogStore {
       const category = findNodeById(this.categories, cat_id);
 
       if (category) {
+        const allCategories = [
+          {
+            id: cat_id,
+            name: `Все товары категории «${category.name}»`,
+          },
+        ];
+
+        let parentCategory = [];
+        this.categories.forEach((lvl1) => {
+          lvl1.categories.forEach((lvl2) => {
+            const matchLvl3 = lvl2.categories ? lvl2.categories.some((x) => x.id === cat_id) : false;
+
+            if (matchLvl3) {
+              parentCategory = lvl2.categories;
+            }
+          });
+        });
+
+        const lastLevel = !category.categories;
+
+        const mergedCategories = lastLevel ? parentCategory || [] : [...allCategories, ...category.categories];
+
         return {
           id: cat_id,
           title: category.name,
-          subcategories: category.categories || null, // todo if empty, find parent
+          subcategories: mergedCategories,
           filters: category.filters || null,
         };
       }

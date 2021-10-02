@@ -30,7 +30,7 @@ const CategoryTags = ({ data }) => {
         data.map((cat) => (
           <button
             key={cat.id}
-            className={cns(styles.button, categoryQuery === cat.id && 'is-active')}
+            className={cns(styles.button, categoryQuery === cat.id && styles._active)}
             onClick={() => handleCategoryClick(cat.id)}>
             {cat.name}
           </button>
