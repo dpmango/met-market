@@ -140,13 +140,13 @@
     justify-content: center;
   }
   &._iconLeft {
-    span {
-      margin-left: 14px;
+    svg {
+      margin-right: 14px;
     }
   }
   &._iconRight {
-    span {
-      margin-right: 14px;
+    svg {
+      margin-left: 14px;
     }
   }
   &[disabled] {

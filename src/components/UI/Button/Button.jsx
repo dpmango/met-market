@@ -62,7 +62,7 @@ const Button = ({ children, className, theme, variant, type, outline, block, ico
       <button {...props} className={classStyle}>
         {iconLeft && <SvgIcon name={iconLeft} />}
 
-        <span>{children}</span>
+        {children}
 
         {iconRight && <SvgIcon name={iconRight} />}
       </button>

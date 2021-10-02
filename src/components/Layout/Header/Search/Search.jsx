@@ -1,5 +1,6 @@
 import React, { useState, useContext, useRef, useCallback, useEffect } from 'react';
 import { observer } from 'mobx-react';
+import { useHistory, useLocation } from 'react-router';
 import cns from 'classnames';
 import debounce from 'lodash/debounce';
 
@@ -15,16 +16,17 @@ const settings = {
 };
 
 const Search = observer(({ className }) => {
+  const history = useHistory();
+  const location = useLocation();
+
+  const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState('');
+  const [suggestionsOpened, setSuggestionsOpened] = useState(false);
+
   const catalogContext = useContext(CatalogStoreContext);
   const sessionContext = useContext(SessionStoreContext);
   const uiContext = useContext(UiStoreContext);
   const searchRef = useRef(null);
-
-  const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
-  const [suggestionsMeta, setSuggestionsMeta] = useState({ total: null });
-  const [suggestionsOpened, setSuggestionsOpened] = useState(false);
 
   // debounced getter
   const searchFunc = useCallback(
@@ -33,11 +35,19 @@ const Search = observer(({ className }) => {
       if (textNormalized.length > 2) {
         const { meta, suggestions } = catalogContext.searchCatalog(textNormalized);
 
-        setSuggestionsMeta(meta);
-        setSuggestions(suggestions);
-      } else {
-        setSuggestionsMeta({ total: 0 });
-        setSuggestions([]);
+        const params = new URLSearchParams({
+          search: `${textNormalized}`,
+        });
+
+        sessionContext.setLog({
+          type: 'search',
+          payload: textNormalized,
+        });
+
+        history.push({
+          pathname: location.pathname,
+          search: params.toString(),
+        });
       }
 
       setLoading(false);
@@ -51,22 +61,30 @@ const Search = observer(({ className }) => {
   }, [searchText]);
 
   // event handlers
-  const handleSearchSubmit = useCallback(() => {
-    const textNormalized = formatUGC(searchText);
-    if (textNormalized.length > 2) {
-      sessionContext.setLog({
-        type: 'search',
-        payload: textNormalized,
+  const handleSearchSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      // const textNormalized = formatUGC(searchText);
+      // if (textNormalized.length > 2) {
+      //   sessionContext.setLog({
+      //     type: 'search',
+      //     payload: textNormalized,
+      //   });
+      // }
+    },
+    [searchText]
+  );
+
+  const handleSearchTermClick = useCallback(
+    (query) => {
+      const params = new URLSearchParams({
+        search: `${query}`,
       });
-    }
-  }, [searchText, sessionContext.setLog]);
 
-  const handleSuggestionClick = useCallback(
-    (id) => {
-      const item = catalogContext.getCatalogItem(id);
-
-      console.log({ item });
-      uiContext.setModal('cart-add', { ...item });
+      history.push({
+        pathname: location.pathname,
+        search: params.toString(),
+      });
     },
     [catalogContext.getCatalogItem]
   );
@@ -110,32 +128,6 @@ const Search = observer(({ className }) => {
         <div className={styles.suggestionsWrapper}>
           {loading ? (
             <Spinner />
-          ) : searchText.trim().length > 2 ? (
-            <>
-              {/* Search results */}
-              <div className={styles.suggestionsHead}>
-                <div className={styles.suggestionsTitle}>Результаты поиска:</div>
-                {suggestionsMeta.total > 0 && (
-                  <div className={styles.suggestionsMeta}>{suggestionsMeta.total} найдено</div>
-                )}
-              </div>
-              {suggestions && suggestions.length > 0 ? (
-                <div className={styles.suggestionScrollableList}>
-                  {suggestions.map((suggestion) => (
-                    <div
-                      className={styles.suggestion}
-                      key={suggestion.id}
-                      onClick={() => handleSuggestionClick(suggestion.id)}>
-                      {suggestion.name} ({suggestion.price})
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className={styles.suggestionEmpty}>
-                  Не найдено по запросу <strong>{searchText}</strong>
-                </div>
-              )}
-            </>
           ) : (
             <>
               {/* LOGS */}
@@ -146,7 +138,7 @@ const Search = observer(({ className }) => {
                   </div>
                   <div className={styles.suggestionScrollableList}>
                     {sessionContext.log.search.map((x, idx) => (
-                      <div className={styles.suggestion} key={idx} onClick={() => setSearchText(x.searchTerm)}>
+                      <div className={styles.suggestion} key={idx} onClick={() => handleSearchTermClick(x.searchTerm)}>
                         <div className={styles.suggestionText}>{x.searchTerm}</div>
                         <div
                           className={styles.suggestionRemove}

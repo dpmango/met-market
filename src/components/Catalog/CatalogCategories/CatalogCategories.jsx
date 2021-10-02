@@ -3,10 +3,10 @@ import React, { useRef, useEffect, useReducer, useContext, useMemo, useCallback,
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 
-import { CatalogStoreContext } from '@store/CatalogStore';
+import { CatalogStoreContext } from '@store';
 import { useQuery } from '@hooks';
 
-import CategoryMain from './CategoryMain';
+import { CatalogMenu } from '@c/Catalog';
 import CategoryTags from './CategoryTags';
 import CategoryFilters from './CategoryFilters';
 import styles from './CatalogCategories.module.scss';
@@ -40,27 +40,7 @@ const CatalogCategories = observer(() => {
           )}
         </>
       ) : (
-        <>
-          {categoriesList && categoriesList.length > 0 && (
-            <div className="row">
-              <div className="col col-4">
-                {categoriesList.slice(0, 2).map((cat) => (
-                  <CategoryMain key={cat.id} category={cat} />
-                ))}
-              </div>
-              <div className="col col-4">
-                {categoriesList.slice(2, 5).map((cat) => (
-                  <CategoryMain key={cat.id} category={cat} />
-                ))}
-              </div>
-              <div className="col col-4">
-                {categoriesList.slice(5, 7).map((cat) => (
-                  <CategoryMain key={cat.id} category={cat} />
-                ))}
-              </div>
-            </div>
-          )}
-        </>
+        <CatalogMenu list={categoriesList} className="mt-2 mb-2" />
       )}
     </div>
   );
