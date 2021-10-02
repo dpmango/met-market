@@ -1,16 +1,21 @@
 /* eslint-disable react/jsx-key */
-import React, { memo } from 'react';
+import React, { useContext, memo, useEffect } from 'react';
+import { observer } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
+import { UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
 
 import styles from './CategoryMain.module.scss';
 
-const CategoryMain = ({ category }) => {
+const CategoryMain = observer(({ category }) => {
   const history = useHistory();
   const location = useLocation();
   const query = useQuery();
+
+  const { catalogOpened } = useContext(UiStoreContext);
+  const uiContext = useContext(UiStoreContext);
 
   const handleCategoryClick = (id) => {
     const params = new URLSearchParams({
@@ -21,7 +26,13 @@ const CategoryMain = ({ category }) => {
       pathname: location.pathname,
       search: params.toString(),
     });
+
+    uiContext.setHeaderCatalog(false);
   };
+
+  useEffect(() => {
+    // catalogOpened
+  }, [catalogOpened]);
 
   return (
     <div className={styles.category} data-id={category.id}>
@@ -48,6 +59,6 @@ const CategoryMain = ({ category }) => {
       </ul>
     </div>
   );
-};
+});
 
 export default memo(CategoryMain);

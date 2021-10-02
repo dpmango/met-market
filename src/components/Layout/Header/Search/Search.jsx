@@ -21,32 +21,32 @@ const Search = observer(({ className }) => {
 
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
+  const [searchMeta, setSearchMeta] = useState({
+    total: null,
+  });
   const [suggestionsOpened, setSuggestionsOpened] = useState(false);
 
   const catalogContext = useContext(CatalogStoreContext);
   const sessionContext = useContext(SessionStoreContext);
   const uiContext = useContext(UiStoreContext);
   const searchRef = useRef(null);
+  const inputRef = useRef(null);
 
   // debounced getter
   const searchFunc = useCallback(
     debounce((txt) => {
       const textNormalized = formatUGC(txt);
+
+      const { meta } = catalogContext.searchCatalog(textNormalized);
+
       if (textNormalized.length > 2) {
-        const { meta, suggestions } = catalogContext.searchCatalog(textNormalized);
-
-        const params = new URLSearchParams({
-          search: `${textNormalized}`,
+        setSearchMeta({
+          total: meta.total,
+          query: textNormalized,
         });
-
-        sessionContext.setLog({
-          type: 'search',
-          payload: textNormalized,
-        });
-
-        history.push({
-          pathname: location.pathname,
-          search: params.toString(),
+      } else {
+        setSearchMeta({
+          total: null,
         });
       }
 
@@ -64,13 +64,26 @@ const Search = observer(({ className }) => {
   const handleSearchSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      // const textNormalized = formatUGC(searchText);
-      // if (textNormalized.length > 2) {
-      //   sessionContext.setLog({
-      //     type: 'search',
-      //     payload: textNormalized,
-      //   });
-      // }
+
+      const textNormalized = formatUGC(searchText);
+      if (textNormalized.length > 2) {
+        const params = new URLSearchParams({
+          search: `${textNormalized}`,
+        });
+
+        sessionContext.setLog({
+          type: 'search',
+          payload: textNormalized,
+        });
+
+        history.push({
+          pathname: location.pathname,
+          search: params.toString(),
+        });
+
+        setSuggestionsOpened(false);
+        setSearchText('');
+      }
     },
     [searchText]
   );
@@ -85,8 +98,13 @@ const Search = observer(({ className }) => {
         pathname: location.pathname,
         search: params.toString(),
       });
+
+      setSuggestionsOpened(false);
+      setSearchText(query);
+
+      inputRef && inputRef.current.focus();
     },
-    [catalogContext.getCatalogItem]
+    [catalogContext.getCatalogItem, inputRef]
   );
 
   const handleSearchChange = useCallback(
@@ -110,17 +128,18 @@ const Search = observer(({ className }) => {
   );
 
   return (
-    <div className={styles.search} ref={searchRef}>
+    <form className={styles.search} ref={searchRef} onSubmit={handleSearchSubmit}>
       <input
         className={styles.searchInput}
         placeholder="Искать среди 845 товаров в наличии"
         value={searchText}
-        onKeyUp={(e) => setSuggestionsOpened(true)}
+        // onKeyUp={(e) => setSuggestionsOpened(true)}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleSearchChange}
+        ref={inputRef}
       />
-      <button className={styles.searchBtn} onClick={handleSearchSubmit}>
+      <button className={styles.searchBtn} type="submit">
         <SvgIcon name="search" />
       </button>
 
@@ -128,6 +147,14 @@ const Search = observer(({ className }) => {
         <div className={styles.suggestionsWrapper}>
           {loading ? (
             <Spinner />
+          ) : searchMeta.total ? (
+            <>
+              <div className={styles.suggestionsHead}>
+                <div className={styles.suggestionsTitle}>
+                  <span className="w-700 c-link">{searchMeta.query}</span> найдено {searchMeta.total} товаров
+                </div>
+              </div>
+            </>
           ) : (
             <>
               {/* LOGS */}
@@ -157,7 +184,7 @@ const Search = observer(({ className }) => {
           )}
         </div>
       </div>
-    </div>
+    </form>
   );
 });
 

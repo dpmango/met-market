@@ -12,21 +12,34 @@ import CategoryFilters from './CategoryFilters';
 import styles from './CatalogCategories.module.scss';
 
 const CatalogCategories = observer(() => {
-  const { categoriesList, getCategoryFilters } = useContext(CatalogStoreContext);
   const query = useQuery();
   const category = query.get('category');
+  const search = query.get('search');
 
+  const { categoriesList, searchCatalog, getCategoryFilters } = useContext(CatalogStoreContext);
+  const catalogContext = useContext(CatalogStoreContext);
+
+  // getters
   const categoryData = useMemo(() => {
     if (category) {
       return getCategoryFilters(category);
+    } else if (search) {
+      const data = searchCatalog(search);
+
+      return data
+        ? {
+            id: 0,
+            title: `По запросу «<span class="w-700 c-link">${search}</span>» найдено ${data.meta.total} товаров`,
+          }
+        : null;
     }
-  }, [categoriesList, category]);
+  }, [categoriesList, searchCatalog, category, search]);
 
   return (
     <div className="catalog mt-2 mb-2">
       {categoryData ? (
         <>
-          <div className="h3-title">{categoryData.title}</div>
+          <div className="h3-title" dangerouslySetInnerHTML={{ __html: categoryData.title }} />
           {categoryData.subcategories && (
             <div className={styles.tags}>
               <CategoryTags data={categoryData.subcategories} />

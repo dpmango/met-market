@@ -11,48 +11,26 @@ import { useQuery } from '@hooks';
 import { Plurize } from '@helpers';
 
 import styles from './CatalogTable.module.scss';
+import { settings } from './dataTables';
 
 const CatalogTable = observer(() => {
-  const history = useHistory();
   const query = useQuery();
   const categoryQuery = query.get('category');
+  const searchQuery = query.get('search');
 
-  const { loading, catalog, catalogList, getCatalogItem, filters } = useContext(CatalogStoreContext);
+  const { loading, catalog, catalogList, searchCatalog, getCatalogItem, filters } = useContext(CatalogStoreContext);
   const { cartItemIds } = useContext(CartStoreContext);
   const uiContext = useContext(UiStoreContext);
 
-  const columns = useMemo(() => {
-    return [
-      {
-        Header: 'Название',
-        accessor: 'name',
-      },
-      {
-        Header: 'Размер',
-        accessor: 'size',
-      },
-      {
-        Header: 'Марка',
-        accessor: 'mark',
-      },
-      {
-        Header: 'Длина',
-        accessor: 'length',
-      },
-      {
-        Header: 'Цена с НДС',
-        accessor: 'price',
-      },
-      {
-        Header: '',
-        accessor: 'id',
-      },
-    ];
-  }, []);
-
+  // router for search and regular catalog with filters
   const data = useMemo(() => {
+    if (searchQuery) {
+      const { meta, suggestions } = searchCatalog(searchQuery);
+      return suggestions;
+    }
+
     return catalogList(categoryQuery, filters);
-  }, [catalog, categoryQuery, filters]);
+  }, [catalog, categoryQuery, searchQuery, filters, searchCatalog]);
 
   const {
     getTableProps,
@@ -70,8 +48,8 @@ const CatalogTable = observer(() => {
     state: { pageIndex, pageSize },
   } = useTable(
     {
-      columns,
-      data,
+      columns: settings.columns || [],
+      data: data,
       initialState: { pageIndex: 0, pageSize: 50 },
     },
     usePagination

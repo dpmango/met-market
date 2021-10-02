@@ -76,7 +76,12 @@ export default class CatalogStore {
     const matches = this.catalog.filter((x) => {
       const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
 
-      return terms && terms.includes(txt.toLowerCase());
+      if (terms) {
+        const queries = txt.toLowerCase().split(' ');
+        return queries.some((q) => terms.includes(q));
+      }
+
+      return false;
     });
 
     const suggestions = matches.map((item) => this.normalizeCatalogItem(item));
@@ -85,7 +90,7 @@ export default class CatalogStore {
       meta: {
         total: matches.length,
       },
-      suggestions: suggestions ? suggestions.slice(0, 25) : [],
+      suggestions: suggestions ? suggestions : [],
     };
   });
 
@@ -141,14 +146,30 @@ export default class CatalogStore {
             const matchLvl3 = lvl2.categories ? lvl2.categories.some((x) => x.id === cat_id) : false;
 
             if (matchLvl3) {
-              parentCategory = lvl2.categories;
+              parentCategory = lvl2;
             }
           });
         });
 
         const lastLevel = !category.categories;
 
-        const mergedCategories = lastLevel ? parentCategory || [] : [...allCategories, ...category.categories];
+        const mergedCategories = lastLevel
+          ? parentCategory
+            ? [
+                {
+                  id: parentCategory.id,
+                  name: `Все товары категории «${parentCategory.name}»`,
+                },
+                ...parentCategory.categories,
+              ]
+            : []
+          : [
+              {
+                id: cat_id,
+                name: `Все товары категории «${category.name}»`,
+              },
+              ...category.categories,
+            ];
 
         return {
           id: cat_id,

@@ -8,7 +8,7 @@ import styles from './Spinner.module.scss';
 const Spinner = ({ className, ...props }) => {
   return (
     <div className={cns(styles.loader, className)}>
-      <PulseLoader color="#182D78" loading={true} size={24} />
+      <PulseLoader color="#182D78" loading={true} size={12} />
     </div>
   );
 };

@@ -4,11 +4,11 @@ import { observer } from 'mobx-react';
 import cns from 'classnames';
 
 import { SvgIcon, Button } from '@ui';
-import { CatalogStoreContext } from '@store';
+import { useOnClickOutside } from '@hooks';
+import { CatalogStoreContext, UiStoreContext } from '@store';
+
 import { Cart, CartSuccess } from '@c/Cart';
 import { CatalogMenu } from '@c/Catalog';
-import { useOnClickOutside } from '@hooks';
-
 import TopBar from './Topbar';
 import Search from './Search';
 import CartMenu from './CartMenu';
@@ -16,16 +16,15 @@ import styles from './Header.module.scss';
 import { ReactComponent as Logo } from '@assets/logo.svg';
 
 const Header = observer(({ className }) => {
-  const [catalogOpened, setCatalogOpened] = useState(false);
-
   const { categoriesList } = useContext(CatalogStoreContext);
+  const { catalogOpened } = useContext(UiStoreContext);
+  const uiContext = useContext(UiStoreContext);
 
   const headerRef = useRef(null);
-  // const openerRef = useRef(null);
 
   useOnClickOutside(
     headerRef,
-    useCallback((e) => setCatalogOpened(false), [setCatalogOpened])
+    useCallback((e) => uiContext.setHeaderCatalog(false), [uiContext.setHeaderCatalog])
   );
 
   return (
@@ -42,7 +41,10 @@ const Header = observer(({ className }) => {
                 </Link>
               </div>
               <div className={styles.colSecond}>
-                <Button className={styles.catalogCta} theme="link" onClick={() => setCatalogOpened(!catalogOpened)}>
+                <Button
+                  className={styles.catalogCta}
+                  theme="link"
+                  onClick={() => uiContext.setHeaderCatalog(!catalogOpened)}>
                   <div className={cns('hamburger', catalogOpened && 'is-active')}>
                     <span></span>
                     <span></span>
@@ -68,7 +70,7 @@ const Header = observer(({ className }) => {
             </div>
           </div>
 
-          <div className={styles.overlayClose} onClick={() => setCatalogOpened(false)}>
+          <div className={styles.overlayClose} onClick={() => uiContext.setHeaderCatalog(false)}>
             <SvgIcon name="close" />
           </div>
         </div>
