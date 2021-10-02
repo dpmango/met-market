@@ -19,7 +19,7 @@ const CatalogTable = observer(() => {
 
   const { loading, catalog, catalogList, getCatalogItem, filters } = useContext(CatalogStoreContext);
   const { cartItemIds } = useContext(CartStoreContext);
-  const uiStore = useContext(UiStoreContext);
+  const uiContext = useContext(UiStoreContext);
 
   const columns = useMemo(() => {
     return [
@@ -88,9 +88,9 @@ const CatalogTable = observer(() => {
     (id) => {
       const item = getCatalogItem(id);
 
-      uiStore.setModal('cart-add', { ...item });
+      uiContext.setModal('cart-add', { ...item });
     },
-    [uiStore]
+    [getCatalogItem]
   );
 
   return !loading ? (

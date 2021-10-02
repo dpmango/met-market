@@ -53,7 +53,7 @@ const SelectComponent = ({ label, value, className, options, onChange, variant, 
 SelectComponent.propTypes = {
   variant: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.object,
+  value: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   className: PropTypes.string,
   options: PropTypes.array,
   onChange: PropTypes.func,

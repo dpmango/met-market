@@ -120,7 +120,8 @@ const AddToCart = observer(() => {
                 </div>
                 <div className={styles.incartTitle}>
                   В корзине {cartItem.count} {modalParams.priceQuantityUnit} на сумму{' '}
-                  {formatPrice(cartItem.pricePerItem * cartItem.count, 0)} ₽/{modalParams.priceQuantityUnit}
+                  {formatPrice(cartItem.pricePerItem * cartItem.count, 0)} ₽/
+                  {modalParams.priceQuantityUnit}
                 </div>
                 <div className={styles.incartDelete} onClick={handleCartDelete}>
                   <SvgIcon name="delete" />

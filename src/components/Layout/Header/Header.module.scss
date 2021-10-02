@@ -1,19 +1,7 @@
 .header {
   display: block;
+  z-index: 9;
   border-bottom: 1px solid rgba(47, 47, 47, 0.3);
-}
-
-.topbar {
-  background: $colorPrimary;
-  color: white;
-}
-
-.topbarWrapper {
-  display: flex;
-  align-items: center;
-  margin-left: -10px;
-  margin-right: -10px;
-  min-height: 45px;
 }
 
 .colMain {
@@ -32,32 +20,6 @@
   display: flex;
 }
 
-.topbarAction {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  padding: 10px;
-  height: 45px;
-  transition: background 0.25s $ease;
-  :global {
-    .svg-icon {
-      font-size: 16px;
-      margin-right: 10px;
-    }
-  }
-  span {
-    display: inline-block;
-    font-size: 14px;
-  }
-  &:hover {
-    background: $colorLink;
-  }
-}
-
-.topbarLinks {
-  justify-content: flex-end;
-}
-
 .wrapper {
   display: flex;
   align-items: center;
@@ -66,60 +28,3 @@
 
 // .location {
 // }
-
-.price {
-  :global {
-    .svg-icon {
-      font-size: 20px;
-    }
-  }
-}
-
-.cart {
-  color: $colorPrimary;
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  cursor: pointer;
-  transition: color 0.25s $ease;
-  > span {
-    display: inline-block;
-    font-size: 14px;
-  }
-  &:hover {
-    color: #4d74fd;
-  }
-}
-
-.cartIcon {
-  position: relative;
-  :global {
-    .svg-icon {
-      font-size: 20px;
-      margin-right: 10px;
-    }
-  }
-}
-
-.cartIndicator {
-  position: absolute;
-  top: -11px;
-  left: 18px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 14px;
-  min-height: 14px;
-  background: #e30037;
-  border-radius: 50%;
-  color: white;
-  text-align: center;
-  font-size: 0;
-  padding: 1px 4px;
-  span {
-    font-weight: 600;
-    font-size: 10px;
-    line-height: 1;
-  }
-}

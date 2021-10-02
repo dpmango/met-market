@@ -25,6 +25,19 @@ class SessionService extends ApiService {
       return [error, null];
     }
   }
+
+  // logs
+  async log(req) {
+    try {
+      const { data } = await api.log(req);
+
+      return [null, data];
+    } catch (error) {
+      this.handleError(error);
+
+      return [error, null];
+    }
+  }
 }
 
 export default new SessionService();

@@ -7,6 +7,9 @@ import { SvgIcon, Button } from '@ui';
 import { SessionStoreContext, CartStoreContext, UiStoreContext } from '@store';
 import { Cart, CartSuccess } from '@c/Cart';
 
+import TopBar from './Topbar';
+import Search from './Search';
+import CartMenu from './CartMenu';
 import styles from './Header.module.scss';
 import { ReactComponent as Logo } from '@assets/logo.svg';
 
@@ -18,48 +21,7 @@ const Header = observer(({ className }) => {
   return (
     <>
       <header className={cns(styles.header, className)}>
-        <div className={styles.topbar}>
-          <div className="container">
-            <div className={styles.topbarWrapper}>
-              <div className={styles.colMain}>
-                <a className={cns(styles.topbarAction, styles.location)}>
-                  <SvgIcon name="location" />
-                  <span>Москва</span>
-                </a>
-              </div>
-              <div className={styles.colSecond}>
-                <a href="/catalog.pdf" target="_blank" className={cns(styles.topbarAction, styles.price)}>
-                  <SvgIcon name="pdf" />
-                  <span className="w-700">Прайс-лист</span>
-                </a>
-              </div>
-              <div className={cns(styles.colThrid, styles.topbarLinks)}>
-                <a className={cns(styles.topbarAction, styles.price)}>
-                  <span className="w-700">Отправить заявку</span>
-                </a>
-                <a
-                  href="https://whatsapp.com/"
-                  target="_blank"
-                  className={cns(styles.topbarAction, styles.price)}
-                  rel="noreferrer">
-                  <SvgIcon name="social-whatsapp" />
-                  <span className="w-600">Whatsapp</span>
-                </a>
-                <a
-                  href="https://t.me/"
-                  target="_blank"
-                  className={cns(styles.topbarAction, styles.price)}
-                  rel="noreferrer">
-                  <SvgIcon name="social-telegram" />
-                  <span className="w-600">Telegram</span>
-                </a>
-                <a href="tel:88003508625" className={cns(styles.topbarAction, styles.price)}>
-                  <span className="w-700">8-800-350-86-25</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <TopBar />
 
         <div className={styles.main}>
           <div className="container">
@@ -73,18 +35,8 @@ const Header = observer(({ className }) => {
                 <Button theme="link">Каталог</Button>
               </div>
               <div className={styles.colThrid}>
-                <div className={styles.cart} onClick={() => uiContext.setModal('cart')}>
-                  <div className={styles.cartIcon}>
-                    <SvgIcon name="cart" />
-                    {cartCount > 0 && (
-                      <div className={styles.cartIndicator}>
-                        <span>{cartCount}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <span>Коризна</span>
-                </div>
+                <Search />
+                <CartMenu />
               </div>
             </div>
           </div>

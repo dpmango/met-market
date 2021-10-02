@@ -1,13 +1,19 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-// import { computedFn } from 'mobx-utils';
+import { computedFn } from 'mobx-utils';
 
 import { cart } from '@store';
+import { LOCAL_STORAGE_SESSION, LOCAL_STORAGE_LOG } from '@config/localStorage';
 import service from './api-service';
 
 export default class SessionStore {
   sessionId = null;
   cartId = null;
   cartNumber = null;
+  log = {
+    search: [],
+    carts: [],
+    orders: [],
+  };
 
   constructor() {
     makeAutoObservable(this);
@@ -24,19 +30,61 @@ export default class SessionStore {
       this.cartId = cartId;
       this.cartNumber = cartNumber;
 
-      localStorage.setItem('metMarketSession', JSON.stringify(newSession));
+      localStorage.setItem(LOCAL_STORAGE_SESSION, JSON.stringify(newSession));
+    });
+  }
+
+  async setLog({ type, payload }) {
+    const request = {
+      sessionId: this.sessionId,
+      searchTerm: payload,
+      categoryId: type,
+    };
+
+    // data is empty here
+    const [err, data] = await service.log(request);
+
+    if (err) throw err;
+
+    runInAction(() => {
+      const newLogs = {
+        ...this.log,
+        [type]: [...new Set([request, ...this.log[type]])],
+      };
+
+      this.log = newLogs;
+
+      localStorage.setItem(LOCAL_STORAGE_LOG, JSON.stringify(newLogs));
+    });
+
+    return data;
+  }
+
+  removeLog(log) {
+    runInAction(() => {
+      const newLogs = {
+        ...this.log,
+        [log.categoryId]: [...this.log[log.categoryId].filter((x) => x.searchTerm !== log.searchTerm)],
+      };
+      this.log = newLogs;
+
+      localStorage.setItem(LOCAL_STORAGE_LOG, JSON.stringify(newLogs));
     });
   }
 
   // api actions
   async init() {
     if (localStorage.getItem('metMarketSession')) {
-      const lsObj = JSON.parse(localStorage.getItem('metMarketSession'));
-      const { sessionId, cartId, cartNumber } = lsObj;
+      const lsSession = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SESSION));
+      const lsLog = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LOG));
+
+      const { sessionId, cartId, cartNumber } = lsSession;
 
       try {
         await this.aliveSession({ sessionId, cartId });
         await cart.getCart({ cartId });
+
+        this.log = lsLog ? lsLog : this.log;
       } catch {
         await this.createSession();
       }
@@ -50,7 +98,7 @@ export default class SessionStore {
   }
 
   async createSession() {
-    localStorage.clear();
+    localStorage.removeItem(LOCAL_STORAGE_SESSION);
     const [err, data] = await service.create();
 
     if (err) throw err;

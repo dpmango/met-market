@@ -21,17 +21,20 @@ export default class CatalogStore {
     this.getCatalog();
   }
 
-  // catalog
-  catalogList = computedFn((cat_id, filters) => {
-    const mappingFunction = (item) => ({
-      name: item.name,
-      size: item.size[0],
-      mark: item.mark[0],
-      length: item.length[0],
-      price: `${formatPrice(item.price, 0)} ₽/${item.priceQuantityUnit}`,
-      id: item.id,
-    });
+  /////////////
+  // CATALOG
+  /////////////
+  normalizeCatalogItem = (item) => ({
+    name: item.name,
+    size: item.size[0],
+    mark: item.mark[0],
+    length: item.length[0],
+    price: `${formatPrice(item.price, 0)} ₽/${item.priceQuantityUnit}`,
+    id: item.id,
+  });
 
+  // main Cataloag getter including filters
+  catalogList = computedFn((cat_id, filters) => {
     const filterFunction = (item) => {
       let someMatched = null;
 
@@ -55,15 +58,35 @@ export default class CatalogStore {
       const items = this.catalog.filter((x) => x.idUnique.includes(cat_id));
 
       if (items && items.length > 0) {
-        return items.filter((x) => filterFunction(x)).map((x) => mappingFunction(x));
+        return items.filter((x) => filterFunction(x)).map((x) => this.normalizeCatalogItem(x));
       }
     }
 
-    return this.catalog.filter((x) => filterFunction(x)).map((x) => mappingFunction(x));
+    return this.catalog.filter((x) => filterFunction(x)).map((x) => this.normalizeCatalogItem(x));
   });
 
   getCatalogItem = computedFn((item_id) => {
     return this.catalog.find((x) => x.id === item_id);
+  });
+
+  // search in catalog searchTerms any match
+  // todo - what kind of morphology processing is required ?
+  // TODO - test performance hit in render ms
+  searchCatalog = computedFn((txt) => {
+    const matches = this.catalog.filter((x) => {
+      const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
+
+      return terms && terms.includes(txt.toLowerCase());
+    });
+
+    const suggestions = matches.map((item) => this.normalizeCatalogItem(item));
+
+    return {
+      meta: {
+        total: matches.length,
+      },
+      suggestions: suggestions ? suggestions.slice(0, 25) : [],
+    };
   });
 
   // categories
@@ -117,7 +140,7 @@ export default class CatalogStore {
     return false;
   });
 
-  // ACTIONS
+  // API ACTIONS
   async getCatalog() {
     runInAction(() => {
       this.loading = true;
@@ -130,7 +153,6 @@ export default class CatalogStore {
     const { date, data, categories } = result;
 
     runInAction(() => {
-      console.log(data);
       this.date = date;
       this.catalog = data;
       this.categories = categories.categories;

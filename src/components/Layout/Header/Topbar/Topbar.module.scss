@@ -1,0 +1,46 @@
+.topbar {
+  background: $colorPrimary;
+  color: white;
+}
+
+.topbarWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: -10px;
+  margin-right: -10px;
+  min-height: 45px;
+}
+
+.topbarAction {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px;
+  height: 45px;
+  transition: background 0.25s $ease;
+  :global {
+    .svg-icon {
+      font-size: 16px;
+      margin-right: 10px;
+    }
+  }
+  span {
+    display: inline-block;
+    font-size: 14px;
+  }
+  &:hover {
+    background: $colorLink;
+  }
+}
+
+.topbarLinks {
+  justify-content: flex-end;
+}
+
+.price {
+  :global {
+    .svg-icon {
+      font-size: 20px;
+    }
+  }
+}
