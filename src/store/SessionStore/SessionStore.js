@@ -49,7 +49,7 @@ export default class SessionStore {
     runInAction(() => {
       const newLogs = {
         ...this.log,
-        [type]: [...new Set([request, ...this.log[type]])],
+        [type]: [...[request], ...this.log[type].filter((x) => x.searchTerm !== payload)],
       };
 
       this.log = newLogs;
