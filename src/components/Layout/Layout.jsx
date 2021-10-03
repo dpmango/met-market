@@ -4,6 +4,7 @@ import cns from 'classnames';
 
 import Header from '@c/Layout/Header';
 import Footer from '@c/Layout/Footer';
+import { CallbackHelp } from '@c/Callback';
 
 import styles from './Layout.module.scss';
 
@@ -20,7 +21,10 @@ const Layout = ({ variant, children }) => {
     <div className={cns(styles.layout, variant && VariantClasses[variant])}>
       <Header className={styles.header} />
 
-      <main className={styles.main}>{children}</main>
+      <main className={styles.main}>
+        {children}
+        <CallbackHelp />
+      </main>
 
       <Footer />
     </div>
