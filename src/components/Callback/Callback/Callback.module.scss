@@ -1,0 +1,45 @@
+.form {
+  position: relative;
+  padding: 16px;
+}
+
+.formTitle {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: (33 / 24);
+  text-transform: uppercase;
+  color: $colorLink;
+  text-align: center;
+}
+
+.formCta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 14px -10px 20px;
+}
+
+.formCtaLink {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0;
+  color: $colorPrimary;
+  padding: 10px;
+  transition: color 0.25s $ease;
+  :global .svg-icon {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+  span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  &:hover {
+    color: $colorLink;
+  }
+}
+
+.group {
+  margin-bottom: 20px;
+}

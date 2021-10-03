@@ -75,7 +75,7 @@ const CatalogTable = observer(() => {
     <div className={styles.catalog}>
       <div className={styles.head}>
         <div className={styles.metaCount}>{metaItemsCount}</div>
-        <Button theme="accent" className={styles.headCta}>
+        <Button theme="accent" className={styles.headCta} onClick={() => uiContext.setModal('callback')}>
           Заказать металлопродукцию
         </Button>
       </div>

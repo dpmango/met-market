@@ -52,14 +52,10 @@ const Button = ({ children, className, theme, variant, type, outline, block, ico
   );
 
   if (type === 'link') {
-    return (
-      <Link {...props} className={classStyle}>
-        {children}
-      </Link>
-    );
+    return <Link {...props}>{children}</Link>;
   } else {
     return (
-      <button {...props} className={classStyle}>
+      <button className={classStyle} type={type || 'button'} {...props}>
         {iconLeft && <SvgIcon name={iconLeft} />}
 
         {children}

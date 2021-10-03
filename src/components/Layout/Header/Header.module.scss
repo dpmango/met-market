@@ -1,6 +1,16 @@
 .header {
   display: block;
   z-index: 9;
+  transition: transform 0.25s $ease;
+  will-change: transform;
+  backface-visibility: hidden;
+  &._scrolled {
+    transform: translateY(-45px);
+    .wrapper {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  }
 }
 
 .main {
@@ -30,6 +40,7 @@
   display: flex;
   align-items: center;
   padding: 44px 0 32px;
+  transition: padding 0.25s $ease;
 }
 
 .catalogCta {

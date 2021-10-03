@@ -1,109 +1,3 @@
-let fastShop = {};
-
-function prepareUrlForCategory(cat) {
-  let url = new URL(document.URL);
-  let searchParams = url.searchParams;
-  if (cat.id && cat.id !== 'root') {
-    searchParams.set('cat', cat.id);
-  } else {
-    if (searchParams.has('cat')) searchParams.delete('cat');
-  }
-  url.search = searchParams.toString();
-  return url.toString();
-}
-
-function preparePageTitle(cat) {
-  return cat.name === 'root' ? fastShop.titleDefault : `${cat.name}${fastShop.titleAppendCategory}`;
-}
-
-function preparePageHistoryData(cat) {
-  let pageTitle = preparePageTitle(cat);
-  let url = new URL(document.URL);
-  let searchParams = url.searchParams;
-  if (cat.id && cat.id !== 'root') {
-    searchParams.set('cat', cat.id);
-  } else {
-    if (searchParams.has('cat')) searchParams.delete('cat');
-  }
-  url.search = searchParams.toString();
-  let newUrl = url.toString();
-  let searchTerm = fastShop.quickSearch.val();
-  let eventState = { catId: cat.id, searchTerm: searchTerm, pageTitle: pageTitle };
-  return { eventState: eventState, pageTitle: pageTitle, newUrl: newUrl, searchTerm: searchTerm };
-}
-
-function pushPageHistory(cat) {
-  let data = preparePageHistoryData(cat);
-  console.log(
-    `history push: catId=${cat.id}, searchTerm=${data.searchTerm}, pageTitle=${data.pageTitle}, newUrl=${data.newUrl}`
-  );
-  window.history.pushState(data.eventState, '', data.newUrl);
-  document.title = data.pageTitle;
-}
-
-function updatePageHistory(cat) {
-  let data = preparePageHistoryData(cat);
-  console.log(
-    `history replace current: catId=${cat.id}, searchTerm=${data.searchTerm}, pageTitle=${data.pageTitle}, newUrl=${data.newUrl}`
-  );
-  window.history.replaceState(data.eventState, '', data.newUrl);
-  document.title = data.pageTitle;
-}
-
-function updateSearchTermInPageHistory(searchTerm) {
-  let url = new URL(document.URL);
-  let search_params = url.searchParams;
-  if (searchTerm && searchTerm !== '') {
-    search_params.set('search', searchTerm);
-  } else {
-    if (search_params.has('search')) search_params.delete('search');
-  }
-  url.search = search_params.toString();
-  let new_url = url.toString();
-  let pageState = window.history.state;
-  if (window.history.state) {
-    window.history.state.searchTerm = searchTerm;
-  }
-  console.log(`history update: searchTerm=${searchTerm}, newUrl=${new_url}`);
-  window.history.replaceState(window.history.state, '', new_url);
-}
-
-function updateFilterOptionsInPageHistory() {
-  let selectedOptions = {};
-  Object.entries(fastShop.filterOptions).forEach(
-    ([filterName, options]) =>
-      (selectedOptions[filterName] = {
-        filterName: filterName,
-        selectedOptions: options.filter((o) => o.selected && o.value !== '@all').map((o) => o.value),
-      })
-  );
-  let url = new URL(document.URL);
-  let search_params = url.searchParams;
-
-  Object.entries(selectedOptions).forEach(([filterName, filter]) => {
-    let urlFilterName = 'f-' + filterName;
-    //if (search_params.has(urlFilterName)) search_params.delete(urlFilterName);
-    if (filter.selectedOptions.length > 0) {
-      search_params.set(urlFilterName, filter.selectedOptions.map((o) => (o.length === 0 ? '@empty' : o)).join('|'));
-    } else {
-      if (search_params.has(urlFilterName)) search_params.delete(urlFilterName);
-    }
-  });
-
-  url.search = search_params.toString();
-  let new_url = url.toString();
-  let pageState = window.history.state;
-  if (window.history.state) {
-    window.history.state.filterSelectedOptions = selectedOptions;
-  }
-  console.log(
-    `history update: filters=${JSON.stringify(selectedOptions)}, newUrl=${new_url}, newState=${JSON.stringify(
-      window.history.state
-    )}`
-  );
-  window.history.replaceState(window.history.state, '', new_url);
-}
-
 function switchCategory(categoryId, replaceHistoryData = false) {
   console.log(`switchCategory: catId=${categoryId}`);
   let category = findObjectInHierarchy(fastShop.json.categories, 'categories', 'id', categoryId);
@@ -1007,16 +901,6 @@ function formatPriceQuantityUnit(priceQuantityUnit) {
   return formattedPriceQuantityUnit;
 }
 
-function formatInteger(price, forHtml) {
-  let withSpaceBetweenThousands = price.toString().replaceAll(/\B(?=(\d{3})+(?!\d))/g, ' ');
-  return forHtml ? withSpaceBetweenThousands.replaceAll(' ', '&nbsp;') : withSpaceBetweenThousands;
-}
-
-function formatPrice(price, priceQuantityUnit) {
-  let priceStr = formatInteger(price, true) + '&nbsp₽';
-  return priceQuantityUnit ? priceStr + '/' + formatPriceQuantityUnit(priceQuantityUnit) : priceStr;
-}
-
 function renderPriceCell(data, type, row) {
   return formatPrice(data, row['priceQuantityUnit']);
 }
@@ -1258,21 +1142,21 @@ function updateFilterList(filterName, category, allName = 'Все') {
   applyFilter(filterName);
 }
 
-function animateMultiSearchPlaceholder() {
-  // let phrases = [
-  //     "сталь г/к лист 8\nПрофнастил оцинкованный 0.4 1000\nБалка 18 Б2\nПолоса нерж. никельсодержащая 30х3\nсталь сорт констр Круг горячекатаный 10\nАрматура 8 А3"
-  // ];
-  //printPhrases(phrases, $('#multilineSearch'));
-  let phrases = [
-    'лист г/к',
-    'лист горячекатаный',
-    'Трубы ЭСВ низколегир 89х3',
-    'Трубы электросварные низколегир 89х3',
-    'Проволока нихромовая 0.2',
-    'Проволока нихром 0,2',
-  ];
-  printPhrases(phrases, fastShop.quickSearch, 'Что ищем?');
-}
+// function animateMultiSearchPlaceholder() {
+//   // let phrases = [
+//   //     "сталь г/к лист 8\nПрофнастил оцинкованный 0.4 1000\nБалка 18 Б2\nПолоса нерж. никельсодержащая 30х3\nсталь сорт констр Круг горячекатаный 10\nАрматура 8 А3"
+//   // ];
+//   //printPhrases(phrases, $('#multilineSearch'));
+//   let phrases = [
+//     'лист г/к',
+//     'лист горячекатаный',
+//     'Трубы ЭСВ низколегир 89х3',
+//     'Трубы электросварные низколегир 89х3',
+//     'Проволока нихромовая 0.2',
+//     'Проволока нихром 0,2',
+//   ];
+//   printPhrases(phrases, fastShop.quickSearch, 'Что ищем?');
+// }
 
 function findObjectInHierarchy(hierarchicalObject, childName, propName, value) {
   if (propName === undefined || value === undefined || childName === undefined || hierarchicalObject === undefined)

@@ -1,6 +1,4 @@
 // https://stackoverflow.com/questions/49308484/how-to-find-object-with-id-value-in-deep-nested-array/49308569
-// plan B https://github.com/blackflux/object-scan
-
 export const findNodeById = (nodes, id) => {
   let res;
 
@@ -19,4 +17,22 @@ export const findNodeById = (nodes, id) => {
   findNode(nodes, id);
 
   return res;
+};
+
+export const findObjectInHierarchy = (hierarchicalObject, childName, propName, value) => {
+  if (propName === undefined || value === undefined || childName === undefined || hierarchicalObject === undefined)
+    return null;
+  let result = null;
+  if (hierarchicalObject instanceof Array) {
+    for (const hierarchicalObjectItem of hierarchicalObject) {
+      result = findObjectInHierarchy(hierarchicalObjectItem, childName, propName, value);
+      if (result) break;
+    }
+  } else {
+    if (hierarchicalObject[propName] === value) return hierarchicalObject;
+    if (hierarchicalObject[childName] && hierarchicalObject[childName] instanceof Array) {
+      result = findObjectInHierarchy(hierarchicalObject[childName], childName, propName, value);
+    }
+  }
+  return result;
 };

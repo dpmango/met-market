@@ -107,15 +107,28 @@ export default class CatalogStore {
         cat1.categories &&
         cat1.categories.map((cat2) => ({
           id: cat2.id,
-          // cat1: cat1.id,
           name: cat2.name,
+          ancestors: [
+            {
+              id: cat1.id,
+              name: cat1.name,
+            },
+          ],
           categories:
             cat2.categories &&
             cat2.categories.map((cat3) => ({
               id: cat3.id,
-              // cat1: cat1.id,
-              // cat2: cat2.id,
               name: cat3.name,
+              ancestors: [
+                {
+                  id: cat1.id,
+                  name: cat1.name,
+                },
+                {
+                  id: cat2.id,
+                  name: cat2.name,
+                },
+              ],
             })),
         })),
     }));
@@ -160,7 +173,7 @@ export default class CatalogStore {
                   id: parentCategory.id,
                   name: `Все товары категории «${parentCategory.name}»`,
                 },
-                ...parentCategory.categories,
+                ...(parentCategory.categories || []),
               ]
             : []
           : [
@@ -168,7 +181,7 @@ export default class CatalogStore {
                 id: cat_id,
                 name: `Все товары категории «${category.name}»`,
               },
-              ...category.categories,
+              ...(category.categories || []),
             ];
 
         return {

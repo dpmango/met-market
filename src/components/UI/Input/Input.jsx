@@ -33,17 +33,20 @@ const Input = ({
     return uniqueId();
   }, []);
 
-  const onInputChange = useCallback((e) => {
-    if (onChange) {
-      onChange(e.target.value);
-    }
-  }, []);
+  const onInputChange = useCallback(
+    (e) => {
+      if (onChange) {
+        onChange(e.target.value);
+      }
+    },
+    [onChange]
+  );
 
   const onCLearInput = useCallback(() => {
     if (onChange) {
       onChange('');
     }
-  }, []);
+  }, [onChange]);
 
   const clearIcon = useMemo(() => {
     if (allowClear && value) {

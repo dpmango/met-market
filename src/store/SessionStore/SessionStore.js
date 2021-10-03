@@ -84,14 +84,18 @@ export default class SessionStore {
         await this.aliveSession({ sessionId, cartId });
         await cart.getCart({ cartId });
 
-        this.log = lsLog ? lsLog : this.log;
+        runInAction(() => {
+          this.log = lsLog ? lsLog : this.log;
+        });
       } catch {
         await this.createSession();
       }
 
-      this.sessionId = sessionId;
-      this.cartId = cartId;
-      this.cartNumber = cartNumber;
+      runInAction(() => {
+        this.sessionId = sessionId;
+        this.cartId = cartId;
+        this.cartNumber = cartNumber;
+      });
     } else {
       await this.createSession();
     }

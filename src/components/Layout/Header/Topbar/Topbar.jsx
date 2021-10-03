@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { observer } from 'mobx-react';
 import cns from 'classnames';
 
 import { SvgIcon } from '@ui';
+import { UiStoreContext } from '@store';
 
 import styles from './Topbar.module.scss';
 import rootStyles from '../Header.module.scss';
 
-const Topbar = ({ className }) => {
+const Topbar = observer(({ className }) => {
+  const uiContext = useContext(UiStoreContext);
+
   return (
     <div className={styles.topbar}>
       <div className="container">
@@ -24,7 +28,10 @@ const Topbar = ({ className }) => {
             </a>
           </div>
           <div className={cns(rootStyles.colThrid, styles.topbarLinks)}>
-            <a className={cns(styles.topbarAction, styles.price)}>
+            <a
+              href="#"
+              className={cns(styles.topbarAction, styles.price)}
+              onClick={() => uiContext.setModal('callback')}>
               <span className="w-700">Отправить заявку</span>
             </a>
             <a
@@ -47,6 +54,6 @@ const Topbar = ({ className }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Topbar;
