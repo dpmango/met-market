@@ -71,7 +71,7 @@ const CatalogTable = observer(() => {
     [getCatalogItem]
   );
 
-  console.log(page);
+  if (!categoryQuery && !searchQuery) return null;
 
   return !loading ? (
     <div className={styles.catalog}>

@@ -14,9 +14,7 @@ import { ruPhoneRegex } from '@helpers/Validation';
 import styles from './CallbackHelp.module.scss';
 
 const formInitial = {
-  name: '',
   phone: '',
-  product: '',
 };
 
 const CallbackHelp = observer(() => {
@@ -26,7 +24,6 @@ const CallbackHelp = observer(() => {
   const uiContext = useContext(UiStoreContext);
 
   const [loading, setLoading] = useState(false);
-  const [savedValues, setSavedValues] = useState(formInitial);
 
   const handleValidation = (values) => {
     const errors = {};
@@ -84,7 +81,7 @@ const CallbackHelp = observer(() => {
             </div>
 
             <Formik initialValues={formInitial} validate={handleValidation} onSubmit={handleSubmit}>
-              {({ isSubmitting, values }) => (
+              {({ isSubmitting }) => (
                 <Form className={styles.form}>
                   <Field type="tel" name="phone">
                     {({ field, form: { setFieldValue }, meta }) => (
@@ -96,7 +93,7 @@ const CallbackHelp = observer(() => {
                         error={meta.touched && meta.error}
                         onChange={(v) => {
                           setFieldValue(field.name, v);
-                          setSavedValues(field.name, v);
+                          submitTyping(field.name, v);
                         }}
                       />
                     )}

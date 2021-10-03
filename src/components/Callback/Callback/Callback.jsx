@@ -26,7 +26,6 @@ const Callback = observer(() => {
   const uiContext = useContext(UiStoreContext);
 
   const [loading, setLoading] = useState(false);
-  const [savedValues, setSavedValues] = useState(formInitial);
 
   const handleValidation = (values) => {
     const errors = {};
@@ -75,7 +74,7 @@ const Callback = observer(() => {
   return (
     <Modal name="callback" variant="narrow">
       <Formik initialValues={formInitial} validate={handleValidation} onSubmit={handleSubmit}>
-        {({ isSubmitting, values }) => (
+        {({ isSubmitting }) => (
           <Form className={styles.form}>
             <div className={styles.formTitle}>Заявка на металл</div>
 
@@ -120,7 +119,7 @@ const Callback = observer(() => {
                       error={meta.touched && meta.error}
                       onChange={(v) => {
                         setFieldValue(field.name, v);
-                        setSavedValues(field.name, v);
+                        submitTyping(field.name, v);
                       }}
                     />
                   )}
@@ -135,7 +134,7 @@ const Callback = observer(() => {
                       error={meta.touched && meta.error}
                       onChange={(v) => {
                         setFieldValue(field.name, v);
-                        setSavedValues(field.name, v);
+                        submitTyping(field.name, v);
                       }}
                     />
                   )}
