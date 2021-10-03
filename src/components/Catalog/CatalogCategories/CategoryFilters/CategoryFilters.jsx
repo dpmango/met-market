@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 
-import { Button, Select, Spinner } from '@ui';
+import { Button, Select, SelectFilter, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useQuery } from '@hooks';
 
@@ -32,6 +32,7 @@ const CategoryFilters = observer(({ data }) => {
       .map((option) => ({
         value: option.name,
         label: option.name,
+        isPopular: option.isPopular,
       }));
   };
 
@@ -44,39 +45,27 @@ const CategoryFilters = observer(({ data }) => {
         <div className={cns('row', styles.filterContentRow)}>
           <div className="col col-3">
             {data.size && (
-              <Select
-                isMulti
-                value={filters.size}
-                options={createOpitons(data.size)}
-                onChange={(v) => catalogContext.setFilters(v, 'size')}
-                placeholder="Размеры"
-              />
+              <SelectFilter label="Размер" name="size" value={filters.size} options={createOpitons(data.size)} />
             )}
           </div>
           <div className="col col-3">
             {data.mark && (
-              <Select
-                isMulti
-                value={filters.mark}
-                options={createOpitonsMark(data.mark)}
-                onChange={(v) => catalogContext.setFilters(v, 'mark')}
-                placeholder="Марка"
-              />
+              <SelectFilter label="Марка" name="mark" value={filters.mark} options={createOpitonsMark(data.mark)} />
             )}
           </div>
           <div className="col col-3">
             {data.length && (
-              <Select
-                isMulti
-                value={filters.length}
-                options={createOpitons(data.length)}
-                onChange={(v) => catalogContext.setFilters(v, 'length')}
-                placeholder="Длина"
-              />
+              <SelectFilter label="Длина" name="length" value={filters.length} options={createOpitons(data.length)} />
             )}
           </div>
           <div className="col col-3">
-            <Button outline={true}>Сбросить фильтры</Button>
+            <Button
+              outline={true}
+              onClick={(v) => {
+                catalogContext.resetFilters();
+              }}>
+              Сбросить фильтры
+            </Button>
           </div>
         </div>
       </div>

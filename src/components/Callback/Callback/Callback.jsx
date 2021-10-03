@@ -65,7 +65,7 @@ const Callback = observer(() => {
             payload: { id: name, content: val },
           })
           .catch((_error) => {
-            console.log('error setting typing');
+            console.warn('error setting typing');
           });
       }
     }, 3000),

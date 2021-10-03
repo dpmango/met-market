@@ -131,7 +131,7 @@ const Search = observer(({ className }) => {
     <form className={styles.search} ref={searchRef} onSubmit={handleSearchSubmit}>
       <input
         className={styles.searchInput}
-        placeholder="Искать среди 845 товаров в наличии"
+        placeholder={`Искать среди ${catalogContext.catalogLength} товаров в наличии`}
         value={searchText}
         // onKeyUp={(e) => setSuggestionsOpened(true)}
         onFocus={handleFocus}

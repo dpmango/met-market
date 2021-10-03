@@ -34,6 +34,10 @@ export default class CatalogStore {
   });
 
   // main Cataloag getter including filters
+  get catalogLength() {
+    return this.catalog.length;
+  }
+
   catalogList = computedFn((cat_id, filters) => {
     const filterFunction = (item) => {
       let someMatched = null;
@@ -94,7 +98,9 @@ export default class CatalogStore {
     };
   });
 
+  //////////////
   // categories
+  /////////////
   get categoriesList() {
     if (this.categories.length === 0) {
       return [];
@@ -149,11 +155,6 @@ export default class CatalogStore {
       const category = findNodeById(this.categoriesList, cat_id);
 
       if (category) {
-        const getAncestors = (catagory) => {
-          console.log('ancestors', category.ancestors);
-          return [];
-        };
-
         // show tags from parent category
         // todo ability to show filters from parent (not found)
         let parentCategory = [];
@@ -223,10 +224,28 @@ export default class CatalogStore {
   }
 
   //static methods
-  setFilters(val, key) {
+  addFilter(option, key) {
+    const haveOption = this.filters[key].some((x) => x.value === option.value);
+
+    let newFilter = [...this.filters[key].filter((x) => x.value !== option.value), ...[option]];
+
+    if (haveOption) {
+      newFilter = [...this.filters[key].filter((x) => x.value !== option.value)];
+    }
+
     this.filters = {
       ...this.filters,
-      ...{ [key]: val },
+      ...{
+        [key]: newFilter,
+      },
+    };
+  }
+
+  resetFilters() {
+    this.filters = {
+      size: [],
+      mark: [],
+      length: [],
     };
   }
 }

@@ -29,9 +29,13 @@ const Header = observer(({ className }) => {
 
   const handleScroll = useCallback(
     debounce((e) => {
-      setScrolled(window.scrollY > 45 ? true : false);
+      if (window.scrollY > 45) {
+        !scrolled && setScrolled(true);
+      } else {
+        scrolled && setScrolled(false);
+      }
     }, 10),
-    [setScrolled]
+    [scrolled, setScrolled]
   );
 
   useOnClickOutside(
