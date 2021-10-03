@@ -82,7 +82,6 @@ const Callback = observer(() => {
           <Form className={styles.form}>
             <div className={styles.formTitle}>Заявка на металл</div>
 
-            <div className="dev-log">{JSON.stringify(savedValues, null, 2)}</div>
             <div className={styles.formCta}>
               <a href="https://whatsupp.com" className={styles.formCtaLink}>
                 <SvgIcon name="social-whatsapp" />
