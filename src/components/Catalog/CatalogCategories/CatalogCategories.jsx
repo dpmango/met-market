@@ -31,7 +31,9 @@ const CatalogCategories = observer(() => {
       return data
         ? {
             id: 0,
-            title: `По запросу «<span class="w-700 c-link">${search}</span>» найдено ${data.meta.total} товаров`,
+            title: `По запросу «<span class="w-700 c-link">${search}</span>» ${
+              data.meta.total > 0 ? `найдено ${data.meta.total} товаров` : 'ничего не найдено'
+            }`,
           }
         : null;
     }

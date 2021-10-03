@@ -71,6 +71,8 @@ const CatalogTable = observer(() => {
     [getCatalogItem]
   );
 
+  console.log(page);
+
   return !loading ? (
     <div className={styles.catalog}>
       <div className={styles.head}>
@@ -91,37 +93,41 @@ const CatalogTable = observer(() => {
           ))}
         </thead>
 
-        <tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  const isIdRow = cell.column.id === 'id';
+        {page && page.length > 0 && (
+          <tbody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    const isIdRow = cell.column.id === 'id';
 
-                  if (!isIdRow) {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
-                  } else {
-                    return (
-                      <td {...cell.getCellProps()}>
-                        {!cartItemIds.includes(cell.value) ? (
-                          <button className={styles.add} onClick={() => handleAddToCartClick(cell.value)}>
-                            <SvgIcon name="cart-add" />
-                          </button>
-                        ) : (
-                          <div className={styles.addedItem}>
-                            <SvgIcon name="checkmark" />
-                          </div>
-                        )}
-                      </td>
-                    );
-                  }
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
+                    if (!isIdRow) {
+                      return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                    } else {
+                      return (
+                        <td {...cell.getCellProps()}>
+                          {!cartItemIds.includes(cell.value) ? (
+                            <button className={styles.add} onClick={() => handleAddToCartClick(cell.value)}>
+                              <SvgIcon name="cart-add" />
+                            </button>
+                          ) : (
+                            <div className={styles.addedItem}>
+                              <SvgIcon name="checkmark" />
+                            </div>
+                          )}
+                        </td>
+                      );
+                    }
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        )}
       </table>
+
+      {page && page.length === 0 && <div className={styles.notFound}>Ничего не найдено</div>}
 
       <div className={styles.pagination}>
         <Pagination
