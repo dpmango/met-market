@@ -103,11 +103,13 @@ export default class CatalogStore {
     const mappedList = this.categories.map((cat1) => ({
       id: cat1.id,
       name: cat1.name,
+      filters: cat1.filters,
       categories:
         cat1.categories &&
         cat1.categories.map((cat2) => ({
           id: cat2.id,
           name: cat2.name,
+          filters: cat2.filters,
           ancestors: [
             {
               id: cat1.id,
@@ -119,6 +121,7 @@ export default class CatalogStore {
             cat2.categories.map((cat3) => ({
               id: cat3.id,
               name: cat3.name,
+              filters: cat3.filters,
               ancestors: [
                 {
                   id: cat1.id,
@@ -141,20 +144,20 @@ export default class CatalogStore {
   }
 
   getCategoryFilters = computedFn((cat_id) => {
-    if (this.categories && this.categories.length) {
+    if (this.categoriesList && this.categoriesList.length) {
       // get depths first
-      const category = findNodeById(this.categories, cat_id);
+      const category = findNodeById(this.categoriesList, cat_id);
 
       if (category) {
-        const allCategories = [
-          {
-            id: cat_id,
-            name: `Все товары категории «${category.name}»`,
-          },
-        ];
+        const getAncestors = (catagory) => {
+          console.log('ancestors', category.ancestors);
+          return [];
+        };
 
+        // show tags from parent category
+        // todo ability to show filters from parent (not found)
         let parentCategory = [];
-        this.categories.forEach((lvl1) => {
+        this.categoriesList.forEach((lvl1) => {
           lvl1.categories.forEach((lvl2) => {
             const matchLvl3 = lvl2.categories ? lvl2.categories.some((x) => x.id === cat_id) : false;
 
@@ -187,6 +190,7 @@ export default class CatalogStore {
         return {
           id: cat_id,
           title: category.name,
+          ancestors: category.ancestors,
           subcategories: mergedCategories,
           filters: category.filters || null,
         };

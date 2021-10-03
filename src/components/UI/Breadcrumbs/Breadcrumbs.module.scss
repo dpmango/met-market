@@ -1,0 +1,37 @@
+.breadcrumbs {
+  margin: 0;
+}
+
+.breadcrumbsList {
+  list-style: none;
+  margin: -10px;
+  padding: 0;
+  display: flex;
+
+  li {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    font-size: 16px;
+    line-height: 13px;
+    :global .svg-icon {
+      font-size: 8px;
+      color: rgba(black, 0.3);
+      pointer-events: none;
+    }
+  }
+  a,
+  span {
+    padding: 10px;
+  }
+  a {
+    transition: color 0.25s $ease;
+    &:hover {
+      color: $colorLink;
+    }
+  }
+  span {
+    color: rgba(black, 0.5);
+  }
+}

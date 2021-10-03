@@ -25,7 +25,7 @@ export default class SessionStore {
     const [err, data] = await service.typing({
       sessionId: session.sessionId,
       formType: type,
-      fields: payload,
+      field: payload,
     });
 
     if (err) throw err;

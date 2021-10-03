@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useReducer, useContext, useMemo, useCallback,
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 
+import { Breadcrumbs } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useQuery } from '@hooks';
 
@@ -35,8 +36,43 @@ const CatalogCategories = observer(() => {
     }
   }, [categoriesList, searchCatalog, category, search]);
 
+  const breadcrumbs = useMemo(() => {
+    if (search) {
+      return [
+        {
+          href: '#',
+          text: 'Поиск',
+        },
+      ];
+    } else if (category && categoryData) {
+      const ancestors = categoryData.ancestors
+        ? categoryData.ancestors.map((x) => ({
+            category: x.id,
+            text: x.name,
+          }))
+        : [];
+
+      return [
+        {
+          href: '/',
+          text: 'Каталог',
+        },
+        ...ancestors,
+        {
+          text: categoryData.title,
+        },
+      ];
+    }
+
+    return [];
+  }, [categoryData, category, search]);
+
   return (
     <div className="catalog mt-2 mb-2">
+      <div className={styles.breadcrumbs}>
+        <Breadcrumbs crumbs={breadcrumbs} />
+      </div>
+
       {categoryData ? (
         <>
           <div className="h3-title" dangerouslySetInnerHTML={{ __html: categoryData.title }} />

@@ -58,23 +58,20 @@ const Callback = observer(() => {
   }, []);
 
   const submitTyping = useCallback(
-    debounce((values) => {
-      callbackContext
-        .typingForm({
-          type: 'RFQ',
-          payload: Object.keys(values).map((key) => ({ id: key, content: values[key] })),
-        })
-        .catch((_error) => {
-          console.log('error setting typing');
-        });
+    debounce((name, val) => {
+      if (name && val) {
+        callbackContext
+          .typingForm({
+            type: 'RFQ',
+            payload: { id: name, content: val },
+          })
+          .catch((_error) => {
+            console.log('error setting typing');
+          });
+      }
     }, 3000),
     []
   );
-
-  useEffect(() => {
-    submitTyping(savedValues);
-  }, [savedValues]);
-
   return (
     <Modal name="callback" variant="narrow">
       <Formik initialValues={formInitial} validate={handleValidation} onSubmit={handleSubmit}>
@@ -106,7 +103,7 @@ const Callback = observer(() => {
                       error={meta.touched && meta.error}
                       onChange={(v) => {
                         setFieldValue(field.name, v);
-                        setSavedValues({ ...values, [field.name]: v });
+                        submitTyping(field.name, v);
                       }}
                     />
                   )}
@@ -123,7 +120,7 @@ const Callback = observer(() => {
                       error={meta.touched && meta.error}
                       onChange={(v) => {
                         setFieldValue(field.name, v);
-                        setSavedValues({ ...values, [field.name]: v });
+                        setSavedValues(field.name, v);
                       }}
                     />
                   )}
@@ -138,7 +135,7 @@ const Callback = observer(() => {
                       error={meta.touched && meta.error}
                       onChange={(v) => {
                         setFieldValue(field.name, v);
-                        setSavedValues({ ...values, [field.name]: v });
+                        setSavedValues(field.name, v);
                       }}
                     />
                   )}
