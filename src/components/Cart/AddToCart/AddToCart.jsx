@@ -87,7 +87,7 @@ const AddToCart = observer(() => {
 
             <div className={styles.body}>
               <div className={styles.bodyImage}>
-                <img src="img/categoryPlaceholder.png" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Walt_Disney_Concert_Hall%2C_LA%2C_CA%2C_jjron_22.03.2012.jpg/2880px-Walt_Disney_Concert_Hall%2C_LA%2C_CA%2C_jjron_22.03.2012.jpg" />
               </div>
               <div className={styles.bodyTable}>
                 <div className={styles.row}>

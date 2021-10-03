@@ -104,7 +104,6 @@ const CallbackHero = observer(() => {
                           placeholder="Телефон"
                           mask="+7 (999) 999-99-99"
                           value={field.value}
-                          error={meta.touched && meta.error}
                           onChange={(v) => {
                             setFieldValue(field.name, v);
                             submitTyping(field.name, v);

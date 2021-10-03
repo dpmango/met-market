@@ -98,7 +98,7 @@ const CatalogTable = observer(() => {
             {page.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} onClick={() => handleAddToCartClick(row.cells[row.cells.length - 1].value)}>
                   {row.cells.map((cell) => {
                     const isIdRow = cell.column.id === 'id';
 
@@ -108,7 +108,7 @@ const CatalogTable = observer(() => {
                       return (
                         <td {...cell.getCellProps()}>
                           {!cartItemIds.includes(cell.value) ? (
-                            <button className={styles.add} onClick={() => handleAddToCartClick(cell.value)}>
+                            <button className={styles.add}>
                               <SvgIcon name="cart-add" />
                             </button>
                           ) : (

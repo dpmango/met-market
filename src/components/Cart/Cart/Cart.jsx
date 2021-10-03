@@ -2,14 +2,22 @@ import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, m
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useToasts } from 'react-toast-notifications';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
 import { useQuery } from '@hooks';
 import { formatPrice } from '@helpers';
+import { ruPhoneRegex } from '@helpers/Validation';
 
 import styles from './Cart.module.scss';
+
+const formInitial = {
+  phone: '',
+  delivery: '',
+  comment: '',
+};
 
 const Cart = observer(() => {
   const { addToast } = useToasts();
@@ -24,20 +32,20 @@ const Cart = observer(() => {
   const uiContext = useContext(UiStoreContext);
 
   const [loading, setLoading] = useState(false);
-  const [phone, setPhone] = useState('');
   const [delivery, setDelivery] = useState(false);
   const [comment, setComment] = useState(false);
   const [agree, setAgree] = useState(false);
   const [resetContext, setResetContext] = useState(false);
 
   const handleCartDelete = useCallback(async (id) => {
+    setResetContext(false);
+
     if (id === 'batch') {
       sessionContext.createSession();
       uiContext.resetModal();
       return;
     }
     setLoading(true);
-    setResetContext(false);
 
     await cartContext
       .removeCartItem({ itemId: id })
@@ -66,20 +74,40 @@ const Cart = observer(() => {
     setLoading(false);
   }, []);
 
-  const handleCartSubmit = useCallback(async () => {
-    setLoading(true);
+  const handleValidation = (values) => {
+    const errors = {};
+    if (!values.phone) {
+      errors.phone = 'Введите телефон';
+    } else if (!ruPhoneRegex.test(values.phone)) {
+      errors.phone = 'Неверный номер телефона';
+    }
+    return errors;
+  };
 
-    await cartContext
-      .submitCart({ phone, deliveryInfo: delivery, comment, totalPrice: cartTotal })
-      .then((orderNumber) => {
-        uiContext.setModal('cartsuccess', { orderNumber });
-      })
-      .catch((_error) => {
-        addToast('Ошибка при отправке', { appearance: 'error' });
-      });
+  const handleSubmit = useCallback(
+    async (values, { resetForm }) => {
+      setLoading(true);
 
-    setLoading(false);
-  }, [phone, agree, delivery, comment, cartTotal]);
+      console.log(values);
+
+      await cartContext
+        .submitCart({
+          phone: values.phone,
+          deliveryInfo: values.delivery,
+          comment: values.comment,
+          totalPrice: cartTotal,
+        })
+        .then((orderNumber) => {
+          uiContext.setModal('cartsuccess', { orderNumber });
+        })
+        .catch((_error) => {
+          addToast('Ошибка при отправке', { appearance: 'error' });
+        });
+
+      setLoading(false);
+    },
+    [cartTotal]
+  );
 
   return (
     <Modal name="cart" variant={cartCount ? 'main' : 'narrow'}>
@@ -152,68 +180,100 @@ const Cart = observer(() => {
               <div className={styles.countVAT}>В том числе НДС: {formatPrice((cartTotal / 120) * 20, 0)} ₽</div>
             </div>
 
-            <div className={styles.actions}>
-              <div className={cns('row')}>
-                <div className="col col-4">
-                  {delivery === false ? (
-                    <Button theme="primary" outline onClick={() => setDelivery('')}>
-                      + Добавить доставку
-                    </Button>
-                  ) : (
-                    <>
-                      <Input
-                        type="textarea"
-                        rows="5"
-                        placeholder="Город, населенный пункт, улица, дом"
-                        value={delivery}
-                        onChange={(v) => setDelivery(v)}></Input>
+            <Formik initialValues={formInitial} validate={handleValidation} onSubmit={handleSubmit}>
+              {({ isSubmitting, values }) => (
+                <Form className={styles.actions}>
+                  <div className={cns('row')}>
+                    <div className="col col-4">
+                      {delivery === false ? (
+                        <Button theme="primary" outline onClick={() => setDelivery(true)}>
+                          + Добавить доставку
+                        </Button>
+                      ) : (
+                        <>
+                          <Field type="tel" name="comment">
+                            {({ field, form: { setFieldValue }, meta }) => (
+                              <Input
+                                type="textarea"
+                                rows="5"
+                                placeholder="Город, населенный пункт, улица, дом"
+                                value={field.value}
+                                error={meta.touched && meta.error}
+                                onChange={(v) => {
+                                  setFieldValue(field.name, v);
+                                }}
+                              />
+                            )}
+                          </Field>
 
-                      <Button theme="primary" className={styles.actionBtnCta} onClick={() => setDelivery(false)}>
-                        - Удалить доставку
-                      </Button>
-                    </>
-                  )}
-                </div>
-                <div className="col col-4">
-                  {comment === false ? (
-                    <Button theme="primary" outline onClick={() => setComment('')}>
-                      + Комментарий
-                    </Button>
-                  ) : (
-                    <>
-                      <Input
-                        type="textarea"
-                        rows="5"
-                        placeholder="Введите комментарий к заказу"
-                        value={comment}
-                        onChange={(v) => setComment(v)}></Input>
+                          <Button theme="primary" className={styles.actionBtnCta} onClick={() => setDelivery(false)}>
+                            - Удалить доставку
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                    <div className="col col-4">
+                      {comment === false ? (
+                        <Button theme="primary" outline onClick={() => setComment(true)}>
+                          + Комментарий
+                        </Button>
+                      ) : (
+                        <>
+                          <Field type="tel" name="comment">
+                            {({ field, form: { setFieldValue }, meta }) => (
+                              <Input
+                                type="textarea"
+                                rows="5"
+                                placeholder="Введите комментарий к заказу"
+                                value={field.value}
+                                error={meta.touched && meta.error}
+                                onChange={(v) => {
+                                  setFieldValue(field.name, v);
+                                }}
+                              />
+                            )}
+                          </Field>
 
-                      <Button theme="primary" className={styles.actionBtnCta} onClick={() => setComment(false)}>
-                        - Удалить комментарий
+                          <Button theme="primary" className={styles.actionBtnCta} onClick={() => setComment(false)}>
+                            - Удалить комментарий
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                    <div className="col col-4">
+                      <Field type="tel" name="phone">
+                        {({ field, form: { setFieldValue }, meta }) => (
+                          <Input
+                            placeholder="Телефон"
+                            mask="+7 (999) 999-99-99"
+                            value={field.value}
+                            error={meta.touched && meta.error}
+                            onChange={(v) => {
+                              setFieldValue(field.name, v);
+                            }}
+                          />
+                        )}
+                      </Field>
+
+                      <Checkbox className={styles.actionBtnCta} isChecked={agree} onChange={() => setAgree(!agree)}>
+                        <span>
+                          Подтверждаю свое согласие на{' '}
+                          <a href="policy.pdf" target="_blank">
+                            обработку персональных данных
+                          </a>
+                        </span>
+                      </Checkbox>
+
+                      <Button type="submit" theme="link" className={styles.actionMainBtnCta}>
+                        Оформить заказ
                       </Button>
-                    </>
-                  )}
-                </div>
-                <div className="col col-4">
-                  <Input
-                    maskPlaceholder="Телефон"
-                    mask="+7 999 999-99-99"
-                    value={phone}
-                    onChange={(v) => setPhone(v)}></Input>
-                  <Checkbox className={styles.actionBtnCta} isChecked={agree} onChange={() => setAgree(!agree)}>
-                    <span>
-                      Подтверждаю свое согласие на{' '}
-                      <a href="policy.pdf" target="_blank">
-                        обработку персональных данных
-                      </a>
-                    </span>
-                  </Checkbox>
-                  <Button theme="link" className={styles.actionMainBtnCta} onClick={handleCartSubmit}>
-                    Оформить заказ
-                  </Button>
-                </div>
-              </div>
-            </div>
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+
+            <div className={styles.actions}></div>
 
             {/* <div className="dev-log">{JSON.stringify(cart, null, 2)}</div> */}
           </>

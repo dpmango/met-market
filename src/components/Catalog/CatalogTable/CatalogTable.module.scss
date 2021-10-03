@@ -75,6 +75,7 @@
   tbody {
     tr:hover {
       td {
+        cursor: pointer;
         background: #f5f5f5;
         &:first-child {
           border-left-color: rgba(black, 0.1);
