@@ -5,9 +5,15 @@
 }
 
 .filterImage {
-  flex: 0 0 250px;
-  max-width: 250px;
-  padding-right: 10px;
+  position: relative;
+  flex: 0 0 240px;
+  max-width: 240px;
+  border-radius: 5px;
+  overflow: hidden;
+  font-size: 0;
+  img {
+    width: 100%;
+  }
 }
 
 .filterContent {
@@ -17,6 +23,7 @@
   background: #eaecf5;
   border-radius: 5px;
   padding: 30px;
+  margin-left: 10px;
 }
 
 .filterContentRow {

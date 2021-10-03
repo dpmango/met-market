@@ -38,7 +38,7 @@ const CategoryFilters = observer(({ data }) => {
   return data ? (
     <div className={styles.filters}>
       <div className={styles.filterImage}>
-        <img src="img/categoryPlaceholder.png" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Walt_Disney_Concert_Hall%2C_LA%2C_CA%2C_jjron_22.03.2012.jpg/2880px-Walt_Disney_Concert_Hall%2C_LA%2C_CA%2C_jjron_22.03.2012.jpg" />
       </div>
       <div className={styles.filterContent}>
         <div className={cns('row', styles.filterContentRow)}>
