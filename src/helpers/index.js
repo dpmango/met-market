@@ -4,3 +4,4 @@ export { findNodeById } from './Objects';
 export { paginationBuilder } from './Pagination';
 export { Plurize } from './Plurize';
 export { formatUGC } from './Strings';
+export { ScrollTo } from './Scroll';

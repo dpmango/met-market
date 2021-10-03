@@ -6,6 +6,7 @@ import cns from 'classnames';
 import { Breadcrumbs } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useQuery } from '@hooks';
+import { ScrollTo } from '@helpers';
 
 import { CatalogMenu } from '@c/Catalog';
 import CategoryTags from './CategoryTags';
@@ -66,6 +67,10 @@ const CatalogCategories = observer(() => {
 
     return [];
   }, [categoryData, category, search]);
+
+  useEffect(() => {
+    ScrollTo(0, 300);
+  }, [category, search]);
 
   return (
     <div className="catalog mt-2 mb-2">
