@@ -103,12 +103,34 @@ const CatalogTable = observer(() => {
           <tbody {...getTableBodyProps()}>
             {page.map((row, i) => {
               prepareRow(row);
+
+              const prevRow = page[i - 1] && page[i - 1].original.category.split('||');
+              const categories = row.original.category.split('||');
+              let category = categories ? categories[categories.length - 1] : null;
+              let showGrouping = false;
+
+              if (!prevRow || prevRow.length === 0) {
+                showGrouping = true;
+              }
+
+              if (categories[categories.length - 1]) {
+                if (prevRow && prevRow[prevRow.length - 1]) {
+                  showGrouping = category !== prevRow[prevRow.length - 1];
+                }
+              }
+
+              if (showGrouping && category) {
+                return (
+                  <tr className={styles.groupTableHeader}>
+                    <td colSpan="6">{category}</td>
+                  </tr>
+                );
+              }
+
               return (
                 <tr {...row.getRowProps()} onClick={() => handleAddToCartClick(row.cells[row.cells.length - 1].value)}>
                   {row.cells.map((cell) => {
                     const isIdRow = cell.column.id === 'id';
-
-                    // console.log(row.original.category);
 
                     if (!isIdRow) {
                       return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;

@@ -43,7 +43,7 @@ export default class CatalogStore {
     let returnable = [];
 
     if (cat_id) {
-      const items = this.catalog.filter((x) => x.idUnique.includes(cat_id));
+      const items = this.catalog.filter((x) => x.idUnique.split('|').includes(cat_id));
 
       if (items && items.length > 0) {
         returnable = items;
