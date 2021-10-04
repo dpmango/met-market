@@ -25,6 +25,7 @@ export default class CatalogStore {
   // CATALOG
   /////////////
   normalizeCatalogItem = (item) => ({
+    category: `${item.cat1}||${item.cat2}||${item.cat3}`,
     name: item.name,
     size: item.size[0],
     mark: item.mark[0],
@@ -39,34 +40,49 @@ export default class CatalogStore {
   }
 
   catalogList = computedFn((cat_id, filters) => {
-    const filterFunction = (item) => {
-      let someMatched = null;
-
-      // TODO - refactor to all match vs ANY
-      if (filters.size && filters.size.length) {
-        someMatched = item.size.some((x) => filters.size.map((v) => v.value).includes(x));
-      }
-
-      if (filters.mark && filters.mark.length) {
-        someMatched = item.mark.some((x) => filters.mark.map((v) => v.value).includes(x));
-      }
-
-      if (filters.length && filters.length.length) {
-        someMatched = item.length.some((x) => filters.length.map((v) => v.value).includes(x));
-      }
-
-      return someMatched !== null ? someMatched : true;
-    };
+    let returnable = [];
 
     if (cat_id) {
       const items = this.catalog.filter((x) => x.idUnique.includes(cat_id));
 
       if (items && items.length > 0) {
-        return items.filter((x) => filterFunction(x)).map((x) => this.normalizeCatalogItem(x));
+        returnable = items;
       }
+    } else {
+      returnable = this.catalog;
     }
 
-    return this.catalog.filter((x) => filterFunction(x)).map((x) => this.normalizeCatalogItem(x));
+    const sizeFilter = filters.size.map((v) => v.value);
+    const markFilter = filters.mark.map((v) => v.value);
+    const lengthFilter = filters.length.map((v) => v.value);
+
+    const filterSize = (item) => {
+      if (sizeFilter && sizeFilter.length) {
+        return item.size.some((x) => sizeFilter.includes(x));
+      }
+      return true;
+    };
+
+    const filterMark = (item) => {
+      if (markFilter && markFilter.length) {
+        return item.mark.some((x) => markFilter.includes(x));
+      }
+
+      return true;
+    };
+
+    const filterLength = (item) => {
+      if (lengthFilter && lengthFilter.length) {
+        return item.length.some((x) => lengthFilter.includes(x));
+      }
+      return true;
+    };
+
+    return returnable
+      .filter(filterSize)
+      .filter(filterMark)
+      .filter(filterLength)
+      .map((x) => this.normalizeCatalogItem(x));
   });
 
   getCatalogItem = computedFn((item_id) => {

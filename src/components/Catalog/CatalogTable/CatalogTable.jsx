@@ -8,7 +8,7 @@ import cns from 'classnames';
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
-import { Plurize } from '@helpers';
+import { Plurize, ScrollTo } from '@helpers';
 
 import styles from './CatalogTable.module.scss';
 import { settings } from './dataTables';
@@ -71,6 +71,12 @@ const CatalogTable = observer(() => {
     [getCatalogItem]
   );
 
+  useEffect(() => {
+    if (page) {
+      ScrollTo(0, 300);
+    }
+  }, [page]);
+
   if (!categoryQuery && !searchQuery) return null;
 
   return !loading ? (
@@ -101,6 +107,8 @@ const CatalogTable = observer(() => {
                 <tr {...row.getRowProps()} onClick={() => handleAddToCartClick(row.cells[row.cells.length - 1].value)}>
                   {row.cells.map((cell) => {
                     const isIdRow = cell.column.id === 'id';
+
+                    // console.log(row.original.category);
 
                     if (!isIdRow) {
                       return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
