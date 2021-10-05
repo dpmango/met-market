@@ -103,6 +103,13 @@
   &._popular {
     background: #ffe2aa;
   }
+  &._disabled {
+    color: $colorGray;
+    .selectOptionCheckbox {
+      background: $colorGray;
+      border-color: $colorGray;
+    }
+  }
 }
 
 .selectOptionCheckbox {

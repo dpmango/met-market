@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
 import cns from 'classnames';
 import chunk from 'lodash/chunk';
+import difference from 'lodash/difference';
 
 import { SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
@@ -38,8 +39,19 @@ const SelectComponent = observer(({ label, value, name, className, options, onCh
 
   const columnizeOptions = useMemo(() => {
     const colSize = name === 'size' ? 5 : 4;
+    const filter = catalogContext.filters[name];
 
-    const splited = chunk(options, colSize);
+    const checked = difference(
+      filter.map((x) => x.value),
+      options.map((x) => x.value)
+    ).map((x) => ({
+      label: x,
+      value: x,
+      disabled: true,
+    }));
+
+    console.log(checked);
+    const splited = chunk([...checked, ...options], colSize);
 
     return splited
       ? [
@@ -49,7 +61,7 @@ const SelectComponent = observer(({ label, value, name, className, options, onCh
           })),
         ]
       : [];
-  }, [name, options]);
+  }, [name, options, catalogContext.filters]);
 
   useOnClickOutside(
     optionsRef,
@@ -75,6 +87,7 @@ const SelectComponent = observer(({ label, value, name, className, options, onCh
                     key={option.value}
                     className={cns(
                       styles.selectOption,
+                      option.disabled && styles._disabled,
                       option.isPopular && styles._popular,
                       value.some((x) => x.value === option.value) && styles._active
                     )}
