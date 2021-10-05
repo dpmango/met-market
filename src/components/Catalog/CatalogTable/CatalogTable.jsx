@@ -20,7 +20,8 @@ const CatalogTable = observer(() => {
   const categoryQuery = query.get('category');
   const searchQuery = query.get('search');
 
-  const { loading, catalog, catalogList, searchCatalog, getCatalogItem, filters } = useContext(CatalogStoreContext);
+  const { loading, catalog, catalogList, searchCatalog, getCatalogItem, getCategoryByName, filters } =
+    useContext(CatalogStoreContext);
   const { cartItemIds } = useContext(CartStoreContext);
   const uiContext = useContext(UiStoreContext);
 
@@ -52,7 +53,7 @@ const CatalogTable = observer(() => {
     {
       columns: settings.columns || [],
       data: data,
-      initialState: { pageIndex: 0, pageSize: 50 },
+      initialState: { pageIndex: 0, pageSize: 100 },
     },
     usePagination
   );
@@ -73,16 +74,17 @@ const CatalogTable = observer(() => {
     [getCatalogItem]
   );
 
-  const handleCategoryClick = useCallback((item) => {
+  const handleCategoryClick = useCallback((cat_name) => {
+    const category = getCategoryByName(cat_name);
+
     const params = new URLSearchParams({
-      category: `${item.name}`,
+      category: `${category.id}`,
     });
 
-    console.log('handleCategoryClick', item);
-    // history.push({
-    //   pathname: location.pathname,
-    //   search: params.toString(),
-    // });
+    history.push({
+      pathname: location.pathname,
+      search: params.toString(),
+    });
   }, []);
 
   useEffect(() => {
@@ -137,7 +139,7 @@ const CatalogTable = observer(() => {
 
               if (showGrouping && category) {
                 groupingHeader = (
-                  <tr className={styles.groupTableHeader} onClick={() => handleCategoryClick(row.original)}>
+                  <tr className={styles.groupTableHeader} onClick={() => handleCategoryClick(category)}>
                     <td colSpan="6">{category}</td>
                   </tr>
                 );

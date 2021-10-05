@@ -36,3 +36,23 @@ export const findObjectInHierarchy = (hierarchicalObject, childName, propName, v
   }
   return result;
 };
+
+export const findNodeByName = (nodes, name) => {
+  let res;
+
+  function findNode(nodes, name) {
+    for (let i = 0; i < nodes.length; i++) {
+      if (nodes[i].name === name) {
+        res = nodes[i];
+        break;
+      }
+      if (nodes[i].categories) {
+        findNode(nodes[i].categories, name);
+      }
+    }
+  }
+
+  findNode(nodes, name);
+
+  return res;
+};

@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { computedFn } from 'mobx-utils';
-import { findNodeById, formatPrice } from '@helpers';
+import { findNodeById, findNodeByName, formatPrice } from '@helpers';
 
 import service from './api-service';
 
@@ -167,6 +167,17 @@ export default class CatalogStore {
       ...mappedList.find((x) => x.id === key),
     }));
   }
+
+  getCategoryByName = computedFn((cat_name) => {
+    if (this.categoriesList && this.categoriesList.length) {
+      const category = findNodeByName(this.categoriesList, cat_name);
+      if (category) {
+        return category;
+      }
+    }
+
+    return false;
+  });
 
   getCategoryFilters = computedFn((cat_id) => {
     if (this.categoriesList && this.categoriesList.length) {
