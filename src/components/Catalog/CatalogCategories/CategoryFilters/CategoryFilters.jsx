@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { memo, useContext, useEffect } from 'react';
+import React, { memo, useCallback, useContext, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
@@ -7,20 +7,16 @@ import cns from 'classnames';
 import { Button, SelectFilter, Spinner } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useQuery } from '@hooks';
+import { updateQueryParams } from '@helpers';
 
 import styles from './CategoryFilters.module.scss';
 
 const CategoryFilters = observer(({ image, data }) => {
-  const history = useHistory();
-  const location = useLocation();
   const query = useQuery();
+  const location = useLocation();
+  const history = useHistory();
   const { filters } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
-
-  const categoryQuery = query.get('category');
-  const sizeQuery = query.get('size');
-  const markQuery = query.get('mark');
-  const lengthQuery = query.get('length');
 
   const createOpitons = (options) => {
     return options
@@ -41,9 +37,26 @@ const CategoryFilters = observer(({ image, data }) => {
       }));
   };
 
-  useEffect(() => {
-    // catalogContext.resetFilters();
-  }, [categoryQuery]);
+  const resetFilters = (e) => {
+    e.preventDefault();
+
+    catalogContext.resetFilters();
+    updateQueryParams({
+      history,
+      location,
+      query,
+      payload: {
+        type: 'filter',
+        value: {
+          size: null,
+          length: null,
+          mark: null,
+        },
+      },
+    });
+  };
+
+  console.log(data);
 
   return data ? (
     <div className={styles.filters}>
@@ -68,11 +81,7 @@ const CategoryFilters = observer(({ image, data }) => {
             )}
           </div>
           <div className="col col-3">
-            <Button
-              outline={true}
-              onClick={(v) => {
-                catalogContext.resetFilters();
-              }}>
+            <Button outline={true} onClick={resetFilters}>
               Сбросить фильтры
             </Button>
           </div>

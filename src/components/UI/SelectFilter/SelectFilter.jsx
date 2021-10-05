@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
 import cns from 'classnames';
+import chunk from 'lodash/chunk';
 
 import { SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
@@ -35,6 +36,21 @@ const SelectComponent = observer(({ label, value, name, className, options, onCh
     });
   };
 
+  const columnizeOptions = useMemo(() => {
+    const colSize = name === 'size' ? 5 : 4;
+
+    const splited = chunk(options, colSize);
+
+    return splited
+      ? [
+          ...splited.map((x, idx) => ({
+            opt: x,
+            id: idx,
+          })),
+        ]
+      : [];
+  }, [name, options]);
+
   useOnClickOutside(
     optionsRef,
     useCallback((e) => setOpened(false), [setOpened])
@@ -48,22 +64,30 @@ const SelectComponent = observer(({ label, value, name, className, options, onCh
         <SvgIcon name="caret" />
       </div>
 
-      <div className={cns(styles.selectOptions)}>
-        {options.map((option) => (
-          <div
-            key={option.value}
-            className={cns(
-              styles.selectOption,
-              option.isPopular && styles._popular,
-              value.some((x) => x.value === option.value) && styles._active
-            )}
-            onClick={() => handleOptionClick(option)}>
-            <i className={styles.selectOptionCheckbox}>
-              <SvgIcon name="checkmark" />
-            </i>
-            <span>{option.label}</span>
-          </div>
-        ))}
+      <div className={cns(styles.selectOptions, name && styles[name])}>
+        {columnizeOptions &&
+          columnizeOptions.length > 0 &&
+          columnizeOptions.map((col, idx) => {
+            return (
+              <div key={`${idx}_${col.id}`} className={styles.selectOptionCol}>
+                {col.opt.map((option) => (
+                  <div
+                    key={option.value}
+                    className={cns(
+                      styles.selectOption,
+                      option.isPopular && styles._popular,
+                      value.some((x) => x.value === option.value) && styles._active
+                    )}
+                    onClick={() => handleOptionClick(option)}>
+                    <i className={styles.selectOptionCheckbox}>
+                      <SvgIcon name="checkmark" />
+                    </i>
+                    <span>{option.label}</span>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
       </div>
     </div>
   );
@@ -78,4 +102,4 @@ SelectComponent.propTypes = {
   onChange: PropTypes.func,
 };
 
-export default memo(SelectComponent);
+export default SelectComponent;

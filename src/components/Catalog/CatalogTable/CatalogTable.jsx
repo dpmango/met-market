@@ -89,12 +89,6 @@ const CatalogTable = observer(() => {
     });
   };
 
-  useEffect(() => {
-    if (page) {
-      ScrollTo(0, 300);
-    }
-  }, [page]);
-
   if (!categoryQuery && !searchQuery) return null;
 
   return !loading ? (
@@ -188,7 +182,10 @@ const CatalogTable = observer(() => {
         <Pagination
           page={pageIndex + 1}
           count={pageCount}
-          onChange={(page) => gotoPage(page - 1)}
+          onChange={(page) => {
+            gotoPage(page - 1);
+            ScrollTo(0, 300);
+          }}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
         />

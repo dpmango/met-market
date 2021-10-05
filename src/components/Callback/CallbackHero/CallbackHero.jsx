@@ -9,6 +9,7 @@ import debounce from 'lodash/debounce';
 import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CallbackStoreContext } from '@store';
 import { ruPhoneRegex } from '@helpers/Validation';
+import { useQuery } from '@hooks';
 
 import styles from './CallbackHero.module.scss';
 
@@ -17,6 +18,10 @@ const formInitial = {
 };
 
 const CallbackHero = observer(() => {
+  const query = useQuery();
+  const categoryQuery = query.get('category');
+  const searchQuery = query.get('search');
+
   const { addToast } = useToasts();
 
   const callbackContext = useContext(CallbackStoreContext);
@@ -68,6 +73,8 @@ const CallbackHero = observer(() => {
     }, 3000),
     []
   );
+
+  if (searchQuery || categoryQuery) return null;
 
   return (
     <div className={styles.hero}>

@@ -74,6 +74,10 @@ const CatalogCategories = observer(() => {
     ScrollTo(0, 300);
   }, [category, search]);
 
+  useEffect(() => {
+    catalogContext.queryToFilter(query);
+  }, [query]);
+
   return (
     <div className="catalog mt-2 mb-2">
       <div className={styles.breadcrumbs}>

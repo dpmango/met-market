@@ -1,5 +1,4 @@
 .select {
-  position: relative;
   &._active {
     .selectDisplay {
       :global .svg-icon {
@@ -51,19 +50,59 @@
 .selectOptions {
   position: absolute;
   z-index: 3;
-  top: calc(100% + 30px);
+  top: 100%;
   left: 0;
-  width: 520px;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   background: #fff;
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
-  padding: 20px;
+  padding: 20px 20px 30px;
+  font-size: 12px;
   opacity: 0;
   pointer-events: none;
   transform: translate(0, -10px);
+  max-height: 400px;
+  overflow-y: auto;
   transition: opacity 0.25s $ease, transform 0.25s $ease;
+  &.size {
+    width: 520px;
+    .selectOptionCol {
+      flex-basis: 20%;
+      max-width: 20%;
+    }
+  }
+}
+
+.selectOptionCol {
+  flex: 0 0 25%;
+  max-width: 25%;
+  display: flex;
+  flex-direction: column;
+}
+
+.selectOption {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 5px;
+  transition: color 0.25s $ease;
+  @include text-overflow();
+  &:hover {
+    color: $colorLink;
+  }
+  &._active {
+    .selectOptionCheckbox {
+      background: $colorLink;
+      border-color: $colorLink;
+    }
+  }
+  &._popular {
+    background: #ffe2aa;
+  }
 }
 
 .selectOptionCheckbox {
@@ -83,27 +122,5 @@
     font-size: 8px;
     transform: translate(-50%, -50%);
     color: white;
-  }
-}
-
-.selectOption {
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 20%;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 5px;
-  transition: color 0.25s $ease;
-  &:hover {
-    color: $colorLink;
-  }
-  &._active {
-    .selectOptionCheckbox {
-      background: $colorLink;
-      border-color: $colorLink;
-    }
-  }
-  &._popular {
-    background: #ffe2aa;
   }
 }

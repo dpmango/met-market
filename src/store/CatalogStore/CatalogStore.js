@@ -21,7 +21,7 @@ export default class CatalogStore {
 
     this.getCatalog();
 
-    this.queryToParams();
+    // this.queryToFilter(new URLSearchParams(window.location.search));
   }
 
   /////////////
@@ -279,46 +279,41 @@ export default class CatalogStore {
   }
 
   resetFilters() {
-    this.filters = {
-      size: [],
-      mark: [],
-      length: [],
-    };
+    // this.filters = {
+    //   size: [],
+    //   mark: [],
+    //   length: [],
+    // };
   }
 
-  queryToParams() {
-    const params = new URLSearchParams(window.location.search);
+  queryToFilter(query) {
+    const params = query;
 
     const paramsSize = params.get('size');
     const paramsMark = params.get('mark');
     const paramsLength = params.get('length');
 
-    let upFilter = { ...this.filters };
+    let size = [];
+    let mark = [];
+    let length = [];
 
     if (paramsSize) {
-      upFilter = {
-        ...upFilter,
-        ...{
-          size: paramsSize.split(',').map((x) => ({ value: x, label: x })),
-        },
-      };
+      size = paramsSize.split(',').map((x) => ({ value: x, label: x }));
     }
+
     if (paramsMark) {
-      upFilter = {
-        ...upFilter,
-        ...{
-          mark: paramsMark.split(',').map((x) => ({ value: x, label: x })),
-        },
-      };
+      mark = paramsMark.split(',').map((x) => ({ value: x, label: x }));
     }
+
     if (paramsLength) {
-      upFilter = {
-        ...upFilter,
-        ...{
-          length: paramsLength.split(',').map((x) => ({ value: x, label: x })),
-        },
-      };
+      length = paramsLength.split(',').map((x) => ({ value: x, label: x }));
     }
+
+    const upFilter = {
+      size,
+      mark,
+      length,
+    };
 
     this.filters = { ...upFilter };
   }
