@@ -21,6 +21,12 @@
         background: $colorPrimary;
       }
     }
+    &[disabled] {
+      color: rgba(black, 0.3);
+      border-color: rgba(black, 0.3);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
   }
   &._accent {
     background: $colorAccent;

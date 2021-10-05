@@ -50,7 +50,6 @@ const SelectComponent = observer(({ label, value, name, className, options, onCh
       disabled: true,
     }));
 
-    console.log(checked);
     const splited = chunk([...checked, ...options], colSize);
 
     return splited

@@ -101,7 +101,7 @@ export default class CatalogStore {
 
       if (terms) {
         const queries = txt.toLowerCase().split(' ');
-        return queries.some((q) => terms.includes(q));
+        return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
       }
 
       return false;
@@ -235,6 +235,9 @@ export default class CatalogStore {
     return false;
   });
 
+  get someFiltersActive() {
+    return this.filters.size.length || this.filters.mark.length || this.filters.length.length;
+  }
   // API ACTIONS
   async getCatalog() {
     runInAction(() => {

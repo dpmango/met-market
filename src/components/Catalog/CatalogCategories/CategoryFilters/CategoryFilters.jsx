@@ -15,7 +15,7 @@ const CategoryFilters = observer(({ image, data }) => {
   const query = useQuery();
   const location = useLocation();
   const history = useHistory();
-  const { filters } = useContext(CatalogStoreContext);
+  const { filters, someFiltersActive } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
 
   const createOpitons = (options) => {
@@ -56,8 +56,6 @@ const CategoryFilters = observer(({ image, data }) => {
     });
   };
 
-  console.log(data);
-
   return data ? (
     <div className={styles.filters}>
       <div className={styles.filterImage}>
@@ -81,7 +79,7 @@ const CategoryFilters = observer(({ image, data }) => {
             )}
           </div>
           <div className="col col-3">
-            <Button outline={true} onClick={resetFilters}>
+            <Button outline={true} disabled={!someFiltersActive} onClick={resetFilters}>
               Сбросить фильтры
             </Button>
           </div>
