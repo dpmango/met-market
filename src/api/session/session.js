@@ -7,7 +7,7 @@ export default {
   alive: async (req) => {
     // @sessionId string
     // @cartId string
-    return api.post(endpoints.session.alive, null, { params: { ...req } });
+    return api.post(endpoints.session.alive, req);
   },
   log: async (req) => {
     /** 
@@ -15,6 +15,6 @@ export default {
       @searchTerm string
       @categoryId string
     */
-    return api.post(endpoints.log.addSearchTerm, null, { params: { ...req } });
+    return api.post(endpoints.log.addSearchTerm, req);
   },
 };

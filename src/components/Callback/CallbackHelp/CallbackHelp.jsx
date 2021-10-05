@@ -8,7 +8,6 @@ import debounce from 'lodash/debounce';
 
 import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CallbackStoreContext } from '@store';
-import { useQuery } from '@hooks';
 import { ruPhoneRegex } from '@helpers/Validation';
 
 import styles from './CallbackHelp.module.scss';

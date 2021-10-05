@@ -13,7 +13,9 @@ const CategoryTags = ({ data }) => {
   const query = useQuery();
   const categoryQuery = query.get('category');
 
-  const handleCategoryClick = (id) => {
+  const handleCategoryClick = (e, id) => {
+    e.preventDefault();
+
     const params = new URLSearchParams({
       category: `${id}`,
     });
@@ -28,12 +30,13 @@ const CategoryTags = ({ data }) => {
     <div className={styles.tags}>
       {data &&
         data.map((cat) => (
-          <button
+          <a
+            href={`?category=${cat.id}`}
             key={cat.id}
             className={cns(styles.button, categoryQuery === cat.id && styles._active)}
-            onClick={() => handleCategoryClick(cat.id)}>
+            onClick={(e) => handleCategoryClick(e, cat.id)}>
             {cat.name}
-          </button>
+          </a>
         ))}
     </div>
   );

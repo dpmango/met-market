@@ -3,7 +3,7 @@ import { api, endpoints } from '@api';
 export default {
   get: (req) => {
     // @cartId string
-    return api.post(endpoints.cart.getItems, null, { params: { ...req } });
+    return api.post(endpoints.cart.getItems, req);
   },
   add: (req) => {
     // @cartId string
@@ -11,19 +11,19 @@ export default {
     // @count number
     // @pricePerItem integer(int32)
     // @itemFullName string
-    return api.post(endpoints.cart.addItem, null, { params: { ...req } });
+    return api.post(endpoints.cart.addItem, req);
   },
   update: (req) => {
     // @cartId string
     // @itemId string
     // @count number
     // @pricePerItem integer(int32)
-    return api.post(endpoints.cart.updateItem, null, { params: { ...req } });
+    return api.post(endpoints.cart.updateItem, req);
   },
   remove: (req) => {
     // @cartId string
     // @itemId string
-    return api.post(endpoints.cart.removeItem, null, { params: { ...req } });
+    return api.post(endpoints.cart.removeItem, req);
   },
   submit: (req) => {
     // @cartId string
@@ -32,11 +32,11 @@ export default {
     // @comment string
     // @totalPrice integer(int32)
 
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    Object.keys(req).forEach((key) => {
-      formData.append(key, req[key]);
-    });
-    return api.post(endpoints.cart.submit, formData);
+    // Object.keys(req).forEach((key) => {
+    //   formData.append(key, req[key]);
+    // });
+    return api.post(endpoints.cart.submit, req);
   },
 };

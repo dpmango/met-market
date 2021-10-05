@@ -2,21 +2,57 @@ import React, { useCallback, useMemo, useState, useRef, memo, useContext } from 
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
+// import qs from 'qs';
 
 import { CatalogStoreContext } from '@store';
-import { useOnClickOutside } from '@hooks';
+import { useOnClickOutside, useQuery } from '@hooks';
 
 import { SvgIcon } from '@ui';
 import styles from './SelectFilter.module.scss';
+import { useHistory, useLocation } from 'react-router';
 
 const SelectComponent = observer(({ label, value, name, className, options, onChange, ...props }) => {
+  const location = useLocation();
+  const history = useHistory();
+  const query = useQuery();
+
   const [opened, setOpened] = useState(false);
   const optionsRef = useRef(null);
 
   const catalogContext = useContext(CatalogStoreContext);
 
   const handleOptionClick = (option) => {
-    catalogContext.addFilter(option, name);
+    const filter = catalogContext.addFilter(option, name);
+
+    const params = new URLSearchParams({
+      category: `${query.get('category')}`,
+    });
+
+    if (filter.size && filter.size.length > 0) {
+      params.append(
+        'size',
+        filter.size.map((x) => x.value)
+      );
+    }
+
+    if (filter.mark && filter.mark.length > 0) {
+      params.append(
+        'mark',
+        filter.mark.map((x) => x.value)
+      );
+    }
+
+    if (filter.length && filter.length.length > 0) {
+      params.append(
+        'length',
+        filter.length.map((x) => x.value)
+      );
+    }
+
+    history.push({
+      pathname: location.pathname,
+      search: params.toString(),
+    });
   };
 
   useOnClickOutside(

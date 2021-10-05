@@ -22,31 +22,32 @@ const Topbar = observer(({ className }) => {
             </a>
           </div>
           <div className={rootStyles.colSecond}>
-            <a href="/catalog.pdf" target="_blank" className={cns(styles.topbarAction, styles.price)}>
+            <a href="/catalog.pdf" target="_blank" className={cns(styles.topbarAction, styles.iconed, styles.price)}>
               <SvgIcon name="pdf" />
               <span className="w-700">Прайс-лист</span>
             </a>
           </div>
           <div className={cns(rootStyles.colThrid, styles.topbarLinks)}>
-            <a
-              href="#"
-              className={cns(styles.topbarAction, styles.price)}
-              onClick={() => uiContext.setModal('callback')}>
+            <a href="#" className={cns(styles.topbarAction)} onClick={() => uiContext.setModal('callback')}>
               <span className="w-700">Отправить заявку</span>
             </a>
             <a
               href="https://whatsapp.com/"
               target="_blank"
-              className={cns(styles.topbarAction, styles.price)}
+              className={cns(styles.topbarAction, styles.iconed)}
               rel="noreferrer">
               <SvgIcon name="social-whatsapp" />
               <span className="w-600">Whatsapp</span>
             </a>
-            <a href="https://t.me/" target="_blank" className={cns(styles.topbarAction, styles.price)} rel="noreferrer">
+            <a
+              href="https://t.me/"
+              target="_blank"
+              className={cns(styles.topbarAction, styles.iconed)}
+              rel="noreferrer">
               <SvgIcon name="social-telegram" />
               <span className="w-600">Telegram</span>
             </a>
-            <a href="tel:88003508625" className={cns(styles.topbarAction, styles.price)}>
+            <a href="tel:88003508625" className={cns(styles.topbarAction)}>
               <span className="w-700">8-800-350-86-25</span>
             </a>
           </div>

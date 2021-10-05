@@ -33,6 +33,22 @@ const Search = observer(({ className }) => {
   const inputRef = useRef(null);
 
   // debounced getter
+  const setQuery = (textNormalized) => {
+    const params = new URLSearchParams({
+      search: `${textNormalized}`,
+    });
+
+    sessionContext.setLog({
+      type: 'search',
+      payload: textNormalized,
+    });
+
+    history.push({
+      pathname: location.pathname,
+      search: params.toString(),
+    });
+  };
+
   const searchFunc = useCallback(
     debounce((txt) => {
       const textNormalized = formatUGC(txt);
@@ -40,6 +56,7 @@ const Search = observer(({ className }) => {
       const { meta } = catalogContext.searchCatalog(textNormalized);
 
       if (textNormalized.length > 2) {
+        setQuery(textNormalized);
         setSearchMeta({
           total: meta.total,
           query: textNormalized,
@@ -67,20 +84,7 @@ const Search = observer(({ className }) => {
 
       const textNormalized = formatUGC(searchText);
       if (textNormalized.length > 2) {
-        const params = new URLSearchParams({
-          search: `${textNormalized}`,
-        });
-
-        sessionContext.setLog({
-          type: 'search',
-          payload: textNormalized,
-        });
-
-        history.push({
-          pathname: location.pathname,
-          search: params.toString(),
-        });
-
+        setQuery(textNormalized);
         setSuggestionsOpened(false);
         setSearchText('');
       }

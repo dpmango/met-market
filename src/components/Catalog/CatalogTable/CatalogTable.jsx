@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import React, { useRef, useEffect, useReducer, useContext, useMemo, useCallback, memo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useTable, usePagination } from 'react-table';
 import cns from 'classnames';
@@ -14,6 +14,8 @@ import styles from './CatalogTable.module.scss';
 import { settings } from './dataTables';
 
 const CatalogTable = observer(() => {
+  const location = useLocation();
+  const history = useHistory();
   const query = useQuery();
   const categoryQuery = query.get('category');
   const searchQuery = query.get('search');
@@ -71,6 +73,18 @@ const CatalogTable = observer(() => {
     [getCatalogItem]
   );
 
+  const handleCategoryClick = useCallback((item) => {
+    const params = new URLSearchParams({
+      category: `${item.name}`,
+    });
+
+    console.log('handleCategoryClick', item);
+    // history.push({
+    //   pathname: location.pathname,
+    //   search: params.toString(),
+    // });
+  }, []);
+
   useEffect(() => {
     if (page) {
       ScrollTo(0, 300);
@@ -104,10 +118,12 @@ const CatalogTable = observer(() => {
             {page.map((row, i) => {
               prepareRow(row);
 
+              // Custom grouping functionality
               const prevRow = page[i - 1] && page[i - 1].original.category.split('||');
               const categories = row.original.category.split('||');
               let category = categories ? categories[categories.length - 1] : null;
               let showGrouping = false;
+              let groupingHeader = null;
 
               if (!prevRow || prevRow.length === 0) {
                 showGrouping = true;
@@ -120,37 +136,42 @@ const CatalogTable = observer(() => {
               }
 
               if (showGrouping && category) {
-                return (
-                  <tr className={styles.groupTableHeader}>
+                groupingHeader = (
+                  <tr className={styles.groupTableHeader} onClick={() => handleCategoryClick(row.original)}>
                     <td colSpan="6">{category}</td>
                   </tr>
                 );
               }
 
               return (
-                <tr {...row.getRowProps()} onClick={() => handleAddToCartClick(row.cells[row.cells.length - 1].value)}>
-                  {row.cells.map((cell) => {
-                    const isIdRow = cell.column.id === 'id';
+                <>
+                  {groupingHeader}
+                  <tr
+                    {...row.getRowProps()}
+                    onClick={() => handleAddToCartClick(row.cells[row.cells.length - 1].value)}>
+                    {row.cells.map((cell) => {
+                      const isIdRow = cell.column.id === 'id';
 
-                    if (!isIdRow) {
-                      return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
-                    } else {
-                      return (
-                        <td {...cell.getCellProps()}>
-                          {!cartItemIds.includes(cell.value) ? (
-                            <button className={styles.add}>
-                              <SvgIcon name="cart-add" />
-                            </button>
-                          ) : (
-                            <div className={styles.addedItem}>
-                              <SvgIcon name="checkmark" />
-                            </div>
-                          )}
-                        </td>
-                      );
-                    }
-                  })}
-                </tr>
+                      if (!isIdRow) {
+                        return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                      } else {
+                        return (
+                          <td {...cell.getCellProps()}>
+                            {!cartItemIds.includes(cell.value) ? (
+                              <button className={styles.add}>
+                                <SvgIcon name="cart-add" />
+                              </button>
+                            ) : (
+                              <div className={styles.addedItem}>
+                                <SvgIcon name="checkmark" />
+                              </div>
+                            )}
+                          </td>
+                        );
+                      }
+                    })}
+                  </tr>
+                </>
               );
             })}
           </tbody>

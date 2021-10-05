@@ -125,12 +125,14 @@ export default class CatalogStore {
     const mappedList = this.categories.map((cat1) => ({
       id: cat1.id,
       name: cat1.name,
+      image: cat1.imageUrl,
       filters: cat1.filters,
       categories:
         cat1.categories &&
         cat1.categories.map((cat2) => ({
           id: cat2.id,
           name: cat2.name,
+          image: cat2.imageUrl,
           filters: cat2.filters,
           ancestors: [
             {
@@ -143,6 +145,7 @@ export default class CatalogStore {
             cat2.categories.map((cat3) => ({
               id: cat3.id,
               name: cat3.name,
+              image: cat3.imageUrl,
               filters: cat3.filters,
               ancestors: [
                 {
@@ -207,6 +210,7 @@ export default class CatalogStore {
         return {
           id: cat_id,
           title: category.name,
+          image: category.image,
           ancestors: category.ancestors,
           subcategories: mergedCategories,
           filters: category.filters || null,
@@ -249,12 +253,15 @@ export default class CatalogStore {
       newFilter = [...this.filters[key].filter((x) => x.value !== option.value)];
     }
 
-    this.filters = {
+    const filters = {
       ...this.filters,
       ...{
         [key]: newFilter,
       },
     };
+
+    this.filters = filters;
+    return filters;
   }
 
   resetFilters() {

@@ -4,14 +4,12 @@ import { observer } from 'mobx-react';
 
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
-import { useQuery } from '@hooks';
 import { formatPrice } from '@helpers';
 
 import styles from './CallbackSuccess.module.scss';
 
 const CallbackSuccess = observer(() => {
   const history = useHistory();
-  const query = useQuery();
 
   const { modalParams } = useContext(CartStoreContext);
 

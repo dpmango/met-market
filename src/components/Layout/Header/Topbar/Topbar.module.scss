@@ -37,10 +37,16 @@
   justify-content: flex-end;
 }
 
+.iconed {
+  :global .svg-icon {
+    font-size: 20px;
+    transform: translateY(-2px);
+  }
+}
+
+.location,
 .price {
-  :global {
-    .svg-icon {
-      font-size: 20px;
-    }
+  &:hover {
+    background: transparent;
   }
 }

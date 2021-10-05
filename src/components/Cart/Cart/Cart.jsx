@@ -7,7 +7,6 @@ import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
-import { useQuery } from '@hooks';
 import { formatPrice } from '@helpers';
 import { ruPhoneRegex } from '@helpers/Validation';
 
@@ -21,9 +20,6 @@ const formInitial = {
 
 const Cart = observer(() => {
   const { addToast } = useToasts();
-
-  const history = useHistory();
-  const query = useQuery();
 
   const { cart, cartCount, cartTotal } = useContext(CartStoreContext);
   const { cartNumber } = useContext(SessionStoreContext);

@@ -6,14 +6,12 @@ import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext } from '@store';
-import { useQuery } from '@hooks';
 import { formatPrice } from '@helpers';
 
 import styles from './AddToCart.module.scss';
 
 const AddToCart = observer(() => {
   const history = useHistory();
-  const query = useQuery();
   const { activeModal, modalParams } = useContext(UiStoreContext);
   const cartContext = useContext(CartStoreContext);
 

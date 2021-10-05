@@ -3,6 +3,11 @@
   display: flex;
   width: 100%;
   margin-right: 40px;
+  &:hover {
+    .searchInput {
+      border-color: #4168f1;
+    }
+  }
 }
 
 .searchInput {
@@ -23,7 +28,8 @@
   &::placeholder {
     color: $colorGray;
   }
-  &:focus {
+  &:focus,
+  &:hover {
     border-color: #4168f1;
   }
 }

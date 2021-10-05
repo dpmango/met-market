@@ -91,7 +91,7 @@ const CatalogCategories = observer(() => {
 
           {categoryData.filters && (
             <div className={styles.filters}>
-              <CategoryFilters data={categoryData.filters} />
+              <CategoryFilters image={categoryData.image} data={categoryData.filters} />
             </div>
           )}
         </>

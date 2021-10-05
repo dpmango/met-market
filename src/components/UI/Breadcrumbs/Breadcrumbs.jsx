@@ -40,7 +40,7 @@ const Breadcrumbs = ({ className, crumbs, ...props }) => {
             <li key={idx}>
               {crumb.href && <Link to={crumb.href}>{crumb.text}</Link>}
               {crumb.category && (
-                <a href="#" onClick={(e) => handleCategoryClick(crumb.category, e)}>
+                <a href={`?category=${crumb.category}`} onClick={(e) => handleCategoryClick(crumb.category, e)}>
                   {crumb.text}
                 </a>
               )}
