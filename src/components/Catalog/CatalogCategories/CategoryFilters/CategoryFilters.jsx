@@ -42,7 +42,7 @@ const CategoryFilters = observer(({ image, data }) => {
   };
 
   useEffect(() => {
-    catalogContext.resetFilters();
+    // catalogContext.resetFilters();
   }, [categoryQuery]);
 
   return data ? (

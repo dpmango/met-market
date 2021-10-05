@@ -6,6 +6,7 @@ import cns from 'classnames';
 
 import { UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
+import { updateQueryParams } from '@helpers';
 
 import styles from './CategoryMain.module.scss';
 
@@ -18,13 +19,14 @@ const CategoryMain = observer(({ category }) => {
   const uiContext = useContext(UiStoreContext);
 
   const handleCategoryClick = (id) => {
-    const params = new URLSearchParams({
-      category: `${id}`,
-    });
-
-    history.push({
-      pathname: location.pathname,
-      search: params.toString(),
+    updateQueryParams({
+      history,
+      location,
+      query,
+      payload: {
+        type: 'category',
+        value: `${id}`,
+      },
     });
 
     uiContext.setHeaderCatalog(false);

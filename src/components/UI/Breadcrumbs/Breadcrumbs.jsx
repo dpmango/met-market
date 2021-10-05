@@ -4,11 +4,15 @@ import { Link, NavLink, useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
 import { SvgIcon } from '@ui';
+import { updateQueryParams } from '@helpers';
+import { useQuery } from '@hooks';
+
 import styles from './Breadcrumbs.module.scss';
 
 const Breadcrumbs = ({ className, crumbs, ...props }) => {
   const history = useHistory();
   const location = useLocation();
+  const query = useQuery();
 
   const lastCrumb = useMemo(() => {
     return crumbs[crumbs.length - 1];
@@ -18,13 +22,14 @@ const Breadcrumbs = ({ className, crumbs, ...props }) => {
     e.stopPropagation();
     e.preventDefault();
 
-    const params = new URLSearchParams({
-      category: `${category}`,
-    });
-
-    history.push({
-      pathname: location.pathname,
-      search: params.toString(),
+    updateQueryParams({
+      history,
+      location,
+      query,
+      payload: {
+        type: 'category',
+        value: `${category}`,
+      },
     });
   };
 

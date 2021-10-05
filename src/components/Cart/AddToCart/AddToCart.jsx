@@ -5,7 +5,7 @@ import { useTable, usePagination } from 'react-table';
 import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
-import { UiStoreContext, CartStoreContext } from '@store';
+import { UiStoreContext, CatalogStoreContext, CartStoreContext } from '@store';
 import { formatPrice } from '@helpers';
 
 import styles from './AddToCart.module.scss';
@@ -13,6 +13,7 @@ import styles from './AddToCart.module.scss';
 const AddToCart = observer(() => {
   const history = useHistory();
   const { activeModal, modalParams } = useContext(UiStoreContext);
+  const { getCategoryByName } = useContext(CatalogStoreContext);
   const cartContext = useContext(CartStoreContext);
 
   const [count, setCount] = useState(1);
@@ -74,6 +75,20 @@ const AddToCart = observer(() => {
     }
   }, [activeModal]);
 
+  const itemCategory = useMemo(() => {
+    if (!modalParams) return;
+    const { cat1, cat2, cat3 } = modalParams;
+    const name = cat3 || cat2 || cat1 || null;
+
+    if (name) {
+      const category = getCategoryByName(name);
+
+      return category;
+    }
+
+    return null;
+  }, [modalParams]);
+
   return (
     <Modal name="cart-add">
       <div className={styles.cart}>
@@ -85,12 +100,12 @@ const AddToCart = observer(() => {
 
             <div className={styles.body}>
               <div className={styles.bodyImage}>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Walt_Disney_Concert_Hall%2C_LA%2C_CA%2C_jjron_22.03.2012.jpg/2880px-Walt_Disney_Concert_Hall%2C_LA%2C_CA%2C_jjron_22.03.2012.jpg" />
+                <img src={itemCategory.image} alt={itemCategory.name} />
               </div>
               <div className={styles.bodyTable}>
                 <div className={styles.row}>
                   <span className={styles.rowLabel}>Тип товара</span>
-                  <span className={styles.rowContent}>{modalParams.name}</span>
+                  <span className={styles.rowContent}>{itemCategory.name}</span>
                 </div>
                 <div className={styles.row}>
                   <span className={styles.rowLabel}>Код товара</span>

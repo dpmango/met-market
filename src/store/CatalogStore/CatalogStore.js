@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import { findNodeById, findNodeByName, formatPrice } from '@helpers';
+import qs from 'qs';
 
 import service from './api-service';
 
@@ -19,6 +20,8 @@ export default class CatalogStore {
     makeAutoObservable(this);
 
     this.getCatalog();
+
+    this.queryToParams();
   }
 
   /////////////
@@ -281,5 +284,42 @@ export default class CatalogStore {
       mark: [],
       length: [],
     };
+  }
+
+  queryToParams() {
+    const params = new URLSearchParams(window.location.search);
+
+    const paramsSize = params.get('size');
+    const paramsMark = params.get('mark');
+    const paramsLength = params.get('length');
+
+    let upFilter = { ...this.filters };
+
+    if (paramsSize) {
+      upFilter = {
+        ...upFilter,
+        ...{
+          size: paramsSize.split(',').map((x) => ({ value: x, label: x })),
+        },
+      };
+    }
+    if (paramsMark) {
+      upFilter = {
+        ...upFilter,
+        ...{
+          mark: paramsMark.split(',').map((x) => ({ value: x, label: x })),
+        },
+      };
+    }
+    if (paramsLength) {
+      upFilter = {
+        ...upFilter,
+        ...{
+          length: paramsLength.split(',').map((x) => ({ value: x, label: x })),
+        },
+      };
+    }
+
+    this.filters = { ...upFilter };
   }
 }

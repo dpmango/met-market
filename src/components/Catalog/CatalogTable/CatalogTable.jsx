@@ -8,7 +8,7 @@ import cns from 'classnames';
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
-import { Plurize, ScrollTo } from '@helpers';
+import { updateQueryParams, Plurize, ScrollTo } from '@helpers';
 
 import styles from './CatalogTable.module.scss';
 import { settings } from './dataTables';
@@ -74,18 +74,20 @@ const CatalogTable = observer(() => {
     [getCatalogItem]
   );
 
-  const handleCategoryClick = useCallback((cat_name) => {
+  const handleCategoryClick = (cat_name) => {
     const category = getCategoryByName(cat_name);
 
-    const params = new URLSearchParams({
-      category: `${category.id}`,
+    console.log(category);
+    updateQueryParams({
+      history,
+      location,
+      query,
+      payload: {
+        type: 'category',
+        value: `${category.id}`,
+      },
     });
-
-    history.push({
-      pathname: location.pathname,
-      search: params.toString(),
-    });
-  }, []);
+  };
 
   useEffect(() => {
     if (page) {

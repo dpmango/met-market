@@ -4,6 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
 import { useQuery } from '@hooks';
+import { updateQueryParams } from '@helpers';
 
 import styles from './CategoryTags.module.scss';
 
@@ -16,13 +17,14 @@ const CategoryTags = ({ data }) => {
   const handleCategoryClick = (e, id) => {
     e.preventDefault();
 
-    const params = new URLSearchParams({
-      category: `${id}`,
-    });
-
-    history.push({
-      pathname: location.pathname,
-      search: params.toString(),
+    updateQueryParams({
+      location,
+      history,
+      query,
+      payload: {
+        type: 'category',
+        value: `${id}`,
+      },
     });
   };
 

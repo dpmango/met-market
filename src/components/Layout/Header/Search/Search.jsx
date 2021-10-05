@@ -6,8 +6,8 @@ import debounce from 'lodash/debounce';
 
 import { SvgIcon, Spinner } from '@ui';
 import { CatalogStoreContext, SessionStoreContext, UiStoreContext } from '@store';
-import { useOnClickOutside } from '@hooks';
-import { formatUGC } from '@helpers';
+import { useOnClickOutside, useQuery } from '@hooks';
+import { formatUGC, updateQueryParams } from '@helpers';
 
 import styles from './Search.module.scss';
 
@@ -18,6 +18,7 @@ const settings = {
 const Search = observer(({ className }) => {
   const history = useHistory();
   const location = useLocation();
+  const query = useQuery();
 
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
@@ -34,18 +35,19 @@ const Search = observer(({ className }) => {
 
   // debounced getter
   const setQuery = (textNormalized) => {
-    const params = new URLSearchParams({
-      search: `${textNormalized}`,
-    });
-
     sessionContext.setLog({
       type: 'search',
       payload: textNormalized,
     });
 
-    history.push({
-      pathname: location.pathname,
-      search: params.toString(),
+    updateQueryParams({
+      location,
+      history,
+      query,
+      payload: {
+        type: 'search',
+        value: `${textNormalized}`,
+      },
     });
   };
 
@@ -93,22 +95,22 @@ const Search = observer(({ className }) => {
   );
 
   const handleSearchTermClick = useCallback(
-    (query) => {
-      const params = new URLSearchParams({
-        search: `${query}`,
+    (q) => {
+      updateQueryParams({
+        location,
+        history,
+        query,
+        payload: {
+          type: 'search',
+          value: `${q}`,
+        },
       });
-
-      history.push({
-        pathname: location.pathname,
-        search: params.toString(),
-      });
-
       setSuggestionsOpened(false);
-      setSearchText(query);
+      setSearchText(q);
 
       inputRef && inputRef.current.focus();
     },
-    [catalogContext.getCatalogItem, inputRef]
+    [catalogContext.getCatalogItem, history, location, query, inputRef]
   );
 
   const handleSearchChange = useCallback(
