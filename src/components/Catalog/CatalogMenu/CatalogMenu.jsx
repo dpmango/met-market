@@ -12,17 +12,17 @@ const CatalogMenu = observer(({ list, className }) => {
       <>
         {list && list.length > 0 && (
           <div className="row">
-            <div className="col col-4">
+            <div className="col col-4 col-md-12">
               {list.slice(0, 2).map((cat) => (
                 <CategoryMain key={cat.id} category={cat} />
               ))}
             </div>
-            <div className="col col-4">
+            <div className="col col-4 col-md-12">
               {list.slice(2, 5).map((cat) => (
                 <CategoryMain key={cat.id} category={cat} />
               ))}
             </div>
-            <div className="col col-4">
+            <div className="col col-4 col-md-12">
               {list.slice(5, 7).map((cat) => (
                 <CategoryMain key={cat.id} category={cat} />
               ))}

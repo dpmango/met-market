@@ -23,12 +23,6 @@
     position: relative;
     display: block;
     margin: 4px -5px;
-    &:hover {
-      .categoryDropdown {
-        opacity: 1;
-        pointer-events: all;
-      }
-    }
   }
   a {
     display: inline-block;
@@ -44,23 +38,23 @@
   }
 }
 
-.categoryDropdown {
-  position: absolute;
-  z-index: 3;
-  margin: 0;
-  padding: 10px 16px;
-  // max-width: 215px;
-  top: 16px;
-  left: 40px;
-  background: white;
-  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.1s $ease;
-  a {
-    &:hover {
-      color: $colorRed;
+@include r($lg) {
+  .categoryTitle {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .categoryList {
+    a {
+      font-size: 14px;
+      padding-top: 4px;
+      padding-bottom: 5px;
+      display: block;
     }
+  }
+}
+
+@include r($md) {
+  .category {
+    margin-bottom: 0;
   }
 }

@@ -1,3 +1,10 @@
 .catalog {
   position: relative;
 }
+
+@include r($lg) {
+  .catalog {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}

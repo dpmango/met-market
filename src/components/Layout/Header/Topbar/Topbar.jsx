@@ -21,7 +21,7 @@ const Topbar = observer(({ className }) => {
               <span>Москва</span>
             </a>
           </div>
-          <div className={rootStyles.colSecond}>
+          <div className={cns(rootStyles.colSecond, styles.colSecond)}>
             <a href="/catalog.pdf" target="_blank" className={cns(styles.topbarAction, styles.iconed, styles.price)}>
               <SvgIcon name="pdf" />
               <span className="w-700">Прайс-лист</span>

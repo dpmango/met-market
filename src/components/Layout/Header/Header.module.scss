@@ -20,6 +20,13 @@
   border-bottom: 1px solid rgba(47, 47, 47, 0.3);
 }
 
+.wrapper {
+  display: flex;
+  align-items: center;
+  padding: 44px 0 32px;
+  transition: padding 0.25s $ease;
+}
+
 .colMain {
   flex: 0 0 267px;
   max-width: 267px;
@@ -36,11 +43,8 @@
   display: flex;
 }
 
-.wrapper {
-  display: flex;
-  align-items: center;
-  padding: 44px 0 32px;
-  transition: padding 0.25s $ease;
+.colMobile {
+  display: none;
 }
 
 .catalogCta {
@@ -51,6 +55,112 @@
   font-weight: 700;
   :global .hamburger {
     margin-right: 8px;
+  }
+}
+
+.logo {
+  display: inline-block;
+  font-size: 0;
+  img {
+    max-width: 100%;
+  }
+}
+
+.logoTablet {
+  display: none;
+}
+
+@include r($xl) {
+  .wrapper {
+    padding: 32px 0 32px;
+  }
+  .colMain {
+    flex-basis: 160px;
+    max-width: 160px;
+  }
+  .logo {
+    max-width: 116px;
+  }
+  .logoDesktop {
+    display: none;
+  }
+  .logoTablet {
+    display: block;
+  }
+}
+
+@include r($lg) {
+  .colSecond {
+    flex-basis: 146px;
+    max-width: 146px;
+  }
+}
+
+@include r($md) {
+  .header {
+    &._scrolled {
+      transform: translateY(-10px);
+      .wrapper {
+        padding-top: 14px;
+        padding-bottom: 10px;
+      }
+    }
+  }
+  .main {
+    border-bottom: 0;
+  }
+
+  .wrapper {
+    flex-wrap: wrap;
+    padding-top: 14px;
+    padding-bottom: 10px;
+  }
+
+  .colMobile {
+    flex: 0 0 40px;
+    display: block;
+    order: 1;
+  }
+
+  .colThrid {
+    order: 4;
+    width: 100%;
+    .cartmenu {
+      display: none;
+    }
+  }
+
+  .colMain {
+    flex: 0 0 auto;
+    order: 2;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .colSecond {
+    order: 3;
+    flex: 0 0 40px;
+    max-width: 40px;
+  }
+
+  .catalogCta {
+    background: transparent !important;
+    padding-left: 10px;
+    padding-right: 10px;
+    :global .hamburger {
+      transform: scale(2);
+      transform-origin: center center;
+      span {
+        background: $colorPrimary;
+      }
+    }
+    > span {
+      display: none;
+    }
+  }
+  .logo {
+    svg {
+      max-width: 105px;
+    }
   }
 }
 

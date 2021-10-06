@@ -26,7 +26,7 @@
 .headTitle {
   font-weight: bold;
   font-size: 28px;
-  line-height: 38px;
+  line-height: (38 / 28);
 }
 
 .headSubtitle {
@@ -101,4 +101,88 @@
   height: 3px;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 5px;
+}
+
+@include r($lg) {
+  .help {
+    margin: 32px 0 0;
+    padding-bottom: 64px;
+  }
+
+  .content {
+    padding: 40px 20px 40px 40px;
+  }
+
+  .head {
+    margin: 0 0;
+  }
+
+  .headTitle {
+    font-size: 24px;
+  }
+  .headSubtitle {
+    margin-top: 12px;
+    font-size: 16px;
+  }
+
+  .form {
+    margin-top: 28px;
+    max-width: 468px;
+  }
+
+  .formInput {
+    :global input {
+      padding: 16px 180px 16px 20px;
+      font-size: 14px;
+    }
+  }
+
+  .formButton {
+    min-width: 1px;
+  }
+
+  .decor {
+    bottom: 30px;
+  }
+}
+
+@include r($md) {
+  .content {
+    padding: 35px 30px;
+    text-align: center;
+  }
+  .headTitle {
+    font-size: 22px;
+  }
+  .headSubtitle {
+    margin-top: 16px;
+    font-size: 16px;
+  }
+
+  .form {
+    flex-wrap: wrap;
+    margin-top: 28px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .formInput {
+    :global input {
+      padding: 16px 20px 16px 20px;
+      font-size: 14px;
+    }
+  }
+
+  .formButton {
+    display: block;
+    margin-top: 8px;
+    position: relative;
+    top: 0;
+    left: 0;
+    min-width: 1px;
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
 }

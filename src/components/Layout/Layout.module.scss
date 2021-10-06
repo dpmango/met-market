@@ -15,3 +15,14 @@
   flex: 1 0 auto;
   padding-top: 171px;
 }
+
+@include r($lg) {
+  .main {
+    padding-top: 153px;
+  }
+}
+@include r($md) {
+  .main {
+    padding-top: 120px;
+  }
+}

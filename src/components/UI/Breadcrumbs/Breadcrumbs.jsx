@@ -41,38 +41,36 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
     });
   };
 
-  return (
+  return crumbs && crumbs.length > 0 ? (
     <div className={cns(styles.breadcrumbsScroll, scrolled && !catalogOpened && styles._sticky)}>
       <div className="container">
         <div className={styles.breadcrumbs}>
-          {crumbs && crumbs.length > 0 && (
-            <ul className={styles.breadcrumbsList}>
-              <li>
-                <Link to="/">Главная</Link>
+          <ul className={styles.breadcrumbsList}>
+            <li>
+              <Link to="/">Главная</Link>
+              <SvgIcon name="arrow-long" />
+            </li>
+            {crumbs.slice(0, crumbs.length - 1).map((crumb, idx) => (
+              <li key={idx}>
+                {crumb.href && <Link to={crumb.href}>{crumb.text}</Link>}
+                {crumb.category && (
+                  <a href={`?category=${crumb.category}`} onClick={(e) => handleCategoryClick(crumb.category, e)}>
+                    {crumb.text}
+                  </a>
+                )}
+                {!crumb.href && !crumb.category && <span>{crumb.text}</span>}
                 <SvgIcon name="arrow-long" />
               </li>
-              {crumbs.slice(0, crumbs.length - 1).map((crumb, idx) => (
-                <li key={idx}>
-                  {crumb.href && <Link to={crumb.href}>{crumb.text}</Link>}
-                  {crumb.category && (
-                    <a href={`?category=${crumb.category}`} onClick={(e) => handleCategoryClick(crumb.category, e)}>
-                      {crumb.text}
-                    </a>
-                  )}
-                  {!crumb.href && !crumb.category && <span>{crumb.text}</span>}
-                  <SvgIcon name="arrow-long" />
-                </li>
-              ))}
+            ))}
 
-              <li className={styles.last}>
-                <span>{lastCrumb.text}</span>
-              </li>
-            </ul>
-          )}
+            <li className={styles.last}>
+              <span>{lastCrumb.text}</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-  );
+  ) : null;
 });
 
 export default memo(Breadcrumbs);

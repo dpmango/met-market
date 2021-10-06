@@ -18,6 +18,7 @@ import CartMenu from './CartMenu';
 import ScrollTop from './ScrollTop';
 import styles from './Header.module.scss';
 import { ReactComponent as Logo } from '@assets/logo.svg';
+import { ReactComponent as LogoTablet } from '@assets/logo-tablet.svg';
 
 const Header = observer(({ className }) => {
   const [scrolledToFooter, setScrolledToFooter] = useState(false);
@@ -61,9 +62,13 @@ const Header = observer(({ className }) => {
         <div className={styles.main}>
           <div className="container">
             <div className={styles.wrapper}>
+              <div className={styles.colMobile}>
+                <CartMenu showLabel={false} />
+              </div>
               <div className={styles.colMain}>
-                <Link to="/">
-                  <Logo />
+                <Link to="/" className={styles.logo}>
+                  <Logo className={styles.logoDesktop} />
+                  <LogoTablet className={styles.logoTablet} />
                 </Link>
               </div>
               <div className={styles.colSecond}>
@@ -80,8 +85,8 @@ const Header = observer(({ className }) => {
                 </Button>
               </div>
               <div className={styles.colThrid}>
-                <Search />
-                <CartMenu />
+                <Search className={styles.search} />
+                <CartMenu className={styles.cartmenu} />
               </div>
             </div>
           </div>

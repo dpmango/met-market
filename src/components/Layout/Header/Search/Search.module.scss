@@ -10,6 +10,25 @@
   }
 }
 
+@include r($md) {
+  .search {
+    position: relative;
+    margin-right: 0;
+    margin-top: 12px;
+    &::after {
+      display: inline-block;
+      content: ' ';
+      position: absolute;
+      left: -16px;
+      z-index: 1;
+      right: -16px;
+      top: -10px;
+      height: 1px;
+      background: rgba(47, 47, 47, 0.3);
+    }
+  }
+}
+
 .searchInput {
   -webkit-appearance: none;
   position: relative;

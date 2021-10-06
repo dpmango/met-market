@@ -50,3 +50,30 @@
     background: transparent;
   }
 }
+
+@include r($lg) {
+  .colSecond {
+    flex: 0 0 auto;
+    max-width: 100%;
+    margin-left: auto;
+  }
+  .topbarLinks {
+    flex: 0 1 auto;
+  }
+  .topbarAction {
+    span {
+      font-size: 12px;
+    }
+  }
+  .iconed {
+    :global .svg-icon {
+      font-size: 16px;
+    }
+  }
+}
+
+@include r($md) {
+  .topbar {
+    display: none;
+  }
+}

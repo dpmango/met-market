@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-key */
-import React, { useContext, memo, useEffect } from 'react';
+import React, { useContext, useState, memo, useEffect, useCallback } from 'react';
 import { observer } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
 import { UiStoreContext } from '@store';
-import { useQuery } from '@hooks';
+import { useQuery, useWindowSize } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
+import CategorySub from '../CategorySub';
 import styles from './CategoryMain.module.scss';
 
 const CategoryMain = observer(({ category }) => {
@@ -45,18 +46,7 @@ const CategoryMain = observer(({ category }) => {
       <ul className={styles.categoryList}>
         {category.categories &&
           category.categories.map((cat2) => (
-            <li key={cat2.id}>
-              <a onClick={() => handleCategoryClick(cat2.id)}>{cat2.name}</a>
-              {cat2.categories && (
-                <ul className={styles.categoryDropdown}>
-                  {cat2.categories.map((cat3) => (
-                    <li key={cat3.id}>
-                      <a onClick={() => handleCategoryClick(cat3.id)}>{cat3.name}</a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
+            <CategorySub key={cat2.id} category={cat2} handleCategoryClick={handleCategoryClick} />
           ))}
       </ul>
     </div>

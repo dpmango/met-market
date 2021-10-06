@@ -96,9 +96,11 @@ const CatalogCategories = observer(() => {
 
   return (
     <div className="catalog mt-2 mb-2">
-      <div className={cns(styles.breadcrumbs)}>
-        <Breadcrumbs crumbs={breadcrumbs} />
-      </div>
+      {breadcrumbs && breadcrumbs.length > 0 && (
+        <div className={cns(styles.breadcrumbs)}>
+          <Breadcrumbs crumbs={breadcrumbs} />
+        </div>
+      )}
 
       {categoryData ? (
         <>

@@ -23,6 +23,7 @@
 .contentText {
   color: white;
   padding-left: 72px;
+  padding-right: 20px;
 }
 
 .contentTitle {
@@ -99,7 +100,7 @@
 .formTitle {
   font-weight: bold;
   font-size: 28px;
-  line-height: 38px;
+  line-height: (38 / 28);
   color: $colorPrimary;
   text-align: center;
 }
@@ -141,4 +142,65 @@
   height: 3px;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 5px;
+}
+
+@include r($xl) {
+  .hero {
+    margin: 32px 0 48px;
+  }
+  .contentText {
+    padding-left: 30px;
+  }
+}
+
+@include r($lg) {
+  .hero {
+    margin: 20px 0 40px;
+  }
+  .contentText {
+    padding-left: 10px;
+  }
+  .contentTitle {
+    font-size: 22px;
+  }
+  .contentList li {
+    font-size: 12px;
+  }
+
+  .formTitle {
+    font-size: 16px;
+  }
+  .formInput {
+    :global input {
+      padding-left: 15px;
+    }
+  }
+  .formButton {
+    min-width: 1px;
+  }
+  .formHelper {
+    font-size: 10px;
+  }
+
+  .contentBox {
+    max-width: 340px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@include r($md) {
+  .content {
+    flex-wrap: wrap;
+  }
+
+  .contentText {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .contentBox {
+    margin-right: auto;
+    margin-left: 0;
+    margin-top: 16px;
+  }
 }
