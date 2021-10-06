@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { useToasts } from 'react-toast-notifications';
 import cns from 'classnames';
 
-import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
+import { Modal, Spinner, Button, Input, NumInput, SvgIcon } from '@ui';
 import { UiStoreContext, CatalogStoreContext, CartStoreContext } from '@store';
 import { formatPrice } from '@helpers';
 
@@ -13,7 +13,6 @@ import styles from './AddToCart.module.scss';
 const AddToCart = observer(() => {
   const { addToast } = useToasts();
 
-  const history = useHistory();
   const { activeModal, modalParams } = useContext(UiStoreContext);
   const { getCategoryByName } = useContext(CatalogStoreContext);
   const cartContext = useContext(CartStoreContext);
@@ -174,11 +173,8 @@ const AddToCart = observer(() => {
             <form className={styles.actions} onSubmit={handleCartSubmit}>
               <div className={styles.actionsWrapper}>
                 <div className={styles.actionCol}>
-                  <Input
+                  <NumInput
                     label={`Количество, ${modalParams.priceQuantityUnit}`}
-                    placeholder=""
-                    type="number"
-                    min="1"
                     value={count}
                     onChange={(v) => setCount(v)}
                   />

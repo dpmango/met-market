@@ -1,9 +1,8 @@
-import React, { useRef, useEffect, useState, useContext, useMemo, useCallback } from 'react';
+import React, { useState, useContext, useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 
-import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
-import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
+import { Spinner, NumInput, SvgIcon } from '@ui';
 import { formatPrice } from '@helpers';
 
 import styles from './CartProduct.module.scss';
@@ -39,12 +38,10 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
     <tr key={product.id}>
       <td>{product.itemFullName}</td>
       <td>
-        <Input
+        <NumInput
           className={styles.numInput}
           value={product.count}
-          min="1"
           onChange={(count) => handleUpdate(count, product)}
-          type="number"
         />
       </td>
       <td>{formatPrice(product.pricePerItem, 0)}</td>
