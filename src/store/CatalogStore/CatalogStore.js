@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import { findNodeById, findNodeByName, formatPrice } from '@helpers';
 import qs from 'qs';
+import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/Strings';
 
 import service from './api-service';
 
@@ -100,8 +101,13 @@ export default class CatalogStore {
       const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
 
       if (terms) {
-        const queries = txt.toLowerCase().split(' ');
-        return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
+        const test = prepareSmartSearchRegexp(clearMorphologyInSearchTerm(txt.toLowerCase()));
+        const regex = new RegExp(test, 'i');
+
+        return regex.test(terms);
+
+        // const queries = txt.toLowerCase().split(' ');
+        // return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
       }
 
       return false;

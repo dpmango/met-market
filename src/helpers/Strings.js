@@ -1,13 +1,32 @@
+/* eslint-disable quotes */
+
 export const formatUGC = (txt) => {
   return txt.trim().replace(/<[^>]*(>|$)|&nbsp;|&zwnj;|&raquo;|&laquo;|&gt;/g, '');
 };
 
-function clearMorphologyInSearchTerm(searchTerm) {
+export function prepareSmartSearchRegexp(str) {
+  const strings = str.match(/"[^"]+"|[^ ]+/g) || [''];
+
+  let regexPattern =
+    '^(?=.*?(^|\\s)' +
+    strings
+      .map((e) => {
+        if ('"' === e.charAt(0)) {
+          let f = e.match(/^"(.*)"$/);
+          e = f ? f[1] : e;
+        }
+        return e.replace('"', '');
+      })
+      .join(')(?=.*?(^|\\s)') +
+    ').*$';
+  return regexPattern;
+}
+
+export function clearMorphologyInSearchTerm(searchTerm) {
   let trimmedSearchTerm = searchTerm
     .replaceAll('\n', ' ')
     .replaceAll('\r', ' ')
     .replaceAll('\t', ' ')
-    // eslint-disable-next-line quotes
     .replaceAll("'", ' ')
     .replaceAll('"', ' ')
     .replaceAll('`', ' ')
@@ -20,4 +39,8 @@ function clearMorphologyInSearchTerm(searchTerm) {
   });
   let joined = blocks.join(' ');
   return joined;
+}
+
+function trimRightChars(str, chars) {
+  return str.replace(new RegExp(`${chars}\$`, 'g'), '');
 }
