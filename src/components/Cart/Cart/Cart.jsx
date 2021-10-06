@@ -10,6 +10,7 @@ import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
 import { formatPrice } from '@helpers';
 import { ruPhoneRegex } from '@helpers/Validation';
 
+import CartProduct from './CartProduct';
 import styles from './Cart.module.scss';
 
 const formInitial = {
@@ -33,42 +34,52 @@ const Cart = observer(() => {
   const [agree, setAgree] = useState(false);
   const [resetContext, setResetContext] = useState(false);
 
-  const handleCartDelete = useCallback(async (id) => {
-    setResetContext(false);
+  const handleCartDelete = useCallback(
+    async (id) => {
+      setResetContext(false);
 
-    if (id === 'batch') {
-      sessionContext.createSession();
-      uiContext.resetModal();
-      return;
-    }
-    setLoading(true);
+      if (id === 'batch') {
+        sessionContext.createSession();
+        uiContext.resetModal();
+        return;
+      }
 
-    await cartContext
-      .removeCartItem({ itemId: id })
-      .then((_res) => null)
-      .catch((_error) => {
-        addToast('Ошибка при удалении', { appearance: 'error' });
-      });
+      if (loading) return;
 
-    setLoading(false);
-  }, []);
+      setLoading(true);
 
-  const handleCartUpdate = useCallback(async (count, item) => {
-    const { itemId, pricePerItem } = item;
+      await cartContext
+        .removeCartItem({ itemId: id })
+        .then((_res) => null)
+        .catch((_error) => {
+          addToast('Ошибка при удалении', { appearance: 'error' });
+        });
 
-    setLoading(true);
+      setLoading(false);
+    },
+    [loading]
+  );
 
-    await cartContext
-      .updateCartItem({ itemId, count, pricePerItem })
-      .then((_res) => {
-        // addToast('Корзина обновлена', { appearance: 'success' });
-      })
-      .catch((_error) => {
-        addToast('Ошибка при обновлении', { appearance: 'error' });
-      });
+  const handleCartUpdate = useCallback(
+    async (count, item) => {
+      const { itemId, pricePerItem } = item;
 
-    setLoading(false);
-  }, []);
+      if (loading) return;
+      setLoading(true);
+
+      await cartContext
+        .updateCartItem({ itemId, count, pricePerItem })
+        .then((_res) => {
+          // addToast('Корзина обновлена', { appearance: 'success' });
+        })
+        .catch((_error) => {
+          addToast('Ошибка при обновлении', { appearance: 'error' });
+        });
+
+      setLoading(false);
+    },
+    [loading]
+  );
 
   const handleValidation = (values) => {
     const errors = {};
@@ -107,7 +118,7 @@ const Cart = observer(() => {
 
   return (
     <Modal name="cart" variant={cartCount ? 'main' : 'narrow'}>
-      <div className={styles.cart}>
+      <div className={cns(styles.cart, loading && styles._loading)}>
         {cartCount ? (
           <>
             <div className={styles.head}>
@@ -148,25 +159,12 @@ const Cart = observer(() => {
                 {cart &&
                   cart.length > 0 &&
                   cart.map((c) => (
-                    <tr key={c.id}>
-                      <td>{c.itemFullName}</td>
-                      <td>
-                        <Input
-                          className={styles.numInput}
-                          value={c.count}
-                          min="1"
-                          onChange={(count) => handleCartUpdate(count, c)}
-                          type="number"
-                        />
-                      </td>
-                      <td>{formatPrice(c.pricePerItem, 0)}</td>
-                      <td>{formatPrice(c.pricePerItem * c.count, 0)}</td>
-                      <td>
-                        <div className={styles.delete} onClick={() => handleCartDelete(c.itemId)}>
-                          <SvgIcon name="delete" />
-                        </div>
-                      </td>
-                    </tr>
+                    <CartProduct
+                      product={c}
+                      key={c.id}
+                      handleCartDelete={handleCartDelete}
+                      handleCartUpdate={handleCartUpdate}
+                    />
                   ))}
               </tbody>
             </table>
@@ -179,7 +177,7 @@ const Cart = observer(() => {
             <Formik initialValues={formInitial} validate={handleValidation} onSubmit={handleSubmit}>
               {({ isSubmitting, values }) => (
                 <Form className={styles.actions}>
-                  <div className={cns('row')}>
+                  <div className="row">
                     <div className="col col-4">
                       {delivery === false ? (
                         <Button theme="primary" outline onClick={() => setDelivery(true)}>
@@ -244,6 +242,7 @@ const Cart = observer(() => {
                             mask="+7 (999) 999-99-99"
                             value={field.value}
                             error={meta.touched && meta.error}
+                            showError={false}
                             onChange={(v) => {
                               setFieldValue(field.name, v);
                             }}
@@ -269,8 +268,6 @@ const Cart = observer(() => {
               )}
             </Formik>
 
-            <div className={styles.actions}></div>
-
             {/* <div className="dev-log">{JSON.stringify(cart, null, 2)}</div> */}
           </>
         ) : (
@@ -287,6 +284,7 @@ const Cart = observer(() => {
               className={styles.emptyCta}
               theme="accent"
               iconRight="arrow-long"
+              loading={loading}
               onClick={() => uiContext.resetModal()}>
               Каталог
             </Button>

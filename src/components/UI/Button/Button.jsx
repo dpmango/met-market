@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
 import cns from 'classnames';
 
-import { SvgIcon } from '@ui';
+import { SvgIcon, Spinner } from '@ui';
 import styles from './Button.module.scss';
 
 const Themes = {
@@ -38,7 +38,19 @@ const VariantClasses = {
   [Variants.BIG]: styles._big,
 };
 
-const Button = ({ children, className, theme, variant, type, outline, block, iconLeft, iconRight, ...props }) => {
+const Button = ({
+  children,
+  className,
+  theme,
+  variant,
+  type,
+  outline,
+  block,
+  loading,
+  iconLeft,
+  iconRight,
+  ...props
+}) => {
   const classStyle = cns(
     styles.btn,
     theme && ThemeClasses[theme],
@@ -46,6 +58,7 @@ const Button = ({ children, className, theme, variant, type, outline, block, ico
     outline && styles._outline,
     block && styles._block,
     (iconLeft || iconRight) && styles._iconed,
+    loading && styles._loading,
     iconLeft && styles._iconLeft,
     iconRight && styles._iconRight,
     className
@@ -60,6 +73,8 @@ const Button = ({ children, className, theme, variant, type, outline, block, ico
 
         {children}
 
+        {loading && <Spinner theme="button" color="#FFF" />}
+
         {iconRight && <SvgIcon name={iconRight} />}
       </button>
     );
@@ -73,6 +88,7 @@ Button.propTypes = {
   type: PropTypes.string,
   outline: PropTypes.bool,
   block: PropTypes.bool,
+  loading: PropTypes.bool,
   iconRight: PropTypes.string,
   iconLeft: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,

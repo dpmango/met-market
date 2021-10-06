@@ -1,6 +1,26 @@
 .cart {
   position: relative;
   padding: 30px 20px;
+  &::after {
+    display: inline-block;
+    content: ' ';
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(white, 0.5);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+  &._loading {
+    &::after {
+      pointer-events: all;
+      opacity: 1;
+    }
+  }
 }
 
 .head {
@@ -92,14 +112,6 @@
       border-bottom: 1px solid $borderColor;
       transition: background 0.15s $ease, border 0.15s $ease;
     }
-  }
-}
-
-.numInput {
-  width: 83px;
-  :global input {
-    padding-top: 8px;
-    padding-bottom: 8px;
   }
 }
 
@@ -197,6 +209,7 @@
 
 .actions {
   border-top: 1px solid #c4c4c4;
+
   padding: 30px 16px 0;
 }
 

@@ -27,6 +27,7 @@ const Input = ({
   onChange,
   mask,
   error,
+  showError,
   ...props
 }) => {
   const id = useMemo(() => {
@@ -90,7 +91,7 @@ const Input = ({
 
         {clearIcon}
 
-        {error && <div className={styles.error}>{error}</div>}
+        {error && showError && <div className={styles.error}>{error}</div>}
       </div>
     </div>
   );
@@ -106,6 +107,7 @@ Input.propTypes = {
   modifier: PropTypes.string,
   variant: PropTypes.string,
   error: PropTypes.oneOfType([PropTypes.string, PropTypes.boolean]),
+  showError: PropTypes.bool,
   onChange: PropTypes.func,
   mask: PropTypes.string,
   style: PropTypes.object,
@@ -113,6 +115,7 @@ Input.propTypes = {
 
 Input.defaultProps = {
   variant: Variants.DEFAULT,
+  showError: true,
 };
 
 export default memo(Input);

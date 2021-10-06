@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { useTable, usePagination } from 'react-table';
+import { useToasts } from 'react-toast-notifications';
 import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
@@ -11,11 +11,16 @@ import { formatPrice } from '@helpers';
 import styles from './AddToCart.module.scss';
 
 const AddToCart = observer(() => {
+  const { addToast } = useToasts();
+
   const history = useHistory();
   const { activeModal, modalParams } = useContext(UiStoreContext);
   const { getCategoryByName } = useContext(CatalogStoreContext);
   const cartContext = useContext(CartStoreContext);
+  const uiContext = useContext(UiStoreContext);
 
+  const [loading, setLoading] = useState(false);
+  const [cartUpdated, setСartUpdated] = useState(true);
   const [count, setCount] = useState(1);
 
   const cartItem = useMemo(() => {
@@ -28,53 +33,77 @@ const AddToCart = observer(() => {
 
   // actions
   const handleCartSubmit = useCallback(
-    (event) => {
+    async (event) => {
       event.preventDefault();
+      if (loading) return;
+
+      setLoading(true);
 
       const { id, price, nameFull } = modalParams;
 
       if (!cartItem) {
-        cartContext
+        await cartContext
           .addCartItem({ itemId: id, count, pricePerItem: price, itemFullName: nameFull })
           .then((_res) => {
-            // history.push(routes.HOME);
+            uiContext.resetModal();
           })
           .catch((_error) => {
             // dispatch({ key: 'error', value: _error });
           });
       } else {
-        cartContext
+        if (cartUpdated) {
+          setLoading(false);
+          return;
+        }
+
+        setСartUpdated(false);
+        await cartContext
           .updateCartItem({ itemId: id, count, pricePerItem: price })
           .then((_res) => {
-            // history.push(routes.HOME);
+            setСartUpdated(true);
           })
           .catch((_error) => {
-            // dispatch({ key: 'error', value: _error });
+            addToast('сбой подключения, проверьте наличие интернета и попробуйте еще раз', { appearance: 'error' });
           });
       }
+
+      setLoading(false);
     },
-    [modalParams, count, cartItem]
+    [loading, cartUpdated, modalParams, count, cartItem]
   );
 
-  const handleCartDelete = useCallback(() => {
+  const handleCartDelete = useCallback(async () => {
     const { id } = modalParams;
+    setLoading(true);
 
-    cartContext
+    await cartContext
       .removeCartItem({ itemId: id })
       .then((_res) => {
         // history.push(routes.HOME);
       })
       .catch((_error) => {
-        // dispatch({ key: 'error', value: _error });
+        addToast('сбой подключения, проверьте наличие интернета и попробуйте еще раз', { appearance: 'error' });
       });
+
+    setLoading(false);
   }, [modalParams]);
 
+  // effects
   useEffect(() => {
     if (activeModal === null) {
       setCount(1);
+    } else {
+      if (cartItem) {
+        setCount(cartItem.count);
+      }
     }
   }, [activeModal]);
 
+  useEffect(() => {
+    setСartUpdated(false);
+  }, [count]);
+
+  // memos
   const itemCategory = useMemo(() => {
     if (!modalParams) return;
     const { cat1, cat2, cat3 } = modalParams;
@@ -91,7 +120,7 @@ const AddToCart = observer(() => {
 
   return (
     <Modal name="cart-add">
-      <div className={styles.cart}>
+      <div className={cns(styles.cart, loading && styles._loading)}>
         {modalParams && activeModal === 'cart-add' ? (
           <>
             <div className={styles.head}>
@@ -173,12 +202,12 @@ const AddToCart = observer(() => {
                 </div>
                 <div className={cns(styles.actionCol, styles.wide)}>
                   {!cartItem ? (
-                    <Button theme="link" type="submit">
+                    <Button theme="link" type="submit" loading={loading}>
                       Добавить в корзину
                     </Button>
                   ) : (
-                    <Button theme="link" type="submit">
-                      Обновить в корзине
+                    <Button theme="link" type="submit" disabled={cartUpdated} loading={loading}>
+                      {cartUpdated ? 'Коризна обновлена' : 'Обновить в коризне'}
                     </Button>
                   )}
                 </div>

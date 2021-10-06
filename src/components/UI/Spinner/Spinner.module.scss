@@ -1,6 +1,15 @@
 .loader {
-  margin: 24px 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  &.primary {
+    margin: 24px 0;
+  }
+  &._button {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }

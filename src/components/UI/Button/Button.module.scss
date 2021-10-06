@@ -60,6 +60,12 @@
         background: $colorPrimary;
       }
     }
+    &[disabled] {
+      color: white;
+      background-color: #789fff;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
   }
   &._gray {
     background: $colorGray;
@@ -153,6 +159,16 @@
   &._iconRight {
     svg {
       margin-left: 14px;
+    }
+  }
+  &._loading {
+    position: relative;
+    // font-size: 0;
+    color: transparent;
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
     }
   }
   &[disabled] {
