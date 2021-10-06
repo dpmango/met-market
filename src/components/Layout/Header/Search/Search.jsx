@@ -34,22 +34,6 @@ const Search = observer(({ className }) => {
   const inputRef = useRef(null);
 
   // debounced getter
-  const setQuery = (textNormalized) => {
-    sessionContext.setLog({
-      type: 'search',
-      payload: textNormalized,
-    });
-
-    updateQueryParams({
-      location,
-      history,
-      query,
-      payload: {
-        type: 'search',
-        value: `${textNormalized}`,
-      },
-    });
-  };
 
   const searchFunc = useCallback(
     debounce((txt) => {
@@ -58,7 +42,21 @@ const Search = observer(({ className }) => {
       const { meta } = catalogContext.searchCatalog(textNormalized, null);
 
       if (textNormalized.length > 2) {
-        setQuery(textNormalized);
+        updateQueryParams({
+          location,
+          history,
+          query,
+          payload: {
+            type: 'search',
+            value: `${textNormalized}`,
+          },
+        });
+
+        sessionContext.setLog({
+          type: 'search',
+          payload: textNormalized,
+        });
+
         setSearchMeta({
           total: meta.total,
           query: textNormalized,
@@ -71,7 +69,7 @@ const Search = observer(({ className }) => {
 
       setLoading(false);
     }, settings.delay),
-    [location, history, query]
+    [location, history]
   );
 
   useEffect(() => {
@@ -86,12 +84,26 @@ const Search = observer(({ className }) => {
 
       const textNormalized = formatUGC(searchText);
       if (textNormalized.length > 2) {
-        setQuery(textNormalized);
+        updateQueryParams({
+          location,
+          history,
+          query,
+          payload: {
+            type: 'search',
+            value: `${textNormalized}`,
+          },
+        });
+
+        sessionContext.setLog({
+          type: 'search',
+          payload: textNormalized,
+        });
+
         setSuggestionsOpened(false);
         setSearchText('');
       }
     },
-    [searchText]
+    [searchText, history, location]
   );
 
   const handleSearchTermClick = useCallback(
