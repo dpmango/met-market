@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-
+import { catalog } from '@store';
 export default class UiStore {
+  prevModal = null;
   activeModal = null;
   modalParams = null;
   header = {
@@ -18,6 +19,7 @@ export default class UiStore {
 
   // assuming only one modal at given time
   setModal(name, params) {
+    this.prevModal = this.activeModal;
     this.activeModal = name;
     if (params) {
       this.modalParams = params;
@@ -27,6 +29,7 @@ export default class UiStore {
   }
 
   resetModal() {
+    this.prevModal = this.activeModal;
     this.activeModal = null;
     this.modalParams = null;
   }
@@ -38,5 +41,17 @@ export default class UiStore {
 
   setScrolled(state) {
     this.header.scrolled = state;
+  }
+
+  checkQuery(query) {
+    const params = query;
+
+    const product = params.get('product');
+    if (product) {
+      const item = catalog.getCatalogItem(product);
+      if (item) {
+        this.setModal('cart-add', { ...item });
+      }
+    }
   }
 }

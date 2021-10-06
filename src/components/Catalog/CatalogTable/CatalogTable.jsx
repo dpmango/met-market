@@ -7,7 +7,7 @@ import cns from 'classnames';
 
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
-import { useQuery } from '@hooks';
+import { useQuery, useFirstRender } from '@hooks';
 import { updateQueryParams, Plurize, ScrollTo } from '@helpers';
 
 import StickyHead from './StickyHead';
@@ -20,10 +20,13 @@ const CatalogTable = observer(() => {
   const query = useQuery();
   const categoryQuery = query.get('category');
   const searchQuery = query.get('search');
+  const productQuery = query.get('product');
+  const firstRender = useFirstRender();
 
   const { loading, catalog, catalogList, searchCatalog, getCatalogItem, getCategoryByName, filters } =
     useContext(CatalogStoreContext);
   const { cartItemIds } = useContext(CartStoreContext);
+  const { activeModal, prevModal, modalParams } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
   // router for search and regular catalog with filters
@@ -69,11 +72,42 @@ const CatalogTable = observer(() => {
   const handleAddToCartClick = useCallback(
     (id) => {
       const item = getCatalogItem(id);
-
-      uiContext.setModal('cart-add', { ...item });
+      // uiContext.setModal('cart-add', { ...item });
+      updateQueryParams({
+        history,
+        location,
+        query,
+        payload: {
+          type: 'product',
+          value: item.id,
+        },
+      });
     },
-    [getCatalogItem]
+    [getCatalogItem, history, location, query]
   );
+
+  const clearQueryParams = () => {
+    updateQueryParams({
+      history,
+      location,
+      query,
+      payload: {
+        type: 'clear-modals',
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      uiContext.checkQuery(query);
+    }
+  }, [loading, productQuery]);
+
+  useEffect(() => {
+    if (activeModal === null && prevModal === 'cart-add') {
+      clearQueryParams();
+    }
+  }, [activeModal, prevModal]);
 
   const handleCategoryClick = (cat_name) => {
     const category = getCategoryByName(cat_name);
@@ -152,6 +186,7 @@ const CatalogTable = observer(() => {
                   {groupingHeader}
                   <tr
                     {...row.getRowProps()}
+                    data-id={row.cells[row.cells.length - 1].value}
                     onClick={() => handleAddToCartClick(row.cells[row.cells.length - 1].value)}>
                     {row.cells.map((cell) => {
                       const isIdRow = cell.column.id === 'id';

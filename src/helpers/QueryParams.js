@@ -10,6 +10,15 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
   };
 
   switch (payload.type) {
+    case 'clear-modals':
+      params.delete('product');
+      break;
+
+    case 'product':
+      mergeParam('product', payload.value);
+
+      break;
+
     case 'category':
       params.delete('search');
 

@@ -16,6 +16,12 @@
       padding-left: 40px;
       padding-right: 40px;
     }
+    .breadcrumbsList a {
+      color: $colorPrimary;
+      &:hover {
+        color: $colorLink;
+      }
+    }
   }
 }
 
