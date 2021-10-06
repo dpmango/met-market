@@ -25,6 +25,8 @@
 
 .table {
   width: 100%;
+  position: relative;
+  border-collapse: collapse;
   border-spacing: 0;
   margin: 16px 0 0;
   th,
@@ -59,9 +61,15 @@
   }
   thead {
     text-align: left;
+    tr {
+      width: 100%;
+    }
     th {
       border-top: 1px solid rgba(black, 0.1);
       background: #f5f5f5;
+      top: 130px;
+      position: -webkit-sticky;
+      position: sticky;
       &:first-child {
         border-left-color: rgba(black, 0.1);
         border-top-left-radius: 5px;

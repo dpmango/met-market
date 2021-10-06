@@ -10,6 +10,7 @@ import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
 import { updateQueryParams, Plurize, ScrollTo } from '@helpers';
 
+import StickyHead from './StickyHead';
 import styles from './CatalogTable.module.scss';
 import { settings } from './dataTables';
 
@@ -77,7 +78,6 @@ const CatalogTable = observer(() => {
   const handleCategoryClick = (cat_name) => {
     const category = getCategoryByName(cat_name);
 
-    console.log(category);
     updateQueryParams({
       history,
       location,
@@ -101,15 +101,7 @@ const CatalogTable = observer(() => {
       </div>
 
       <table {...getTableProps()} className={styles.table}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+        <StickyHead headerGroups={headerGroups} />
 
         {page && page.length > 0 && (
           <tbody {...getTableBodyProps()}>
@@ -125,15 +117,29 @@ const CatalogTable = observer(() => {
 
               if (!prevRow || prevRow.length === 0) {
                 showGrouping = true;
+
+                if (category === null || category === 'null') {
+                  category = categories[categories.length - 2];
+                }
               }
 
               if (categories[categories.length - 1]) {
                 if (prevRow && prevRow[prevRow.length - 1]) {
-                  showGrouping = category !== prevRow[prevRow.length - 1];
+                  let prevRowValue = prevRow[prevRow.length - 1];
+                  if (prevRowValue === null || prevRowValue === 'null') {
+                    try {
+                      prevRowValue = prevRow[prevRow.length - 2];
+                    } catch {}
+                  }
+
+                  if (prevRowValue !== null || prevRowValue !== 'null') {
+                    category = prevRowValue;
+                    showGrouping = category !== prevRowValue;
+                  }
                 }
               }
 
-              if (showGrouping && category) {
+              if (showGrouping) {
                 groupingHeader = (
                   <tr key={category} className={styles.groupTableHeader} onClick={() => handleCategoryClick(category)}>
                     <td colSpan="6">{category}</td>

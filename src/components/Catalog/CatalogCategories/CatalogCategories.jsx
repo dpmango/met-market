@@ -23,11 +23,6 @@ const CatalogCategories = observer(() => {
 
   const { categoriesList, searchCatalog, getCategoryFilters } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
-  // todo - move to crumbs conponent
-  const {
-    catalogOpened,
-    header: { scrolled },
-  } = useContext(UiStoreContext);
 
   // getters
   const categoryData = useMemo(() => {
@@ -89,11 +84,7 @@ const CatalogCategories = observer(() => {
   return (
     <div className="catalog mt-2 mb-2">
       <div className={cns(styles.breadcrumbs)}>
-        <div className={cns(styles.breadcrumbsScroll, scrolled && !catalogOpened && styles._sticky)}>
-          <div className="container">
-            <Breadcrumbs crumbs={breadcrumbs} />
-          </div>
-        </div>
+        <Breadcrumbs crumbs={breadcrumbs} />
       </div>
 
       {categoryData ? (

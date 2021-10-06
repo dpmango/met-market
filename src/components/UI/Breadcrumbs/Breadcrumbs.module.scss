@@ -2,6 +2,28 @@
   margin: 0;
 }
 
+.breadcrumbsScroll {
+  transition: background 0.25s $ease;
+  &._sticky {
+    position: fixed;
+    z-index: 8;
+    left: 0;
+    right: 0;
+    top: 79px;
+    padding: 20px 0;
+    background: white;
+    :global .container {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+}
+
+// @include r(1280) {
+//   .breadcrumbsScroll {
+//   }
+// }
+
 .breadcrumbsList {
   list-style: none;
   margin: -10px;

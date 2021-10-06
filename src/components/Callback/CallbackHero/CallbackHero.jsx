@@ -7,7 +7,7 @@ import cns from 'classnames';
 import debounce from 'lodash/debounce';
 
 import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
-import { UiStoreContext, CallbackStoreContext } from '@store';
+import { UiStoreContext, CatalogStoreContext, CallbackStoreContext } from '@store';
 import { ruPhoneRegex } from '@helpers/Validation';
 import { useQuery } from '@hooks';
 
@@ -26,6 +26,7 @@ const CallbackHero = observer(() => {
 
   const callbackContext = useContext(CallbackStoreContext);
   const uiContext = useContext(UiStoreContext);
+  const catalogContext = useContext(CatalogStoreContext);
 
   const [loading, setLoading] = useState(false);
 
@@ -88,7 +89,7 @@ const CallbackHero = observer(() => {
               </div>
               <ul className={styles.contentList}>
                 <li>Гарантия лучшей цены с заводов производителей </li>
-                <li>В наличии 8 765 позиций товара </li>
+                <li>В наличии {catalogContext.catalogLength} позиций товара </li>
                 <li>Полное соответствие ТУ и ГОСТам</li>
               </ul>
             </div>

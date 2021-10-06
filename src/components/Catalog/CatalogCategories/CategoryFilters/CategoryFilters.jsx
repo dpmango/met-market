@@ -18,25 +18,6 @@ const CategoryFilters = observer(({ image, data }) => {
   const { filters, someFiltersActive } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
 
-  const createOpitons = (options) => {
-    return options
-      .filter((x) => x)
-      .map((option) => ({
-        value: option,
-        label: option,
-      }));
-  };
-
-  const createOpitonsMark = (options) => {
-    return options
-      .filter((x) => x.name)
-      .map((option) => ({
-        value: option.name,
-        label: option.name,
-        isPopular: option.isPopular,
-      }));
-  };
-
   const resetFilters = (e) => {
     e.preventDefault();
 
@@ -64,19 +45,13 @@ const CategoryFilters = observer(({ image, data }) => {
       <div className={styles.filterContent}>
         <div className={cns('row', styles.filterContentRow)}>
           <div className="col col-3">
-            {data.size && (
-              <SelectFilter label="Размер" name="size" value={filters.size} options={createOpitons(data.size)} />
-            )}
+            {data.size && <SelectFilter label="Размер" name="size" value={filters.size} options={data.size} />}
           </div>
           <div className="col col-3">
-            {data.mark && (
-              <SelectFilter label="Марка" name="mark" value={filters.mark} options={createOpitonsMark(data.mark)} />
-            )}
+            {data.mark && <SelectFilter label="Марка" name="mark" value={filters.mark} options={data.mark} />}
           </div>
           <div className="col col-3">
-            {data.length && (
-              <SelectFilter label="Длина" name="length" value={filters.length} options={createOpitons(data.length)} />
-            )}
+            {data.length && <SelectFilter label="Длина" name="length" value={filters.length} options={data.length} />}
           </div>
           <div className="col col-3">
             <Button outline={true} disabled={!someFiltersActive} onClick={resetFilters}>

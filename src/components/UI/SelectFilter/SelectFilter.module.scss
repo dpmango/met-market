@@ -12,6 +12,8 @@
       transform: none;
     }
   }
+  // &._mini {
+  // }
 }
 
 .selectDisplay {
@@ -45,6 +47,30 @@
   font-size: 12px;
   line-height: 1;
   margin-right: 10px;
+}
+
+.selectDisplayMini {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: $colorRed;
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 50%;
+  color: white;
+  font-size: 0;
+  line-height: 0;
+  cursor: pointer;
+  transition: background 0.25s $ease;
+  :global .svg-icon {
+    font-size: 11px;
+    transform: translate(0, 1px);
+  }
+  &:hover {
+    background: $colorLink;
+  }
 }
 
 .selectOptions {
