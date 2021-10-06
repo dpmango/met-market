@@ -5,6 +5,7 @@ export default class UiStore {
   modalParams = null;
   header = {
     catalogOpened: false,
+    scrolled: false,
   };
 
   constructor() {
@@ -33,5 +34,9 @@ export default class UiStore {
   // header shared params globally
   setHeaderCatalog(state) {
     this.header.catalogOpened = state;
+  }
+
+  setScrolled(state) {
+    this.header.scrolled = state;
   }
 }

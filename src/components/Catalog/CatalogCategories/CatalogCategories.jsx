@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import cns from 'classnames';
 
 import { Breadcrumbs } from '@ui';
-import { CatalogStoreContext } from '@store';
+import { CatalogStoreContext, UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
 import { ScrollTo } from '@helpers';
 
@@ -17,9 +17,17 @@ const CatalogCategories = observer(() => {
   const query = useQuery();
   const category = query.get('category');
   const search = query.get('search');
+  const sizeFilter = query.get('size');
+  const markFilter = query.get('mark');
+  const lengthFilter = query.get('length');
 
   const { categoriesList, searchCatalog, getCategoryFilters } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
+  // todo - move to crumbs conponent
+  const {
+    catalogOpened,
+    header: { scrolled },
+  } = useContext(UiStoreContext);
 
   // getters
   const categoryData = useMemo(() => {
@@ -37,7 +45,7 @@ const CatalogCategories = observer(() => {
           }
         : null;
     }
-  }, [categoriesList, searchCatalog, category, search]);
+  }, [categoriesList, searchCatalog, category, search, sizeFilter, markFilter, lengthFilter]);
 
   const breadcrumbs = useMemo(() => {
     if (search) {
@@ -80,8 +88,12 @@ const CatalogCategories = observer(() => {
 
   return (
     <div className="catalog mt-2 mb-2">
-      <div className={styles.breadcrumbs}>
-        <Breadcrumbs crumbs={breadcrumbs} />
+      <div className={cns(styles.breadcrumbs)}>
+        <div className={cns(styles.breadcrumbsScroll, scrolled && !catalogOpened && styles._sticky)}>
+          <div className="container">
+            <Breadcrumbs crumbs={breadcrumbs} />
+          </div>
+        </div>
       </div>
 
       {categoryData ? (

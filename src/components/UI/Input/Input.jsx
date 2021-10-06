@@ -83,7 +83,7 @@ const Input = ({
         {props.type === 'textarea' ? (
           <textarea {...inputProps} />
         ) : mask ? (
-          <InputMask mask={mask} maskPlaceholder={props.maskPlaceholder} {...inputProps} />
+          <InputMask mask={mask} {...inputProps} />
         ) : (
           <input {...inputProps} />
         )}

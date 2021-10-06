@@ -135,7 +135,7 @@ const CatalogTable = observer(() => {
 
               if (showGrouping && category) {
                 groupingHeader = (
-                  <tr className={styles.groupTableHeader} onClick={() => handleCategoryClick(category)}>
+                  <tr key={category} className={styles.groupTableHeader} onClick={() => handleCategoryClick(category)}>
                     <td colSpan="6">{category}</td>
                   </tr>
                 );

@@ -20,11 +20,13 @@ import styles from './Header.module.scss';
 import { ReactComponent as Logo } from '@assets/logo.svg';
 
 const Header = observer(({ className }) => {
-  const [scrolled, setScrolled] = useState(false);
   const [scrolledToFooter, setScrolledToFooter] = useState(false);
 
   const { categoriesList } = useContext(CatalogStoreContext);
-  const { catalogOpened } = useContext(UiStoreContext);
+  const {
+    catalogOpened,
+    header: { scrolled },
+  } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
   const headerRef = useRef(null);
@@ -34,14 +36,14 @@ const Header = observer(({ className }) => {
       const nearFooter = window.scrollY + window.innerHeight > document.body.scrollHeight - 375;
 
       if (window.scrollY > 45) {
-        !scrolled && setScrolled(true);
+        !scrolled && uiContext.setScrolled(true);
       } else {
-        scrolled && setScrolled(false);
+        scrolled && uiContext.setScrolled(false);
       }
 
       setScrolledToFooter(nearFooter);
     }, 10),
-    [scrolled, setScrolled, setScrolledToFooter]
+    [scrolled, uiContext.uiContext, setScrolledToFooter]
   );
 
   useOnClickOutside(

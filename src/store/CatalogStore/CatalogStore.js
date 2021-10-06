@@ -221,13 +221,62 @@ export default class CatalogStore {
               ...(category.categories || []),
             ];
 
+        const processFilters = (cat_filters) => {
+          // passing display list of select filters
+          const sizeFilter = this.filters.size.map((v) => v.value);
+          const markFilter = this.filters.mark.map((v) => v.value);
+          const lengthFilter = this.filters.length.map((v) => v.value);
+
+          // find store items matching filters (table display list)
+          const matchedCatalogList = this.catalogList(cat_id, this.filters);
+          const mappedFilter = matchedCatalogList.map((x) => {
+            return { size: x.size, mark: x.mark, length: x.length };
+          });
+
+          // iterate filter select values through matching catalog element
+          // (sort out not found display values)
+          const haveFilter = (f) => f && f.length > 0;
+          const shouldFilterSize = !haveFilter(sizeFilter) && (haveFilter(markFilter) || haveFilter(lengthFilter));
+          const shouldFilterMark = !haveFilter(markFilter) && (haveFilter(sizeFilter) || haveFilter(lengthFilter));
+          const shouldFilterLength = !haveFilter(lengthFilter) && (haveFilter(sizeFilter) || haveFilter(markFilter));
+
+          const filterSize = (size) => {
+            if (shouldFilterSize) {
+              return mappedFilter.map((catMap) => catMap.size).includes(size);
+            }
+            return true;
+          };
+
+          const filterMark = (mark) => {
+            if (shouldFilterMark) {
+              return mappedFilter.map((catMap) => catMap.mark).includes(mark.name);
+            }
+
+            return true;
+          };
+
+          const filterLength = (length) => {
+            if (shouldFilterLength) {
+              return mappedFilter.map((catMap) => catMap.length).includes(length);
+            }
+
+            return true;
+          };
+
+          return {
+            size: cat_filters.size.filter(filterSize),
+            mark: cat_filters.mark.filter(filterMark),
+            length: cat_filters.length.filter(filterLength),
+          };
+        };
+
         return {
           id: cat_id,
           title: category.name,
           image: category.image,
           ancestors: category.ancestors,
           subcategories: mergedCategories,
-          filters: category.filters || null,
+          filters: category.filters ? processFilters(category.filters) : null,
         };
       }
     }
@@ -301,15 +350,15 @@ export default class CatalogStore {
     let length = [];
 
     if (paramsSize) {
-      size = paramsSize.split(',').map((x) => ({ value: x, label: x }));
+      size = paramsSize.split('|').map((x) => ({ value: x, label: x }));
     }
 
     if (paramsMark) {
-      mark = paramsMark.split(',').map((x) => ({ value: x, label: x }));
+      mark = paramsMark.split('|').map((x) => ({ value: x, label: x }));
     }
 
     if (paramsLength) {
-      length = paramsLength.split(',').map((x) => ({ value: x, label: x }));
+      length = paramsLength.split('|').map((x) => ({ value: x, label: x }));
     }
 
     const upFilter = {

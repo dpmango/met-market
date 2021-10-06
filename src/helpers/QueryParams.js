@@ -33,28 +33,19 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       const filter = payload.value;
 
       if (filter.size && filter.size.length > 0) {
-        mergeParam(
-          'size',
-          filter.size.map((x) => x.value)
-        );
+        mergeParam('size', filter.size.map((x) => x.value).join('|'));
       } else {
         params.delete('size');
       }
 
       if (filter.mark && filter.mark.length > 0) {
-        mergeParam(
-          'mark',
-          filter.mark.map((x) => x.value)
-        );
+        mergeParam('mark', filter.mark.map((x) => x.value).join('|'));
       } else {
         params.delete('mark');
       }
 
       if (filter.length && filter.length.length > 0) {
-        mergeParam(
-          'length',
-          filter.length.map((x) => x.value)
-        );
+        mergeParam('length', filter.length.map((x) => x.value).join('|'));
       } else {
         params.delete('length');
       }
