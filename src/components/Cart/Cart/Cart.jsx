@@ -17,6 +17,7 @@ const formInitial = {
   phone: '',
   delivery: '',
   comment: '',
+  agree: false,
 };
 
 const Cart = observer(() => {
@@ -87,6 +88,8 @@ const Cart = observer(() => {
       errors.phone = 'Введите телефон';
     } else if (!ruPhoneRegex.test(values.phone)) {
       errors.phone = 'Неверный номер телефона';
+    } else if (!values.agree) {
+      errors.agree = 'Необходимо согласие';
     }
     return errors;
   };
@@ -94,8 +97,6 @@ const Cart = observer(() => {
   const handleSubmit = useCallback(
     async (values, { resetForm }) => {
       setLoading(true);
-
-      console.log(values);
 
       await cartContext
         .submitCart({
@@ -250,14 +251,24 @@ const Cart = observer(() => {
                         )}
                       </Field>
 
-                      <Checkbox className={styles.actionBtnCta} isChecked={agree} onChange={() => setAgree(!agree)}>
-                        <span>
-                          Подтверждаю свое согласие на{' '}
-                          <a href="policy.pdf" target="_blank">
-                            обработку персональных данных
-                          </a>
-                        </span>
-                      </Checkbox>
+                      <Field type="checkbox" name="agree">
+                        {({ field, form: { setFieldValue }, meta }) => (
+                          <Checkbox
+                            className={styles.actionBtnCta}
+                            isChecked={field.value}
+                            error={meta.touched && meta.error}
+                            onChange={() => {
+                              setFieldValue(field.name, !field.value);
+                            }}>
+                            <span>
+                              Подтверждаю свое согласие на{' '}
+                              <a href="policy.pdf" target="_blank">
+                                обработку персональных данных
+                              </a>
+                            </span>
+                          </Checkbox>
+                        )}
+                      </Field>
 
                       <Button type="submit" theme="link" className={styles.actionMainBtnCta}>
                         Оформить заказ

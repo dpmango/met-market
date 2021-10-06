@@ -98,7 +98,12 @@ const CallbackHelp = observer(() => {
                     )}
                   </Field>
 
-                  <Button type="submit" theme="accent" className={styles.formButton} disabled={isSubmitting}>
+                  <Button
+                    type="submit"
+                    theme="accent"
+                    loading={loading}
+                    className={styles.formButton}
+                    disabled={isSubmitting}>
                     Заказать звонок
                   </Button>
                 </Form>

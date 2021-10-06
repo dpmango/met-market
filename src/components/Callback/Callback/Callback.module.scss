@@ -1,6 +1,26 @@
 .form {
   position: relative;
   padding: 16px;
+  &::after {
+    display: inline-block;
+    content: ' ';
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(white, 0.5);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+  &._loading {
+    &::after {
+      pointer-events: all;
+      opacity: 1;
+    }
+  }
 }
 
 .formTitle {

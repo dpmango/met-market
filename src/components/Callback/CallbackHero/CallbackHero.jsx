@@ -106,6 +106,8 @@ const CallbackHero = observer(() => {
                           placeholder="Телефон"
                           mask="+7 (999) 999-99-99"
                           value={field.value}
+                          error={meta.touched && meta.error}
+                          showError={false}
                           onChange={(v) => {
                             setFieldValue(field.name, v);
                             submitTyping(field.name, v);
@@ -114,7 +116,12 @@ const CallbackHero = observer(() => {
                       )}
                     </Field>
 
-                    <Button type="submit" theme="accent" className={styles.formButton} disabled={isSubmitting}>
+                    <Button
+                      type="submit"
+                      theme="accent"
+                      className={styles.formButton}
+                      loading={loading}
+                      disabled={isSubmitting}>
                       Заказать звонок
                     </Button>
                   </Form>
