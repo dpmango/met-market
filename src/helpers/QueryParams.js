@@ -9,6 +9,8 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
     }
   };
 
+  console.log('QUERY :: update payload', payload);
+
   switch (payload.type) {
     case 'clear-modals':
       params.delete('product');
@@ -27,10 +29,11 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       break;
 
     case 'search':
-      params.delete('category');
+      // params.delete('category');
       params.delete('size');
       params.delete('mark');
       params.delete('length');
+      params.delete('product');
 
       mergeParam('search', payload.value);
 
@@ -38,6 +41,7 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
 
     case 'filter':
       params.delete('search');
+      params.delete('product');
 
       const filter = payload.value;
 
@@ -65,6 +69,7 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       break;
   }
 
+  console.log('QUERY :: pushing params', params.toString());
   history.push({
     pathname: location.pathname,
     search: params.toString(),

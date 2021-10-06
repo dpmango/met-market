@@ -55,7 +55,7 @@ const Search = observer(({ className }) => {
     debounce((txt) => {
       const textNormalized = formatUGC(txt);
 
-      const { meta } = catalogContext.searchCatalog(textNormalized);
+      const { meta } = catalogContext.searchCatalog(textNormalized, null);
 
       if (textNormalized.length > 2) {
         setQuery(textNormalized);
@@ -71,7 +71,7 @@ const Search = observer(({ className }) => {
 
       setLoading(false);
     }, settings.delay),
-    []
+    [location, history, query]
   );
 
   useEffect(() => {

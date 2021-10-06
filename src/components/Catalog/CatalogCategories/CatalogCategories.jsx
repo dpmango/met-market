@@ -27,9 +27,22 @@ const CatalogCategories = observer(() => {
   // getters
   const categoryData = useMemo(() => {
     if (category) {
-      return getCategoryFilters(category);
+      const storeData = getCategoryFilters(category);
+
+      if (search) {
+        const data = searchCatalog(search, category);
+
+        return {
+          ...storeData,
+          searchtitle: `В категории «<span class="w-700 c-link">${storeData.title}</span>» ${
+            data.meta.total > 0 ? `найдено ${data.meta.total} товаров` : 'ничего не найдено'
+          } <br/>по запросу «<span class="w-700 c-link">${search}</span>»`,
+        };
+      }
+
+      return storeData;
     } else if (search) {
-      const data = searchCatalog(search);
+      const data = searchCatalog(search, null);
 
       return data
         ? {
@@ -43,14 +56,7 @@ const CatalogCategories = observer(() => {
   }, [categoriesList, searchCatalog, category, search, sizeFilter, markFilter, lengthFilter]);
 
   const breadcrumbs = useMemo(() => {
-    if (search) {
-      return [
-        {
-          href: '#',
-          text: 'Поиск',
-        },
-      ];
-    } else if (category && categoryData) {
+    if (category && categoryData) {
       const ancestors = categoryData.ancestors
         ? categoryData.ancestors.map((x) => ({
             category: x.id,
@@ -66,6 +72,13 @@ const CatalogCategories = observer(() => {
         ...ancestors,
         {
           text: categoryData.title,
+        },
+      ];
+    } else if (search) {
+      return [
+        {
+          href: '#',
+          text: 'Поиск',
         },
       ];
     }
@@ -89,7 +102,10 @@ const CatalogCategories = observer(() => {
 
       {categoryData ? (
         <>
-          <div className="h3-title" dangerouslySetInnerHTML={{ __html: categoryData.title }} />
+          <div
+            className="h3-title"
+            dangerouslySetInnerHTML={{ __html: categoryData.searchtitle || categoryData.title }}
+          />
           {categoryData.subcategories && (
             <div className={styles.tags}>
               <CategoryTags data={categoryData.subcategories} />

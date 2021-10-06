@@ -32,7 +32,7 @@ const CatalogTable = observer(() => {
   // router for search and regular catalog with filters
   const data = useMemo(() => {
     if (searchQuery) {
-      const { meta, suggestions } = searchCatalog(searchQuery);
+      const { meta, suggestions } = searchCatalog(searchQuery, categoryQuery);
       return suggestions;
     }
 

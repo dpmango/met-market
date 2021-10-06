@@ -96,8 +96,28 @@ export default class CatalogStore {
   // search in catalog searchTerms any match
   // todo - what kind of morphology processing is required ?
   // TODO - test performance hit in render ms
-  searchCatalog = computedFn((txt) => {
-    const matches = this.catalog.filter((x) => {
+  searchCatalog = computedFn((txt, category_id) => {
+    let source = this.catalog;
+
+    if (category_id) {
+      source = [
+        ...source.filter((cat_item) => {
+          const { cat1, cat2, cat3 } = cat_item;
+
+          const category_1 = this.getCategoryByName(cat1);
+          const category_2 = this.getCategoryByName(cat2);
+          const category_3 = this.getCategoryByName(cat3);
+
+          const firstMatch = category_1 && category_1.id.includes(category_id);
+          const secondMatch = category_2 && category_2.id.includes(category_id);
+          const thirdMatch = category_3 && category_3.id.includes(category_id);
+
+          return firstMatch || secondMatch || thirdMatch;
+        }),
+      ];
+    }
+
+    const matches = source.filter((x) => {
       const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
 
       if (terms) {
