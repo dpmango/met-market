@@ -85,11 +85,11 @@ const Callback = observer(() => {
             <div className={styles.formTitle}>Заявка на металл</div>
 
             <div className={styles.formCta}>
-              <a href="https://whatsupp.com" className={styles.formCtaLink}>
+              <a href="https://whatsupp.com" target="_blank" className={styles.formCtaLink} rel="noreferrer">
                 <SvgIcon name="social-whatsapp" />
                 <span>Whatsapp</span>
               </a>
-              <a href="https://t.me/" className={styles.formCtaLink}>
+              <a href="https://t.me/" target="_blank" className={styles.formCtaLink} rel="noreferrer">
                 <SvgIcon name="social-telegram" />
                 <span>Telegram</span>
               </a>

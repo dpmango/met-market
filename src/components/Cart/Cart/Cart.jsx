@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, memo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useToasts } from 'react-toast-notifications';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -7,7 +7,8 @@ import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
-import { formatPrice } from '@helpers';
+import { formatPrice, updateQueryParams } from '@helpers';
+import { useQuery } from '@hooks';
 import { ruPhoneRegex } from '@helpers/Validation';
 
 import CartProduct from './CartProduct';
@@ -22,6 +23,9 @@ const formInitial = {
 
 const Cart = observer(() => {
   const { addToast } = useToasts();
+  const history = useHistory();
+  const location = useLocation();
+  const query = useQuery();
 
   const { cart, cartCount, cartTotal } = useContext(CartStoreContext);
   const { cartNumber } = useContext(SessionStoreContext);
@@ -186,7 +190,7 @@ const Cart = observer(() => {
                         </Button>
                       ) : (
                         <>
-                          <Field type="tel" name="comment">
+                          <Field type="tel" name="delivery">
                             {({ field, form: { setFieldValue }, meta }) => (
                               <Input
                                 type="textarea"
@@ -296,7 +300,18 @@ const Cart = observer(() => {
               theme="accent"
               iconRight="arrow-long"
               loading={loading}
-              onClick={() => uiContext.resetModal()}>
+              onClick={() => {
+                uiContext.resetModal();
+                updateQueryParams({
+                  location,
+                  history,
+                  query,
+                  payload: {
+                    type: 'category',
+                    value: 'all',
+                  },
+                });
+              }}>
               Каталог
             </Button>
           </div>

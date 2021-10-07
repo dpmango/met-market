@@ -32,8 +32,8 @@
     transition: right 0.25s $ease;
   }
   &:hover {
-    background: $colorLink;
-    color: white;
+    background: #ddd;
+    // color: white;
   }
   &._active {
     &::after {

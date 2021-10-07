@@ -21,13 +21,19 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
     return uniqueId();
   }, []);
 
-  const handleUpClick = () => {
+  const handleUpClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     const newVal = parseFloat(value) + 0.1;
 
     onChange(newVal.toFixed(2));
   };
 
-  const handleDownClick = () => {
+  const handleDownClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     const newVal = parseFloat(value) - 0.1;
     if (newVal <= 0) {
       return false;

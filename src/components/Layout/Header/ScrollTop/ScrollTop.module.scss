@@ -38,6 +38,7 @@
   justify-content: center;
   cursor: pointer;
   margin-bottom: 15px;
+  color: $colorPrimary;
   transition: color 0.25s $ease, background 0.25s $ease;
   &:last-child {
     margin-bottom: 0;

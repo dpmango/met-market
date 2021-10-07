@@ -34,6 +34,7 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
     [loading, handleCartUpdate]
   );
 
+  console.log(product);
   return (
     <tr key={product.id} className={styles.product}>
       <td>{product.itemFullName}</td>
@@ -50,13 +51,21 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
       <td>
         <div className={styles.cell}>
           <span className={styles.mobtitle}>Цена с НДС</span>
-          {formatPrice(product.pricePerItem, 0)}
+          {formatPrice(product.pricePerItem, 0)} ₽/
+          {product.priceQuantityUnit}
         </div>
       </td>
       <td>
         <div className={styles.cell}>
           <span className={styles.mobtitle}>Сумма</span>
-          {!loading ? <>{formatPrice(product.pricePerItem * product.count, 0)}</> : <Spinner />}
+          {!loading ? (
+            <>
+              {formatPrice(product.pricePerItem * product.count, 0)} ₽/
+              {product.priceQuantityUnit}
+            </>
+          ) : (
+            <Spinner />
+          )}
         </div>
       </td>
       <td>

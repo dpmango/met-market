@@ -22,7 +22,7 @@ const CartMenu = observer(({ className, showLabel }) => {
           </div>
         )}
       </div>
-      {showLabel && <span>Коризна</span>}
+      {showLabel && <span>Корзина</span>}
     </div>
   );
 });

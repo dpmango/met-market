@@ -25,7 +25,7 @@ const Pagination = ({ page, count, onChange, canPreviousPage, canNextPage, ...pr
   return (
     <div className={styles.pagination}>
       <button disabled={!canPreviousPage} className={styles.button} onClick={handlePrev}>
-        Предидущая
+        Предыдущая
       </button>
 
       <div className={styles.list}>

@@ -84,7 +84,7 @@ const CallbackHero = observer(() => {
           <div className={styles.content}>
             <div className={styles.contentText}>
               <div className={styles.contentTitle}>
-                ОГРУЗИМ ЛЮБУЮ ПАРТИЮ <br />
+                ОТГРУЗИМ ЛЮБУЮ ПАРТИЮ <br />
                 МЕТАЛЛОПРОКАТА ЗА 24 ЧАСА
               </div>
               <ul className={styles.contentList}>

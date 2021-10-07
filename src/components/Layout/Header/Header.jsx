@@ -21,7 +21,7 @@ import { ReactComponent as Logo } from '@assets/logo.svg';
 import { ReactComponent as LogoTablet } from '@assets/logo-tablet.svg';
 
 const Header = observer(({ className }) => {
-  const [scrolledToFooter, setScrolledToFooter] = useState(false);
+  // const [scrolledToFooter, setScrolledToFooter] = useState(false);
 
   const { categoriesList } = useContext(CatalogStoreContext);
   const {
@@ -48,9 +48,9 @@ const Header = observer(({ className }) => {
         }
       }
 
-      setScrolledToFooter(nearFooter);
+      // setScrolledToFooter(nearFooter);
     }, 10),
-    [scrolled, uiContext.uiContext, setScrolledToFooter]
+    [scrolled, uiContext.uiContext]
   );
 
   useOnClickOutside(
@@ -119,7 +119,7 @@ const Header = observer(({ className }) => {
       <Callback />
       <CallbackSuccess />
 
-      <ScrollTop visible={scrolled} sticky={scrolledToFooter} />
+      <ScrollTop visible={scrolled} />
     </>
   );
 });

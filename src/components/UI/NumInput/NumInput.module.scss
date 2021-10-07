@@ -1,5 +1,6 @@
 .input {
   display: block;
+  user-select: none;
   &_wrapper {
     position: relative;
     z-index: 1;
