@@ -23,6 +23,7 @@ const CatalogTable = observer(() => {
   const productQuery = query.get('product');
   const firstRender = useFirstRender();
   const { width } = useWindowSize();
+  const catalogRef = useRef(null);
 
   const { loading, catalog, catalogList, searchCatalog, getCatalogItem, getCategoryByName, filters } =
     useContext(CatalogStoreContext);
@@ -135,7 +136,7 @@ const CatalogTable = observer(() => {
   if (!categoryQuery && !searchQuery) return null;
 
   return !loading ? (
-    <div className={styles.catalog}>
+    <div className={styles.catalog} ref={catalogRef}>
       <div className={styles.head}>
         <div className={styles.metaCount}>{metaItemsCount}</div>
         <Button theme="accent" className={styles.headCta} onClick={() => uiContext.setModal('callback')}>
@@ -184,7 +185,11 @@ const CatalogTable = observer(() => {
 
               if (showGrouping) {
                 groupingHeader = (
-                  <tr key={category} className={styles.groupTableHeader} onClick={() => handleCategoryClick(category)}>
+                  <tr
+                    href={`?category=${category}`}
+                    key={category}
+                    className={styles.groupTableHeader}
+                    onClick={() => handleCategoryClick(category)}>
                     <td colSpan="6">{category}</td>
                   </tr>
                 );
@@ -234,7 +239,7 @@ const CatalogTable = observer(() => {
           count={pageCount}
           onChange={(page) => {
             gotoPage(page - 1);
-            ScrollTo(0, 300);
+            ScrollTo(catalogRef.current.offsetTop - 60, 300);
           }}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}

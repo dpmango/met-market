@@ -19,7 +19,9 @@ const CategoryMain = observer(({ category }) => {
   const { catalogOpened } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
-  const handleCategoryClick = (id) => {
+  const handleCategoryClick = (id, e) => {
+    e && e.preventDefault();
+
     updateQueryParams({
       history,
       location,
@@ -39,9 +41,12 @@ const CategoryMain = observer(({ category }) => {
 
   return (
     <div className={styles.category} data-id={category.id}>
-      <div className={styles.categoryTitle} onClick={() => handleCategoryClick(category.id)}>
+      <a
+        href={`?category=${category.id}`}
+        className={styles.categoryTitle}
+        onClick={(e) => handleCategoryClick(category.id, e)}>
         {category.name}
-      </div>
+      </a>
 
       <ul className={styles.categoryList}>
         {category.categories &&

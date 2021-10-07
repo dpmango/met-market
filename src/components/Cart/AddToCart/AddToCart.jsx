@@ -18,6 +18,7 @@ const AddToCart = observer(() => {
   const cartContext = useContext(CartStoreContext);
   const uiContext = useContext(UiStoreContext);
 
+  const [modalData, setModalData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [cartUpdated, setСartUpdated] = useState(true);
   const [count, setCount] = useState(1);
@@ -102,10 +103,21 @@ const AddToCart = observer(() => {
     setСartUpdated(false);
   }, [count]);
 
+  useEffect(() => {
+    if (modalParams && activeModal === 'cart-add') {
+      setModalData(modalParams);
+    } else {
+      console.log('removing data');
+      setTimeout(() => {
+        setModalData(null);
+      }, 600);
+    }
+  }, [modalParams, activeModal]);
+
   // memos
   const itemCategory = useMemo(() => {
-    if (!modalParams) return;
-    const { cat1, cat2, cat3 } = modalParams;
+    if (!modalData) return;
+    const { cat1, cat2, cat3 } = modalData;
     const name = cat3 || cat2 || cat1 || null;
 
     if (name) {
@@ -115,54 +127,56 @@ const AddToCart = observer(() => {
     }
 
     return null;
-  }, [modalParams]);
+  }, [modalData]);
 
   return (
     <Modal name="cart-add">
       <div className={cns(styles.cart, loading && styles._loading)}>
-        {modalParams && activeModal === 'cart-add' ? (
+        {modalData ? (
           <>
             <div className={styles.head}>
-              <div className={styles.headTitle}>{modalParams.nameFull}</div>
+              <div className={styles.headTitle}>{modalData.nameFull}</div>
             </div>
 
             <div className={styles.body}>
               <div className={styles.bodyImage}>
-                <img src={itemCategory.image} alt={itemCategory.name} />
+                {itemCategory && <img src={itemCategory.image} alt={itemCategory.name} />}
               </div>
               <div className={styles.bodyTable}>
-                <div className={styles.row}>
-                  <span className={styles.rowLabel}>Тип товара</span>
-                  <span className={styles.rowContent}>{itemCategory.name}</span>
-                </div>
-                <div className={styles.row}>
-                  <span className={styles.rowLabel}>Код товара</span>
-                  <span className={styles.rowContent}>{modalParams.id}</span>
-                </div>
-                <div className={styles.row}>
-                  <span className={styles.rowLabel}>Размер</span>
-                  <span className={styles.rowContent}>{modalParams.size[0]}</span>
-                </div>
-                <div className={styles.row}>
-                  <span className={styles.rowLabel}>Марка</span>
-                  <span className={styles.rowContent}>{modalParams.mark[0]}</span>
-                </div>
-                <div className={styles.row}>
-                  <span className={styles.rowLabel}>Длина</span>
-                  <span className={styles.rowContent}>{modalParams.length[0]}</span>
-                </div>
+                <>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Тип товара</span>
+                    <span className={styles.rowContent}>{itemCategory ? itemCategory.name : <Spinner />}</span>
+                  </div>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Код товара</span>
+                    <span className={styles.rowContent}>{modalData.id}</span>
+                  </div>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Размер</span>
+                    <span className={styles.rowContent}>{modalData.size[0]}</span>
+                  </div>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Марка</span>
+                    <span className={styles.rowContent}>{modalData.mark[0]}</span>
+                  </div>
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Длина</span>
+                    <span className={styles.rowContent}>{modalData.length[0]}</span>
+                  </div>
+                </>
               </div>
             </div>
 
-            {cartItem && (
+            {cartItem && modalData && (
               <div className={styles.incart}>
                 <div className={styles.incartIcon}>
                   <SvgIcon name="cart-mini" />
                 </div>
                 <div className={styles.incartTitle}>
-                  В корзине {cartItem.count} {modalParams.priceQuantityUnit} на сумму{' '}
+                  В корзине {cartItem.count} {modalData.priceQuantityUnit} на сумму{' '}
                   {formatPrice(cartItem.pricePerItem * cartItem.count, 0)} ₽/
-                  {modalParams.priceQuantityUnit}
+                  {modalData.priceQuantityUnit}
                 </div>
                 <div className={styles.incartDelete} onClick={handleCartDelete}>
                   <SvgIcon name="delete" />
@@ -170,45 +184,49 @@ const AddToCart = observer(() => {
               </div>
             )}
 
-            <form className={styles.actions} onSubmit={handleCartSubmit}>
-              <div className={styles.actionsWrapper}>
-                <div className={styles.actionCol}>
-                  <NumInput
-                    label={`Количество, ${modalParams.priceQuantityUnit}`}
-                    value={count}
-                    onChange={(v) => setCount(v)}
-                  />
-                </div>
+            {modalData ? (
+              <form className={styles.actions} onSubmit={handleCartSubmit}>
+                <div className={styles.actionsWrapper}>
+                  <div className={styles.actionCol}>
+                    <NumInput
+                      label={`Количество, ${modalData.priceQuantityUnit}`}
+                      value={count}
+                      onChange={(v) => setCount(v)}
+                    />
+                  </div>
 
-                <div className={styles.actionCol}>
-                  <Input
-                    label="Цена с НДС"
-                    placeholder=""
-                    value={`${formatPrice(modalParams.price, 0)} /${modalParams.priceQuantityUnit}`}
-                    disabled
-                  />
+                  <div className={styles.actionCol}>
+                    <Input
+                      label="Цена с НДС"
+                      placeholder=""
+                      value={`${formatPrice(modalData.price, 0)} /${modalData.priceQuantityUnit}`}
+                      disabled
+                    />
+                  </div>
+                  <div className={styles.actionCol}>
+                    <Input
+                      label="Сумма"
+                      placeholder=""
+                      value={`${formatPrice(modalData.price * count, 0)} /${modalData.priceQuantityUnit}`}
+                      disabled
+                    />
+                  </div>
+                  <div className={cns(styles.actionCol, styles.wide)}>
+                    {!cartItem ? (
+                      <Button theme="link" type="submit" loading={loading}>
+                        Добавить в корзину
+                      </Button>
+                    ) : (
+                      <Button theme="link" type="submit" disabled={cartUpdated} loading={loading}>
+                        {cartUpdated ? 'Коризна обновлена' : 'Обновить в коризне'}
+                      </Button>
+                    )}
+                  </div>
                 </div>
-                <div className={styles.actionCol}>
-                  <Input
-                    label="Сумма"
-                    placeholder=""
-                    value={`${formatPrice(modalParams.price * count, 0)} /${modalParams.priceQuantityUnit}`}
-                    disabled
-                  />
-                </div>
-                <div className={cns(styles.actionCol, styles.wide)}>
-                  {!cartItem ? (
-                    <Button theme="link" type="submit" loading={loading}>
-                      Добавить в корзину
-                    </Button>
-                  ) : (
-                    <Button theme="link" type="submit" disabled={cartUpdated} loading={loading}>
-                      {cartUpdated ? 'Коризна обновлена' : 'Обновить в коризне'}
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </form>
+              </form>
+            ) : (
+              <Spinner />
+            )}
           </>
         ) : (
           <Spinner />

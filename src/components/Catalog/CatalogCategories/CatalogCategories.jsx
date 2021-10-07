@@ -66,7 +66,7 @@ const CatalogCategories = observer(() => {
 
       return [
         {
-          href: '/',
+          href: '?category',
           text: 'Каталог',
         },
         ...ancestors,
@@ -79,6 +79,13 @@ const CatalogCategories = observer(() => {
         {
           href: '#',
           text: 'Поиск',
+        },
+      ];
+    } else if (category) {
+      return [
+        {
+          href: '',
+          text: 'Каталог',
         },
       ];
     }

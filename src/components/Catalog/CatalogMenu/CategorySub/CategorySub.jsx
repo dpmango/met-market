@@ -23,7 +23,7 @@ const CategoryMain = observer(({ category, handleCategoryClick }) => {
         e.preventDefault();
         setOpened(!opened);
       } else {
-        handleCategoryClick(category.id);
+        handleCategoryClick(category.id, e);
       }
     },
     [opened, width, hasSub]
@@ -38,7 +38,7 @@ const CategoryMain = observer(({ category, handleCategoryClick }) => {
         <ul className={cns(styles.categoryDropdown, opened && styles._opened)}>
           {category.categories.map((cat3) => (
             <li key={cat3.id}>
-              <a href={`?category=${cat3.id}`} onClick={() => handleCategoryClick(cat3.id)}>
+              <a href={`?category=${cat3.id}`} onClick={(e) => handleCategoryClick(cat3.id, e)}>
                 {cat3.name}
               </a>
             </li>
