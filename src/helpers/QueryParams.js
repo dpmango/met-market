@@ -1,4 +1,11 @@
+const logPerformance = (DEV_perf, name) => {
+  const DEV_perf_end = performance.now();
+  console.log(`PERF :: ${name} :: ${(DEV_perf_end - DEV_perf).toFixed(2)} ms`);
+};
+
 export const updateQueryParams = ({ history, location, query, payload }) => {
+  const DEV_perf = performance.now();
+
   const params = query || new URLSearchParams();
   const curParams = params.toString();
 
@@ -89,4 +96,5 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       search: params.toString(),
     });
   }
+  logPerformance(DEV_perf, 'updateQueryParams');
 };

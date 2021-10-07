@@ -4,6 +4,6 @@ export default class ApiService {
   };
 
   handleSuccess = (msg) => {
-    console.log(msg);
+    // console.log(msg);
   };
 }

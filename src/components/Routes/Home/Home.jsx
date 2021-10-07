@@ -21,7 +21,7 @@ const HomePage = observer(() => {
       <AddToCart />
 
       <Helmet>
-        <title>Главная</title>
+        <title> Металлопрокат оптом и в розницу в Москве</title>
       </Helmet>
     </>
   );

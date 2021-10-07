@@ -138,7 +138,7 @@ const CatalogTable = observer(() => {
     });
   };
 
-  if (!categoryQuery && !searchQuery) return null;
+  if (categoryQuery === 'all' || (!categoryQuery && !searchQuery)) return null;
 
   return !loading ? (
     <div className={styles.catalog} ref={catalogRef}>

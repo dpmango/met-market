@@ -6,6 +6,11 @@ import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/
 
 import service from './api-service';
 
+const logPerformance = (DEV_perf, name) => {
+  const DEV_perf_end = performance.now();
+  console.log(`PERF :: ${name} :: ${(DEV_perf_end - DEV_perf).toFixed(2)} ms`);
+};
+
 export default class CatalogStore {
   loading = true;
   date = null;
@@ -44,6 +49,8 @@ export default class CatalogStore {
   }
 
   catalogList = computedFn((cat_id, filters) => {
+    const DEV_perf = performance.now();
+
     let returnable = [];
 
     if (cat_id) {
@@ -82,11 +89,14 @@ export default class CatalogStore {
       return true;
     };
 
-    return returnable
+    const result = returnable
       .filter(filterSize)
       .filter(filterMark)
       .filter(filterLength)
       .map((x) => this.normalizeCatalogItem(x));
+
+    logPerformance(DEV_perf, 'catalogList');
+    return result;
   });
 
   getCatalogItem = computedFn((item_id) => {
@@ -98,6 +108,7 @@ export default class CatalogStore {
   // TODO - test performance hit in render ms
   searchCatalog = computedFn((txt, category_id) => {
     let source = this.catalog;
+    const DEV_perf = performance.now();
 
     if (category_id) {
       source = [
@@ -120,11 +131,13 @@ export default class CatalogStore {
     const matches = source.filter((x) => {
       const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
 
-      if (terms) {
-        const test = prepareSmartSearchRegexp(clearMorphologyInSearchTerm(txt.toLowerCase()));
-        const regex = new RegExp(test, 'i');
+      if (terms && txt) {
+        const test = clearMorphologyInSearchTerm(txt.toLowerCase());
 
-        return regex.test(terms);
+        console.log('morh search', test);
+
+        const queries = test.toLowerCase().split(' ');
+        return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
 
         // const queries = txt.toLowerCase().split(' ');
         // return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
@@ -135,18 +148,23 @@ export default class CatalogStore {
 
     const suggestions = matches.map((item) => this.normalizeCatalogItem(item));
 
-    return {
+    const result = {
       meta: {
         total: matches.length,
       },
       suggestions: suggestions ? suggestions : [],
     };
+
+    logPerformance(DEV_perf, 'searchCatalog');
+    return result;
   });
 
   //////////////
   // categories
   /////////////
   get categoriesList() {
+    const DEV_perf = performance.now();
+
     if (this.categories.length === 0) {
       return [];
     }
@@ -192,9 +210,11 @@ export default class CatalogStore {
 
     const sorting = ['sortovoy', 'listovoy', 'nerzhaveyuschy', 'metizy', 'steel', 'prokat_trub', 'sudovaya_stal'];
 
-    return sorting.map((key) => ({
+    const result = sorting.map((key) => ({
       ...mappedList.find((x) => x.id === key),
     }));
+    logPerformance(DEV_perf, 'categoriesList');
+    return result;
   }
 
   getCategoryByName = computedFn((cat_name) => {
@@ -209,6 +229,8 @@ export default class CatalogStore {
   });
 
   getCategoryFilters = computedFn((cat_id) => {
+    const DEV_perf = performance.now();
+
     if (this.categoriesList && this.categoriesList.length) {
       // get depths first
       const category = findNodeById(this.categoriesList, cat_id);
@@ -303,7 +325,7 @@ export default class CatalogStore {
           };
         };
 
-        return {
+        const result = {
           id: cat_id,
           title: category.name,
           image: category.image,
@@ -311,6 +333,9 @@ export default class CatalogStore {
           subcategories: mergedCategories,
           filters: category.filters ? processFilters(category.filters) : null,
         };
+
+        logPerformance(DEV_perf, 'getCategoryFilters');
+        return result;
       }
     }
 
@@ -320,6 +345,7 @@ export default class CatalogStore {
   get someFiltersActive() {
     return this.filters.size.length || this.filters.mark.length || this.filters.length.length;
   }
+
   // API ACTIONS
   async getCatalog() {
     runInAction(() => {

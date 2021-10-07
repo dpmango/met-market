@@ -9,6 +9,7 @@ import debounce from 'lodash/debounce';
 import { Modal, Spinner, Button, Checkbox, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CallbackStoreContext } from '@store';
 import { ruPhoneRegex } from '@helpers/Validation';
+import { formatBytes, bytesToMegaBytes } from '@helpers';
 
 import styles from './Callback.module.scss';
 
@@ -19,8 +20,17 @@ const formInitial = {
   agree: false,
 };
 
+const uploader = {
+  allowedMime: ['image'],
+  maxSize: 5,
+  includeReader: false,
+};
+
 const Callback = observer(() => {
   const { addToast } = useToasts();
+  const fileInput = useRef(null);
+
+  const [files, setFiles] = useState([]);
 
   const callbackContext = useContext(CallbackStoreContext);
   const uiContext = useContext(UiStoreContext);
@@ -77,6 +87,41 @@ const Callback = observer(() => {
     }, 3000),
     []
   );
+
+  const handleKYCUpload = useCallback((e) => {
+    const { files } = e.target;
+
+    if (files && files[0]) {
+      const file = files[0];
+
+      // limit mime
+      if (uploader.allowedMime) {
+        if (!uploader.allowedMime.includes(file.type.split('/')[0])) {
+          addToast('Неверный формат файла', { appearance: 'error' });
+          e.target.value = '';
+          return false;
+        }
+      }
+
+      // limit size
+      if (uploader.maxSize) {
+        const sizeInMb = bytesToMegaBytes(file.size);
+
+        if (sizeInMb > uploader.maxSize) {
+          addToast('Максимальный размер файла 5мб', { appearance: 'error' });
+          e.target.value = '';
+          return false;
+        }
+      }
+
+      if (file) setFiles([file]);
+
+      e.target.value = '';
+    }
+
+    return true;
+  }, []);
+
   return (
     <Modal name="callback" variant="narrow">
       <Formik initialValues={formInitial} validate={handleValidation} onSubmit={handleSubmit}>
@@ -120,6 +165,7 @@ const Callback = observer(() => {
                   {({ field, form: { setFieldValue }, meta }) => (
                     <Input
                       placeholder="Телефон"
+                      className={styles.reqField}
                       mask="+7 (999) 999-99-99"
                       value={field.value}
                       error={meta.touched && meta.error}
@@ -135,7 +181,9 @@ const Callback = observer(() => {
                 <Field name="product">
                   {({ field, form: { setFieldValue }, meta }) => (
                     <Input
+                      type="textarea"
                       placeholder="Наименование товара"
+                      rows="1"
                       value={field.value}
                       error={meta.touched && meta.error}
                       onChange={(v) => {
@@ -147,7 +195,32 @@ const Callback = observer(() => {
                 </Field>
               </div>
 
-              <div className={styles.group}></div>
+              <div className={styles.group}>
+                <div className={styles.upload}>
+                  <input type="file" id="fileupload" name="fileupload" ref={fileInput} onChange={handleKYCUpload} />
+
+                  {files && files.length > 0 ? (
+                    <>
+                      {files.map((x, idx) => (
+                        <div key={idx} className={styles.uploadFile}>
+                          <div className={styles.deleteUpload} onClick={() => setFiles([])}>
+                            <SvgIcon name="close" />
+                          </div>
+                          {x.name}
+                          <span>{formatBytes(x.size)}</span>
+                        </div>
+                      ))}
+                      <label htmlFor="fileupload" onClick={() => fileInput.current.click()}>
+                        <Button iconRight="upload">Другой файл</Button>
+                      </label>
+                    </>
+                  ) : (
+                    <label htmlFor="fileupload" onClick={() => fileInput.current.click()}>
+                      <Button iconRight="upload">Загрузить смету</Button>
+                    </label>
+                  )}
+                </div>
+              </div>
 
               <div className={styles.group}>
                 <Field type="checkbox" name="agree">

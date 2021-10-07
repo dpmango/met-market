@@ -100,13 +100,13 @@ const SelectComponent = observer(
     return (
       <div className={cns(styles.select, mini && styles._mini, opened && styles._active, className)} ref={optionsRef}>
         {!mini ? (
-          <div className={styles.selectDisplay} onClick={() => setOpened(true)}>
+          <div className={styles.selectDisplay} onClick={() => setOpened(!opened)}>
             <span>{label}</span>
             {value.length > 0 && <div className={styles.selectDisplayTag}>{value.length}</div>}
             <SvgIcon name="caret" />
           </div>
         ) : (
-          <div className={styles.selectDisplayMini} onClick={() => setOpened(true)}>
+          <div className={styles.selectDisplayMini} onClick={() => setOpened(!opened)}>
             <SvgIcon name="filter" />
           </div>
         )}

@@ -34,7 +34,6 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
     [loading, handleCartUpdate]
   );
 
-  console.log(product);
   return (
     <tr key={product.id} className={styles.product}>
       <td>{product.itemFullName}</td>

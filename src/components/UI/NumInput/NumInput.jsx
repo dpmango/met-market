@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, memo } from 'react';
+import React, { useCallback, useState, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import cns from 'classnames';
 import uniqueId from 'lodash/uniqueId';
 
 import { SvgIcon } from '@ui';
+import { formatPrice } from '@helpers';
 import styles from './NumInput.module.scss';
 
 const Variants = {
@@ -21,13 +22,16 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
     return uniqueId();
   }, []);
 
+  const [innerValue, setValue] = useState(value);
+
   const handleUpClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     const newVal = parseFloat(value) + 0.1;
 
-    onChange(newVal.toFixed(2));
+    setValue(newVal.toFixed(1));
+    onChange(newVal.toFixed(1));
   };
 
   const handleDownClick = (e) => {
@@ -39,19 +43,57 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       return false;
     }
 
-    onChange(newVal.toFixed(2));
+    setValue(newVal.toFixed(1));
+    onChange(newVal.toFixed(1));
   };
 
   const onInputChange = useCallback((e) => {
-    onChange(e.target.value);
+    const val = e.target.value;
+    e.preventDefault();
+
+    if (val.split('.').length > 2) {
+      return;
+    }
+
+    setValue(e.target.value);
+  }, []);
+
+  const onBlur = useCallback(
+    (e) => {
+      const split = innerValue && innerValue.split('.');
+
+      if (!innerValue || innerValue < 0.1) {
+        setValue(0.1);
+        onChange(0.1);
+      } else if (split && split.length > 1) {
+        const limited = split[1].slice(0, 1);
+
+        setValue(`${split[0]}.${limited}`);
+        onChange(`${split[0]}.${limited}`);
+      } else {
+        onChange(innerValue);
+      }
+    },
+    [innerValue]
+  );
+
+  const onKeyDown = useCallback((e) => {
+    const isAllowedKey = [8, 13, 190].includes(e.keyCode); // backspace, enter, space
+    const isNumber = !Number.isNaN(parseFloat(e.key));
+
+    if (!isNumber && !isAllowedKey) {
+      event.preventDefault();
+    }
   }, []);
 
   const inputProps = {
     id,
     ref: inputRef,
     className: cns(styles.input_input, error && styles._withError),
-    value,
+    value: innerValue,
     onChange: onInputChange,
+    onBlur: onBlur,
+    onKeyDown: onKeyDown,
     ...props,
   };
 
@@ -64,7 +106,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       )}
 
       <div className={styles.input_wrapper}>
-        <input type="text" disabled {...inputProps} />
+        <input type="text" {...inputProps} />
 
         <div className={cns(styles.arrow, styles._up)} onClick={handleUpClick}>
           <SvgIcon name="up"></SvgIcon>

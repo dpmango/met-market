@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { useRef, useEffect, useReducer, useContext, useMemo, useCallback, memo } from 'react';
 import { observer } from 'mobx-react';
+import { Helmet } from 'react-helmet';
 import cns from 'classnames';
 
 import { Breadcrumbs } from '@ui';
@@ -126,6 +127,10 @@ const CatalogCategories = observer(() => {
               <CategoryFilters image={categoryData.image} data={categoryData.filters} />
             </div>
           )}
+
+          <Helmet>
+            <title>{categoryData.searchTitle || categoryData.title} оптом и в розницу в Москве</title>
+          </Helmet>
         </>
       ) : (
         <CatalogMenu list={categoriesList} className="mt-2 mb-2" />
