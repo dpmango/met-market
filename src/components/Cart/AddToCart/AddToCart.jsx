@@ -6,12 +6,14 @@ import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, NumInput, SvgIcon } from '@ui';
 import { UiStoreContext, CatalogStoreContext, CartStoreContext } from '@store';
+import { useFirstRender } from '@hooks';
 import { formatPrice } from '@helpers';
 
 import styles from './AddToCart.module.scss';
 
 const AddToCart = observer(() => {
   const { addToast } = useToasts();
+  const firstRender = useFirstRender();
 
   const { activeModal, modalParams } = useContext(UiStoreContext);
   const { getCategoryByName } = useContext(CatalogStoreContext);
@@ -107,10 +109,11 @@ const AddToCart = observer(() => {
     if (modalParams && activeModal === 'cart-add') {
       setModalData(modalParams);
     } else {
-      console.log('removing data');
-      setTimeout(() => {
-        setModalData(null);
-      }, 600);
+      if (!firstRender) {
+        setTimeout(() => {
+          setModalData(null);
+        }, 300);
+      }
     }
   }, [modalParams, activeModal]);
 

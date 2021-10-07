@@ -230,7 +230,7 @@ export default class CatalogStore {
         const lastLevel = !category.categories;
 
         const mergedCategories = lastLevel
-          ? parentCategory
+          ? parentCategory.name
             ? [
                 {
                   id: parentCategory.id,
@@ -240,10 +240,12 @@ export default class CatalogStore {
               ]
             : []
           : [
-              {
-                id: cat_id,
-                name: `Все товары категории «${category.name}»`,
-              },
+              category
+                ? {
+                    id: cat_id,
+                    name: `Все товары категории «${category.name}»`,
+                  }
+                : [],
               ...(category.categories || []),
             ];
 

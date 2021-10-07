@@ -35,6 +35,10 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       params.delete('length');
       params.delete('product');
 
+      if (params.get('category') === 'all') {
+        params.delete('category');
+      }
+
       mergeParam('search', payload.value);
 
       break;

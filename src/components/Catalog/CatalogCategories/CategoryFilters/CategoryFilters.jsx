@@ -6,7 +6,7 @@ import cns from 'classnames';
 
 import { Button, SelectFilter, Spinner } from '@ui';
 import { CatalogStoreContext } from '@store';
-import { useQuery } from '@hooks';
+import { useQuery, useFirstRender } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import styles from './CategoryFilters.module.scss';
@@ -15,13 +15,16 @@ const CategoryFilters = observer(({ image, data }) => {
   const query = useQuery();
   const location = useLocation();
   const history = useHistory();
+  const categoryQuery = query.get('category');
+  const firstRender = useFirstRender();
+
   const { filters, someFiltersActive } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
 
   const resetFilters = (e) => {
-    e.preventDefault();
+    e && e.preventDefault();
 
-    catalogContext.resetFilters();
+    // catalogContext.resetFilters();
     updateQueryParams({
       history,
       location,
@@ -36,6 +39,12 @@ const CategoryFilters = observer(({ image, data }) => {
       },
     });
   };
+
+  useEffect(() => {
+    if (!firstRender) {
+      resetFilters();
+    }
+  }, [categoryQuery]);
 
   return data ? (
     <div className={styles.filters}>

@@ -41,7 +41,7 @@ const Search = observer(({ className }) => {
 
       const { meta } = catalogContext.searchCatalog(textNormalized, null);
 
-      if (textNormalized.length > 2) {
+      if (textNormalized.length >= 2) {
         updateQueryParams({
           location,
           history,
@@ -57,14 +57,14 @@ const Search = observer(({ className }) => {
           payload: textNormalized,
         });
 
-        setSearchMeta({
-          total: meta.total,
-          query: textNormalized,
-        });
+        // setSearchMeta({
+        //   total: meta.total,
+        //   query: textNormalized,
+        // });
       } else {
-        setSearchMeta({
-          total: null,
-        });
+        // setSearchMeta({
+        //   total: null,
+        // });
       }
 
       setLoading(false);
@@ -83,7 +83,7 @@ const Search = observer(({ className }) => {
       e.preventDefault();
 
       const textNormalized = formatUGC(searchText);
-      if (textNormalized.length > 2) {
+      if (textNormalized.length >= 2) {
         updateQueryParams({
           location,
           history,
