@@ -71,6 +71,17 @@ export default class SessionStore {
       localStorage.setItem(LOCAL_STORAGE_LOG, JSON.stringify(newLogs));
     });
   }
+  removeLogs(log) {
+    runInAction(() => {
+      const newLogs = {
+        ...this.log,
+        [log]: [],
+      };
+      this.log = newLogs;
+
+      localStorage.setItem(LOCAL_STORAGE_LOG, JSON.stringify(newLogs));
+    });
+  }
 
   // api actions
   async init() {

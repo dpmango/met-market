@@ -12,7 +12,10 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.1s $ease;
-  a {
+  li a {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
     &:hover {
       color: $colorRed !important;
     }

@@ -192,6 +192,7 @@ const AddToCart = observer(() => {
                 <div className={styles.actionsWrapper}>
                   <div className={styles.actionCol}>
                     <NumInput
+                      variant="small"
                       label={`Количество, ${modalData.priceQuantityUnit}`}
                       value={count}
                       onChange={(v) => setCount(v)}
@@ -200,6 +201,7 @@ const AddToCart = observer(() => {
 
                   <div className={styles.actionCol}>
                     <Input
+                      variant="small"
                       label="Цена с НДС"
                       placeholder=""
                       value={`${formatPrice(modalData.price, 0)} /${modalData.priceQuantityUnit}`}
@@ -208,6 +210,7 @@ const AddToCart = observer(() => {
                   </div>
                   <div className={styles.actionCol}>
                     <Input
+                      variant="small"
                       label="Сумма"
                       placeholder=""
                       value={`${formatPrice(modalData.price * count, 0)} /${modalData.priceQuantityUnit}`}

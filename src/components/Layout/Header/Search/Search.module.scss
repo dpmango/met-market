@@ -133,6 +133,23 @@
   margin: 16px 0 0;
 }
 
+.suggestionsClear {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+  span {
+    font-size: 10px;
+    line-height: 13px;
+    text-decoration-line: underline;
+    color: rgba(#182d78, 0.5);
+    transition: color 0.25s $ease;
+    cursor: pointer;
+    &:hover {
+      color: $colorLink;
+    }
+  }
+}
+
 .suggestion {
   position: relative;
   z-index: 1;

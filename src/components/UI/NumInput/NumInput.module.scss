@@ -15,7 +15,7 @@
     max-width: 120px;
     background: white;
     font-family: $baseFont;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 16px;
     color: $fontColor;
     border: 1px solid $borderColor;
@@ -63,10 +63,10 @@
   }
   &._up {
     top: 0;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
   }
   &._down {
-    padding-top: 4px;
+    padding-top: 6px;
     bottom: 0;
   }
 }

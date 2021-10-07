@@ -15,7 +15,7 @@ const Variants = {
 
 const VariantClasses = {
   [Variants.DEFAULT]: null,
-  [Variants.SMALL]: 'small',
+  [Variants.SMALL]: styles._small,
 };
 
 const SelectComponent = ({ label, value, className, options, onChange, variant, ...props }) => {
@@ -30,13 +30,13 @@ const SelectComponent = ({ label, value, className, options, onChange, variant, 
   }, []);
 
   return (
-    <div className={cns(styles.select, className)}>
+    <div className={cns(styles.select, className, variant && VariantClasses[variant])}>
       {label && (
         <label className={styles.label} htmlFor={id}>
           {label}
         </label>
       )}
-      <div className={cns(styles.select_wrapper, 'select-container', variant && VariantClasses[variant])}>
+      <div className={cns(styles.select_wrapper, 'select-container')}>
         <Select
           className="react-select-container"
           classNamePrefix="react-select"

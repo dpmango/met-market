@@ -27,9 +27,20 @@
   }
 
   &._small {
-    .input_input {
-      padding-top: 10px;
-      padding-bottom: 10px;
+    :global .select-container {
+      .react-select__control {
+        min-height: 35px;
+        border-radius: 5px;
+      }
+      .react-select__single-value {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .react-select__value-container {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-left: 10px;
+      }
     }
   }
 }

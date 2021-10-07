@@ -157,7 +157,7 @@ const Cart = observer(() => {
   return (
     <Modal name="cart" variant={cartCount ? 'main' : 'narrow'}>
       <div className={cns(styles.cart, loading && styles._loading)}>
-        {cartCount && !loading ? (
+        {cartCount ? (
           <>
             <div className={styles.head}>
               <div className={styles.headTitle}>

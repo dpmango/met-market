@@ -123,7 +123,8 @@ const CatalogTable = observer(() => {
     return getCategoryByName(cat_name).id;
   };
 
-  const handleCategoryClick = (cat_name) => {
+  const handleCategoryClick = (cat_name, e) => {
+    e & e.preventDefault();
     const category = getCategoryByName(cat_name);
 
     updateQueryParams({
@@ -190,8 +191,12 @@ const CatalogTable = observer(() => {
               if (showGrouping) {
                 groupingHeader = (
                   <tr key={category} className={styles.groupTableHeader}>
-                    <td colSpan="6" onClick={(e) => handleCategoryClick(category)}>
-                      <a href={`?category=${getCategoryId(category)}`}>{category}</a>
+                    <td colSpan="6">
+                      <a
+                        href={`?category=${getCategoryId(category)}`}
+                        onClick={(e) => handleCategoryClick(category, e)}>
+                        {category}
+                      </a>
                     </td>
                   </tr>
                 );
@@ -250,6 +255,7 @@ const CatalogTable = observer(() => {
         <div className={styles.paginationPer}>
           <span className={styles.paginationPerLabel}>Показывать</span>
           <Select
+            variant="small"
             value={{ label: pageSize, value: pageSize }}
             onChange={(v) => setPageSize(v.value)}
             options={[

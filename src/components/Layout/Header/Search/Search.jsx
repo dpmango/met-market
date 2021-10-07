@@ -140,6 +140,10 @@ const Search = observer(({ className }) => {
     // setSuggestionsOpened(true);
   }, []);
 
+  const handleClearClick = useCallback(() => {
+    sessionContext.removeLogs('search');
+  }, []);
+
   useOnClickOutside(
     searchRef,
     useCallback((e) => setSuggestionsOpened(false), [setSuggestionsOpened])
@@ -195,6 +199,9 @@ const Search = observer(({ className }) => {
                         </div>
                       </div>
                     ))}
+                  </div>
+                  <div className={styles.suggestionsClear}>
+                    <span onClick={handleClearClick}>Очистить недавние</span>
                   </div>
                 </>
               )}
