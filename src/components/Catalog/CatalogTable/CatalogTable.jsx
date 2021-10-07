@@ -119,6 +119,10 @@ const CatalogTable = observer(() => {
     }
   }, [activeModal, prevModal]);
 
+  const getCategoryId = (cat_name) => {
+    return getCategoryByName(cat_name).id;
+  };
+
   const handleCategoryClick = (cat_name) => {
     const category = getCategoryByName(cat_name);
 
@@ -185,12 +189,10 @@ const CatalogTable = observer(() => {
 
               if (showGrouping) {
                 groupingHeader = (
-                  <tr
-                    href={`?category=${category}`}
-                    key={category}
-                    className={styles.groupTableHeader}
-                    onClick={() => handleCategoryClick(category)}>
-                    <td colSpan="6">{category}</td>
+                  <tr key={category} className={styles.groupTableHeader}>
+                    <td colSpan="6" onClick={(e) => handleCategoryClick(category)}>
+                      <a href={`?category=${getCategoryId(category)}`}>{category}</a>
+                    </td>
                   </tr>
                 );
               }
