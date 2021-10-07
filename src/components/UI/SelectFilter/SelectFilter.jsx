@@ -31,8 +31,9 @@ const SelectComponent = observer(
         return options
           .filter((x) => x)
           .map((option) => ({
-            value: option,
-            label: option,
+            value: option.value,
+            label: option.value,
+            disabled: option.disabled,
           }));
       } else {
         return options
@@ -41,6 +42,7 @@ const SelectComponent = observer(
             value: option.name,
             label: option.name,
             isPopular: option.isPopular,
+            disabled: option.disabled,
           }));
       }
     }, [options]);

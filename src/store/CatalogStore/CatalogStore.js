@@ -250,6 +250,8 @@ export default class CatalogStore {
             ];
 
         const processFilters = (cat_filters) => {
+          console.log('processing filters');
+
           // passing display list of select filters
           const sizeFilter = this.filters.size.map((v) => v.value);
           const markFilter = this.filters.mark.map((v) => v.value);
@@ -261,6 +263,10 @@ export default class CatalogStore {
             return { size: x.size, mark: x.mark, length: x.length };
           });
 
+          const sizes = mappedFilter.map((catMap) => catMap.size);
+          const marks = mappedFilter.map((catMap) => catMap.mark);
+          const lengths = mappedFilter.map((catMap) => catMap.length);
+
           // iterate filter select values through matching catalog element
           // (sort out not found display values)
           const haveFilter = (f) => f && f.length > 0;
@@ -269,32 +275,33 @@ export default class CatalogStore {
           const shouldFilterLength = !haveFilter(lengthFilter) && (haveFilter(sizeFilter) || haveFilter(markFilter));
 
           const filterSize = (size) => {
-            if (shouldFilterSize) {
-              return mappedFilter.map((catMap) => catMap.size).includes(size);
-            }
-            return true;
+            return {
+              value: size,
+              isPopular: size.isPopular !== undefined ? mark.isPopular : false,
+              disabled: shouldFilterSize ? !sizes.includes(size) : false,
+            };
           };
 
           const filterMark = (mark) => {
-            if (shouldFilterMark) {
-              return mappedFilter.map((catMap) => catMap.mark).includes(mark.name);
-            }
-
-            return true;
+            return {
+              name: mark.name,
+              isPopular: mark.isPopular !== undefined ? mark.isPopular : false,
+              disabled: shouldFilterMark ? !marks.includes(mark.name) : false,
+            };
           };
 
           const filterLength = (length) => {
-            if (shouldFilterLength) {
-              return mappedFilter.map((catMap) => catMap.length).includes(length);
-            }
-
-            return true;
+            return {
+              value: length,
+              isPopular: length.isPopular !== undefined ? length.isPopular : false,
+              disabled: shouldFilterLength ? !lengths.includes(length) : false,
+            };
           };
 
           return {
-            size: cat_filters.size.filter(filterSize),
-            mark: cat_filters.mark.filter(filterMark),
-            length: cat_filters.length.filter(filterLength),
+            size: cat_filters.size.map(filterSize),
+            mark: cat_filters.mark.map(filterMark),
+            length: cat_filters.length.map(filterLength),
           };
         };
 
