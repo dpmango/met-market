@@ -16,6 +16,14 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       params.delete('product');
       break;
 
+    case 'cart':
+      params.delete('cart');
+      if (payload.value) {
+        mergeParam('cart', payload.value);
+      }
+
+      break;
+
     case 'product':
       mergeParam('product', payload.value);
 

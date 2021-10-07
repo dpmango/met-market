@@ -29,6 +29,7 @@ const Cart = observer(() => {
 
   const { cart, cartCount, cartTotal } = useContext(CartStoreContext);
   const { cartNumber } = useContext(SessionStoreContext);
+  const { activeModal, prevModal, modalParams } = useContext(UiStoreContext);
   const cartContext = useContext(CartStoreContext);
   const sessionContext = useContext(SessionStoreContext);
   const uiContext = useContext(UiStoreContext);
@@ -121,10 +122,42 @@ const Cart = observer(() => {
     [cartTotal]
   );
 
+  useEffect(() => {
+    if (prevModal !== 'cart' && activeModal === 'cart') {
+      updateQueryParams({
+        location,
+        history,
+        query,
+        payload: {
+          type: 'cart',
+          value: true,
+        },
+      });
+    } else if (prevModal === 'cart' && activeModal === null) {
+      updateQueryParams({
+        location,
+        history,
+        query,
+        payload: {
+          type: 'cart',
+          value: false,
+        },
+      });
+    }
+  }, [activeModal, prevModal]);
+
+  useEffect(() => {
+    if (query.get('cart')) {
+      uiContext.setModal('cart');
+    } else {
+      uiContext.resetModal();
+    }
+  }, [query.get('cart')]);
+
   return (
     <Modal name="cart" variant={cartCount ? 'main' : 'narrow'}>
       <div className={cns(styles.cart, loading && styles._loading)}>
-        {cartCount ? (
+        {cartCount && !loading ? (
           <>
             <div className={styles.head}>
               <div className={styles.headTitle}>
