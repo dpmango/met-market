@@ -44,20 +44,20 @@ const CategoryFilters = observer(({ image, data }) => {
       </div>
       <div className={styles.filterContent}>
         <div className={cns('row', styles.filterContentRow)}>
-          <div className="col col-3">
+          <div className="col col-4">
             {data.size && <SelectFilter label="Размер" name="size" value={filters.size} options={data.size} />}
           </div>
-          <div className="col col-3">
+          <div className="col col-4">
             {data.mark && <SelectFilter label="Марка" name="mark" value={filters.mark} options={data.mark} />}
           </div>
-          <div className="col col-3">
+          <div className="col col-4">
             {data.length && <SelectFilter label="Длина" name="length" value={filters.length} options={data.length} />}
           </div>
-          <div className="col col-3">
-            <Button outline={true} disabled={!someFiltersActive} onClick={resetFilters}>
-              Сбросить фильтры
-            </Button>
-          </div>
+        </div>
+        <div className={styles.filterCta}>
+          <Button outline={true} disabled={!someFiltersActive} onClick={resetFilters}>
+            Сбросить фильтры
+          </Button>
         </div>
       </div>
     </div>

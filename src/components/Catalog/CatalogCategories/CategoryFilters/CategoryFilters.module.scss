@@ -2,6 +2,7 @@
   position: relative;
   z-index: 3;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 
@@ -20,9 +21,10 @@
 .filterContent {
   position: relative;
   z-index: 1;
-  flex: 0 0 calc(100% - 240px);
-  max-width: calc(100% - 240px);
+  flex: 0 0 calc(100% - 250px);
+  max-width: calc(100% - 250px);
   height: 100%;
+  display: flex;
   background: #eaecf5;
   border-radius: 5px;
   padding: 30px;
@@ -30,5 +32,51 @@
 }
 
 .filterContentRow {
+  flex: 1 1 auto;
   align-items: center;
+}
+
+.filterCta {
+  flex: 0 0 auto;
+  padding-left: 10px;
+}
+
+@include r($xl) {
+  .filterImage {
+    flex: 0 0 205px;
+    max-width: 205px;
+    img {
+      width: 100%;
+    }
+  }
+
+  .filterContent {
+    padding: 20px 15px;
+    flex: 0 0 calc(100% - 215px);
+    max-width: calc(100% - 215px);
+  }
+}
+@include r($lg) {
+  .filterContent {
+    :global .row {
+      margin: -5px;
+    }
+    :global .col {
+      padding: 5px;
+    }
+  }
+  .filterCta {
+    button {
+      padding: 9px 16px !important;
+      font-size: 12px;
+    }
+  }
+}
+
+@include r($md) {
+  .filterContent {
+    flex-basis: 100%;
+    max-width: 100%;
+    margin-left: 0;
+  }
 }

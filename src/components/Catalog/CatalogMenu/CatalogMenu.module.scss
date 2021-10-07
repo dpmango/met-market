@@ -1,5 +1,11 @@
 .catalog {
   position: relative;
+  :global .row {
+    margin: 0;
+  }
+  :global .col {
+    padding: 0;
+  }
 }
 
 @include r($lg) {

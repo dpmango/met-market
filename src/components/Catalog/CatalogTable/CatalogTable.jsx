@@ -7,7 +7,7 @@ import cns from 'classnames';
 
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
-import { useQuery, useFirstRender } from '@hooks';
+import { useQuery, useFirstRender, useWindowSize } from '@hooks';
 import { updateQueryParams, Plurize, ScrollTo } from '@helpers';
 
 import StickyHead from './StickyHead';
@@ -22,6 +22,7 @@ const CatalogTable = observer(() => {
   const searchQuery = query.get('search');
   const productQuery = query.get('product');
   const firstRender = useFirstRender();
+  const { width } = useWindowSize();
 
   const { loading, catalog, catalogList, searchCatalog, getCatalogItem, getCategoryByName, filters } =
     useContext(CatalogStoreContext);
@@ -61,6 +62,14 @@ const CatalogTable = observer(() => {
     },
     usePagination
   );
+
+  useEffect(() => {
+    if (width < 768) {
+      setPageSize(50);
+    } else {
+      setPageSize(100);
+    }
+  }, [width]);
 
   const metaItemsCount = useMemo(() => {
     const showing = pageSize >= data.length ? data.length : pageSize;

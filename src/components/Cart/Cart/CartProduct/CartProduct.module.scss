@@ -18,3 +18,18 @@
     color: $colorRed;
   }
 }
+
+.product {
+  position: relative;
+}
+
+@include r($md) {
+  .product {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    td {
+      width: 100%;
+    }
+  }
+}

@@ -95,7 +95,7 @@ const CatalogCategories = observer(() => {
   }, [query]);
 
   return (
-    <div className="catalog mt-2 mb-2">
+    <div className={cns(styles.root, 'catalog')}>
       {breadcrumbs && breadcrumbs.length > 0 && (
         <div className={cns(styles.breadcrumbs)}>
           <Breadcrumbs crumbs={breadcrumbs} />

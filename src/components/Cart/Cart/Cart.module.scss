@@ -273,3 +273,50 @@
     margin-top: 2px;
   }
 }
+
+@include r($md) {
+  .table {
+    th,
+    td {
+      font-size: 12px;
+      padding: 8px 8px;
+      &:nth-child(1) {
+        width: 100%;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      &:nth-child(2) {
+        width: 100%;
+      }
+      &:nth-child(3) {
+        width: 100%;
+      }
+      &:nth-child(4) {
+        width: 100%;
+      }
+      &:nth-child(5) {
+        width: 100%;
+        text-align: right;
+      }
+    }
+
+    thead {
+      th {
+        display: none;
+      }
+    }
+    tbody {
+      tr {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+      }
+
+      td {
+        width: 100%;
+        border: 0;
+        padding: 8px 8px;
+      }
+    }
+  }
+}

@@ -179,7 +179,7 @@ const Cart = observer(() => {
               {({ isSubmitting, values }) => (
                 <Form className={styles.actions}>
                   <div className="row">
-                    <div className="col col-4">
+                    <div className="col col-4 col-md-12">
                       {delivery === false ? (
                         <Button theme="primary" outline onClick={() => setDelivery(true)}>
                           + Добавить доставку
@@ -207,7 +207,7 @@ const Cart = observer(() => {
                         </>
                       )}
                     </div>
-                    <div className="col col-4">
+                    <div className="col col-4 col-md-12">
                       {comment === false ? (
                         <Button theme="primary" outline onClick={() => setComment(true)}>
                           + Комментарий
@@ -235,7 +235,7 @@ const Cart = observer(() => {
                         </>
                       )}
                     </div>
-                    <div className="col col-4">
+                    <div className="col col-4 col-md-12">
                       <Field type="tel" name="phone">
                         {({ field, form: { setFieldValue }, meta }) => (
                           <Input

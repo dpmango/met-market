@@ -1,5 +1,7 @@
 .root {
   position: relative;
+  margin-top: 32px;
+  margin-bottom: 32px;
 }
 
 .tags {
@@ -16,5 +18,17 @@
   :global .container {
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+@include r($lg) {
+  .root {
+    margin-top: 20px;
+  }
+  .tags {
+    margin-top: 20px;
+  }
+  .breadcrumbs {
+    margin: 20px 0 24px;
   }
 }

@@ -35,7 +35,7 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
   );
 
   return (
-    <tr key={product.id}>
+    <tr key={product.id} className={styles.product}>
       <td>{product.itemFullName}</td>
       <td>
         <NumInput

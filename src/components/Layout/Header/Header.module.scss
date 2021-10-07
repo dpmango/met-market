@@ -147,7 +147,7 @@
     padding-left: 10px;
     padding-right: 10px;
     :global .hamburger {
-      transform: scale(2);
+      transform: scale(2) translate(0, -2px);
       transform-origin: center center;
       span {
         background: $colorPrimary;

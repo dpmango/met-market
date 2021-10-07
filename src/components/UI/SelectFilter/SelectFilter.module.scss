@@ -23,6 +23,7 @@
   border-radius: 5px;
   padding: 12px 20px 12px 30px;
   cursor: pointer;
+  overflow: hidden;
   span {
     font-weight: 600;
     font-size: 15px;
@@ -30,6 +31,7 @@
     padding-right: 10px;
   }
   :global .svg-icon {
+    flex: 0 0 auto;
     font-size: 9px;
     margin-left: auto;
     transition: transform 0.25s $ease;
@@ -155,5 +157,14 @@
     font-size: 8px;
     transform: translate(-50%, -50%);
     color: white;
+  }
+}
+
+@include r($lg) {
+  .selectDisplay {
+    padding: 8px 20px 7px 20px;
+    span {
+      font-size: 12px;
+    }
   }
 }
