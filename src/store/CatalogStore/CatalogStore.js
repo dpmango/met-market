@@ -250,8 +250,6 @@ export default class CatalogStore {
             ];
 
         const processFilters = (cat_filters) => {
-          console.log('processing filters');
-
           // passing display list of select filters
           const sizeFilter = this.filters.size.map((v) => v.value);
           const markFilter = this.filters.mark.map((v) => v.value);

@@ -1,5 +1,6 @@
 export const updateQueryParams = ({ history, location, query, payload }) => {
   const params = query || new URLSearchParams();
+  const curParams = params.toString();
 
   const mergeParam = (name, value) => {
     if (params.get(name)) {
@@ -9,7 +10,7 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
     }
   };
 
-  console.log('QUERY :: update payload', payload);
+  // console.log('QUERY :: update payload', payload);
 
   switch (payload.type) {
     case 'clear-modals':
@@ -81,9 +82,11 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       break;
   }
 
-  console.log('QUERY :: pushing params', params.toString());
-  history.push({
-    pathname: location.pathname,
-    search: params.toString(),
-  });
+  if (curParams !== params.toString()) {
+    console.log('QUERY :: pushing params', params.toString());
+    history.push({
+      pathname: location.pathname,
+      search: params.toString(),
+    });
+  }
 };
