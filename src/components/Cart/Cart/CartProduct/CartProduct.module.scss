@@ -18,6 +18,18 @@
     color: $colorRed;
   }
 }
+.deleteMob {
+  display: none;
+}
+
+.mobtitle {
+  display: none;
+}
+
+.cell {
+  display: inline-flex;
+  align-items: center;
+}
 
 .product {
   position: relative;
@@ -28,8 +40,34 @@
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #c4c4c4;
+    transition: color 0.25s $ease;
+    &:hover {
+      background: #f5f5f5;
+    }
     td {
       width: 100%;
     }
+  }
+  .mobtitle {
+    display: inline-block;
+    min-width: 100px;
+    font-size: 12px;
+  }
+  .delete {
+    background: #aaa;
+    border-radius: 10px;
+    min-width: 1px;
+    color: white;
+    padding: 10px 15px;
+    &:hover {
+      background: $colorRed;
+      color: white;
+    }
+  }
+  .deleteMob {
+    display: inline-block;
+    margin-left: 14px;
   }
 }

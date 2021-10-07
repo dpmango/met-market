@@ -22,6 +22,9 @@
   :global .svg-icon {
     font-size: 18px;
   }
+  span {
+    display: none;
+  }
   &:hover {
     color: $colorRed;
   }
@@ -52,10 +55,11 @@
   }
 }
 
-@include r($sm) {
+@include r($md) {
   .container {
-    padding: 24px 16px;
+    padding: 50px 16px;
   }
+
   .head {
     flex-wrap: wrap;
     &_title {
@@ -67,5 +71,44 @@
   }
   .close {
     order: 1;
+    position: fixed;
+    z-index: 3;
+    top: 60px;
+    left: 0;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    background: $colorPrimary;
+    height: 50px;
+    padding: 12px 16px;
+    color: white;
+    :global .svg-icon {
+      margin-left: auto;
+    }
+    span {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+  }
+  .content {
+    display: block;
+  }
+
+  ._narrow {
+    padding: 50px 0 40px;
+    .close {
+      top: inherit;
+      right: 0;
+    }
+  }
+
+  ._thanks {
+    padding: 50px 20px 40px;
+    .close {
+      top: inherit;
+      right: 0;
+    }
   }
 }

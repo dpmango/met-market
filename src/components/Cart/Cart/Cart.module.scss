@@ -39,6 +39,18 @@
   }
 }
 
+@include r($md) {
+  .cart {
+    padding: 16px 0;
+  }
+  .head {
+    text-align: center;
+  }
+  .headTitle {
+    font-size: 16px;
+  }
+}
+
 .table {
   width: 100%;
   border-spacing: 0;
@@ -296,7 +308,10 @@
       }
       &:nth-child(5) {
         width: 100%;
-        text-align: right;
+        text-align: left;
+      }
+      &:first-child {
+        padding-left: 8px;
       }
     }
 
@@ -311,7 +326,11 @@
         flex-wrap: wrap;
         padding: 10px;
       }
-
+      tr:hover {
+        td {
+          background: transparent;
+        }
+      }
       td {
         width: 100%;
         border: 0;

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useCallback, useMemo } from 'react';
+import React, { useContext, useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
@@ -37,9 +37,15 @@ const Header = observer(({ className }) => {
       const nearFooter = window.scrollY + window.innerHeight > document.body.scrollHeight - 375;
 
       if (window.scrollY > 45) {
-        !scrolled && uiContext.setScrolled(true);
+        if (!scrolled) {
+          uiContext.setScrolled(true);
+          document.body.classList.add('scrolled');
+        }
       } else {
-        scrolled && uiContext.setScrolled(false);
+        if (scrolled) {
+          uiContext.setScrolled(false);
+          document.body.classList.remove('scrolled');
+        }
       }
 
       setScrolledToFooter(nearFooter);

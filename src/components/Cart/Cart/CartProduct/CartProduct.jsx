@@ -38,17 +38,31 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
     <tr key={product.id} className={styles.product}>
       <td>{product.itemFullName}</td>
       <td>
-        <NumInput
-          className={styles.numInput}
-          value={product.count}
-          onChange={(count) => handleUpdate(count, product)}
-        />
+        <div className={styles.cell}>
+          <span className={styles.mobtitle}>Количество</span>
+          <NumInput
+            className={styles.numInput}
+            value={product.count}
+            onChange={(count) => handleUpdate(count, product)}
+          />
+        </div>
       </td>
-      <td>{formatPrice(product.pricePerItem, 0)}</td>
-      <td>{!loading ? <>{formatPrice(product.pricePerItem * product.count, 0)}</> : <Spinner />}</td>
+      <td>
+        <div className={styles.cell}>
+          <span className={styles.mobtitle}>Цена с НДС</span>
+          {formatPrice(product.pricePerItem, 0)}
+        </div>
+      </td>
+      <td>
+        <div className={styles.cell}>
+          <span className={styles.mobtitle}>Сумма</span>
+          {!loading ? <>{formatPrice(product.pricePerItem * product.count, 0)}</> : <Spinner />}
+        </div>
+      </td>
       <td>
         <div className={styles.delete} onClick={() => handleDeleteClick(product.itemId)}>
           <SvgIcon name="delete" />
+          <span className={styles.deleteMob}>удалить товар</span>
         </div>
       </td>
     </tr>

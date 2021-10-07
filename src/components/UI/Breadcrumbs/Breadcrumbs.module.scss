@@ -50,6 +50,7 @@
 }
 @include r($md) {
   .breadcrumbsScroll {
+    background: white;
     &._sticky {
       top: 100px;
     }

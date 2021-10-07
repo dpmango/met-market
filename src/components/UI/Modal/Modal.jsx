@@ -122,7 +122,8 @@ const ModalComponent = observer(({ variant, modifier, name, children }) => {
       style={CSSinJSstyles}
       contentLabel="Modal">
       <div className={cns(styles.container, variant && VariantClasses[variant], modifier && ModifierClasses[modifier])}>
-        <div className={styles.close} onClick={closeModal}>
+        <div className={cns('close', styles.close)} onClick={closeModal}>
+          <span>Назад</span>
           <SvgIcon name="close" />
         </div>
 
