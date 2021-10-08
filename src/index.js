@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import '@styles/index.scss';
 import App from '@c/App';
 import { BrowserInfo } from '@services';
-// import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>

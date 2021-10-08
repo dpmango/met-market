@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 
-import { Button, SelectFilter, Spinner } from '@ui';
+import { Button, SelectFilter, Spinner, LazyMedia } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useQuery, useFirstRender } from '@hooks';
 import { updateQueryParams } from '@helpers';
@@ -49,7 +49,7 @@ const CategoryFilters = observer(({ image, data }) => {
   return data ? (
     <div className={styles.filters}>
       <div className={styles.filterImage}>
-        <img src={image} />
+        <LazyMedia src={image} width={240} height={100} />
       </div>
       <div className={styles.filterContent}>
         <div className={cns('row', styles.filterContentRow)}>

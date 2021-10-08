@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { Helmet } from 'react-helmet';
 import cns from 'classnames';
 
-import { Breadcrumbs } from '@ui';
+import { Breadcrumbs, Spinner } from '@ui';
 import { CatalogStoreContext, UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
 import { ScrollTo } from '@helpers';
@@ -22,7 +22,7 @@ const CatalogCategories = observer(() => {
   const markFilter = query.get('mark');
   const lengthFilter = query.get('length');
 
-  const { categoriesList, searchCatalog, getCategoryFilters } = useContext(CatalogStoreContext);
+  const { loading, categoriesList, searchCatalog, getCategoryFilters } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
 
   // getters
@@ -132,8 +132,10 @@ const CatalogCategories = observer(() => {
             <title>{categoryData.searchTitle || categoryData.title || ''} оптом и в розницу в Москве</title>
           </Helmet>
         </>
-      ) : (
+      ) : !loading ? (
         <CatalogMenu list={categoriesList} className="mt-2 mb-2" />
+      ) : (
+        <Spinner />
       )}
     </div>
   );

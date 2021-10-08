@@ -4,10 +4,9 @@ import { findNodeById, findNodeByName, formatPrice } from '@helpers';
 import qs from 'qs';
 import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/Strings';
 import { PerformanceLog } from '@helpers';
+import { LOCAL_STORAGE_CATALOG } from '@config/localStorage';
 
 import service from './api-service';
-
-let lastTime = new Date().getTime();
 
 export default class CatalogStore {
   loading = true;
@@ -38,7 +37,7 @@ export default class CatalogStore {
     mark: item.mark[0],
     length: item.length[0],
     price: `${formatPrice(item.price, 0)} ₽/${item.priceQuantityUnit}`,
-    id: item.id,
+    id: item.idUnique,
   });
 
   // main Cataloag getter including filters
@@ -51,16 +50,26 @@ export default class CatalogStore {
 
     let returnable = [];
 
+    // firslty iterate items through matching categories
     if (cat_id) {
-      const items = this.catalog.filter((x) => x.idUnique.split('|').includes(cat_id));
+      const category = findNodeById(this.categoriesList, cat_id);
+      if (category) {
+        const items = this.catalog.filter(
+          (x) =>
+            (x.cat3 && x.cat3.includes(category.name)) ||
+            (x.cat2 && x.cat2.includes(category.name)) ||
+            (x.cat1 && x.cat1.includes(category.name))
+        );
 
-      if (items && items.length > 0) {
-        returnable = items;
+        if (items && items.length > 0) {
+          returnable = items;
+        }
       }
     } else {
       returnable = this.catalog;
     }
 
+    // then apply filters
     const sizeFilter = this.filters.size.map((v) => v.value);
     const markFilter = this.filters.mark.map((v) => v.value);
     const lengthFilter = this.filters.length.map((v) => v.value);
@@ -98,7 +107,7 @@ export default class CatalogStore {
   });
 
   getCatalogItem = computedFn((item_id) => {
-    return this.catalog.find((x) => x.id === item_id);
+    return this.catalog.find((x) => x.idUnique === item_id);
   });
 
   // search in catalog searchTerms any match
@@ -346,22 +355,43 @@ export default class CatalogStore {
 
   // API ACTIONS
   async getCatalog() {
-    runInAction(() => {
-      this.loading = true;
-    });
+    let lastDate = null;
+
+    if (localStorage.getItem(LOCAL_STORAGE_CATALOG)) {
+      const lsCatalog = JSON.parse(localStorage.getItem(LOCAL_STORAGE_CATALOG));
+
+      const { date, data, categories } = lsCatalog;
+
+      runInAction(() => {
+        this.date = date;
+        this.catalog = data;
+        this.categories = categories.categories;
+        this.loading = false;
+      });
+
+      lastDate = date;
+    } else {
+      runInAction(() => {
+        this.loading = true;
+      });
+    }
 
     const [err, result] = await service.get();
 
     if (err) throw err;
 
-    const { date, data, categories } = result;
+    const { date, data, categories, timestamp } = result;
 
-    runInAction(() => {
-      this.date = date;
-      this.catalog = data;
-      this.categories = categories.categories;
-      this.loading = false;
-    });
+    if (lastDate !== date) {
+      runInAction(() => {
+        this.date = date;
+        this.catalog = data;
+        this.categories = categories.categories;
+        this.loading = false;
+
+        localStorage.setItem(LOCAL_STORAGE_CATALOG, JSON.stringify({ date, data, categories }));
+      });
+    }
 
     return result;
   }

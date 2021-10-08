@@ -25,7 +25,9 @@ const CatalogTable = observer(() => {
   const { width } = useWindowSize();
   const catalogRef = useRef(null);
 
-  const { catalog, loading, filters, getCatalogItem, catalogList, searchCatalog } = useContext(CatalogStoreContext);
+  const { catalog, loading, filters, getCatalogItem, searchCatalog, getCategoryByName } =
+    useContext(CatalogStoreContext);
+  const catalogContext = useContext(CatalogStoreContext);
   const { activeModal, prevModal } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
@@ -37,7 +39,7 @@ const CatalogTable = observer(() => {
     }
 
     if (categoryQuery !== 'all') {
-      return catalogList(categoryQuery);
+      return catalogContext.catalogList(categoryQuery);
     }
 
     return [];
@@ -85,13 +87,14 @@ const CatalogTable = observer(() => {
     (id) => {
       const item = getCatalogItem(id);
       // uiContext.setModal('cart-add', { ...item });
+
       updateQueryParams({
         history,
         location,
         query,
         payload: {
           type: 'product',
-          value: item.id,
+          value: item.idUnique,
         },
       });
     },
@@ -108,6 +111,31 @@ const CatalogTable = observer(() => {
       },
     });
   };
+
+  const getCategoryId = useCallback(
+    (cat_name) => {
+      return getCategoryByName(cat_name).id;
+    },
+    [getCategoryByName]
+  );
+
+  const handleCategoryClick = useCallback(
+    (cat_name, e) => {
+      e & e.preventDefault();
+      const category = getCategoryByName(cat_name);
+
+      updateQueryParams({
+        history,
+        location,
+        query,
+        payload: {
+          type: 'category',
+          value: `${category.id}`,
+        },
+      });
+    },
+    [history, location, query]
+  );
 
   useEffect(() => {
     if (!loading) {
@@ -134,14 +162,64 @@ const CatalogTable = observer(() => {
 
       <table {...getTableProps()} className={styles.table}>
         <StickyHead headerGroups={headerGroups} />
-
         {page && page.length > 0 && (
-          <TableBody
-            page={page}
-            prepareRow={prepareRow}
-            handleAddToCartClick={handleAddToCartClick}
-            {...getTableBodyProps()}
-          />
+          <tbody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              // Custom grouping functionality
+              const prevRow = page[i - 1] && page[i - 1].original.category.split('||');
+              const categories = row.original.category.split('||');
+              let category = categories ? categories[categories.length - 1] : null;
+              let showGrouping = false;
+              let groupingHeader = null;
+
+              if (!prevRow || prevRow.length === 0) {
+                showGrouping = true;
+
+                if (category === null || category === 'null') {
+                  category = categories[categories.length - 2];
+                }
+              }
+
+              if (categories[categories.length - 1]) {
+                if (prevRow && prevRow[prevRow.length - 1]) {
+                  let prevRowValue = prevRow[prevRow.length - 1];
+                  if (prevRowValue === null || prevRowValue === 'null') {
+                    try {
+                      prevRowValue = prevRow[prevRow.length - 2];
+                    } catch {}
+                  }
+
+                  if (prevRowValue !== null || prevRowValue !== 'null') {
+                    category = prevRowValue;
+                    showGrouping = category !== prevRowValue;
+                  }
+                }
+              }
+
+              if (showGrouping) {
+                groupingHeader = (
+                  <tr className={styles.groupTableHeader}>
+                    <td colSpan="6">
+                      <a
+                        href={`?category=${getCategoryId(category)}`}
+                        onClick={(e) => handleCategoryClick(category, e)}>
+                        {category}
+                      </a>
+                    </td>
+                  </tr>
+                );
+              }
+
+              return groupingHeader ? (
+                <>
+                  {groupingHeader}
+                  <TableBody row={row} prepareRow={prepareRow} handleAddToCartClick={handleAddToCartClick} />
+                </>
+              ) : (
+                <TableBody row={row} prepareRow={prepareRow} handleAddToCartClick={handleAddToCartClick} />
+              );
+            })}
+          </tbody>
         )}
       </table>
 

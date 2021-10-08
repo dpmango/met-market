@@ -4,9 +4,15 @@ import api from '@api/catalog';
 class CatalogService extends ApiService {
   async get() {
     try {
-      const json = await api.get();
+      const { data, headers } = await api.get();
 
-      return [null, json];
+      return [
+        null,
+        {
+          ...data,
+          timestamp: headers['last-modified'],
+        },
+      ];
     } catch (error) {
       this.handleError(error);
 

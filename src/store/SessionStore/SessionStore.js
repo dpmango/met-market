@@ -85,7 +85,7 @@ export default class SessionStore {
 
   // api actions
   async init() {
-    if (localStorage.getItem('metMarketSession')) {
+    if (localStorage.getItem(LOCAL_STORAGE_SESSION)) {
       const lsSession = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SESSION));
       const lsLog = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LOG));
 

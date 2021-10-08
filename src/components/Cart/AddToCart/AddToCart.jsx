@@ -26,8 +26,8 @@ const AddToCart = observer(() => {
   const [count, setCount] = useState(1);
 
   const cartItem = useMemo(() => {
-    if (modalParams && modalParams.id) {
-      return cartContext.getItemInCart(modalParams.id);
+    if (modalParams && modalParams.idUnique) {
+      return cartContext.getItemInCart(modalParams.idUnique);
     }
 
     return null;
@@ -41,11 +41,11 @@ const AddToCart = observer(() => {
 
       setLoading(true);
 
-      const { id, price, nameFull } = modalParams;
+      const { idUnique, price, nameFull } = modalParams;
 
       if (!cartItem) {
         await cartContext
-          .addCartItem({ itemId: id, count, pricePerItem: price, itemFullName: nameFull })
+          .addCartItem({ itemId: idUnique, count, pricePerItem: price, itemFullName: nameFull })
           .then((_res) => {
             uiContext.resetModal();
           })
@@ -60,7 +60,7 @@ const AddToCart = observer(() => {
 
         setСartUpdated(false);
         await cartContext
-          .updateCartItem({ itemId: id, count, pricePerItem: price })
+          .updateCartItem({ itemId: idUnique, count, pricePerItem: price })
           .then((_res) => {
             setСartUpdated(true);
           })
@@ -75,11 +75,11 @@ const AddToCart = observer(() => {
   );
 
   const handleCartDelete = useCallback(async () => {
-    const { id } = modalParams;
+    const { idUnique } = modalParams;
     setLoading(true);
 
     await cartContext
-      .removeCartItem({ itemId: id })
+      .removeCartItem({ itemId: idUnique })
       .then((_res) => {
         // history.push(routes.HOME);
       })
@@ -153,7 +153,7 @@ const AddToCart = observer(() => {
                   </div>
                   <div className={styles.row}>
                     <span className={styles.rowLabel}>Код товара</span>
-                    <span className={styles.rowContent}>{modalData.id}</span>
+                    <span className={styles.rowContent}>{modalData.idUnique}</span>
                   </div>
                   <div className={styles.row}>
                     <span className={styles.rowLabel}>Размер</span>
