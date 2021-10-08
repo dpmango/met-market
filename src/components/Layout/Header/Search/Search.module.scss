@@ -103,6 +103,30 @@
   }
 }
 
+.searchClear {
+  -webkit-appearance: none;
+  position: absolute;
+  z-index: 5;
+  top: 1px;
+  right: 44px;
+  border: 0;
+  padding: 12px 12px;
+  font-size: 0;
+  background: white;
+  color: $colorPrimary;
+  opacity: 1;
+  transition: color 0.25s $ease;
+  :global .svg-icon {
+    font-size: 14px;
+    transition: transform 0.25s $ease;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+  &:hover {
+    color: $colorLink;
+  }
+}
+
 .suggestions {
   position: absolute;
   top: -10px;

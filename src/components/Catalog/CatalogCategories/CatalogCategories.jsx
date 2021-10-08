@@ -134,17 +134,20 @@ const CatalogCategories = observer(() => {
 
       {categoryData ? (
         <>
-          <div
-            className="h3-title"
-            dangerouslySetInnerHTML={{ __html: categoryData.searchtitle || categoryData.title }}
-          />
-          {search && (
-            <div className={styles.everywhere}>
-              <Button variant="small" iconLeft="search" onClick={handleSearchEveryWhere}>
-                Искать везде
-              </Button>
-            </div>
-          )}
+          <div className={styles.head}>
+            <div
+              className="h3-title"
+              dangerouslySetInnerHTML={{ __html: categoryData.searchtitle || categoryData.title }}
+            />
+            {search && categoryData.searchtitle && (
+              <div className={styles.everywhere}>
+                <Button theme="link" variant="small" iconLeft="search" onClick={handleSearchEveryWhere}>
+                  Искать везде
+                </Button>
+              </div>
+            )}
+          </div>
+
           {categoryData.subcategories && (
             <div className={styles.tags}>
               <CategoryTags data={categoryData.subcategories} />

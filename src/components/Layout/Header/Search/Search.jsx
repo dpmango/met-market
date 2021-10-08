@@ -182,6 +182,11 @@ const Search = observer(({ className }) => {
           <SvgIcon name="caret" key="caret" />
         </button>
       )}
+      {searchText.length >= 2 && (
+        <button className={cns(styles.searchClear)} type="button" onClick={() => setSearchText('')}>
+          <SvgIcon name="close" key="close" />
+        </button>
+      )}
 
       <button className={styles.searchBtn} type="submit">
         <SvgIcon name="search" key="search" />
