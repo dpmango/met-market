@@ -26,6 +26,7 @@ const Search = observer(({ className }) => {
     total: null,
   });
   const [suggestionsOpened, setSuggestionsOpened] = useState(false);
+  const [showRecent, setShowRecent] = useState(false);
 
   const catalogContext = useContext(CatalogStoreContext);
   const sessionContext = useContext(SessionStoreContext);
@@ -149,6 +150,8 @@ const Search = observer(({ className }) => {
     useCallback((e) => setSuggestionsOpened(false), [setSuggestionsOpened])
   );
 
+  const haveLog = sessionContext.log.search && sessionContext.log.search.length > 0;
+
   return (
     <form className={styles.search} ref={searchRef} onSubmit={handleSearchSubmit}>
       <input
@@ -161,11 +164,22 @@ const Search = observer(({ className }) => {
         onChange={handleSearchChange}
         ref={inputRef}
       />
+      {haveLog && (
+        <button
+          className={cns(styles.searchDropdown, showRecent && styles._active)}
+          type="button"
+          onClick={() => setShowRecent(!showRecent)}>
+          <SvgIcon name="caret" key="caret" />
+        </button>
+      )}
+
       <button className={styles.searchBtn} type="submit">
-        <SvgIcon name="search" />
+        <SvgIcon name="search" key="search" />
       </button>
 
-      <div className={cns(styles.suggestions, suggestionsOpened && styles._active)} onClick={(e) => e.preventDefault()}>
+      <div
+        className={cns(styles.suggestions, suggestionsOpened && showRecent && styles._active)}
+        onClick={(e) => e.preventDefault()}>
         <div className={styles.suggestionsWrapper}>
           {loading ? (
             <Spinner />
@@ -180,7 +194,7 @@ const Search = observer(({ className }) => {
           ) : (
             <>
               {/* LOGS */}
-              {sessionContext.log.search && sessionContext.log.search.length > 0 && (
+              {haveLog && (
                 <>
                   <div className={styles.suggestionsHead}>
                     <div className={styles.suggestionsTitle}>Вы искали:</div>
