@@ -337,9 +337,13 @@ export default class CatalogStore {
           // iterate filter select values through matching catalog element
           // (sort out not found display values)
           const haveFilter = (f) => f && f.length > 0;
-          const shouldFilterSize = !haveFilter(sizeFilter) && (haveFilter(markFilter) || haveFilter(lengthFilter));
-          const shouldFilterMark = !haveFilter(markFilter) && (haveFilter(sizeFilter) || haveFilter(lengthFilter));
-          const shouldFilterLength = !haveFilter(lengthFilter) && (haveFilter(sizeFilter) || haveFilter(markFilter));
+          // const shouldFilterSize = !haveFilter(sizeFilter) && (haveFilter(markFilter) || haveFilter(lengthFilter));
+          // const shouldFilterMark = !haveFilter(markFilter) && (haveFilter(sizeFilter) || haveFilter(lengthFilter));
+          // const shouldFilterLength = !haveFilter(lengthFilter) && (haveFilter(sizeFilter) || haveFilter(markFilter));
+
+          const shouldFilterSize = haveFilter(markFilter) || haveFilter(lengthFilter);
+          const shouldFilterMark = haveFilter(sizeFilter) || haveFilter(lengthFilter);
+          const shouldFilterLength = haveFilter(sizeFilter) || haveFilter(markFilter);
 
           const filterSize = (size) => {
             return {

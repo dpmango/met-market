@@ -126,6 +126,9 @@
     .selectOptionCheckbox {
       background: $colorLink;
       border-color: $colorLink;
+      :global .svg-icon {
+        opacity: 1;
+      }
     }
   }
   &._popular {
@@ -134,8 +137,11 @@
   &._disabled {
     color: $colorGray;
     .selectOptionCheckbox {
-      background: $colorGray;
-      border-color: $colorGray;
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(0, 0, 0, 0.3);
+      :global .svg-icon {
+        display: none;
+      }
     }
   }
   // &._old{}
@@ -158,6 +164,7 @@
     font-size: 8px;
     transform: translate(-50%, -50%);
     color: white;
+    opacity: 0;
   }
 }
 

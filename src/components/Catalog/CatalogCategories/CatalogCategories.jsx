@@ -2,12 +2,13 @@
 import React, { useRef, useEffect, useReducer, useContext, useMemo, useCallback, memo } from 'react';
 import { observer } from 'mobx-react';
 import { Helmet } from 'react-helmet';
+import { useHistory, useLocation } from 'react-router';
 import cns from 'classnames';
 
-import { Breadcrumbs, Spinner } from '@ui';
+import { Breadcrumbs, Spinner, Button } from '@ui';
 import { CatalogStoreContext, UiStoreContext } from '@store';
 import { useQuery } from '@hooks';
-import { ScrollTo } from '@helpers';
+import { ScrollTo, Plurize, updateQueryParams } from '@helpers';
 
 import { CatalogMenu } from '@c/Catalog';
 import CategoryTags from './CategoryTags';
@@ -16,6 +17,9 @@ import styles from './CatalogCategories.module.scss';
 
 const CatalogCategories = observer(() => {
   const query = useQuery();
+  const history = useHistory();
+  const location = useLocation();
+
   const category = query.get('category');
   const search = query.get('search');
   const sizeFilter = query.get('size');
@@ -33,11 +37,14 @@ const CatalogCategories = observer(() => {
       if (search) {
         const data = searchCatalog(search, category);
 
+        //  <br/>по запросу «<span class="w-700 c-link">${search}</span>»`
         return {
           ...storeData,
           searchtitle: `В категории «<span class="w-700 c-link">${storeData.title}</span>» ${
-            data.meta.total > 0 ? `найдено ${data.meta.total} товаров` : 'ничего не найдено'
-          } <br/>по запросу «<span class="w-700 c-link">${search}</span>»`,
+            data.meta.total > 0
+              ? `найдено ${data.meta.total} ${Plurize(data.meta.total, 'товар', 'товара', 'товаров')}`
+              : 'ничего не найдено'
+          }`,
         };
       }
 
@@ -49,7 +56,9 @@ const CatalogCategories = observer(() => {
         ? {
             id: 0,
             title: `По запросу «<span class="w-700 c-link">${search}</span>» ${
-              data.meta.total > 0 ? `найдено ${data.meta.total} товаров` : 'ничего не найдено'
+              data.meta.total > 0
+                ? `найдено ${data.meta.total} ${Plurize(data.meta.total, 'товар', 'товара', 'товаров')}`
+                : 'ничего не найдено'
             }`,
           }
         : null;
@@ -94,6 +103,19 @@ const CatalogCategories = observer(() => {
     return [];
   }, [categoryData, category, search]);
 
+  // click handlers
+  const handleSearchEveryWhere = useCallback(() => {
+    updateQueryParams({
+      location,
+      history,
+      query,
+      payload: {
+        type: 'category',
+        value: false,
+      },
+    });
+  }, [location, history, query]);
+
   useEffect(() => {
     ScrollTo(0, 300);
   }, [category, search]);
@@ -116,6 +138,13 @@ const CatalogCategories = observer(() => {
             className="h3-title"
             dangerouslySetInnerHTML={{ __html: categoryData.searchtitle || categoryData.title }}
           />
+          {search && (
+            <div className={styles.everywhere}>
+              <Button variant="small" iconLeft="search" onClick={handleSearchEveryWhere}>
+                Искать везде
+              </Button>
+            </div>
+          )}
           {categoryData.subcategories && (
             <div className={styles.tags}>
               <CategoryTags data={categoryData.subcategories} />

@@ -2,6 +2,7 @@ import React, { useState, useContext, useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 
+import { CatalogStoreContext } from '@store';
 import { Spinner, NumInput, SvgIcon } from '@ui';
 import { formatPrice } from '@helpers';
 
@@ -9,6 +10,7 @@ import styles from './CartProduct.module.scss';
 
 const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) => {
   const [loading, setLoading] = useState(false);
+  const catalogContext = useContext(CatalogStoreContext);
 
   const handleDeleteClick = useCallback(
     async (id) => {
@@ -34,6 +36,15 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
     [loading, handleCartUpdate]
   );
 
+  const priceQuantityUnit = useMemo(() => {
+    const productCat = catalogContext.getCatalogItem(product.itemId);
+    if (productCat) {
+      return productCat.priceQuantityUnit;
+    }
+
+    return '';
+  }, [product]);
+
   return (
     <tr key={product.id} className={styles.product}>
       <td>{product.itemFullName}</td>
@@ -51,7 +62,7 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
         <div className={styles.cell}>
           <span className={styles.mobtitle}>Цена с НДС</span>
           {formatPrice(product.pricePerItem, 0)} ₽/
-          {product.priceQuantityUnit}
+          {priceQuantityUnit}
         </div>
       </td>
       <td>
@@ -60,7 +71,7 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
           {!loading ? (
             <>
               {formatPrice(product.pricePerItem * product.count, 0)} ₽/
-              {product.priceQuantityUnit}
+              {priceQuantityUnit}
             </>
           ) : (
             <Spinner />

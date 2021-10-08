@@ -36,6 +36,22 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
         allSorted = allSorted.filter((x) => activeLetters.includes(x.name[0].toUpperCase()));
       }
 
+      allSorted = allSorted.map((x) => ({
+        ...x,
+        name: x.name
+          .replace('нержавеющие', 'н/ж')
+          .replace('нержавеющий', 'н/ж')
+          .replace('никельсодержащий', 'н/с')
+          .replace('равнополочный', 'р/п')
+          .replace('обыкновенного качества', 'об. кач.')
+          .replace('низколегированный', 'н/л')
+          .replace('низколегированные', 'н/л')
+          .replace('электросварные', 'э/с')
+          .replace('жаропрочный', 'ж/п')
+          .replace('горячекатаный', 'г/к')
+          .replace('инструментальный', 'инстр.'),
+      }));
+
       const splited = chunk(allSorted, Math.ceil(allSorted.length / 5));
 
       return {

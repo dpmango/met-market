@@ -16,7 +16,7 @@
   padding: 10px;
   color: $colorPrimary;
   cursor: pointer;
-  @include text-overflow();
+  // @include text-overflow();
   transition: color 0.25s $ease;
   &:hover {
     color: $colorLink;
