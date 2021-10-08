@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import { findNodeById, findNodeByName, formatPrice } from '@helpers';
 import qs from 'qs';
+import groupBy from 'lodash/groupBy';
 import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/Strings';
 import { PerformanceLog } from '@helpers';
 import { LOCAL_STORAGE_CATALOG } from '@config/localStorage';
@@ -222,6 +223,45 @@ export default class CatalogStore {
     }));
     PerformanceLog(DEV_perf, 'categoriesList');
     return result;
+  }
+
+  get categoriesAbc() {
+    const DEV_perf = performance.now();
+    let result = [];
+
+    if (this.categories.length > 0) {
+      this.categories.forEach((lvl1) => {
+        result.push({
+          id: lvl1.id,
+          name: lvl1.name,
+        });
+
+        if (lvl1.categories && lvl1.categories.length > 0) {
+          lvl1.categories.forEach((lvl2) => {
+            result.push({
+              id: lvl2.id,
+              name: lvl2.name,
+            });
+
+            if (lvl2.categories && lvl2.categories.length > 0) {
+              lvl2.categories.forEach((lvl3) => {
+                result.push({
+                  id: lvl3.id,
+                  name: lvl3.name,
+                });
+              });
+            }
+          });
+        }
+      });
+    }
+
+    // first letter grouping
+    const grouped = groupBy(result, (x) => x.name && x.name[0].toUpperCase());
+    const sortedObject = Object.fromEntries(Object.entries(grouped).sort());
+
+    PerformanceLog(DEV_perf, 'categoriesAbc');
+    return sortedObject;
   }
 
   getCategoryByName = computedFn((cat_name) => {
@@ -455,7 +495,7 @@ export default class CatalogStore {
     };
 
     if (this.filters !== upFilter) {
-      // this.filters = { ...upFilter };
+      this.filters = { ...upFilter };
     }
   }
 }

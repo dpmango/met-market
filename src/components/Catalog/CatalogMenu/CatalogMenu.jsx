@@ -3,12 +3,31 @@ import React, { useContext, useMemo, useCallback, memo } from 'react';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 
+import { CatalogStoreContext } from '@store';
+
 import CategoryMain from './CategoryMain';
 import styles from './CatalogMenu.module.scss';
 
-const CatalogMenu = observer(({ list, className }) => {
+const CatalogMenu = observer(({ abcOrder, className }) => {
+  const { categoriesList, categoriesAbc } = useContext(CatalogStoreContext);
+
+  const list = useMemo(() => {
+    if (abcOrder) {
+      return categoriesAbc;
+    }
+    return categoriesList;
+  }, [categoriesList, categoriesAbc, abcOrder]);
+
   return (
     <div className={cns(styles.catalog, className)}>
+      {abcOrder && (
+        <div className={styles.letters}>
+          {Object.keys(list).map((letter) => (
+            <div className={styles.letter}>{letter}</div>
+          ))}
+        </div>
+      )}
+
       <>
         {list && list.length > 0 && (
           <div className="row">

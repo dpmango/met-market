@@ -22,7 +22,7 @@ const CatalogCategories = observer(() => {
   const markFilter = query.get('mark');
   const lengthFilter = query.get('length');
 
-  const { loading, categoriesList, searchCatalog, getCategoryFilters } = useContext(CatalogStoreContext);
+  const { loading, searchCatalog, getCategoryFilters } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
 
   // getters
@@ -54,7 +54,7 @@ const CatalogCategories = observer(() => {
           }
         : null;
     }
-  }, [categoriesList, searchCatalog, category, search, sizeFilter, markFilter, lengthFilter]);
+  }, [searchCatalog, category, search, sizeFilter, markFilter, lengthFilter]);
 
   const breadcrumbs = useMemo(() => {
     if (category && categoryData) {
@@ -133,7 +133,7 @@ const CatalogCategories = observer(() => {
           </Helmet>
         </>
       ) : !loading ? (
-        <CatalogMenu list={categoriesList} className="mt-2 mb-2" />
+        <CatalogMenu className="mt-2 mb-2" />
       ) : (
         <Spinner />
       )}

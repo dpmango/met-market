@@ -22,8 +22,8 @@ import { ReactComponent as LogoTablet } from '@assets/logo-tablet.svg';
 
 const Header = observer(({ className }) => {
   // const [scrolledToFooter, setScrolledToFooter] = useState(false);
+  const [abcOrder, setAbcOrder] = useState(false);
 
-  const { categoriesList } = useContext(CatalogStoreContext);
   const {
     catalogOpened,
     header: { scrolled },
@@ -102,7 +102,11 @@ const Header = observer(({ className }) => {
           <div className={styles.overlayScroller}>
             <div className={styles.overlayContent}>
               <div className="container">
-                <CatalogMenu list={categoriesList} />
+                <div className={styles.catLang} onClick={() => setAbcOrder(!abcOrder)}>
+                  <span>Показать в алфавитном порядке</span>
+                  <div className={cns(styles.catLangToggle, abcOrder && styles._active)}></div>
+                </div>
+                <CatalogMenu abcOrder={abcOrder} />
               </div>
             </div>
           </div>
