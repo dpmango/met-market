@@ -50,3 +50,20 @@
     left: calc(0px - (1200px * (0.14 + 0.14)));
   }
 }
+
+@include r($xl) {
+  .selectOptions {
+    &.size {
+      width: calc(((100vw - 36px) * (0.14 * 3)));
+      left: 0;
+    }
+    &.mark {
+      width: calc(((100vw - 36px) * ((0.14 * 4) + 0.1)));
+      left: calc(0px - ((100vw - 36px) * 0.14));
+    }
+    &.length {
+      width: calc(((100vw - 36px) * ((0.14 * 4) + 0.1)));
+      left: calc(0px - ((100vw - 36px) * (0.14 + 0.14)));
+    }
+  }
+}

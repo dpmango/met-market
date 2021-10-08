@@ -176,3 +176,15 @@
     }
   }
 }
+
+@include r($md) {
+  .selectOptions {
+    &.size {
+      width: 100%;
+      .selectOptionCol {
+        flex-basis: 30%;
+        max-width: 30%;
+      }
+    }
+  }
+}
