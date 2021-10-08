@@ -224,7 +224,7 @@ const AddToCart = observer(() => {
                       </Button>
                     ) : (
                       <Button theme="link" type="submit" disabled={cartUpdated} loading={loading}>
-                        {cartUpdated ? 'Корзина обновлена' : 'Обновить в коризне'}
+                        {cartUpdated ? 'Корзина обновлена' : 'Обновить в корзине'}
                       </Button>
                     )}
                   </div>

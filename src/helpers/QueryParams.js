@@ -52,7 +52,11 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
         params.delete('category');
       }
 
-      mergeParam('search', payload.value);
+      if (payload.value) {
+        mergeParam('search', payload.value);
+      } else {
+        params.delete('search');
+      }
 
       break;
 

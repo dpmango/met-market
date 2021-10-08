@@ -63,6 +63,16 @@ const Search = observer(({ className }) => {
         //   query: textNormalized,
         // });
       } else {
+        updateQueryParams({
+          location,
+          history,
+          query,
+          payload: {
+            type: 'search',
+            value: false,
+          },
+        });
+
         // setSearchMeta({
         //   total: null,
         // });
