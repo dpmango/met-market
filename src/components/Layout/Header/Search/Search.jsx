@@ -72,7 +72,6 @@ const Search = observer(({ className }) => {
             value: false,
           },
         });
-
         // setSearchMeta({
         //   total: null,
         // });
@@ -111,7 +110,7 @@ const Search = observer(({ className }) => {
         });
 
         setSuggestionsOpened(false);
-        setSearchText('');
+        // setSearchText('');
       }
     },
     [searchText, history, location]

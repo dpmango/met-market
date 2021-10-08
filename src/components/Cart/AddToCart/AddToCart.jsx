@@ -106,6 +106,12 @@ const AddToCart = observer(() => {
   }, [count]);
 
   useEffect(() => {
+    if (cartItem) {
+      setCount(cartItem.count);
+    }
+  }, [cartItem]);
+
+  useEffect(() => {
     if (modalParams && activeModal === 'cart-add') {
       setModalData(modalParams);
     } else {

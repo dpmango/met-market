@@ -22,9 +22,10 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       break;
 
     case 'cart':
-      params.delete('cart');
       if (payload.value) {
         mergeParam('cart', payload.value);
+      } else {
+        params.delete('cart');
       }
 
       break;
@@ -44,11 +45,6 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       break;
 
     case 'search':
-      params.delete('size');
-      params.delete('mark');
-      params.delete('length');
-      params.delete('product');
-
       if (params.get('category') === 'all') {
         params.delete('category');
       }
@@ -62,9 +58,6 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       break;
 
     case 'filter':
-      params.delete('search');
-      params.delete('product');
-
       const filter = payload.value;
 
       if (filter.size && filter.size.length > 0) {

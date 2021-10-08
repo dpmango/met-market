@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, memo } from 'react';
+import React, { useCallback, useState, useMemo, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import cns from 'classnames';
 import uniqueId from 'lodash/uniqueId';
@@ -85,6 +85,10 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       event.preventDefault();
     }
   }, []);
+
+  useEffect(() => {
+    setValue(value);
+  }, [value]);
 
   const inputProps = {
     id,
