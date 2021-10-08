@@ -15,11 +15,15 @@ export function prepareSmartSearchRegexp(str) {
           let f = e.match(/^"(.*)"$/);
           e = f ? f[1] : e;
         }
-        return e.replace('"', '');
+        return escapeRegExp(e.replace('"', '').replace('(', '').replace(')', ''));
       })
       .join(')(?=.*?(^|\\s)') +
     ').*$';
   return regexPattern;
+}
+
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
 export function clearMorphologyInSearchTerm(searchTerm) {

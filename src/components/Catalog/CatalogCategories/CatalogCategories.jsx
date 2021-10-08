@@ -129,7 +129,7 @@ const CatalogCategories = observer(() => {
           )}
 
           <Helmet>
-            <title>{categoryData.searchTitle || categoryData.title} оптом и в розницу в Москве</title>
+            <title>{categoryData.searchTitle || categoryData.title || ''} оптом и в розницу в Москве</title>
           </Helmet>
         </>
       ) : (

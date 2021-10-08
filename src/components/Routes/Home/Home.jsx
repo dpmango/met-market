@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, Profiler, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Helmet } from 'react-helmet';
 
 // import { CatalogStoreContext, SessionStoreContext } from '@store';
-
+import { ProfilerLog } from '@helpers';
 import { CatalogCategories, CatalogTable } from '@c/Catalog';
 import { AddToCart } from '@c/Cart';
 import { CallbackHero } from '@c/Callback';

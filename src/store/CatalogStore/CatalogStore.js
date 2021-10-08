@@ -3,13 +3,11 @@ import { computedFn } from 'mobx-utils';
 import { findNodeById, findNodeByName, formatPrice } from '@helpers';
 import qs from 'qs';
 import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/Strings';
+import { PerformanceLog } from '@helpers';
 
 import service from './api-service';
 
-const logPerformance = (DEV_perf, name) => {
-  const DEV_perf_end = performance.now();
-  console.log(`PERF :: ${name} :: ${(DEV_perf_end - DEV_perf).toFixed(2)} ms`);
-};
+let lastTime = new Date().getTime();
 
 export default class CatalogStore {
   loading = true;
@@ -48,7 +46,7 @@ export default class CatalogStore {
     return this.catalog.length;
   }
 
-  catalogList = computedFn((cat_id, filters) => {
+  catalogList = computedFn((cat_id) => {
     const DEV_perf = performance.now();
 
     let returnable = [];
@@ -63,9 +61,9 @@ export default class CatalogStore {
       returnable = this.catalog;
     }
 
-    const sizeFilter = filters.size.map((v) => v.value);
-    const markFilter = filters.mark.map((v) => v.value);
-    const lengthFilter = filters.length.map((v) => v.value);
+    const sizeFilter = this.filters.size.map((v) => v.value);
+    const markFilter = this.filters.mark.map((v) => v.value);
+    const lengthFilter = this.filters.length.map((v) => v.value);
 
     const filterSize = (item) => {
       if (sizeFilter && sizeFilter.length) {
@@ -95,7 +93,7 @@ export default class CatalogStore {
       .filter(filterLength)
       .map((x) => this.normalizeCatalogItem(x));
 
-    logPerformance(DEV_perf, 'catalogList');
+    PerformanceLog(DEV_perf, 'catalogList');
     return result;
   });
 
@@ -134,8 +132,8 @@ export default class CatalogStore {
       if (terms && txt) {
         const test = clearMorphologyInSearchTerm(txt.toLowerCase());
 
-        console.log('morh search', test);
-
+        // console.log('morh search', test);
+        // return new RegExp(test, 'i').test(terms);
         const queries = test.toLowerCase().split(' ');
         return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
 
@@ -155,7 +153,7 @@ export default class CatalogStore {
       suggestions: suggestions ? suggestions : [],
     };
 
-    logPerformance(DEV_perf, 'searchCatalog');
+    PerformanceLog(DEV_perf, 'searchCatalog');
     return result;
   });
 
@@ -213,7 +211,7 @@ export default class CatalogStore {
     const result = sorting.map((key) => ({
       ...mappedList.find((x) => x.id === key),
     }));
-    logPerformance(DEV_perf, 'categoriesList');
+    PerformanceLog(DEV_perf, 'categoriesList');
     return result;
   }
 
@@ -278,7 +276,7 @@ export default class CatalogStore {
           const lengthFilter = this.filters.length.map((v) => v.value);
 
           // find store items matching filters (table display list)
-          const matchedCatalogList = this.catalogList(cat_id, this.filters);
+          const matchedCatalogList = this.catalogList(cat_id);
           const mappedFilter = matchedCatalogList.map((x) => {
             return { size: x.size, mark: x.mark, length: x.length };
           });
@@ -334,7 +332,7 @@ export default class CatalogStore {
           filters: category.filters ? processFilters(category.filters) : null,
         };
 
-        logPerformance(DEV_perf, 'getCategoryFilters');
+        PerformanceLog(DEV_perf, 'getCategoryFilters');
         return result;
       }
     }
@@ -426,6 +424,8 @@ export default class CatalogStore {
       length,
     };
 
-    this.filters = { ...upFilter };
+    if (this.filters !== upFilter) {
+      // this.filters = { ...upFilter };
+    }
   }
 }

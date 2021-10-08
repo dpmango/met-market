@@ -1,23 +1,23 @@
 export default {
   catalog: {
-    // export: 'catalog/export-collapsed-flat.json',
+    export: 'data/export-collapsed-flat.json',
   },
   session: {
-    create: '/session/create',
-    alive: '/session/alive',
+    create: 'api/session/create',
+    alive: 'api/session/alive',
   },
   cart: {
-    getItems: '/cart/getItems',
-    addItem: '/cart/addItem',
-    updateItem: '/cart/updateItem',
-    removeItem: '/cart/removeItem',
-    submit: '/cart/submit',
+    getItems: 'api/cart/getItems',
+    addItem: 'api/cart/addItem',
+    updateItem: 'api/cart/updateItem',
+    removeItem: 'api/cart/removeItem',
+    submit: 'api/cart/submit',
   },
   form: {
-    submit: '/form/submit',
-    typing: '/form/typing',
+    submit: 'api/form/submit',
+    typing: 'api/form/typing',
   },
   log: {
-    addSearchTerm: '/log/addSearchTerm',
+    addSearchTerm: 'api/log/addSearchTerm',
   },
 };

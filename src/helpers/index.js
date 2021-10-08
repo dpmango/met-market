@@ -7,3 +7,4 @@ export { formatUGC } from './Strings';
 export { ScrollTo } from './Scroll';
 export { updateQueryParams } from './QueryParams';
 export { formatBytes, bytesToMegaBytes } from './Bytes';
+export { ProfilerLog, PerformanceLog } from './Log';
