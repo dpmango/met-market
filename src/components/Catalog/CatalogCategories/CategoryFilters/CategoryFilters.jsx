@@ -42,6 +42,7 @@ const CategoryFilters = observer(({ image, data }) => {
 
   useEffect(() => {
     if (!firstRender) {
+      console.log('reset filters because of category change');
       resetFilters();
     }
   }, [categoryQuery]);

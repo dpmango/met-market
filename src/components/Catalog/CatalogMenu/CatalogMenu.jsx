@@ -1,31 +1,75 @@
 /* eslint-disable react/jsx-key */
-import React, { useContext, useMemo, useCallback, memo } from 'react';
+import React, { useContext, useMemo, useState, useCallback, memo } from 'react';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
+import chunk from 'lodash/chunk';
 
 import { CatalogStoreContext } from '@store';
 
+import CategoryLetter from './CategoryLetter';
 import CategoryMain from './CategoryMain';
 import styles from './CatalogMenu.module.scss';
 
 const CatalogMenu = observer(({ abcOrder, className }) => {
   const { categoriesList, categoriesAbc } = useContext(CatalogStoreContext);
 
+  const [activeLetters, setActiveLetters] = useState([]);
+
+  const handleLetterClick = (letter) => {
+    let letters = activeLetters;
+    if (activeLetters.includes(letter)) {
+      letters = letters.filter((x) => x !== letter);
+    } else {
+      letters = [...letters, letter];
+    }
+
+    setActiveLetters(letters);
+  };
+
   const list = useMemo(() => {
     if (abcOrder) {
-      return categoriesAbc;
+      let allSorted = Object.keys(categoriesAbc).reduce((acc, x) => {
+        return [...acc, ...categoriesAbc[x]];
+      }, []);
+
+      if (activeLetters && activeLetters.length > 0) {
+        allSorted = allSorted.filter((x) => activeLetters.includes(x.name[0].toUpperCase()));
+      }
+
+      const splited = chunk(allSorted, Math.ceil(allSorted.length / 5));
+
+      return {
+        list: categoriesAbc,
+        categories: splited,
+      };
     }
     return categoriesList;
-  }, [categoriesList, categoriesAbc, abcOrder]);
+  }, [categoriesList, categoriesAbc, activeLetters, abcOrder]);
 
   return (
     <div className={cns(styles.catalog, className)}>
-      {abcOrder && (
-        <div className={styles.letters}>
-          {Object.keys(list).map((letter) => (
-            <div className={styles.letter}>{letter}</div>
-          ))}
-        </div>
+      {abcOrder && list && (
+        <>
+          <div className={styles.letters}>
+            {Object.keys(list.list).map((letter) => (
+              <div
+                className={cns(styles.letter, activeLetters.includes(letter) && styles._active)}
+                onClick={() => handleLetterClick(letter)}>
+                {letter}
+              </div>
+            ))}
+          </div>
+
+          {list.categories && list.categories.length > 0 && (
+            <div className="row">
+              {list.categories.map((cat, idx) => (
+                <div className={cns('col', styles.lettercol)}>
+                  <CategoryLetter list={cat} key={idx} />
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       <>

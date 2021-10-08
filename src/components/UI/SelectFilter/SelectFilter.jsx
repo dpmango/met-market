@@ -80,7 +80,7 @@ const SelectComponent = observer(
           }))
         : [];
 
-      const splited = chunk([...checked, ...optionsMapped], colSize);
+      const splited = chunk([...checked, ...optionsMapped], Math.ceil([...checked, ...optionsMapped].length / colSize));
 
       return splited
         ? [

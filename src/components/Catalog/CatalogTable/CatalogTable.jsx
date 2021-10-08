@@ -190,8 +190,8 @@ const CatalogTable = observer(() => {
                   }
 
                   if (prevRowValue !== null || prevRowValue !== 'null') {
-                    category = prevRowValue;
                     showGrouping = category !== prevRowValue;
+                    category = prevRowValue;
                   }
                 }
               }

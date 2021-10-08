@@ -174,6 +174,7 @@
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
   border-radius: 0 0 10px 10px;
   opacity: 0;
+  overflow-y: scroll;
   pointer-events: none;
   transition: opacity 0.1s $ease;
   &._active {
@@ -186,11 +187,11 @@
   position: relative;
   z-index: 2;
   height: 100%;
-  // max-height: calc(100vh - 170px - 80px);
+  max-height: calc(100vh - 170px - 80px);
   display: flex;
   flex-direction: column;
   min-height: 1px;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 .overlayContent {
   flex: 0 0 auto;

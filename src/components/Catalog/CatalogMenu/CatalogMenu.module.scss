@@ -18,12 +18,15 @@
 .letters {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .letter {
   font-weight: 600;
   font-size: 24px;
   line-height: 13px;
+  margin-right: 10px;
+  margin-bottom: 10px;
   color: $colorPrimary;
   padding: 6px;
   min-width: 40px;
@@ -34,8 +37,16 @@
   justify-content: center;
   cursor: pointer;
   transition: color 0.25s $ease, background 0.25s $ease;
-  &:hover {
+  &:hover,
+  &._active {
     color: white;
     background: $colorRed;
   }
+}
+
+.lettercol {
+  flex: 0 0 20%;
+  max-width: 20%;
+  width: 100%;
+  min-width: 1px;
 }
