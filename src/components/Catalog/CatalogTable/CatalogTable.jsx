@@ -101,17 +101,6 @@ const CatalogTable = observer(() => {
     [getCatalogItem, history, location, query]
   );
 
-  const clearQueryParams = () => {
-    updateQueryParams({
-      history,
-      location,
-      query,
-      payload: {
-        type: 'clear-modals',
-      },
-    });
-  };
-
   const getCategoryId = useCallback(
     (cat_name) => {
       return getCategoryByName(cat_name).id;
@@ -145,9 +134,30 @@ const CatalogTable = observer(() => {
 
   useEffect(() => {
     if (activeModal === null && prevModal === 'cart-add') {
-      clearQueryParams();
+      updateQueryParams({
+        history,
+        location,
+        query,
+        payload: {
+          type: 'clear-modals',
+        },
+      });
     }
   }, [activeModal, prevModal]);
+
+  useEffect(() => {
+    if (pageIndex) {
+      updateQueryParams({
+        history,
+        location,
+        query,
+        payload: {
+          type: 'page',
+          value: pageIndex,
+        },
+      });
+    }
+  }, [pageIndex]);
 
   if (categoryQuery === 'all' || (!categoryQuery && !searchQuery)) return null;
 
