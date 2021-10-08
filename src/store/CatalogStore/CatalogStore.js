@@ -416,7 +416,7 @@ export default class CatalogStore {
       });
     }
 
-    const [err, result] = await service.get();
+    const [err, result] = await service.get(lastDate);
 
     if (err) throw err;
 
