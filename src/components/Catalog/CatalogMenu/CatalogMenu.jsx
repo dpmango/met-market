@@ -13,17 +13,17 @@ import styles from './CatalogMenu.module.scss';
 const CatalogMenu = observer(({ abcOrder, className }) => {
   const { categoriesList, categoriesAbc } = useContext(CatalogStoreContext);
 
-  const [activeLetters, setActiveLetters] = useState([]);
+  const [activeLetters, setActiveLetters] = useState(['А']);
 
   const handleLetterClick = (letter) => {
-    let letters = activeLetters;
-    if (activeLetters.includes(letter)) {
-      letters = letters.filter((x) => x !== letter);
-    } else {
-      letters = [...letters, letter];
-    }
+    // let letters = activeLetters;
+    // if (activeLetters.includes(letter)) {
+    //   letters = letters.filter((x) => x !== letter);
+    // } else {
+    //   letters = [...letters, letter];
+    // }
 
-    setActiveLetters(letters);
+    setActiveLetters([letter]);
   };
 
   const list = useMemo(() => {
@@ -33,22 +33,27 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
       }, []);
 
       if (activeLetters && activeLetters.length > 0) {
-        allSorted = allSorted.filter((x) => activeLetters.includes(x.name[0].toUpperCase()));
+        allSorted = allSorted.filter((x) =>
+          x.name
+            .toUpperCase()
+            .split(' ')
+            .some((word) => activeLetters.includes(word[0]))
+        );
       }
 
       allSorted = allSorted.map((x) => ({
         ...x,
         name: x.name
-          .replace('нержавеющие', 'н/ж')
-          .replace('нержавеющий', 'н/ж')
-          .replace('никельсодержащий', 'н/с')
-          .replace('равнополочный', 'р/п')
+          .replace('нержавеющие', 'нерж.')
+          .replace('нержавеющий', 'нерж.')
+          .replace('никельсодержащий', 'никель')
+          .replace('равнополочный', 'рвнпр.')
           .replace('обыкновенного качества', 'об. кач.')
           .replace('низколегированный', 'н/л')
           .replace('низколегированные', 'н/л')
           .replace('электросварные', 'э/с')
-          .replace('жаропрочный', 'ж/п')
-          .replace('горячекатаный', 'г/к')
+          .replace('жаропрочный', 'жар')
+          .replace('горячекатаный', 'горяч.')
           .replace('инструментальный', 'инстр.'),
       }));
 

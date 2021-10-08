@@ -63,7 +63,7 @@ const CatalogCategories = observer(() => {
           }
         : null;
     }
-  }, [searchCatalog, category, search, sizeFilter, markFilter, lengthFilter]);
+  }, [loading, searchCatalog, category, search, sizeFilter, markFilter, lengthFilter]);
 
   const breadcrumbs = useMemo(() => {
     if (category && categoryData) {
