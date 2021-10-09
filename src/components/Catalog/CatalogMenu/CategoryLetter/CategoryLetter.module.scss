@@ -31,6 +31,10 @@
 }
 
 @include r($md) {
+  .letterCategory {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
   .category {
     margin-bottom: 0;
   }

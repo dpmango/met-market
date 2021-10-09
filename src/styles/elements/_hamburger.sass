@@ -38,16 +38,16 @@ $bez: cubic-bezier(0.8, 0.5, 0.2, 1.4)
 
   &.is-active
     transform: translate(0, -1px)
-    transition: all 0.6s .4s linear
+    transition: all 0.4s 0s linear
     span
       &:nth-child(2)
-        animation: span2 0.8s forwards $bez
+        animation: span2 0.2s forwards $bez
       &:nth-child(3)
-        animation: span3 0.4s forwards $bez
+        animation: span3 0.2s forwards $bez
         animation-delay: .35s
       &:nth-child(1)
-        animation: span1 0.8s forwards $bez
-        animation-delay: 0.6s
+        animation: span1 0.4s forwards $bez
+        animation-delay: 0.2s
 
   span
     &:nth-child(1)
@@ -58,20 +58,20 @@ $bez: cubic-bezier(0.8, 0.5, 0.2, 1.4)
       animation: span3_close 0.4s forwards $bez
 
 @keyframes span2
-  0%
-    transform: translate(0, 0) scale(1)
-  20%, 40%, 50%, 80%, 100%
-    width: $barHeight * 2
-    height: $barHeight * 2
-    border-radius: 50%
-  20%
-    transform: translate(0, 0) scale(1)
-  40%
-    transform: translate(0, 0) scale(1)
-  50%
-    transform: translate(0, 5px) scale(1)
-  80%
-    transform: translate(0, -5px) scale(1)
+  // 0%
+  //   transform: translate(0, 0) scale(1)
+  // 20%, 40%, 50%, 80%, 100%
+  //   width: $barHeight * 2
+  //   height: $barHeight * 2
+  //   border-radius: 50%
+  // 20%
+  //   transform: translate(0, 0) scale(1)
+  // 40%
+  //   transform: translate(0, 0) scale(1)
+  // 50%
+  //   transform: translate(0, 5px) scale(1)
+  // 80%
+  //   transform: translate(0, -5px) scale(1)
   100%
     transform: translate(0, 20px) scale(0)
 
@@ -79,7 +79,7 @@ $bez: cubic-bezier(0.8, 0.5, 0.2, 1.4)
   0%
     transform: translate(0, 0)
   60%
-    transform: rotate(80deg) translate(-1.5px, -2px)
+    // transform: rotate(80deg) translate(-1.5px, -2px)
   100%
     transform: rotate(45deg) translate(-1.5px, -2px)
 
@@ -87,7 +87,7 @@ $bez: cubic-bezier(0.8, 0.5, 0.2, 1.4)
   0%
     transform: translate(0, 0)
   60%
-    transform: rotate(-110deg) translate(-4px, 4px)
+    // transform: rotate(-110deg) translate(-4px, 4px)
   100%
     transform: rotate(-45deg) translate(-4px, 4px)
 

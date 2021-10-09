@@ -50,3 +50,44 @@
   width: 100%;
   min-width: 1px;
 }
+
+@include r($lg) {
+  .lettercol {
+    flex-basis: $col3;
+    max-width: $col3;
+  }
+}
+
+@include r($md) {
+  .catalog {
+    display: flex;
+    :global .row {
+      display: block;
+      flex: 0 0 calc(100% - 60px);
+      max-width: calc(100% - 60px);
+      order: 1;
+    }
+  }
+  .letters {
+    right: 0;
+    flex: 0 0 48px;
+    margin-right: -16px;
+    padding-left: 16px;
+    margin-left: auto;
+    flex-direction: column;
+    order: 2;
+  }
+  .letter {
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 20px;
+    margin-bottom: 5px;
+    margin-right: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  .lettercol {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}

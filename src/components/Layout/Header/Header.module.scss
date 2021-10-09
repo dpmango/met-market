@@ -166,7 +166,7 @@
 
 .overlay {
   position: absolute;
-  top: calc(100% + 1px);
+  top: calc(100% + 0px);
   left: 0;
   right: 0;
   z-index: 1;
@@ -221,6 +221,11 @@
     right: 12px;
   }
 }
+@include r($md) {
+  .overlayClose {
+    display: none;
+  }
+}
 
 .catLang {
   display: inline-flex;
@@ -261,5 +266,11 @@
     height: 19px;
     transition: transform 0.25s $ease;
     will-change: transform;
+  }
+}
+
+@include r($md) {
+  .catLang {
+    font-size: 14px;
   }
 }
