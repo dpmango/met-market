@@ -68,7 +68,7 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
   }, [categoriesList, categoriesAbc, activeLetters, abcOrder]);
 
   return (
-    <div className={cns(styles.catalog, className)}>
+    <div className={cns('catalog', styles.catalog, abcOrder && styles._abc, className)}>
       {abcOrder && list && (
         <>
           <div className={styles.letters}>

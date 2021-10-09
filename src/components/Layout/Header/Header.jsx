@@ -26,6 +26,7 @@ const Header = observer(({ className }) => {
   const {
     catalogOpened,
     header: { scrolled, scrolledSticky },
+    query,
   } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
@@ -60,9 +61,15 @@ const Header = observer(({ className }) => {
 
   useEventListener('scroll', handleScroll);
 
+  useEffect(() => {
+    uiContext.setHeaderCatalog(false);
+  }, [query.category, query.search]);
+
   return (
     <>
-      <header className={cns(styles.header, scrolled && styles._scrolled, className)} ref={headerRef}>
+      <header
+        className={cns(styles.header, scrolled && styles._scrolled, catalogOpened && styles._catalogOpened, className)}
+        ref={headerRef}>
         <TopBar />
 
         <div className={styles.main}>

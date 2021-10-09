@@ -51,6 +51,10 @@ export default class UiStore {
 
   // header shared params globally
   setHeaderCatalog(state) {
+    if (document.body) {
+      document.body.classList[state ? 'add' : 'remove']('catalogOpened');
+    }
+
     this.header.catalogOpened = state;
   }
 
@@ -77,8 +81,6 @@ export default class UiStore {
       cart: query.get('cart') || null,
       origin: query,
     };
-
-    console.log(obj);
 
     this.query = obj;
   }

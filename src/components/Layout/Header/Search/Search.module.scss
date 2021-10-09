@@ -181,6 +181,7 @@
   font-weight: 600;
   font-size: 14px;
   line-height: 13px;
+  color: $fontColor;
 }
 
 .suggestionsMeta {
@@ -223,6 +224,7 @@
   min-height: 44px;
   padding: 0 10px 0 18px;
   cursor: pointer;
+  color: $fontColor;
   border-top: 1px solid #cdcdce;
   border-bottom: 1px solid #cdcdce;
   transition: background 0.25s $ease, border 0.25s $ease;

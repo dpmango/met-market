@@ -68,7 +68,7 @@ const CallbackHero = observer(() => {
     []
   );
 
-  if (!query.search || !query.category) return null;
+  if (query.search || query.category) return null;
 
   return (
     <div className={styles.hero}>

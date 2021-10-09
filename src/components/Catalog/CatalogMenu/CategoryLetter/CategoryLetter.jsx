@@ -13,7 +13,6 @@ const CategoryLetter = observer(({ list }) => {
   const history = useHistory();
   const location = useLocation();
 
-  const { catalogOpened } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
   const handleCategoryClick = (id, e) => {
@@ -32,7 +31,7 @@ const CategoryLetter = observer(({ list }) => {
   };
 
   return (
-    <div className={styles.letterCategory}>
+    <div className={cns('letterCategory', styles.letterCategory)}>
       {list &&
         list.map((cat) => (
           <a

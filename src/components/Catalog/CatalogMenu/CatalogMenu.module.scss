@@ -61,11 +61,13 @@
 @include r($md) {
   .catalog {
     display: flex;
-    :global .row {
-      display: block;
-      flex: 0 0 calc(100% - 60px);
-      max-width: calc(100% - 60px);
-      order: 1;
+    &._abc {
+      :global .row {
+        display: block;
+        flex: 0 0 calc(100% - 60px);
+        max-width: calc(100% - 60px);
+        order: 1;
+      }
     }
   }
   .letters {
@@ -85,6 +87,7 @@
     margin-right: 0;
     padding-left: 4px;
     padding-right: 4px;
+    color: white;
   }
   .lettercol {
     flex-basis: 100%;

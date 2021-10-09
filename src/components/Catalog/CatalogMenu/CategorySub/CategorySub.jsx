@@ -30,7 +30,9 @@ const CategoryMain = observer(({ category, handleCategoryClick }) => {
   );
 
   return (
-    <li key={category.id} className={cns(styles.categorySub, opened && styles._opened, hasSub && styles.hasSub)}>
+    <li
+      key={category.id}
+      className={cns('categorySub', styles.categorySub, opened && styles._opened, hasSub && styles.hasSub)}>
       <a href={`?category=${category.id}`} onClick={(e) => handleMobileClick(category, e)}>
         {category.name}
       </a>
