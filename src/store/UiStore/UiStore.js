@@ -64,6 +64,8 @@ export default class UiStore {
 
   // params
   updateParams(query) {
+    query = query || new URLSearchParams();
+
     const obj = {
       search: query.get('search') || null,
       category: query.get('category') || null,

@@ -44,7 +44,7 @@ const CategoryFilters = observer(({ image, data }) => {
       console.log('reset filters because of category change');
       resetFilters();
     }
-  }, [query.catalog]);
+  }, [query.category]);
 
   return data ? (
     <div className={styles.filters}>

@@ -60,7 +60,9 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
 
   const onBlur = useCallback(
     (e) => {
-      const split = innerValue && innerValue.split('.');
+      e.preventDefault();
+
+      const split = innerValue && innerValue.toString().split('.');
 
       if (!innerValue || innerValue < 0.1) {
         setValue(0.1);
@@ -77,17 +79,25 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
     [innerValue]
   );
 
-  const onKeyDown = useCallback((e) => {
-    const isAllowedKey = [8, 13, 190].includes(e.keyCode); // backspace, enter, space
-    const isNumber = !Number.isNaN(parseFloat(e.key));
+  const onKeyDown = useCallback(
+    (e) => {
+      if (e.keyCode === 13) {
+        onBlur(e);
+        return;
+      }
 
-    if (!isNumber && !isAllowedKey) {
-      event.preventDefault();
-    }
-  }, []);
+      const isAllowedKey = [8, 190].includes(e.keyCode); // backspace, enter, space
+      const isNumber = !Number.isNaN(parseFloat(e.key));
+
+      if (!isNumber && !isAllowedKey) {
+        event.preventDefault();
+      }
+    },
+    [innerValue]
+  );
 
   useEffect(() => {
-    setValue(value);
+    setValue(value ? value : 0.1);
   }, [value]);
 
   const inputProps = {

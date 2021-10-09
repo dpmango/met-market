@@ -72,7 +72,7 @@ const Header = observer(({ className }) => {
                 <CartMenu showLabel={false} />
               </div>
               <div className={styles.colMain}>
-                <Link to="/" className={styles.logo}>
+                <Link to="/" onClick={() => uiContext.updateParams(null)} className={styles.logo}>
                   <Logo className={styles.logoDesktop} />
                   <LogoTablet className={styles.logoTablet} />
                 </Link>
