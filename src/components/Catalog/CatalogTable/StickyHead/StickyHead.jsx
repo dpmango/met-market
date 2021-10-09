@@ -7,16 +7,11 @@ import cns from 'classnames';
 
 import { SvgIcon, SelectFilter } from '@ui';
 import { UiStoreContext, CatalogStoreContext } from '@store';
-import { useQuery } from '@hooks';
 
 import styles from './StickyHead.module.scss';
 
 const StickyHead = observer(({ headerGroups }) => {
-  const query = useQuery();
-  const category = query.get('category');
-  const sizeFilter = query.get('size');
-  const markFilter = query.get('mark');
-  const lengthFilter = query.get('length');
+  const { query } = useContext(UiStoreContext);
 
   const {
     catalogOpened,
@@ -26,12 +21,12 @@ const StickyHead = observer(({ headerGroups }) => {
 
   // getters
   const categoryData = useMemo(() => {
-    if (category) {
-      return getCategoryFilters(category);
+    if (query.category) {
+      return getCategoryFilters(query.category);
     }
 
     return null;
-  }, [category, sizeFilter, markFilter, lengthFilter]);
+  }, [query.category, query.size, query.mark, query.length]);
 
   return (
     <thead className={cns(styles.stickyHead, scrolledSticky && !catalogOpened && styles._sticky)}>

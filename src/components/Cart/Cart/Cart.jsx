@@ -8,7 +8,6 @@ import cns from 'classnames';
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
 import { formatPrice, updateQueryParams } from '@helpers';
-import { useQuery } from '@hooks';
 import { ruPhoneRegex } from '@helpers/Validation';
 
 import CartProduct from './CartProduct';
@@ -18,11 +17,10 @@ const Cart = observer(() => {
   const { addToast } = useToasts();
   const history = useHistory();
   const location = useLocation();
-  const query = useQuery();
 
   const { cart, cartCount, cartTotal } = useContext(CartStoreContext);
   const { cartNumber } = useContext(SessionStoreContext);
-  const { activeModal, prevModal, modalParams } = useContext(UiStoreContext);
+  const { activeModal, prevModal, modalParams, query } = useContext(UiStoreContext);
   const cartContext = useContext(CartStoreContext);
   const sessionContext = useContext(SessionStoreContext);
   const uiContext = useContext(UiStoreContext);
@@ -129,7 +127,6 @@ const Cart = observer(() => {
       updateQueryParams({
         location,
         history,
-        query,
         payload: {
           type: 'cart',
           value: true,
@@ -139,7 +136,6 @@ const Cart = observer(() => {
       updateQueryParams({
         location,
         history,
-        query,
         payload: {
           type: 'cart',
           value: false,
@@ -149,12 +145,12 @@ const Cart = observer(() => {
   }, [activeModal, prevModal]);
 
   useEffect(() => {
-    if (query.get('cart')) {
+    if (uiContext.query.cart) {
       uiContext.setModal('cart');
     } else {
       uiContext.resetModal();
     }
-  }, [query.get('cart')]);
+  }, [uiContext.query.cart]);
 
   return (
     <Modal name="cart" variant={cartCount ? 'main' : 'narrow'}>
@@ -340,7 +336,6 @@ const Cart = observer(() => {
                 updateQueryParams({
                   location,
                   history,
-                  query,
                   payload: {
                     type: 'category',
                     value: 'all',

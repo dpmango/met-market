@@ -5,21 +5,21 @@ import { observer } from 'mobx-react';
 import cns from 'classnames';
 
 import { Button, SelectFilter, Spinner, LazyMedia } from '@ui';
-import { CatalogStoreContext } from '@store';
-import { useQuery, useFirstRender } from '@hooks';
+import { CatalogStoreContext, UiStoreContext } from '@store';
+import { useFirstRender } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import styles from './CategoryFilters.module.scss';
 
 const CategoryFilters = observer(({ image, data }) => {
-  const query = useQuery();
   const location = useLocation();
   const history = useHistory();
-  const categoryQuery = query.get('category');
+
   const firstRender = useFirstRender();
 
   const { filters, someFiltersActive } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
+  const { query } = useContext(UiStoreContext);
 
   const resetFilters = (e) => {
     e && e.preventDefault();
@@ -28,7 +28,6 @@ const CategoryFilters = observer(({ image, data }) => {
     updateQueryParams({
       history,
       location,
-      query,
       payload: {
         type: 'filter',
         value: {
@@ -45,7 +44,7 @@ const CategoryFilters = observer(({ image, data }) => {
       console.log('reset filters because of category change');
       resetFilters();
     }
-  }, [categoryQuery]);
+  }, [query.catalog]);
 
   return data ? (
     <div className={styles.filters}>

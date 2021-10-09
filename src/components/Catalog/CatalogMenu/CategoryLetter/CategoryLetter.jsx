@@ -5,7 +5,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
 import { UiStoreContext } from '@store';
-import { useQuery } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import styles from './CategoryLetter.module.scss';
@@ -13,7 +12,6 @@ import styles from './CategoryLetter.module.scss';
 const CategoryLetter = observer(({ list }) => {
   const history = useHistory();
   const location = useLocation();
-  const query = useQuery();
 
   const { catalogOpened } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
@@ -24,7 +22,6 @@ const CategoryLetter = observer(({ list }) => {
     updateQueryParams({
       history,
       location,
-      query,
       payload: {
         type: 'category',
         value: `${id}`,

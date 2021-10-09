@@ -1,15 +1,12 @@
 import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, memo } from 'react';
-import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { useToasts } from 'react-toast-notifications';
-import cns from 'classnames';
 import debounce from 'lodash/debounce';
 
-import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
+import { Spinner, Button, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CatalogStoreContext, CallbackStoreContext } from '@store';
 import { ruPhoneRegex } from '@helpers/Validation';
-import { useQuery } from '@hooks';
 
 import styles from './CallbackHero.module.scss';
 
@@ -18,10 +15,6 @@ const formInitial = {
 };
 
 const CallbackHero = observer(() => {
-  const query = useQuery();
-  const categoryQuery = query.get('category');
-  const searchQuery = query.get('search');
-
   const { addToast } = useToasts();
 
   const callbackContext = useContext(CallbackStoreContext);
@@ -75,7 +68,13 @@ const CallbackHero = observer(() => {
     []
   );
 
-  if (searchQuery || categoryQuery) return null;
+  const shouldDisplay = useMemo(() => {
+    const { search, catalog } = uiContext.query;
+
+    return !search || !catalog;
+  }, uiContext.query);
+
+  if (!shouldDisplay) return null;
 
   return (
     <div className={styles.hero}>

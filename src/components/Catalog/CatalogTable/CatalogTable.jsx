@@ -7,7 +7,7 @@ import cns from 'classnames';
 
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
-import { useQuery, useFirstRender, useWindowSize } from '@hooks';
+import { useFirstRender, useWindowSize } from '@hooks';
 import { updateQueryParams, Plurize, ScrollTo, ProfilerLog } from '@helpers';
 
 import StickyHead from './StickyHead';
@@ -18,32 +18,29 @@ import { settings } from './dataTables';
 const CatalogTable = observer(() => {
   const location = useLocation();
   const history = useHistory();
-  const query = useQuery();
-  const categoryQuery = query.get('category');
-  const searchQuery = query.get('search');
-  const productQuery = query.get('product');
+
   const { width } = useWindowSize();
   const catalogRef = useRef(null);
 
   const { catalog, loading, filters, getCatalogItem, searchCatalog, getCategoryByName } =
     useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
-  const { activeModal, prevModal } = useContext(UiStoreContext);
+  const { activeModal, prevModal, query } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
   // router for search and regular catalog with filters
   const data = useMemo(() => {
-    if (searchQuery) {
-      const { meta, suggestions } = searchCatalog(searchQuery, categoryQuery);
+    if (query.search) {
+      const { meta, suggestions } = searchCatalog(query.search, query.category);
       return suggestions;
     }
 
-    if (categoryQuery !== 'all') {
-      return catalogContext.catalogList(categoryQuery);
+    if (query.category !== 'all') {
+      return catalogContext.catalogList(query.category);
     }
 
     return [];
-  }, [catalog, categoryQuery, searchQuery, filters]);
+  }, [catalog, query.category, query.search, query.size, query.length, query.mark]);
 
   const {
     getTableProps,
@@ -91,14 +88,13 @@ const CatalogTable = observer(() => {
       updateQueryParams({
         history,
         location,
-        query,
         payload: {
           type: 'product',
           value: item.idUnique,
         },
       });
     },
-    [getCatalogItem, history, location, query]
+    [getCatalogItem, history, location]
   );
 
   const getCategoryId = useCallback(
@@ -116,28 +112,26 @@ const CatalogTable = observer(() => {
       updateQueryParams({
         history,
         location,
-        query,
         payload: {
           type: 'category',
           value: `${category.id}`,
         },
       });
     },
-    [history, location, query]
+    [history, location]
   );
 
   useEffect(() => {
     if (!loading) {
-      uiContext.checkQuery(query);
+      uiContext.checkQuery(query.origin);
     }
-  }, [loading, productQuery]);
+  }, [loading, query.product]);
 
   useEffect(() => {
     if (activeModal === null && prevModal === 'cart-add') {
       updateQueryParams({
         history,
         location,
-        query,
         payload: {
           type: 'clear-modals',
         },
@@ -150,7 +144,6 @@ const CatalogTable = observer(() => {
       updateQueryParams({
         history,
         location,
-        query,
         payload: {
           type: 'page',
           value: pageIndex,
@@ -159,7 +152,7 @@ const CatalogTable = observer(() => {
     }
   }, [pageIndex]);
 
-  if (categoryQuery === 'all' || (!categoryQuery && !searchQuery)) return null;
+  if (query.category === 'all' || (!query.category && !query.search)) return null;
 
   return !loading ? (
     <div className={styles.catalog} ref={catalogRef}>

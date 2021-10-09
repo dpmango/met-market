@@ -5,7 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
 import { UiStoreContext } from '@store';
-import { useQuery, useWindowSize } from '@hooks';
+import { useWindowSize } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import styles from './CategorySub.module.scss';

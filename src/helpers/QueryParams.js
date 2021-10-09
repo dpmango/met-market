@@ -1,9 +1,10 @@
 import { PerformanceLog } from '@helpers';
+import { ui } from '@store';
 
-export const updateQueryParams = ({ history, location, query, payload }) => {
+export const updateQueryParams = ({ history, location, payload }) => {
   const DEV_perf = performance.now();
 
-  const params = query || new URLSearchParams();
+  const params = ui.query.origin || new URLSearchParams();
   const curParams = params.toString();
 
   const mergeParam = (name, value) => {
@@ -36,7 +37,7 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
       break;
 
     case 'category':
-      params.delete('page');
+      // params.delete('page');
 
       if (payload.value) {
         mergeParam('category', payload.value);
@@ -97,6 +98,9 @@ export const updateQueryParams = ({ history, location, query, payload }) => {
 
   if (curParams !== params.toString()) {
     console.log('QUERY :: pushing params', params.toString());
+
+    ui.updateParams(params);
+
     history.push({
       pathname: location.pathname,
       search: params.toString(),

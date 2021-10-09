@@ -5,7 +5,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
 import { UiStoreContext } from '@store';
-import { useQuery, useWindowSize } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import CategorySub from '../CategorySub';
@@ -14,9 +13,8 @@ import styles from './CategoryMain.module.scss';
 const CategoryMain = observer(({ category }) => {
   const history = useHistory();
   const location = useLocation();
-  const query = useQuery();
 
-  const { catalogOpened } = useContext(UiStoreContext);
+  // const { catalogOpened } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
   const handleCategoryClick = (id, e) => {
@@ -25,7 +23,6 @@ const CategoryMain = observer(({ category }) => {
     updateQueryParams({
       history,
       location,
-      query,
       payload: {
         type: 'category',
         value: `${id}`,
@@ -35,9 +32,9 @@ const CategoryMain = observer(({ category }) => {
     uiContext.setHeaderCatalog(false);
   };
 
-  useEffect(() => {
-    // catalogOpened
-  }, [catalogOpened]);
+  // useEffect(() => {
+  //   // catalogOpened
+  // }, [catalogOpened]);
 
   return (
     <div className={styles.category} data-id={category.id}>

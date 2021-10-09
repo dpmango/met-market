@@ -7,7 +7,6 @@ import cns from 'classnames';
 
 import { Breadcrumbs, Spinner, Button } from '@ui';
 import { CatalogStoreContext, UiStoreContext } from '@store';
-import { useQuery } from '@hooks';
 import { ScrollTo, Plurize, updateQueryParams } from '@helpers';
 
 import { CatalogMenu } from '@c/Catalog';
@@ -16,26 +15,20 @@ import CategoryFilters from './CategoryFilters';
 import styles from './CatalogCategories.module.scss';
 
 const CatalogCategories = observer(() => {
-  const query = useQuery();
   const history = useHistory();
   const location = useLocation();
 
-  const category = query.get('category');
-  const search = query.get('search');
-  const sizeFilter = query.get('size');
-  const markFilter = query.get('mark');
-  const lengthFilter = query.get('length');
-
   const { loading, searchCatalog, getCategoryFilters } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
+  const { query } = useContext(UiStoreContext);
 
   // getters
   const categoryData = useMemo(() => {
-    if (category) {
-      const storeData = getCategoryFilters(category);
+    if (query.category) {
+      const storeData = getCategoryFilters(query.category);
 
-      if (search) {
-        const data = searchCatalog(search, category);
+      if (query.search) {
+        const data = searchCatalog(query.search, query.category);
 
         //  <br/>по запросу «<span class="w-700 c-link">${search}</span>»`
         return {
@@ -49,13 +42,13 @@ const CatalogCategories = observer(() => {
       }
 
       return storeData;
-    } else if (search) {
-      const data = searchCatalog(search, null);
+    } else if (query.search) {
+      const data = searchCatalog(query.search, null);
 
       return data
         ? {
             id: 0,
-            title: `По запросу «<span class="w-700 c-link">${search}</span>» ${
+            title: `По запросу «<span class="w-700 c-link">${query.search}</span>» ${
               data.meta.total > 0
                 ? `найдено ${data.meta.total} ${Plurize(data.meta.total, 'товар', 'товара', 'товаров')}`
                 : 'ничего не найдено'
@@ -63,10 +56,10 @@ const CatalogCategories = observer(() => {
           }
         : null;
     }
-  }, [loading, searchCatalog, category, search, sizeFilter, markFilter, lengthFilter]);
+  }, [loading, searchCatalog, query]);
 
   const breadcrumbs = useMemo(() => {
-    if (category && categoryData) {
+    if (query.category && categoryData) {
       const ancestors = categoryData.ancestors
         ? categoryData.ancestors.map((x) => ({
             category: x.id,
@@ -76,7 +69,7 @@ const CatalogCategories = observer(() => {
 
       return [
         {
-          href: '?category=all',
+          category: 'all',
           text: 'Каталог',
         },
         ...ancestors,
@@ -84,44 +77,44 @@ const CatalogCategories = observer(() => {
           text: categoryData.title,
         },
       ];
-    } else if (search) {
+    } else if (query.search) {
       return [
         {
           href: '#',
           text: 'Поиск',
         },
       ];
-    } else if (category) {
+    } else if (query.category) {
       return [
         {
-          href: '',
+          category: 'all',
           text: 'Каталог',
         },
       ];
     }
 
     return [];
-  }, [categoryData, category, search]);
+  }, [categoryData, query.category, query.search]);
 
   // click handlers
   const handleSearchEveryWhere = useCallback(() => {
     updateQueryParams({
       location,
       history,
-      query,
       payload: {
         type: 'category',
         value: false,
       },
     });
-  }, [location, history, query]);
+  }, [location, history]);
 
   useEffect(() => {
     ScrollTo(0, 300);
-  }, [category, search]);
+  }, [query.category, query.search]);
 
+  // todo - weekpoint ?
   useEffect(() => {
-    catalogContext.queryToFilter(query);
+    catalogContext.queryToFilter(query.origin);
   }, [query]);
 
   return (
@@ -139,7 +132,7 @@ const CatalogCategories = observer(() => {
               className="h3-title"
               dangerouslySetInnerHTML={{ __html: categoryData.searchtitle || categoryData.title }}
             />
-            {search && categoryData.searchtitle && (
+            {query.search && categoryData.searchtitle && (
               <div className={styles.everywhere}>
                 <Button theme="link" variant="small" iconLeft="search" onClick={handleSearchEveryWhere}>
                   Искать везде

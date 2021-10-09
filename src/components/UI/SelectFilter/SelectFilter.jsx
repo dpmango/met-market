@@ -8,7 +8,7 @@ import difference from 'lodash/difference';
 
 import { SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
-import { useOnClickOutside, useQuery } from '@hooks';
+import { useOnClickOutside } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import styles from './SelectFilter.module.scss';
@@ -17,7 +17,6 @@ const SelectComponent = observer(
   ({ label, mini, value, name, className, optionsClassName, options, onChange, ...props }) => {
     const location = useLocation();
     const history = useHistory();
-    const query = useQuery();
 
     const [opened, setOpened] = useState(false);
     const optionsRef = useRef(null);
@@ -53,7 +52,6 @@ const SelectComponent = observer(
       updateQueryParams({
         history,
         location,
-        query,
         payload: {
           type: 'filter',
           value: filter,

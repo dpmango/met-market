@@ -7,14 +7,12 @@ import cns from 'classnames';
 import { SvgIcon } from '@ui';
 import { UiStoreContext } from '@store';
 import { updateQueryParams } from '@helpers';
-import { useQuery } from '@hooks';
 
 import styles from './Breadcrumbs.module.scss';
 
 const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
   const history = useHistory();
   const location = useLocation();
-  const query = useQuery();
 
   // todo - move to crumbs conponent
   const {
@@ -33,7 +31,6 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
     updateQueryParams({
       history,
       location,
-      query,
       payload: {
         type: 'category',
         value: `${category}`,
@@ -52,7 +49,6 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
             </li>
             {crumbs.slice(0, crumbs.length - 1).map((crumb, idx) => (
               <li key={idx}>
-                {crumb.href && <Link to={crumb.href}>{crumb.text}</Link>}
                 {crumb.category && (
                   <a href={`?category=${crumb.category}`} onClick={(e) => handleCategoryClick(crumb.category, e)}>
                     {crumb.text}

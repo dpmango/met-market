@@ -136,6 +136,8 @@ export default class CatalogStore {
       ];
     }
 
+    // TODO - filters matching
+
     const matches = source.filter((x) => {
       const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
 

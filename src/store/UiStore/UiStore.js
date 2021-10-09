@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { catalog } from '@store';
+import { update } from 'lodash-es';
 export default class UiStore {
   prevModal = null;
   activeModal = null;
@@ -9,9 +10,22 @@ export default class UiStore {
     scrolled: false,
     scrolledSticky: false,
   };
+  query = {
+    search: null,
+    category: null,
+    page: null,
+    size: null,
+    mark: null,
+    length: null,
+    product: null,
+    cart: null,
+    origin: null,
+  };
 
   constructor() {
     makeAutoObservable(this);
+
+    this.updateParams(new URLSearchParams(window.location.search));
   }
 
   get catalogOpened() {
@@ -46,6 +60,25 @@ export default class UiStore {
 
   setScrolledSticky(state) {
     this.header.scrolledSticky = state;
+  }
+
+  // params
+  updateParams(query) {
+    const obj = {
+      search: query.get('search') || null,
+      category: query.get('category') || null,
+      page: query.get('page') || null,
+      size: query.get('size') || null,
+      mark: query.get('mark') || null,
+      length: query.get('length') || null,
+      product: query.get('product') || null,
+      cart: query.get('cart') || null,
+      origin: query,
+    };
+
+    console.log(obj);
+
+    this.query = { ...obj };
   }
 
   checkQuery(query) {

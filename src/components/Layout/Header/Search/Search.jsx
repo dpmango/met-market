@@ -6,7 +6,7 @@ import debounce from 'lodash/debounce';
 
 import { SvgIcon, Spinner } from '@ui';
 import { CatalogStoreContext, SessionStoreContext, UiStoreContext } from '@store';
-import { useOnClickOutside, useQuery } from '@hooks';
+import { useOnClickOutside } from '@hooks';
 import { formatUGC, updateQueryParams } from '@helpers';
 
 import styles from './Search.module.scss';
@@ -18,7 +18,6 @@ const settings = {
 const Search = observer(({ className }) => {
   const history = useHistory();
   const location = useLocation();
-  const query = useQuery();
 
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
@@ -30,7 +29,7 @@ const Search = observer(({ className }) => {
 
   const catalogContext = useContext(CatalogStoreContext);
   const sessionContext = useContext(SessionStoreContext);
-  const uiContext = useContext(UiStoreContext);
+  const { query } = useContext(UiStoreContext);
   const searchRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -46,7 +45,6 @@ const Search = observer(({ className }) => {
         updateQueryParams({
           location,
           history,
-          query,
           payload: {
             type: 'search',
             value: `${textNormalized}`,
@@ -66,7 +64,6 @@ const Search = observer(({ className }) => {
         updateQueryParams({
           location,
           history,
-          query,
           payload: {
             type: 'search',
             value: false,
@@ -97,7 +94,6 @@ const Search = observer(({ className }) => {
         updateQueryParams({
           location,
           history,
-          query,
           payload: {
             type: 'search',
             value: `${textNormalized}`,
@@ -121,7 +117,6 @@ const Search = observer(({ className }) => {
       updateQueryParams({
         location,
         history,
-        query,
         payload: {
           type: 'search',
           value: `${q}`,
@@ -132,7 +127,7 @@ const Search = observer(({ className }) => {
 
       inputRef && inputRef.current.focus();
     },
-    [catalogContext.getCatalogItem, history, location, query, inputRef]
+    [catalogContext.getCatalogItem, history, location, inputRef]
   );
 
   const handleSearchChange = useCallback(
