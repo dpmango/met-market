@@ -7,6 +7,7 @@ export default class UiStore {
   header = {
     catalogOpened: false,
     scrolled: false,
+    scrolledSticky: false,
   };
 
   constructor() {
@@ -41,6 +42,10 @@ export default class UiStore {
 
   setScrolled(state) {
     this.header.scrolled = state;
+  }
+
+  setScrolledSticky(state) {
+    this.header.scrolledSticky = state;
   }
 
   checkQuery(query) {

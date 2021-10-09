@@ -182,27 +182,34 @@ const CatalogTable = observer(() => {
               let showGrouping = false;
               let groupingHeader = null;
 
+              const isNull = (x) => x === null || x === 'null';
+              const isNotNull = (x) => x !== null || x !== 'null';
+
               if (!prevRow || prevRow.length === 0) {
                 showGrouping = true;
 
-                if (category === null || category === 'null') {
+                if (isNull(category)) {
                   category = categories[categories.length - 2];
                 }
               }
 
               if (categories[categories.length - 1]) {
-                if (prevRow && prevRow[prevRow.length - 1]) {
-                  let prevRowValue = prevRow[prevRow.length - 1];
-                  if (prevRowValue === null || prevRowValue === 'null') {
-                    try {
-                      prevRowValue = prevRow[prevRow.length - 2];
-                    } catch {}
-                  }
+                let prevRowValue = null;
 
-                  if (prevRowValue !== null || prevRowValue !== 'null') {
-                    showGrouping = category !== prevRowValue;
-                    category = prevRowValue;
+                if (prevRow && prevRow[prevRow.length - 1]) {
+                  prevRowValue = prevRow[prevRow.length - 1];
+                  if (isNull(prevRowValue)) {
+                    prevRowValue = prevRow[prevRow.length - 2];
                   }
+                }
+
+                if (isNull(category)) {
+                  category = categories[categories.length - 2];
+                }
+
+                if (isNotNull(prevRowValue)) {
+                  showGrouping = category !== prevRowValue;
+                  category = isNotNull(category) ? category : prevRowValue;
                 }
               }
 

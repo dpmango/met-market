@@ -21,12 +21,11 @@ import { ReactComponent as Logo } from '@assets/logo.svg';
 import { ReactComponent as LogoTablet } from '@assets/logo-tablet.svg';
 
 const Header = observer(({ className }) => {
-  // const [scrolledToFooter, setScrolledToFooter] = useState(false);
   const [abcOrder, setAbcOrder] = useState(false);
 
   const {
     catalogOpened,
-    header: { scrolled },
+    header: { scrolled, scrolledSticky },
   } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
@@ -34,7 +33,8 @@ const Header = observer(({ className }) => {
 
   const handleScroll = useCallback(
     debounce((e) => {
-      const nearFooter = window.scrollY + window.innerHeight > document.body.scrollHeight - 375;
+      // const nearFooter = window.scrollY + window.innerHeight > document.body.scrollHeight - 375;
+      const stickyHeader = window.scrollY > 460;
 
       if (window.scrollY > 45) {
         if (!scrolled) {
@@ -48,7 +48,7 @@ const Header = observer(({ className }) => {
         }
       }
 
-      // setScrolledToFooter(nearFooter);
+      uiContext.setScrolledSticky(stickyHeader);
     }, 10),
     [scrolled, uiContext.uiContext]
   );
@@ -123,7 +123,7 @@ const Header = observer(({ className }) => {
       <Callback />
       <CallbackSuccess />
 
-      <ScrollTop visible={scrolled} />
+      <ScrollTop visible={scrolledSticky} />
     </>
   );
 });

@@ -14,13 +14,6 @@ import { ruPhoneRegex } from '@helpers/Validation';
 import CartProduct from './CartProduct';
 import styles from './Cart.module.scss';
 
-const formInitial = {
-  phone: '',
-  delivery: '',
-  comment: '',
-  agree: false,
-};
-
 const Cart = observer(() => {
   const { addToast } = useToasts();
   const history = useHistory();
@@ -39,6 +32,15 @@ const Cart = observer(() => {
   const [comment, setComment] = useState(false);
   const [agree, setAgree] = useState(false);
   const [resetContext, setResetContext] = useState(false);
+
+  const formInitial = useMemo(() => {
+    return {
+      phone: '',
+      delivery: '',
+      comment: '',
+      agree: false,
+    };
+  }, []);
 
   const handleCartDelete = useCallback(
     async (id) => {
@@ -87,7 +89,7 @@ const Cart = observer(() => {
     [loading]
   );
 
-  const handleValidation = (values) => {
+  const handleValidation = useCallback((values) => {
     const errors = {};
     if (!values.phone) {
       errors.phone = 'Введите телефон';
@@ -97,7 +99,7 @@ const Cart = observer(() => {
       errors.agree = 'Необходимо согласие';
     }
     return errors;
-  };
+  }, []);
 
   const handleSubmit = useCallback(
     async (values, { resetForm }) => {

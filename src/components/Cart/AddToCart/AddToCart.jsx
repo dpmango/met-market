@@ -26,12 +26,12 @@ const AddToCart = observer(() => {
   const [count, setCount] = useState(1);
 
   const cartItem = useMemo(() => {
-    if (modalParams && modalParams.idUnique) {
-      return cartContext.getItemInCart(modalParams.idUnique);
+    if (modalData && modalData.idUnique) {
+      return cartContext.getItemInCart(modalData.idUnique);
     }
 
     return null;
-  }, [cartContext.cart, modalParams]);
+  }, [cartContext.cart, modalData]);
 
   // actions
   const handleCartSubmit = useCallback(
@@ -176,7 +176,6 @@ const AddToCart = observer(() => {
                 </>
               </div>
             </div>
-
             {cartItem && modalData && (
               <div className={styles.incart}>
                 <div className={styles.incartIcon}>
@@ -190,6 +189,12 @@ const AddToCart = observer(() => {
                 <div className={styles.incartDelete} onClick={handleCartDelete}>
                   <SvgIcon name="delete" />
                 </div>
+              </div>
+            )}
+
+            {!modalData && (
+              <div className={styles.incart}>
+                <Spinner />
               </div>
             )}
 

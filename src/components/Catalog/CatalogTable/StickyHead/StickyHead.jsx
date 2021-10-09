@@ -20,7 +20,7 @@ const StickyHead = observer(({ headerGroups }) => {
 
   const {
     catalogOpened,
-    header: { scrolled },
+    header: { scrolledSticky },
   } = useContext(UiStoreContext);
   const { filters, getCategoryFilters } = useContext(CatalogStoreContext);
 
@@ -34,7 +34,7 @@ const StickyHead = observer(({ headerGroups }) => {
   }, [category, sizeFilter, markFilter, lengthFilter]);
 
   return (
-    <thead className={cns(styles.stickyHead, scrolled && !catalogOpened && styles._sticky)}>
+    <thead className={cns(styles.stickyHead, scrolledSticky && !catalogOpened && styles._sticky)}>
       {headerGroups.map((headerGroup) => (
         <tr {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map((column) => {

@@ -37,7 +37,7 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
           x.name
             .toUpperCase()
             .split(' ')
-            .some((word) => activeLetters.includes(word[0]))
+            .some((word) => word.length > 3 && activeLetters.includes(word[0]))
         );
       }
 
@@ -52,7 +52,7 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
           .replace('низколегированный', 'н/л')
           .replace('низколегированные', 'н/л')
           .replace('электросварные', 'э/с')
-          .replace('жаропрочный', 'жар')
+          .replace('жаропрочный', 'жар.')
           .replace('горячекатаный', 'горяч.')
           .replace('инструментальный', 'инстр.'),
       }));
