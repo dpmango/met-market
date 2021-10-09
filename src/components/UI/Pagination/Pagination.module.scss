@@ -59,3 +59,20 @@
     cursor: default;
   }
 }
+
+@include r($md) {
+  .pagination {
+    flex-wrap: wrap;
+  }
+  .list {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+  .item {
+    min-width: 25px;
+
+    span {
+      padding: 5px 2px;
+    }
+  }
+}

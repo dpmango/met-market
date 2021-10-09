@@ -316,3 +316,14 @@
   border-radius: 5px;
   text-align: center;
 }
+
+@include r($md) {
+  .pagination {
+    flex-wrap: wrap;
+  }
+  .paginationPer {
+    margin-top: 16px;
+    flex: 0 0 auto;
+    margin-left: 0;
+  }
+}

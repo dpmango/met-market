@@ -103,6 +103,17 @@
   }
 }
 
+@include r($md) {
+  .searchInput {
+    font-size: 12px;
+    padding: 10px 80px 10px 20px;
+  }
+  .searchDropdown {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+}
+
 .searchClear {
   -webkit-appearance: none;
   position: absolute;
