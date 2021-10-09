@@ -19,6 +19,7 @@ export default class UiStore {
     length: null,
     product: null,
     cart: null,
+    callback: null,
     origin: null,
   };
 
@@ -79,6 +80,7 @@ export default class UiStore {
       length: query.get('length') || null,
       product: query.get('product') || null,
       cart: query.get('cart') || null,
+      callback: query.get('callback') || null,
       origin: query,
     };
 

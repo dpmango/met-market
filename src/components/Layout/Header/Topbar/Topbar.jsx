@@ -28,7 +28,13 @@ const Topbar = observer(({ className }) => {
             </a>
           </div>
           <div className={cns(rootStyles.colThrid, styles.topbarLinks)}>
-            <a href="#" className={cns(styles.topbarAction)} onClick={() => uiContext.setModal('callback')}>
+            <a
+              href="#"
+              className={cns(styles.topbarAction)}
+              onClick={(e) => {
+                e.preventDefault();
+                uiContext.setModal('callback');
+              }}>
               <span className="w-700">Отправить заявку</span>
             </a>
             <a

@@ -15,29 +15,20 @@ export const updateQueryParams = ({ history, location, payload }) => {
     }
   };
 
-  // console.log('QUERY :: update payload', payload);
+  console.log('QUERY :: update payload', payload);
 
   switch (payload.type) {
-    case 'clear-modals':
-      params.delete('product');
-      break;
-
-    case 'cart':
+    case 'product':
       if (payload.value) {
-        mergeParam('cart', payload.value);
+        mergeParam('product', payload.value);
       } else {
-        params.delete('cart');
+        params.delete('product');
       }
 
       break;
 
-    case 'product':
-      mergeParam('product', payload.value);
-
-      break;
-
     case 'category':
-      // params.delete('page');
+      params.delete('page');
 
       if (payload.value) {
         mergeParam('category', payload.value);
@@ -90,6 +81,28 @@ export const updateQueryParams = ({ history, location, payload }) => {
         params.delete('length');
       }
 
+      break;
+
+    case 'cart':
+      if (payload.value) {
+        mergeParam('cart', payload.value);
+      } else {
+        params.delete('cart');
+      }
+
+      break;
+
+    case 'callback':
+      if (payload.value) {
+        mergeParam('callback', payload.value);
+      } else {
+        params.delete('callback');
+      }
+
+      break;
+
+    case 'clear-modals':
+      params.delete('product');
       break;
 
     default:

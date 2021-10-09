@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, memo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useToasts } from 'react-toast-notifications';
@@ -8,8 +8,9 @@ import debounce from 'lodash/debounce';
 
 import { Modal, Spinner, Button, Checkbox, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CallbackStoreContext } from '@store';
+import { useFirstRender } from '@hooks';
 import { ruPhoneRegex } from '@helpers/Validation';
-import { formatBytes, bytesToMegaBytes } from '@helpers';
+import { formatBytes, bytesToMegaBytes, updateQueryParams } from '@helpers';
 
 import styles from './Callback.module.scss';
 
@@ -29,9 +30,13 @@ const uploader = {
 const Callback = observer(() => {
   const { addToast } = useToasts();
   const fileInput = useRef(null);
+  const history = useHistory();
+  const location = useLocation();
+  const firstRender = useFirstRender();
 
   const [files, setFiles] = useState([]);
 
+  const { activeModal, prevModal, query } = useContext(UiStoreContext);
   const callbackContext = useContext(CallbackStoreContext);
   const uiContext = useContext(UiStoreContext);
 
@@ -121,6 +126,38 @@ const Callback = observer(() => {
 
     return true;
   }, []);
+
+  useEffect(() => {
+    if (prevModal !== 'callback' && activeModal === 'callback') {
+      updateQueryParams({
+        location,
+        history,
+        payload: {
+          type: 'callback',
+          value: true,
+        },
+      });
+    } else if (prevModal === 'callback' && activeModal === null) {
+      updateQueryParams({
+        location,
+        history,
+        payload: {
+          type: 'callback',
+          value: false,
+        },
+      });
+    }
+  }, [activeModal, prevModal]);
+
+  useEffect(() => {
+    if (query.callback) {
+      uiContext.setModal('callback');
+    } else {
+      if (!firstRender) {
+        uiContext.resetModal();
+      }
+    }
+  }, [query.callback]);
 
   return (
     <Modal name="callback" variant="narrow">

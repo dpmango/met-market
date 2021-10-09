@@ -8,6 +8,7 @@ import cns from 'classnames';
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
 import { formatPrice, updateQueryParams } from '@helpers';
+import { useFirstRender } from '@hooks';
 import { ruPhoneRegex } from '@helpers/Validation';
 
 import CartProduct from './CartProduct';
@@ -17,6 +18,7 @@ const Cart = observer(() => {
   const { addToast } = useToasts();
   const history = useHistory();
   const location = useLocation();
+  const firstRender = useFirstRender();
 
   const { cart, cartCount, cartTotal } = useContext(CartStoreContext);
   const { cartNumber } = useContext(SessionStoreContext);
@@ -145,12 +147,14 @@ const Cart = observer(() => {
   }, [activeModal, prevModal]);
 
   useEffect(() => {
-    if (uiContext.query.cart) {
+    if (query.cart) {
       uiContext.setModal('cart');
     } else {
-      uiContext.resetModal();
+      if (!firstRender) {
+        uiContext.resetModal();
+      }
     }
-  }, [uiContext.query.cart]);
+  }, [query.cart]);
 
   return (
     <Modal name="cart" variant={cartCount ? 'main' : 'narrow'}>
