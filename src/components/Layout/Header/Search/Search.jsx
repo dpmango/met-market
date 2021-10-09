@@ -61,14 +61,14 @@ const Search = observer(({ className }) => {
         //   query: textNormalized,
         // });
       } else {
-        updateQueryParams({
-          location,
-          history,
-          payload: {
-            type: 'search',
-            value: false,
-          },
-        });
+        // updateQueryParams({
+        //   location,
+        //   history,
+        //   payload: {
+        //     type: 'search',
+        //     value: false,
+        //   },
+        // });
         // setSearchMeta({
         //   total: null,
         // });

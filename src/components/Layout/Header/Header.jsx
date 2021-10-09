@@ -109,6 +109,20 @@ const Header = observer(({ className }) => {
           <div className={styles.overlayScroller}>
             <div className={styles.overlayContent}>
               <div className="container">
+                <div className={styles.overlaySocials}>
+                  <a href="https://whatsupp.com" target="_blank" className={styles.overlaySocialLink} rel="noreferrer">
+                    <SvgIcon name="social-whatsapp" />
+                    <span>Whatsapp</span>
+                  </a>
+                  <a href="https://t.me/" target="_blank" className={styles.overlaySocialLink} rel="noreferrer">
+                    <SvgIcon name="social-telegram" />
+                    <span>Telegram</span>
+                  </a>
+                  <a href="tel:88003508625" className={styles.overlaySocialLink}>
+                    <span>8-800-350-86-25</span>
+                  </a>
+                </div>
+
                 <div className={styles.catLang} onClick={() => setAbcOrder(!abcOrder)}>
                   <span>Показать в алфавитном порядке</span>
                   <div className={cns(styles.catLangToggle, abcOrder && styles._active)}></div>

@@ -32,13 +32,6 @@
   text-align: center;
 }
 
-.formCta {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 14px -10px 20px;
-}
-
 .reqField {
   position: relative;
   &::after {
@@ -53,6 +46,14 @@
     pointer-events: none;
   }
 }
+
+.formCta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 14px -10px 20px;
+}
+
 .formCtaLink {
   display: inline-flex;
   align-items: center;

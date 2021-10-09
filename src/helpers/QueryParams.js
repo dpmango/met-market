@@ -15,7 +15,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
     }
   };
 
-  console.log('QUERY :: update payload', payload);
+  // console.log('QUERY :: update payload', payload);
 
   switch (payload.type) {
     case 'product':
@@ -28,7 +28,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
       break;
 
     case 'category':
-      params.delete('page');
+      // params.delete('page');
 
       if (payload.value) {
         mergeParam('category', payload.value);

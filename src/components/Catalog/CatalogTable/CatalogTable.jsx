@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useRef, useEffect, Profiler, useReducer, useContext, useMemo, useCallback, memo } from 'react';
+import React, { useRef, useEffect, Profiler, useState, useContext, useMemo, useCallback, memo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useTable, usePagination } from 'react-table';
@@ -7,8 +7,8 @@ import cns from 'classnames';
 
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
-import { useFirstRender, useWindowSize } from '@hooks';
 import { updateQueryParams, Plurize, ScrollTo, ProfilerLog } from '@helpers';
+import { useWindowSize } from '@hooks';
 
 import StickyHead from './StickyHead';
 import TableBody from './TableBody';
@@ -28,6 +28,11 @@ const CatalogTable = observer(() => {
   const { activeModal, prevModal, query } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
 
+  // helper function
+  const getIndexFromQuery = (query) => {
+    return query.page ? parseInt(query.page || 1, 10) - 1 : 0;
+  };
+
   // router for search and regular catalog with filters
   const data = useMemo(() => {
     if (query.search) {
@@ -40,7 +45,10 @@ const CatalogTable = observer(() => {
     }
 
     return [];
-  }, [catalog, query.category, query.search, filters]);
+  }, [loading, catalog, query.category, query.search, filters]);
+
+  // controlled table state
+  const [pageIndexControled, setPageIndex] = useState(getIndexFromQuery(query));
 
   const {
     getTableProps,
@@ -60,7 +68,7 @@ const CatalogTable = observer(() => {
     {
       columns: settings.columns || [],
       data: data,
-      initialState: { pageIndex: 0, pageSize: 100 },
+      initialState: { pageIndex: pageIndexControled, pageSize: 100 },
     },
     usePagination
   );
@@ -140,17 +148,12 @@ const CatalogTable = observer(() => {
   }, [activeModal, prevModal]);
 
   useEffect(() => {
-    if (pageIndex) {
-      updateQueryParams({
-        history,
-        location,
-        payload: {
-          type: 'page',
-          value: pageIndex,
-        },
-      });
+    // gotoPage(getIndexFromQuery(query));
+    setPageIndex(getIndexFromQuery(query));
+    if (catalogRef.current) {
+      ScrollTo(catalogRef.current.offsetTop - 84, 300);
     }
-  }, [pageIndex]);
+  }, [query.page]);
 
   if (query.category === 'all' || (!query.category && !query.search)) return null;
 
@@ -236,11 +239,18 @@ const CatalogTable = observer(() => {
       {page && page.length === 0 && <div className={styles.notFound}>Ничего не найдено</div>}
       <div className={styles.pagination}>
         <Pagination
-          page={pageIndex + 1}
+          page={pageIndexControled + 1}
           count={pageCount}
           onChange={(page) => {
-            gotoPage(page - 1);
-            ScrollTo(catalogRef.current.offsetTop - 60, 300);
+            // gotoPage(page - 1);
+            updateQueryParams({
+              history,
+              location,
+              payload: {
+                type: 'page',
+                value: page,
+              },
+            });
           }}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}

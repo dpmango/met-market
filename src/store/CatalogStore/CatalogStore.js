@@ -137,19 +137,15 @@ export default class CatalogStore {
     }
 
     // TODO - filters matching
+    const searchRegex = prepareSmartSearchRegexp(clearMorphologyInSearchTerm(txt.toLowerCase()));
 
     const matches = source.filter((x) => {
       const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
 
-      if (terms && txt) {
-        const test = clearMorphologyInSearchTerm(txt.toLowerCase());
+      if (terms) {
+        return new RegExp(searchRegex, 'i').test(terms);
 
-        // console.log('morh search', test);
-        // return new RegExp(test, 'i').test(terms);
-        const queries = test.toLowerCase().split(' ');
-        return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
-
-        // const queries = txt.toLowerCase().split(' ');
+        // const queries = clearMorphologyInSearchTerm(txt.toLowerCase()).split(' ');
         // return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
       }
 
