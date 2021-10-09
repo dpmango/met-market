@@ -40,7 +40,7 @@ const CatalogTable = observer(() => {
     }
 
     return [];
-  }, [catalog, query.category, query.search, query.size, query.length, query.mark]);
+  }, [catalog, query.category, query.search, filters]);
 
   const {
     getTableProps,

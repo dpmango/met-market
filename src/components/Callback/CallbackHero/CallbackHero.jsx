@@ -18,7 +18,7 @@ const CallbackHero = observer(() => {
   const { addToast } = useToasts();
 
   const callbackContext = useContext(CallbackStoreContext);
-  const uiContext = useContext(UiStoreContext);
+  const { query } = useContext(UiStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
 
   const [loading, setLoading] = useState(false);
@@ -68,13 +68,7 @@ const CallbackHero = observer(() => {
     []
   );
 
-  const shouldDisplay = useMemo(() => {
-    const { search, catalog } = uiContext.query;
-
-    return !search || !catalog;
-  }, uiContext.query);
-
-  if (!shouldDisplay) return null;
+  if (!query.search || !query.category) return null;
 
   return (
     <div className={styles.hero}>

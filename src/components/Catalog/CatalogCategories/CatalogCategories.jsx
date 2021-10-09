@@ -18,7 +18,7 @@ const CatalogCategories = observer(() => {
   const history = useHistory();
   const location = useLocation();
 
-  const { loading, searchCatalog, getCategoryFilters } = useContext(CatalogStoreContext);
+  const { loading, searchCatalog, getCategoryFilters, filters } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
   const { query } = useContext(UiStoreContext);
 
@@ -56,7 +56,7 @@ const CatalogCategories = observer(() => {
           }
         : null;
     }
-  }, [loading, searchCatalog, query]);
+  }, [loading, searchCatalog, query.search, filters]);
 
   const breadcrumbs = useMemo(() => {
     if (query.category && categoryData) {
@@ -112,10 +112,10 @@ const CatalogCategories = observer(() => {
     ScrollTo(0, 300);
   }, [query.category, query.search]);
 
-  // todo - weekpoint ?
+  // todo - ?? ?
   useEffect(() => {
     catalogContext.queryToFilter(query.origin);
-  }, [query]);
+  }, [query.size, query.mark, query.length]);
 
   return (
     <div className={cns(styles.root, 'catalog')}>
