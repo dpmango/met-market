@@ -33,7 +33,7 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
       location,
       payload: {
         type: 'category',
-        value: `${category}`,
+        value: category && `${category}`,
       },
     });
   };
@@ -44,7 +44,10 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
         <div className={styles.breadcrumbs}>
           <ul className={styles.breadcrumbsList}>
             <li>
-              <Link to="/">Главная</Link>
+              <a href={'/'} onClick={(e) => handleCategoryClick(null, e)}>
+                Главная
+              </a>
+
               <SvgIcon name="arrow-long" />
             </li>
             {crumbs.slice(0, crumbs.length - 1).map((crumb, idx) => (

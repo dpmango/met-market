@@ -78,7 +78,7 @@ export default class UiStore {
 
     console.log(obj);
 
-    this.query = { ...obj };
+    this.query = obj;
   }
 
   checkQuery(query) {
