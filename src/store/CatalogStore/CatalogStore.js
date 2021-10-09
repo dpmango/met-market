@@ -112,9 +112,7 @@ export default class CatalogStore {
   });
 
   // search in catalog searchTerms any match
-  // todo - what kind of morphology processing is required ?
-  // TODO - test performance hit in render ms
-  searchCatalog = computedFn((txt, category_id) => {
+  searchCatalog = computedFn((searchInput, category_id) => {
     let source = this.catalog;
     const DEV_perf = performance.now();
 
@@ -137,19 +135,16 @@ export default class CatalogStore {
     }
 
     // TODO - filters matching
-    const searchRegex = prepareSmartSearchRegexp(clearMorphologyInSearchTerm(txt.toLowerCase()));
-
+    const searchRegex = prepareSmartSearchRegexp(clearMorphologyInSearchTerm(searchInput.toLowerCase()));
     const matches = source.filter((x) => {
       const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
 
-      if (terms) {
-        return new RegExp(searchRegex, 'i').test(terms);
+      return terms ? new RegExp(searchRegex, 'i').test(terms) : false;
 
-        // const queries = clearMorphologyInSearchTerm(txt.toLowerCase()).split(' ');
-        // return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
-      }
-
-      return false;
+      // if (terms) {
+      //   // const queries = clearMorphologyInSearchTerm(searchInput.toLowerCase()).split(' ');
+      //   // return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
+      // }
     });
 
     const suggestions = matches.map((item) => this.normalizeCatalogItem(item));

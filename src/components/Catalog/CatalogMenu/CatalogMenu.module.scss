@@ -73,10 +73,11 @@
   .letters {
     right: 0;
     flex: 0 0 48px;
-    margin-right: -16px;
+    margin-right: 0;
     padding-left: 16px;
     margin-left: auto;
     flex-direction: column;
+    flex-wrap: nowrap;
     order: 2;
   }
   .letter {
