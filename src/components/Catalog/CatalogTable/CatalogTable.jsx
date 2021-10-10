@@ -148,7 +148,7 @@ const CatalogTable = observer(() => {
   }, [activeModal, prevModal]);
 
   useEffect(() => {
-    // gotoPage(getIndexFromQuery(query));
+    gotoPage(getIndexFromQuery(query));
     setPageIndex(getIndexFromQuery(query));
     if (catalogRef.current) {
       ScrollTo(catalogRef.current.offsetTop - 84, 300);

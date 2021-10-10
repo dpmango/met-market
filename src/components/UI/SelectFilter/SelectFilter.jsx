@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useRef, memo, useContext } from 'react';
+import React, { useCallback, useMemo, useState, useRef, memo, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
@@ -8,7 +8,7 @@ import difference from 'lodash/difference';
 
 import { SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
-import { useOnClickOutside } from '@hooks';
+import { useOnClickOutside, useFirstRender } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import styles from './SelectFilter.module.scss';
@@ -17,35 +17,56 @@ const SelectComponent = observer(
   ({ label, mini, value, name, className, optionsClassName, options, onChange, ...props }) => {
     const location = useLocation();
     const history = useHistory();
-
-    const [opened, setOpened] = useState(false);
     const optionsRef = useRef(null);
 
+    const [opened, setOpened] = useState(false);
     const catalogContext = useContext(CatalogStoreContext);
 
     const optionsMapped = useMemo(() => {
       if (!options) return [];
 
-      if (name !== 'mark') {
-        return options
-          .filter((x) => x)
-          .map((option) => ({
-            value: option.value,
-            label: option.value,
-            disabled: option.disabled,
-          }));
-      } else {
-        return options
-          .filter((x) => x.name)
-          .map((option) => ({
-            value: option.name,
-            label: option.name,
-            isPopular: option.isPopular,
-            disabled: option.disabled,
-          }));
-      }
+      return options
+        .filter((x) => x || x.name)
+        .map((option) => ({
+          value: option.value,
+          label: option.value,
+          isPopular: option.isPopular,
+          disabled: !option.available,
+        }));
     }, [options]);
 
+    const filter = useMemo(() => {
+      return catalogContext.filters[name];
+    }, [catalogContext.filters, name]);
+
+    const allSelected = useMemo(() => {
+      return filter && filter.length === 0;
+    }, [filter]);
+
+    const columnizeOptions = useMemo(() => {
+      const colSize = name === 'size' ? 5 : 4;
+
+      if (!optionsMapped || !filter) return [];
+
+      const filterPureValues = filter.map((x) => x.value);
+      const checked = filter.map((f) => ({ value: f.value, label: f.label, disabled: false }));
+      const nonChecked = optionsMapped.filter((x) => !filterPureValues.includes(x.value));
+
+      const combined = [...checked, ...nonChecked];
+
+      const splited = chunk(combined, Math.ceil(combined.length / colSize));
+
+      return splited
+        ? [
+            ...splited.map((x, idx) => ({
+              opt: x,
+              id: idx,
+            })),
+          ]
+        : [];
+    }, [filter, optionsMapped]);
+
+    // click handlers
     const handleOptionClick = (option) => {
       const filter = catalogContext.addFilter(option, name);
 
@@ -59,36 +80,21 @@ const SelectComponent = observer(
       });
     };
 
-    const columnizeOptions = useMemo(() => {
-      const colSize = name === 'size' ? 5 : 4;
-      const filter = catalogContext.filters[name];
+    const handleAllClick = useCallback(() => {
+      if (!allSelected) {
+        const filterUp = catalogContext.resetFilter(name);
+        updateQueryParams({
+          history,
+          location,
+          payload: {
+            type: 'filter',
+            value: filterUp,
+          },
+        });
+      }
+    }, [allSelected, name, history, location]);
 
-      if (!optionsMapped || !filter) return [];
-
-      const diff = difference(
-        filter.map((x) => x.value),
-        optionsMapped.map((x) => x.value)
-      );
-
-      const checked = diff
-        ? diff.map((x) => ({
-            label: x,
-            value: x,
-            disabled: true,
-          }))
-        : [];
-
-      const splited = chunk([...checked, ...optionsMapped], Math.ceil([...checked, ...optionsMapped].length / colSize));
-
-      return splited
-        ? [
-            ...splited.map((x, idx) => ({
-              opt: x,
-              id: idx,
-            })),
-          ]
-        : [];
-    }, [name, optionsMapped, catalogContext.filters]);
+    // effects
 
     useOnClickOutside(
       optionsRef,
@@ -115,6 +121,17 @@ const SelectComponent = observer(
             columnizeOptions.map((col, idx) => {
               return (
                 <div key={`${idx}_${col.id}`} className={styles.selectOptionCol}>
+                  {idx === 0 && (
+                    <div
+                      key={'all'}
+                      className={cns(styles.selectOption, allSelected && styles._active)}
+                      onClick={handleAllClick}>
+                      <i className={styles.selectOptionCheckbox}>
+                        <SvgIcon name="checkmark" />
+                      </i>
+                      <span>Все</span>
+                    </div>
+                  )}
                   {col.opt.map((option) => (
                     <div
                       key={option.value}

@@ -334,23 +334,19 @@ export default class CatalogStore {
           // const shouldFilterMark = !haveFilter(markFilter) && (haveFilter(sizeFilter) || haveFilter(lengthFilter));
           // const shouldFilterLength = !haveFilter(lengthFilter) && (haveFilter(sizeFilter) || haveFilter(markFilter));
 
-          const shouldFilterSize = haveFilter(markFilter) || haveFilter(lengthFilter);
-          const shouldFilterMark = haveFilter(sizeFilter) || haveFilter(lengthFilter);
-          const shouldFilterLength = haveFilter(sizeFilter) || haveFilter(markFilter);
-
           const filterSize = (size) => {
             return {
               value: size,
               isPopular: size.isPopular !== undefined ? mark.isPopular : false,
-              disabled: shouldFilterSize ? !sizes.includes(size) : false,
+              available: sizes.includes(size),
             };
           };
 
           const filterMark = (mark) => {
             return {
-              name: mark.name,
+              value: mark.name,
               isPopular: mark.isPopular !== undefined ? mark.isPopular : false,
-              disabled: shouldFilterMark ? !marks.includes(mark.name) : false,
+              available: marks.includes(mark.name),
             };
           };
 
@@ -358,7 +354,7 @@ export default class CatalogStore {
             return {
               value: length,
               isPopular: length.isPopular !== undefined ? length.isPopular : false,
-              disabled: shouldFilterLength ? !lengths.includes(length) : false,
+              available: lengths.includes(length),
             };
           };
 
@@ -452,6 +448,18 @@ export default class CatalogStore {
 
     this.filters = filters;
     return filters;
+  }
+
+  resetFilter(name) {
+    let newFilter = {
+      ...this.filters,
+      ...{
+        [name]: [...[]],
+      },
+    };
+
+    this.filters = newFilter;
+    return newFilter;
   }
 
   resetFilters() {

@@ -22,8 +22,11 @@ const formInitial = {
 };
 
 const uploader = {
-  allowedMime: ['image'],
-  maxSize: 5,
+  blacklistMime:
+    '386|ade|adp|app|asp|aspx|asx|bas|bat|cer|cgi|chm|cla|class|cmd|cnt|com|cpl|crt|csh|csr|der|diagcab|dll|drv|exe|fxp|gadget|grp|hlp|hpj|hta|htaccess|htc|htpasswd|inf|ins|isp|its|jar|jnlp|js|jse|jsp|ksh|lnk|mad|maf|mag|mam|maq|mar|mas|mat|mau|mav|maw|mcf|mda|mdb|mde|mdt|mdw|mdz|ms|msc|msh|msh1|msh1xml|msh2|msh2xml|mshxml|msi|msp|mst|msu|ocx|ops|osd|pcd|php|php3|pif|pl|plg|prf|prg|printerexport|ps1|ps1xml|ps2|ps2xml|psc1|psc2|psd1|psdm1|pst|py|pyc|pyo|pyw|pyz|pyzw|reg|scf|scr|sct|sh|shb|shs|sys|theme|tmp|torrent|url|vb|vbe|vbp|vbs|vbscript|vhd|vhdx|vsmacros|vsw|webpnp|website|ws|wss|wsc|wsf|wsh|xbap|xll|xnk'.split(
+      '|'
+    ),
+  maxSize: 25,
   includeReader: false,
 };
 
@@ -93,39 +96,49 @@ const Callback = observer(() => {
     []
   );
 
-  const handleKYCUpload = useCallback((e) => {
-    const { files } = e.target;
+  const handleInputUpload = useCallback(
+    (e) => {
+      let newUpload = [];
+      if (e.target && e.target.files && e.target.files[0]) {
+        Array.from(e.target.files).forEach((file) => {
+          // limit mime
+          if (uploader.blacklistMime) {
+            if (uploader.blacklistMime.includes(file.name.split('.').pop())) {
+              addToast('Неверный формат файла', { appearance: 'error' });
+              e.target.value = '';
+              return false;
+            }
+          }
 
-    if (files && files[0]) {
-      const file = files[0];
+          // limit size
+          if (uploader.maxSize) {
+            const sizeInMb = bytesToMegaBytes(file.size);
 
-      // limit mime
-      if (uploader.allowedMime) {
-        if (!uploader.allowedMime.includes(file.type.split('/')[0])) {
-          addToast('Неверный формат файла', { appearance: 'error' });
-          e.target.value = '';
-          return false;
-        }
+            if (sizeInMb > uploader.maxSize) {
+              addToast('Максимальный размер файла 25мб', { appearance: 'error' });
+              e.target.value = '';
+              return false;
+            }
+          }
+
+          if (file) newUpload.push(file);
+        });
+
+        setFiles([...files, ...newUpload]);
+        e.target.value = '';
       }
 
-      // limit size
-      if (uploader.maxSize) {
-        const sizeInMb = bytesToMegaBytes(file.size);
+      return true;
+    },
+    [files]
+  );
 
-        if (sizeInMb > uploader.maxSize) {
-          addToast('Максимальный размер файла 5мб', { appearance: 'error' });
-          e.target.value = '';
-          return false;
-        }
-      }
-
-      if (file) setFiles([file]);
-
-      e.target.value = '';
-    }
-
-    return true;
-  }, []);
+  const handleDeleteClick = useCallback(
+    (delFile) => {
+      setFiles([...files.filter((f) => f === delFile)]);
+    },
+    [files]
+  );
 
   useEffect(() => {
     if (prevModal !== 'callback' && activeModal === 'callback') {
@@ -234,13 +247,20 @@ const Callback = observer(() => {
 
               <div className={styles.group}>
                 <div className={styles.upload}>
-                  <input type="file" id="fileupload" name="fileupload" ref={fileInput} onChange={handleKYCUpload} />
+                  <input
+                    type="file"
+                    multiple
+                    id="fileupload"
+                    name="fileupload"
+                    ref={fileInput}
+                    onChange={handleInputUpload}
+                  />
 
                   {files && files.length > 0 ? (
                     <>
                       {files.map((x, idx) => (
                         <div key={idx} className={styles.uploadFile}>
-                          <div className={styles.deleteUpload} onClick={() => setFiles([])}>
+                          <div className={styles.deleteUpload} onClick={() => handleDeleteClick(x)}>
                             <SvgIcon name="close" />
                           </div>
                           {x.name}

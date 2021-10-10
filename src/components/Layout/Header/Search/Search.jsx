@@ -6,18 +6,19 @@ import debounce from 'lodash/debounce';
 
 import { SvgIcon, Spinner } from '@ui';
 import { CatalogStoreContext, SessionStoreContext, UiStoreContext } from '@store';
-import { useOnClickOutside } from '@hooks';
+import { useOnClickOutside, useFirstRender } from '@hooks';
 import { formatUGC, updateQueryParams } from '@helpers';
 
 import styles from './Search.module.scss';
 
 const settings = {
-  delay: 500,
+  delay: 400,
 };
 
 const Search = observer(({ className }) => {
   const history = useHistory();
   const location = useLocation();
+  const firstRender = useFirstRender();
 
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
@@ -61,14 +62,14 @@ const Search = observer(({ className }) => {
         //   query: textNormalized,
         // });
       } else {
-        // updateQueryParams({
-        //   location,
-        //   history,
-        //   payload: {
-        //     type: 'search',
-        //     value: false,
-        //   },
-        // });
+        updateQueryParams({
+          location,
+          history,
+          payload: {
+            type: 'search',
+            value: false,
+          },
+        });
         // setSearchMeta({
         //   total: null,
         // });
@@ -83,6 +84,12 @@ const Search = observer(({ className }) => {
     setLoading(true);
     searchFunc(searchText);
   }, [searchText]);
+
+  useEffect(() => {
+    if (firstRender) {
+      setSearchText(query.search || '');
+    }
+  }, [query.search]);
 
   // event handlers
   const handleSearchSubmit = useCallback(
@@ -105,7 +112,7 @@ const Search = observer(({ className }) => {
           payload: textNormalized,
         });
 
-        setSuggestionsOpened(false);
+        // setSuggestionsOpened(false);
         // setSearchText('');
       }
     },
@@ -122,7 +129,7 @@ const Search = observer(({ className }) => {
           value: `${q}`,
         },
       });
-      setSuggestionsOpened(false);
+      // setSuggestionsOpened(false);
       setSearchText(q);
 
       inputRef && inputRef.current.focus();
@@ -138,7 +145,7 @@ const Search = observer(({ className }) => {
   );
 
   const handleFocus = useCallback(() => {
-    setSuggestionsOpened(true);
+    // setSuggestionsOpened(true);
   }, []);
 
   const handleBlur = useCallback(() => {
@@ -151,10 +158,10 @@ const Search = observer(({ className }) => {
 
   useOnClickOutside(
     searchRef,
-    useCallback((e) => setSuggestionsOpened(false), [setSuggestionsOpened])
+    useCallback((e) => setShowRecent(false), [setShowRecent])
   );
 
-  const haveLog = sessionContext.log.search && sessionContext.log.search.length > 0;
+  const haveLog = sessionContext.log && sessionContext.log.search.length > 0;
 
   return (
     <form className={styles.search} ref={searchRef} onSubmit={handleSearchSubmit}>
@@ -187,7 +194,7 @@ const Search = observer(({ className }) => {
       </button>
 
       <div
-        className={cns(styles.suggestions, suggestionsOpened && showRecent && styles._active)}
+        className={cns(styles.suggestions, suggestionsOpened || (showRecent && styles._active))}
         onClick={(e) => e.preventDefault()}>
         <div className={styles.suggestionsWrapper}>
           {loading ? (

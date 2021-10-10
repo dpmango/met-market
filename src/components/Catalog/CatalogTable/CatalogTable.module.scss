@@ -27,6 +27,7 @@
 .table {
   width: 100%;
   position: relative;
+  z-index: 2;
   border-collapse: collapse;
   border-spacing: 0;
   margin: 16px 0 0;
@@ -285,6 +286,8 @@
 }
 
 .pagination {
+  position: relative;
+  z-index: 1;
   margin-top: 20px;
   display: flex;
   align-items: center;

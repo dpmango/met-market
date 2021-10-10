@@ -28,18 +28,19 @@ export const updateQueryParams = ({ history, location, payload }) => {
       break;
 
     case 'category':
-      // params.delete('page');
+      params.delete('page');
 
       if (payload.value) {
         mergeParam('category', payload.value);
       } else {
         params.delete('category');
+        params.delete('search');
       }
 
       break;
 
     case 'page':
-      if (payload.value) {
+      if (payload.value && payload.value > 1) {
         mergeParam('page', payload.value);
       } else {
         params.delete('page');
@@ -53,6 +54,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
       }
 
       if (payload.value) {
+        params.delete('page');
         mergeParam('search', payload.value);
       } else {
         params.delete('search');
