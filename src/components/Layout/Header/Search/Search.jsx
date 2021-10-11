@@ -86,8 +86,10 @@ const Search = observer(({ className }) => {
   }, [searchText]);
 
   useEffect(() => {
-    if (firstRender) {
-      setSearchText(query.search || '');
+    if (!firstRender) {
+      if (searchText !== query.search || '') {
+        setSearchText(query.search || '');
+      }
     }
   }, [query.search]);
 

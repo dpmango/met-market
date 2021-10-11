@@ -334,9 +334,13 @@ export default class CatalogStore {
           // const shouldFilterMark = !haveFilter(markFilter) && (haveFilter(sizeFilter) || haveFilter(lengthFilter));
           // const shouldFilterLength = !haveFilter(lengthFilter) && (haveFilter(sizeFilter) || haveFilter(markFilter));
 
+          const clearValue = (x) => {
+            return !x ? 'не указано' : x;
+          };
+
           const filterSize = (size) => {
             return {
-              value: size,
+              value: clearValue(size),
               isPopular: size.isPopular !== undefined ? mark.isPopular : false,
               available: sizes.includes(size),
             };
@@ -344,7 +348,7 @@ export default class CatalogStore {
 
           const filterMark = (mark) => {
             return {
-              value: mark.name,
+              value: clearValue(mark.name),
               isPopular: mark.isPopular !== undefined ? mark.isPopular : false,
               available: marks.includes(mark.name),
             };
@@ -352,7 +356,7 @@ export default class CatalogStore {
 
           const filterLength = (length) => {
             return {
-              value: length,
+              value: clearValue(length),
               isPopular: length.isPopular !== undefined ? length.isPopular : false,
               available: lengths.includes(length),
             };

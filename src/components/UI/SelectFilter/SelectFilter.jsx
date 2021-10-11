@@ -25,14 +25,12 @@ const SelectComponent = observer(
     const optionsMapped = useMemo(() => {
       if (!options) return [];
 
-      return options
-        .filter((x) => x || x.name)
-        .map((option) => ({
-          value: option.value,
-          label: option.value,
-          isPopular: option.isPopular,
-          disabled: !option.available,
-        }));
+      return options.map((option) => ({
+        value: option.value,
+        label: option.value,
+        isPopular: option.isPopular,
+        disabled: !option.available,
+      }));
     }, [options]);
 
     const filter = useMemo(() => {

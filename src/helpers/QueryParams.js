@@ -40,12 +40,12 @@ export const updateQueryParams = ({ history, location, payload }) => {
 
     case 'category':
       params.delete('page');
+      params.delete('search');
 
       if (payload.value) {
         mergeParam('category', payload.value);
       } else {
         params.delete('category');
-        params.delete('search');
       }
 
       break;

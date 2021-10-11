@@ -129,7 +129,6 @@ const CatalogCategories = observer(() => {
     catalogContext.queryToFilter(query.origin);
   }, [query.size, query.mark, query.length]);
 
-  console.log(categoryData.head);
   return (
     <div className={cns(styles.root, 'catalog')}>
       {breadcrumbs && breadcrumbs.length > 0 && (
@@ -173,7 +172,7 @@ const CatalogCategories = observer(() => {
       )}
 
       <Helmet>
-        <title>{categoryData.head || 'Металлопрокат'} оптом и в розницу в Москве</title>
+        <title>{(categoryData && categoryData.head) || 'Металлопрокат'} оптом и в розницу в Москве</title>
       </Helmet>
     </div>
   );
