@@ -17,6 +17,9 @@ export default {
     submit: 'api/form/submit',
     typing: 'api/form/typing',
   },
+  file: {
+    upload: 'api/file/upload',
+  },
   log: {
     addSearchTerm: 'api/log/addSearchTerm',
   },

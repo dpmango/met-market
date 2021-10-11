@@ -56,11 +56,32 @@ const Callback = observer(() => {
       if (loading) return true;
       setLoading(true);
 
+      let buildRequest = {
+        type: 'RFQ',
+        payload: Object.keys(values).map((key) => ({ id: key, content: `${values[key]}` })),
+      };
+
+      if (files && files.length > 0) {
+        const uploades = await callbackContext.uploadFile(files);
+
+        if (uploades && uploades.length === 0) {
+          addToast('Ошибка при загрузке', { appearance: 'error' });
+          setLoading(false);
+          setFiles([]);
+          return;
+        }
+
+        buildRequest = {
+          ...buildRequest,
+          payload: {
+            ...buildRequest.payload,
+            ...[{ id: 'uploads', content: uploades }],
+          },
+        };
+      }
+
       await callbackContext
-        .submitForm({
-          type: 'RFQ',
-          payload: Object.keys(values).map((key) => ({ id: key, content: `${values[key]}` })),
-        })
+        .submitForm(buildRequest)
         .then((_res) => {
           resetForm();
           uiContext.setModal('callbacksuccess');
@@ -71,7 +92,7 @@ const Callback = observer(() => {
 
       setLoading(false);
     },
-    [loading]
+    [loading, files]
   );
 
   const submitTyping = useCallback(
@@ -80,7 +101,7 @@ const Callback = observer(() => {
         callbackContext
           .typingForm({
             type: 'RFQ',
-            payload: { id: name, content: val },
+            payload: { id: name, content: `${val}` },
           })
           .catch((_error) => {
             console.warn('error setting typing');

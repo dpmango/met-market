@@ -32,4 +32,15 @@ export default class SessionStore {
 
     return data;
   }
+
+  async uploadFile(files) {
+    const [err, data] = await service.upload({
+      sessionId: session.sessionId,
+      files: files,
+    });
+
+    if (err) throw err;
+
+    return data;
+  }
 }

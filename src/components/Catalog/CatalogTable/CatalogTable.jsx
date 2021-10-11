@@ -8,7 +8,7 @@ import cns from 'classnames';
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
 import { updateQueryParams, Plurize, ScrollTo, ProfilerLog } from '@helpers';
-import { useWindowSize } from '@hooks';
+import { useWindowSize, useFirstRender } from '@hooks';
 
 import StickyHead from './StickyHead';
 import TableBody from './TableBody';
@@ -18,6 +18,7 @@ import { settings } from './dataTables';
 const CatalogTable = observer(() => {
   const location = useLocation();
   const history = useHistory();
+  const firstRender = useFirstRender();
 
   const { width } = useWindowSize();
   const catalogRef = useRef(null);
@@ -151,7 +152,7 @@ const CatalogTable = observer(() => {
   useEffect(() => {
     gotoPage(getIndexFromQuery(query));
     setPageIndex(getIndexFromQuery(query));
-    if (catalogRef.current) {
+    if (catalogRef.current && !firstRender) {
       ScrollTo(catalogRef.current.offsetTop - 84, 300);
     }
   }, [query.page]);

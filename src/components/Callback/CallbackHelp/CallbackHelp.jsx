@@ -59,7 +59,7 @@ const CallbackHelp = observer(() => {
         callbackContext
           .typingForm({
             type: 'Help',
-            payload: { id: name, content: val },
+            payload: { id: name, content: `${val}` },
           })
           .catch((_error) => {
             console.log('error setting typing');
