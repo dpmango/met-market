@@ -6,6 +6,7 @@ import groupBy from 'lodash/groupBy';
 import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/Strings';
 import { PerformanceLog } from '@helpers';
 import { LOCAL_STORAGE_CATALOG } from '@config/localStorage';
+import { ui } from '@store';
 
 import service from './api-service';
 
@@ -46,31 +47,7 @@ export default class CatalogStore {
     return this.catalog.length;
   }
 
-  catalogList = computedFn((cat_id) => {
-    const DEV_perf = performance.now();
-
-    let returnable = [];
-
-    // firslty iterate items through matching categories
-    if (cat_id) {
-      const category = findNodeById(this.categoriesList, cat_id);
-      if (category) {
-        const items = this.catalog.filter(
-          (x) =>
-            (x.cat3 && x.cat3.includes(category.name)) ||
-            (x.cat2 && x.cat2.includes(category.name)) ||
-            (x.cat1 && x.cat1.includes(category.name))
-        );
-
-        if (items && items.length > 0) {
-          returnable = items;
-        }
-      }
-    } else {
-      returnable = this.catalog;
-    }
-
-    // then apply filters
+  applyCatalogFilters(catalog) {
     const sizeFilter = this.filters.size.map((v) => v.value);
     const markFilter = this.filters.mark.map((v) => v.value);
     const lengthFilter = this.filters.length.map((v) => v.value);
@@ -97,11 +74,37 @@ export default class CatalogStore {
       return true;
     };
 
-    const result = returnable
-      .filter(filterSize)
-      .filter(filterMark)
-      .filter(filterLength)
-      .map((x) => this.normalizeCatalogItem(x));
+    const result = catalog.filter(filterSize).filter(filterMark).filter(filterLength);
+
+    return result;
+  }
+
+  catalogList = computedFn((cat_id) => {
+    const DEV_perf = performance.now();
+
+    let returnable = [];
+
+    // firslty iterate items through matching categories
+    if (cat_id) {
+      const category = findNodeById(this.categoriesList, cat_id);
+      if (category) {
+        const items = this.catalog.filter(
+          (x) =>
+            (x.cat3 && x.cat3.includes(category.name)) ||
+            (x.cat2 && x.cat2.includes(category.name)) ||
+            (x.cat1 && x.cat1.includes(category.name))
+        );
+
+        if (items && items.length > 0) {
+          returnable = items;
+        }
+      }
+    } else {
+      returnable = this.catalog;
+    }
+
+    // then apply filters
+    const result = this.applyCatalogFilters(returnable).map((x) => this.normalizeCatalogItem(x));
 
     PerformanceLog(DEV_perf, 'catalogList');
     return result;
@@ -134,7 +137,8 @@ export default class CatalogStore {
       ];
     }
 
-    // TODO - filters matching
+    source = this.applyCatalogFilters(source);
+
     const searchRegex = prepareSmartSearchRegexp(clearMorphologyInSearchTerm(searchInput.toLowerCase()));
     const matches = source.filter((x) => {
       const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
@@ -318,7 +322,15 @@ export default class CatalogStore {
           const lengthFilter = this.filters.length.map((v) => v.value);
 
           // find store items matching filters (table display list)
-          const matchedCatalogList = this.catalogList(cat_id);
+          let matchedCatalogList = [];
+
+          if (ui.query.search) {
+            const { suggestions } = this.searchCatalog(ui.query.search, cat_id);
+            matchedCatalogList = suggestions;
+          } else {
+            matchedCatalogList = this.catalogList(cat_id);
+          }
+
           const mappedFilter = matchedCatalogList.map((x) => {
             return { size: x.size, mark: x.mark, length: x.length };
           });

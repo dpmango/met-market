@@ -40,7 +40,7 @@ const Search = observer(({ className }) => {
     debounce((txt) => {
       const textNormalized = formatUGC(txt);
 
-      const { meta } = catalogContext.searchCatalog(textNormalized, null);
+      // const { meta } = catalogContext.searchCatalog(textNormalized, null);
 
       if (textNormalized.length >= 2) {
         updateQueryParams({

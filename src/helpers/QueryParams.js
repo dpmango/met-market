@@ -1,6 +1,9 @@
 import { ui } from '@store';
+import { PerformanceLog } from '@helpers';
 
 export const updateQueryParams = ({ history, location, payload }) => {
+  const DEV_perf = performance.now();
+
   const params = ui.query.origin || new URLSearchParams();
   const curParams = params.toString();
 
@@ -12,7 +15,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
     }
   };
 
-  console.log('QUERY :: update payload', payload);
+  // console.log('QUERY :: update payload', payload);
 
   switch (payload.type) {
     case 'delete':
@@ -127,4 +130,6 @@ export const updateQueryParams = ({ history, location, payload }) => {
       search: params.toString(),
     });
   }
+
+  PerformanceLog(DEV_perf, 'queryParams');
 };

@@ -26,7 +26,7 @@ const StickyHead = observer(({ headerGroups }) => {
     }
 
     return null;
-  }, [query.category, query.size, query.mark, query.length]);
+  }, [query.category, query.search, query.size, query.mark, query.length]);
 
   return (
     <thead className={cns(styles.stickyHead, scrolledSticky && !catalogOpened && styles._sticky)}>
