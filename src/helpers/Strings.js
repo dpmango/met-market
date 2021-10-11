@@ -48,3 +48,18 @@ export function clearMorphologyInSearchTerm(searchTerm) {
 function trimRightChars(str, chars) {
   return str.replace(new RegExp(`${chars}\$`, 'g'), '');
 }
+
+export const applyNameShort = (x) => {
+  return x
+    .replace('нержавеющие', 'нерж.')
+    .replace('нержавеющий', 'нерж.')
+    .replace('никельсодержащий', 'никель')
+    .replace('равнополочный', 'рвнпр.')
+    .replace('обыкновенного качества', 'об. кач.')
+    .replace('низколегированный', 'н/л')
+    .replace('низколегированные', 'н/л')
+    .replace('электросварные', 'э/с')
+    .replace('жаропрочный', 'жар.')
+    .replace('горячекатаный', 'горяч.')
+    .replace('инструментальный', 'инстр.');
+};

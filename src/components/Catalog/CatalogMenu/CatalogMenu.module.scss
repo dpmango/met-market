@@ -5,6 +5,61 @@
   }
   :global .col {
     padding: 0;
+    &:last-child {
+      .categorySub {
+        ul {
+          right: 0;
+          li a {
+            white-space: normal;
+          }
+        }
+      }
+    }
+  }
+}
+
+.abc {
+  position: relative;
+  padding-left: 120px;
+  padding-right: 120px;
+}
+
+.abcNav {
+  position: absolute;
+  top: 0%;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  color: #c9d9ff;
+  cursor: pointer;
+  transition: color 0.25s $ease;
+  &:hover {
+    color: $colorLink;
+  }
+  :global .svg-icon {
+    font-size: 32px;
+  }
+  &._left {
+    left: -10px;
+    :global .svg-icon {
+      transform: rotate(90deg);
+    }
+  }
+  &._right {
+    right: -10px;
+    :global .svg-icon {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+@include r($xl) {
+  .abc {
+    padding-left: 70px;
+    padding-right: 70px;
   }
 }
 
@@ -12,6 +67,18 @@
   .catalog {
     padding-left: 10px;
     padding-right: 10px;
+  }
+}
+
+@include r($md) {
+  .abc {
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+    display: flex;
+  }
+  .abcNav {
+    display: none;
   }
 }
 
@@ -51,10 +118,16 @@
   min-width: 1px;
 }
 
-@include r($lg) {
+@include r($xl) {
   .lettercol {
     flex-basis: $col3;
     max-width: $col3;
+  }
+}
+@include r($lg) {
+  .lettercol {
+    flex-basis: $col4;
+    max-width: $col4;
   }
 }
 
