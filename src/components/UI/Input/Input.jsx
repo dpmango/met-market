@@ -37,7 +37,7 @@ const Input = ({
   const onInputChange = useCallback(
     (e) => {
       if (onChange) {
-        onChange(e.target.value);
+        onChange(e.target.value, e);
       }
     },
     [onChange]

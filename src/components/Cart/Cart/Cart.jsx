@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, m
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useToasts } from 'react-toast-notifications';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useFormik } from 'formik';
 import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
@@ -32,15 +32,6 @@ const Cart = observer(() => {
   const [comment, setComment] = useState(false);
   const [agree, setAgree] = useState(false);
   const [resetContext, setResetContext] = useState(false);
-
-  const formInitial = useMemo(() => {
-    return {
-      phone: '',
-      delivery: '',
-      comment: '',
-      agree: false,
-    };
-  }, []);
 
   const handleCartDelete = useCallback(
     async (id) => {
@@ -156,6 +147,17 @@ const Cart = observer(() => {
     }
   }, [query.cart]);
 
+  const formik = useFormik({
+    initialValues: {
+      phone: '',
+      delivery: '',
+      comment: '',
+      agree: false,
+    },
+    validate: handleValidation,
+    onSubmit: handleSubmit,
+  });
+
   return (
     <Modal name="cart" variant={cartCount ? 'main' : 'narrow'}>
       <div className={cns(styles.cart, loading && styles._loading)}>
@@ -214,110 +216,90 @@ const Cart = observer(() => {
               <div className={styles.countVAT}>В том числе НДС: {formatPrice((cartTotal / 120) * 20, 0)} ₽</div>
             </div>
 
-            <Formik initialValues={formInitial} validate={handleValidation} onSubmit={handleSubmit}>
-              {({ isSubmitting, values }) => (
-                <Form className={styles.actions}>
-                  <div className="row">
-                    <div className="col col-4 col-md-12">
-                      {delivery === false ? (
-                        <Button theme="primary" outline onClick={() => setDelivery(true)}>
-                          + Добавить доставку
-                        </Button>
-                      ) : (
-                        <>
-                          <Field type="text" name="delivery">
-                            {({ field, form: { setFieldValue }, meta }) => (
-                              <Input
-                                type="textarea"
-                                rows="5"
-                                placeholder="Город, населенный пункт, улица, дом"
-                                value={field.value}
-                                error={meta.touched && meta.error}
-                                onChange={(v) => {
-                                  setFieldValue(field.name, v);
-                                }}
-                              />
-                            )}
-                          </Field>
+            <form onSubmit={formik.handleSubmit} className={styles.actions}>
+              <div className="row">
+                <div className="col col-4 col-md-12">
+                  {delivery === false ? (
+                    <Button theme="primary" outline onClick={() => setDelivery(true)}>
+                      + Добавить доставку
+                    </Button>
+                  ) : (
+                    <>
+                      <Input
+                        type="textarea"
+                        rows="5"
+                        placeholder="Город, населенный пункт, улица, дом"
+                        value={formik.values.delivery}
+                        error={formik.touched.delivery && formik.errors.delivery}
+                        onChange={(v) => {
+                          formik.setFieldValue('delivery', v);
+                        }}
+                      />
 
-                          <Button theme="primary" className={styles.actionBtnCta} onClick={() => setDelivery(false)}>
-                            - Удалить доставку
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                    <div className="col col-4 col-md-12">
-                      {comment === false ? (
-                        <Button theme="primary" outline onClick={() => setComment(true)}>
-                          + Комментарий
-                        </Button>
-                      ) : (
-                        <>
-                          <Field type="text" name="comment">
-                            {({ field, form: { setFieldValue }, meta }) => (
-                              <Input
-                                type="textarea"
-                                rows="5"
-                                placeholder="Введите комментарий к заказу"
-                                value={field.value}
-                                error={meta.touched && meta.error}
-                                onChange={(v) => {
-                                  setFieldValue(field.name, v);
-                                }}
-                              />
-                            )}
-                          </Field>
-
-                          <Button theme="primary" className={styles.actionBtnCta} onClick={() => setComment(false)}>
-                            - Удалить комментарий
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                    <div className="col col-4 col-md-12">
-                      <Field type="tel" name="phone">
-                        {({ field, form: { setFieldValue }, meta }) => (
-                          <Input
-                            placeholder="Телефон"
-                            mask="+7 (999) 999-99-99"
-                            value={field.value}
-                            error={meta.touched && meta.error}
-                            showError={false}
-                            onChange={(v) => {
-                              setFieldValue(field.name, v);
-                            }}
-                          />
-                        )}
-                      </Field>
-
-                      <Field type="checkbox" name="agree">
-                        {({ field, form: { setFieldValue }, meta }) => (
-                          <Checkbox
-                            className={styles.actionBtnCta}
-                            isChecked={field.value}
-                            error={meta.touched && meta.error}
-                            onChange={() => {
-                              setFieldValue(field.name, !field.value);
-                            }}>
-                            <span>
-                              Подтверждаю свое согласие на{' '}
-                              <a href="policy.pdf" target="_blank">
-                                обработку персональных данных
-                              </a>
-                            </span>
-                          </Checkbox>
-                        )}
-                      </Field>
-
-                      <Button type="submit" theme="link" className={styles.actionMainBtnCta}>
-                        Оформить заказ
+                      <Button theme="primary" className={styles.actionBtnCta} onClick={() => setDelivery(false)}>
+                        - Удалить доставку
                       </Button>
-                    </div>
-                  </div>
-                </Form>
-              )}
-            </Formik>
+                    </>
+                  )}
+                </div>
+                <div className="col col-4 col-md-12">
+                  {comment === false ? (
+                    <Button theme="primary" outline onClick={() => setComment(true)}>
+                      + Комментарий
+                    </Button>
+                  ) : (
+                    <>
+                      <Input
+                        type="textarea"
+                        rows="5"
+                        placeholder="Введите комментарий к заказу"
+                        value={formik.values.comment}
+                        error={formik.touched.comment && formik.errors.comment}
+                        onChange={(v) => {
+                          formik.setFieldValue('comment', v);
+                        }}
+                      />
 
+                      <Button theme="primary" className={styles.actionBtnCta} onClick={() => setComment(false)}>
+                        - Удалить комментарий
+                      </Button>
+                    </>
+                  )}
+                </div>
+                <div className="col col-4 col-md-12">
+                  <Input
+                    type="tel"
+                    placeholder="Телефон"
+                    mask="+7 (999) 999-99-99"
+                    value={formik.values.phone}
+                    error={formik.touched.phone && formik.errors.phone}
+                    showError={false}
+                    onChange={(v) => {
+                      formik.setFieldValue('phone', v);
+                    }}
+                  />
+
+                  <Checkbox
+                    className={styles.actionBtnCta}
+                    isChecked={formik.values.agree}
+                    error={formik.touched.agree && formik.errors.agree}
+                    onChange={() => {
+                      formik.setFieldValue('agree', !formik.values.agree);
+                    }}>
+                    <span>
+                      Подтверждаю свое согласие на{' '}
+                      <a href="policy.pdf" target="_blank">
+                        обработку персональных данных
+                      </a>
+                    </span>
+                  </Checkbox>
+
+                  <Button type="submit" theme="link" className={styles.actionMainBtnCta}>
+                    Оформить заказ
+                  </Button>
+                </div>
+              </div>
+            </form>
             {/* <div className="dev-log">{JSON.stringify(cart, null, 2)}</div> */}
           </>
         ) : (

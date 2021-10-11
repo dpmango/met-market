@@ -38,7 +38,7 @@ const Checkbox = ({ className, isChecked, error, onChange, children, ...props })
 Checkbox.propTypes = {
   className: PropTypes.string,
   isChecked: PropTypes.bool,
-  error: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   onChange: PropTypes.func.isRequired,
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
