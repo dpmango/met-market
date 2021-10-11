@@ -15,7 +15,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
     }
   };
 
-  // console.log('QUERY :: update payload', payload);
+  console.log('QUERY :: update payload', payload);
 
   switch (payload.type) {
     case 'delete':
@@ -76,6 +76,8 @@ export const updateQueryParams = ({ history, location, payload }) => {
     case 'filter':
       const filter = payload.value;
 
+      params.delete('page');
+
       if (filter.size && filter.size.length > 0) {
         mergeParam('size', filter.size.map((x) => x.value).join('|'));
       } else {
@@ -112,10 +114,6 @@ export const updateQueryParams = ({ history, location, payload }) => {
         params.delete('callback');
       }
 
-      break;
-
-    case 'clear-modals':
-      params.delete('product');
       break;
 
     default:

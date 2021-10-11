@@ -141,7 +141,8 @@ const CatalogTable = observer(() => {
         history,
         location,
         payload: {
-          type: 'clear-modals',
+          type: 'product',
+          value: false,
         },
       });
     }

@@ -62,14 +62,17 @@ const Search = observer(({ className }) => {
         //   query: textNormalized,
         // });
       } else {
-        updateQueryParams({
-          location,
-          history,
-          payload: {
-            type: 'search',
-            value: false,
-          },
-        });
+        if (!firstRender) {
+          updateQueryParams({
+            location,
+            history,
+            payload: {
+              type: 'search',
+              value: false,
+            },
+          });
+        }
+
         // setSearchMeta({
         //   total: null,
         // });
@@ -77,7 +80,7 @@ const Search = observer(({ className }) => {
 
       setLoading(false);
     }, settings.delay),
-    [location, history]
+    [location, history, firstRender]
   );
 
   useEffect(() => {
@@ -86,10 +89,8 @@ const Search = observer(({ className }) => {
   }, [searchText]);
 
   useEffect(() => {
-    if (!firstRender) {
-      if (searchText !== query.search || '') {
-        setSearchText(query.search || '');
-      }
+    if (searchText !== query.search || '') {
+      setSearchText(query.search || '');
     }
   }, [query.search]);
 
