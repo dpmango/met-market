@@ -21,6 +21,10 @@ const HomePage = observer(() => {
 
   return (
     <>
+      <Helmet>
+        <title>Металлопрокат оптом и в розницу в Москве</title>
+      </Helmet>
+
       <CallbackHero />
 
       <div className="container">
@@ -29,10 +33,6 @@ const HomePage = observer(() => {
       </div>
 
       <AddToCart />
-
-      <Helmet>
-        <title> Металлопрокат оптом и в розницу в Москве</title>
-      </Helmet>
     </>
   );
 });

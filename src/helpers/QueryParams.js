@@ -18,6 +18,17 @@ export const updateQueryParams = ({ history, location, payload }) => {
   // console.log('QUERY :: update payload', payload);
 
   switch (payload.type) {
+    case 'delete':
+      if (Array.isArray(payload.value)) {
+        payload.value.forEach((key) => {
+          params.delete(key);
+        });
+      } else if (payload.value) {
+        params.delete(payload.value);
+      }
+
+      break;
+
     case 'product':
       if (payload.value) {
         mergeParam('product', payload.value);

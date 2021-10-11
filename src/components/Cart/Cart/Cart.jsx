@@ -225,7 +225,7 @@ const Cart = observer(() => {
                         </Button>
                       ) : (
                         <>
-                          <Field type="tel" name="delivery">
+                          <Field type="text" name="delivery">
                             {({ field, form: { setFieldValue }, meta }) => (
                               <Input
                                 type="textarea"
@@ -253,7 +253,7 @@ const Cart = observer(() => {
                         </Button>
                       ) : (
                         <>
-                          <Field type="tel" name="comment">
+                          <Field type="text" name="comment">
                             {({ field, form: { setFieldValue }, meta }) => (
                               <Input
                                 type="textarea"
@@ -355,4 +355,4 @@ const Cart = observer(() => {
   );
 });
 
-export default Cart;
+export default memo(Cart);

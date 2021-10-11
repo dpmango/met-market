@@ -96,6 +96,8 @@ export default class UiStore {
       if (item) {
         this.setModal('cart-add', { ...item });
       }
+    } else {
+      this.resetModal();
     }
   }
 }

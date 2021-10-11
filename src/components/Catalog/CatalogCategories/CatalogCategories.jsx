@@ -33,9 +33,15 @@ const CatalogCategories = observer(() => {
         //  <br/>по запросу «<span class="w-700 c-link">${search}</span>»`
         return {
           ...storeData,
+          head: storeData.title,
           searchtitle: `В категории «<span class="w-700 c-link">${storeData.title}</span>» ${
             data.meta.total > 0
-              ? `найдено ${data.meta.total} ${Plurize(data.meta.total, 'товар', 'товара', 'товаров')}`
+              ? `${Plurize(data.meta.total, 'найден', 'найдено', 'найдено')} ${data.meta.total} ${Plurize(
+                  data.meta.total,
+                  'товар',
+                  'товара',
+                  'товаров'
+                )}`
               : 'ничего не найдено'
           }`,
         };
@@ -48,9 +54,15 @@ const CatalogCategories = observer(() => {
       return data
         ? {
             id: 0,
+
             title: `По запросу «<span class="w-700 c-link">${query.search}</span>» ${
               data.meta.total > 0
-                ? `найдено ${data.meta.total} ${Plurize(data.meta.total, 'товар', 'товара', 'товаров')}`
+                ? `${Plurize(data.meta.total, 'найден', 'найдено', 'найдено')} ${data.meta.total} ${Plurize(
+                    data.meta.total,
+                    'товар',
+                    'товара',
+                    'товаров'
+                  )}`
                 : 'ничего не найдено'
             }`,
           }
@@ -102,8 +114,8 @@ const CatalogCategories = observer(() => {
       location,
       history,
       payload: {
-        type: 'category',
-        value: false,
+        type: 'delete',
+        value: ['category', 'page'],
       },
     });
   }, [location, history]);
@@ -117,6 +129,7 @@ const CatalogCategories = observer(() => {
     catalogContext.queryToFilter(query.origin);
   }, [query.size, query.mark, query.length]);
 
+  console.log(categoryData.head);
   return (
     <div className={cns(styles.root, 'catalog')}>
       {breadcrumbs && breadcrumbs.length > 0 && (
@@ -128,7 +141,7 @@ const CatalogCategories = observer(() => {
       {categoryData ? (
         <>
           <div className={styles.head}>
-            <div
+            <span
               className="h3-title"
               dangerouslySetInnerHTML={{ __html: categoryData.searchtitle || categoryData.title }}
             />
@@ -152,16 +165,16 @@ const CatalogCategories = observer(() => {
               <CategoryFilters image={categoryData.image} data={categoryData.filters} />
             </div>
           )}
-
-          <Helmet>
-            <title>{categoryData.searchTitle || categoryData.title || ''} оптом и в розницу в Москве</title>
-          </Helmet>
         </>
       ) : !loading ? (
         <CatalogMenu className="mt-2 mb-2" />
       ) : (
         <Spinner />
       )}
+
+      <Helmet>
+        <title>{categoryData.head || 'Металлопрокат'} оптом и в розницу в Москве</title>
+      </Helmet>
     </div>
   );
 });
