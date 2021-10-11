@@ -175,7 +175,7 @@ const Callback = observer(() => {
         },
       });
     }
-  }, [activeModal, prevModal]);
+  }, [activeModal]);
 
   useEffect(() => {
     if (query.callback) {

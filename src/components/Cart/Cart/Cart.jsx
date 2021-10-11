@@ -135,7 +135,7 @@ const Cart = observer(() => {
         },
       });
     }
-  }, [activeModal, prevModal]);
+  }, [activeModal]);
 
   useEffect(() => {
     if (query.cart) {

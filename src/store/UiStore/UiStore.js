@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { catalog } from '@store';
-import { update } from 'lodash-es';
+
 export default class UiStore {
   prevModal = null;
   activeModal = null;
@@ -89,7 +89,6 @@ export default class UiStore {
 
   checkQuery(query) {
     const params = query;
-
     const product = params.get('product');
     if (product) {
       const item = catalog.getCatalogItem(product);
@@ -97,7 +96,7 @@ export default class UiStore {
         this.setModal('cart-add', { ...item });
       }
     } else {
-      this.resetModal();
+      // this.resetModal();
     }
   }
 }
