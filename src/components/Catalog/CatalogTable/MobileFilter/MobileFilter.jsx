@@ -7,6 +7,7 @@ import cns from 'classnames';
 import { Button, SvgIcon, SelectFilter } from '@ui';
 import { UiStoreContext, CatalogStoreContext } from '@store';
 import { useOnClickOutside } from '@hooks';
+import { updateQueryParams } from '@helpers';
 
 import styles from './MobileFilter.module.scss';
 
