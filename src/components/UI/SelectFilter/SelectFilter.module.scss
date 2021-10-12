@@ -14,6 +14,25 @@
   }
   // &._mini {
   // }
+  &._inline {
+    .selectOptions {
+      display: none;
+      position: static;
+      max-height: 280px;
+      box-shadow: none;
+      padding: 0 0;
+      margin: 12px 0 12px -6px;
+    }
+    .selectDisplay {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    &._active {
+      .selectOptions {
+        display: flex;
+      }
+    }
+  }
 }
 
 .selectDisplay {
@@ -184,9 +203,13 @@
     &.size {
       width: 100%;
       .selectOptionCol {
-        flex-basis: 30%;
-        max-width: 30%;
+        flex-basis: 50%;
+        max-width: 50%;
       }
     }
+  }
+  .selectOptionCol {
+    flex-basis: 50%;
+    max-width: 50%;
   }
 }

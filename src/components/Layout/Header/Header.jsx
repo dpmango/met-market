@@ -128,6 +128,22 @@ const Header = observer(({ className }) => {
                   <div className={cns(styles.catLangToggle, abcOrder && styles._active)}></div>
                 </div>
                 <CatalogMenu abcOrder={abcOrder} />
+
+                <div className={styles.overlayLinks}>
+                  <a href="/catalog.pdf" target="_blank" className={cns(styles.priceList)}>
+                    <SvgIcon name="pdf" />
+                    <span className="w-700">Прайс-лист</span>
+                  </a>
+
+                  <Button
+                    theme="link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      uiContext.setModal('callback');
+                    }}>
+                    Отправить заявку
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

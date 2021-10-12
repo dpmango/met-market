@@ -75,8 +75,13 @@
 
 @include r($md) {
   .filterContent {
+    display: none;
     flex-basis: 100%;
     max-width: 100%;
     margin-left: 0;
+  }
+  .filterImage {
+    flex: 0 0 240px;
+    max-width: 240px;
   }
 }

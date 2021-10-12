@@ -6,11 +6,12 @@ import { useTable, usePagination } from 'react-table';
 import cns from 'classnames';
 
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
-import { CatalogStoreContext, CartStoreContext, UiStoreContext } from '@store';
+import { CatalogStoreContext, UiStoreContext } from '@store';
 import { updateQueryParams, Plurize, ScrollTo, ProfilerLog } from '@helpers';
 import { useWindowSize, useFirstRender } from '@hooks';
 
 import StickyHead from './StickyHead';
+import MobileFilter from './MobileFilter';
 import TableBody from './TableBody';
 import styles from './CatalogTable.module.scss';
 import { settings } from './dataTables';
@@ -23,7 +24,7 @@ const CatalogTable = observer(() => {
   const { width } = useWindowSize();
   const catalogRef = useRef(null);
 
-  const { catalog, loading, filters, getCatalogItem, searchCatalog, getCategoryByName } =
+  const { catalog, loading, filters, getCatalogItem, searchCatalog, getCategoryByName, getCategoryFilters } =
     useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
   const { activeModal, prevModal, query } = useContext(UiStoreContext);
@@ -74,14 +75,6 @@ const CatalogTable = observer(() => {
     usePagination
   );
 
-  useEffect(() => {
-    if (width < 768) {
-      if (pageSize === 100) setPageSize(50);
-    } else {
-      if (pageSize === 50) setPageSize(100);
-    }
-  }, [width]);
-
   const metaItemsCount = useMemo(() => {
     const showing = pageSize >= data.length ? data.length : pageSize;
     const plural = Plurize(showing, 'товар', 'товара', 'товаров');
@@ -89,6 +82,7 @@ const CatalogTable = observer(() => {
     return `Показано ${showing} ${plural} из ${data.length}`;
   }, [data, pageSize]);
 
+  // click handlers
   const handleAddToCartClick = useCallback(
     (id) => {
       const item = getCatalogItem(id);
@@ -130,12 +124,23 @@ const CatalogTable = observer(() => {
     [history, location]
   );
 
+  // effects
   useEffect(() => {
     if (!loading) {
       uiContext.checkQuery(query.origin);
     }
   }, [loading, query.product]);
 
+  // set default page size mobile/desktop
+  useEffect(() => {
+    if (width < 768) {
+      if (pageSize === 100) setPageSize(50);
+    } else {
+      if (pageSize === 50) setPageSize(100);
+    }
+  }, [width]);
+
+  // product modal cleaner
   useEffect(() => {
     if (activeModal === null && prevModal === 'cart-add') {
       updateQueryParams({
@@ -149,6 +154,7 @@ const CatalogTable = observer(() => {
     }
   }, [activeModal, prevModal]);
 
+  // page query params controlled
   useEffect(() => {
     gotoPage(getIndexFromQuery(query));
     setPageIndex(getIndexFromQuery(query));
@@ -157,6 +163,16 @@ const CatalogTable = observer(() => {
     }
   }, [query.page]);
 
+  // filters data
+  const categoryData = useMemo(() => {
+    if (query.category) {
+      return getCategoryFilters(query.category);
+    }
+
+    return null;
+  }, [query.category, query.search, query.size, query.mark, query.length]);
+
+  // do not render table on homepage
   if (query.category === 'all' || (!query.category && !query.search)) return null;
 
   return !loading ? (
@@ -168,8 +184,11 @@ const CatalogTable = observer(() => {
         </Button>
       </div>
 
+      <MobileFilter categoryData={categoryData} />
+
       <table {...getTableProps()} className={styles.table}>
-        <StickyHead headerGroups={headerGroups} />
+        <StickyHead headerGroups={headerGroups} categoryData={categoryData} />
+
         {page && page.length > 0 && (
           <tbody {...getTableBodyProps()}>
             {page.map((row, i) => {

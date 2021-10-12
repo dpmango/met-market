@@ -30,6 +30,14 @@
     }
   }
 }
+@include r($lg) {
+  .categoryDropdown {
+    li a {
+      font-size: 14px;
+    }
+  }
+}
+
 @include r($md) {
   .categoryDropdown {
     position: static;
@@ -43,6 +51,8 @@
     display: none;
     li a {
       font-size: 14px;
+      text-overflow: none;
+      white-space: normal;
     }
     &._opened {
       display: block;

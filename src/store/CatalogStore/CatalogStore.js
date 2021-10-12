@@ -137,8 +137,10 @@ export default class CatalogStore {
       ];
     }
 
+    // appy filters
     source = this.applyCatalogFilters(source);
 
+    // generate regex with simple morhpology
     const searchRegex = prepareSmartSearchRegexp(clearMorphologyInSearchTerm(searchInput.toLowerCase()));
     const matches = source.filter((x) => {
       const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;

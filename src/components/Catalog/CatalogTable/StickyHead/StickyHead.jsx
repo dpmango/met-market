@@ -10,28 +10,19 @@ import { UiStoreContext, CatalogStoreContext } from '@store';
 
 import styles from './StickyHead.module.scss';
 
-const StickyHead = observer(({ headerGroups }) => {
+const StickyHead = observer(({ headerGroups, categoryData }) => {
   const { query } = useContext(UiStoreContext);
 
   const {
     catalogOpened,
     header: { scrolledSticky },
   } = useContext(UiStoreContext);
-  const { filters, getCategoryFilters } = useContext(CatalogStoreContext);
-
-  // getters
-  const categoryData = useMemo(() => {
-    if (query.category) {
-      return getCategoryFilters(query.category);
-    }
-
-    return null;
-  }, [query.category, query.search, query.size, query.mark, query.length]);
+  const { filters } = useContext(CatalogStoreContext);
 
   return (
     <thead className={cns(styles.stickyHead, scrolledSticky && !catalogOpened && styles._sticky)}>
       {headerGroups.map((headerGroup) => (
-        <tr {...headerGroup.getHeaderGroupProps()}>
+        <tr {...headerGroup.getHeaderGroupProps()} className={styles.desktopHead}>
           {headerGroup.headers.map((column) => {
             return (
               <th {...column.getHeaderProps()}>

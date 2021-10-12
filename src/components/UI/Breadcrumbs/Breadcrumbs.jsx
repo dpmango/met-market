@@ -1,18 +1,19 @@
 import React, { useMemo, useContext, memo } from 'react';
-import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import { Link, NavLink, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
 import { SvgIcon } from '@ui';
 import { UiStoreContext } from '@store';
 import { updateQueryParams } from '@helpers';
+import { useWindowSize } from '@hooks';
 
 import styles from './Breadcrumbs.module.scss';
 
 const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
   const history = useHistory();
   const location = useLocation();
+  const { width } = useWindowSize();
 
   // todo - move to crumbs conponent
   const {
@@ -39,7 +40,7 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
   };
 
   return crumbs && crumbs.length > 0 ? (
-    <div className={cns(styles.breadcrumbsScroll, scrolled && !catalogOpened && styles._sticky)}>
+    <div className={cns(styles.breadcrumbsScroll, scrolled && !catalogOpened && width > 768 && styles._sticky)}>
       <div className="container">
         <div className={styles.breadcrumbs}>
           <ul className={styles.breadcrumbsList}>

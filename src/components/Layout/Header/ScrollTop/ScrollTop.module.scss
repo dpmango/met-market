@@ -48,3 +48,21 @@
     color: white;
   }
 }
+
+@include r($md) {
+  .scrolltop {
+    right: 26px;
+  }
+
+  .btn:first-child {
+    display: none;
+  }
+  .btn {
+    background: $colorPrimary;
+    color: white;
+    &:hover {
+      background: white;
+      color: $colorPrimary;
+    }
+  }
+}

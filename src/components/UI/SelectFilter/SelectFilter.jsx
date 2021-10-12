@@ -8,16 +8,17 @@ import difference from 'lodash/difference';
 
 import { SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
-import { useOnClickOutside, useFirstRender } from '@hooks';
+import { useOnClickOutside, useWindowSize, useFirstRender } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import styles from './SelectFilter.module.scss';
 
 const SelectComponent = observer(
-  ({ label, mini, value, name, className, optionsClassName, options, onChange, ...props }) => {
+  ({ label, mini, inline, value, name, className, optionsClassName, options, onChange, ...props }) => {
     const location = useLocation();
     const history = useHistory();
     const optionsRef = useRef(null);
+    const { width } = useWindowSize();
 
     const [opened, setOpened] = useState(false);
     const catalogContext = useContext(CatalogStoreContext);
@@ -42,7 +43,15 @@ const SelectComponent = observer(
     }, [filter]);
 
     const columnizeOptions = useMemo(() => {
-      const colSize = name === 'size' ? 5 : 4;
+      let colSize = 4;
+
+      if (width < 768) {
+        colSize = 2;
+      } else if (width < 992) {
+        colSize = 3;
+      } else if (width < 1200) {
+        colSize = name === 'size' ? 5 : 4;
+      }
 
       if (!optionsMapped || !filter) return [];
 
@@ -62,7 +71,7 @@ const SelectComponent = observer(
             })),
           ]
         : [];
-    }, [filter, optionsMapped]);
+    }, [filter, optionsMapped, width]);
 
     // click handlers
     const handleOptionClick = (option) => {
@@ -100,7 +109,15 @@ const SelectComponent = observer(
     );
 
     return (
-      <div className={cns(styles.select, mini && styles._mini, opened && styles._active, className)} ref={optionsRef}>
+      <div
+        className={cns(
+          styles.select,
+          mini && styles._mini,
+          inline && styles._inline,
+          opened && styles._active,
+          className
+        )}
+        ref={optionsRef}>
         {!mini ? (
           <div className={styles.selectDisplay} onClick={() => setOpened(!opened)}>
             <span>{label}</span>
@@ -157,6 +174,7 @@ const SelectComponent = observer(
 
 SelectComponent.propTypes = {
   mini: PropTypes.bool,
+  inline: PropTypes.bool,
   label: PropTypes.string,
   name: PropTypes.string,
   value: PropTypes.array,

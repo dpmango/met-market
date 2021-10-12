@@ -270,3 +270,31 @@
   border-top: 1px solid $borderColor;
   border-bottom: 1px solid $borderColor;
 }
+
+@include r($md) {
+  .suggestions {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    z-index: 1;
+    background: white;
+    padding-top: 52px;
+  }
+
+  .suggestionsHead {
+    padding: 0 10px;
+  }
+
+  .suggestion {
+    padding-right: 0;
+    padding-left: 10px;
+  }
+  .suggestionRemove {
+    margin-left: auto;
+    padding: 13px 10px;
+    :global .svg-icon {
+      font-size: 10px;
+    }
+  }
+}

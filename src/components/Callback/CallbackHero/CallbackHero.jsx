@@ -115,7 +115,7 @@ const CallbackHero = observer(() => {
                       className={styles.formButton}
                       loading={loading}
                       disabled={isSubmitting}>
-                      Заказать звонок
+                      Рассчитать стоимость
                     </Button>
                   </Form>
                 )}

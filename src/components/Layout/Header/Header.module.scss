@@ -5,9 +5,8 @@
   will-change: transform;
   backface-visibility: hidden;
   &._scrolled {
-    transform: translateY(-45px);
+    transform: translate3d(0, -74px, 0);
     .wrapper {
-      padding-top: 15px;
       padding-bottom: 15px;
     }
   }
@@ -25,7 +24,9 @@
   display: flex;
   align-items: center;
   padding: 44px 0 32px;
-  transition: padding 0.25s $ease;
+  will-change: padding;
+  backface-visibility: hidden;
+  transition: padding 0.25s linear;
 }
 
 .colMain {
@@ -72,6 +73,11 @@
 }
 
 @include r($xl) {
+  .header {
+    &._scrolled {
+      transform: translate3d(0, -62px, 0);
+    }
+  }
   .wrapper {
     padding: 32px 0 32px;
   }
@@ -236,6 +242,12 @@
   margin: 0 -10px 22px;
 }
 
+.overlayLinks {
+  display: none;
+  margin-top: 16px;
+  flex: 0 0 auto;
+}
+
 .overlaySocialLink {
   display: inline-flex;
   align-items: center;
@@ -271,6 +283,30 @@
   }
   &:hover {
     color: $colorAccent;
+  }
+}
+
+.priceList {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px;
+  margin-left: -10px;
+  margin-bottom: 16px;
+  transition: background 0.25s $ease;
+  :global {
+    .svg-icon {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+  }
+  span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  &:hover {
+    background: $colorLink;
   }
 }
 
@@ -327,6 +363,14 @@
 
   .overlaySocials {
     display: flex;
+  }
+
+  .overlayLinks {
+    display: block;
+    button {
+      width: 100%;
+      max-width: 400px;
+    }
   }
 
   .overlayClose {

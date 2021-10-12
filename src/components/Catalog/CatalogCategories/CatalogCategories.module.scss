@@ -50,3 +50,15 @@
     flex-wrap: wrap;
   }
 }
+
+@include r($md) {
+  .head {
+    margin-bottom: 0;
+  }
+  .tags {
+    display: none;
+  }
+  .filters {
+    margin-top: 18px;
+  }
+}

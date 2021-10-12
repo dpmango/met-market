@@ -203,3 +203,12 @@ div.footerContact {
 .footerBottomText {
   margin-right: 30px;
 }
+
+@include r($md) {
+  .copyright {
+    margin-right: 10px;
+  }
+  .footerBottomText {
+    margin-right: 10px;
+  }
+}

@@ -3,8 +3,6 @@
 
   &._sticky {
     z-index: 7;
-    margin-left: -2px;
-    margin-right: -2px;
     th {
       &:first-child {
         border-bottom-left-radius: 5px;
@@ -65,5 +63,11 @@
       width: calc(((100vw - 36px) * ((0.14 * 4) + 0.1)));
       left: calc(0px - ((100vw - 36px) * (0.14 + 0.14)));
     }
+  }
+}
+
+@include r($md) {
+  .desktopHead {
+    display: none;
   }
 }
