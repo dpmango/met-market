@@ -103,8 +103,10 @@ export default class CatalogStore {
       returnable = this.catalog;
     }
 
-    // then apply filters
-    const result = this.applyCatalogFilters(returnable).map((x) => this.normalizeCatalogItem(x));
+    const result = {
+      results: this.applyCatalogFilters(returnable).map((x) => this.normalizeCatalogItem(x)),
+      // withoutFilter: returnable.map((x) => this.normalizeCatalogItem(x)),
+    };
 
     PerformanceLog(DEV_perf, 'catalogList');
     return result;
@@ -137,29 +139,27 @@ export default class CatalogStore {
       ];
     }
 
-    // appy filters
-    source = this.applyCatalogFilters(source);
-
     // generate regex with simple morhpology
     const searchRegex = prepareSmartSearchRegexp(clearMorphologyInSearchTerm(searchInput.toLowerCase()));
-    const matches = source.filter((x) => {
-      const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
 
-      return terms ? new RegExp(searchRegex, 'i').test(terms) : false;
+    const doRegexSearch = (source) => {
+      const matches = source.filter((x) => {
+        const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
 
-      // if (terms) {
-      //   // const queries = clearMorphologyInSearchTerm(searchInput.toLowerCase()).split(' ');
-      //   // return queries.every((q) => terms.split(' ').some((str) => str.includes(q)));
-      // }
-    });
+        return terms ? new RegExp(searchRegex, 'i').test(terms) : false;
+      });
 
-    const suggestions = matches.map((item) => this.normalizeCatalogItem(item));
+      return matches || [];
+    };
+
+    const searched = doRegexSearch(this.applyCatalogFilters(source));
 
     const result = {
       meta: {
-        total: matches.length,
+        total: searched.length,
       },
-      suggestions: suggestions ? suggestions : [],
+      results: searched.map((item) => this.normalizeCatalogItem(item)),
+      // withoutFilter: doRegexSearch(source).map((item) => this.normalizeCatalogItem(item)),
     };
 
     PerformanceLog(DEV_perf, 'searchCatalog');
@@ -233,6 +233,7 @@ export default class CatalogStore {
         result.push({
           id: lvl1.id,
           name: lvl1.name,
+          short: lvl1.shortName,
         });
 
         if (lvl1.categories && lvl1.categories.length > 0) {
@@ -240,6 +241,7 @@ export default class CatalogStore {
             result.push({
               id: lvl2.id,
               name: lvl2.name,
+              short: lvl2.shortName,
             });
 
             if (lvl2.categories && lvl2.categories.length > 0) {
@@ -247,6 +249,7 @@ export default class CatalogStore {
                 result.push({
                   id: lvl3.id,
                   name: lvl3.name,
+                  short: lvl3.shortName,
                 });
               });
             }
@@ -319,44 +322,36 @@ export default class CatalogStore {
 
         const processFilters = (cat_filters) => {
           // passing display list of select filters
-          const sizeFilter = this.filters.size.map((v) => v.value);
-          const markFilter = this.filters.mark.map((v) => v.value);
-          const lengthFilter = this.filters.length.map((v) => v.value);
 
           // find store items matching filters (table display list)
           let matchedCatalogList = [];
 
           if (ui.query.search) {
-            const { suggestions } = this.searchCatalog(ui.query.search, cat_id);
-            matchedCatalogList = suggestions;
+            const { results } = this.searchCatalog(ui.query.search, cat_id);
+            matchedCatalogList = results;
           } else {
-            matchedCatalogList = this.catalogList(cat_id);
+            const { results } = this.catalogList(cat_id);
+            matchedCatalogList = results;
           }
 
           const mappedFilter = matchedCatalogList.map((x) => {
             return { size: x.size, mark: x.mark, length: x.length };
           });
 
-          const sizes = mappedFilter.map((catMap) => catMap.size);
-          const marks = mappedFilter.map((catMap) => catMap.mark);
-          const lengths = mappedFilter.map((catMap) => catMap.length);
-
-          // iterate filter select values through matching catalog element
-          // (sort out not found display values)
-          const haveFilter = (f) => f && f.length > 0;
-          // const shouldFilterSize = !haveFilter(sizeFilter) && (haveFilter(markFilter) || haveFilter(lengthFilter));
-          // const shouldFilterMark = !haveFilter(markFilter) && (haveFilter(sizeFilter) || haveFilter(lengthFilter));
-          // const shouldFilterLength = !haveFilter(lengthFilter) && (haveFilter(sizeFilter) || haveFilter(markFilter));
+          const sizesMatched = mappedFilter.map((catMap) => catMap.size);
+          const marksMatched = mappedFilter.map((catMap) => catMap.mark);
+          const lengthsMatched = mappedFilter.map((catMap) => catMap.length);
 
           const clearValue = (x) => {
             return !x ? 'не указано' : x;
           };
 
+          // filtering thought mapped available/disabled state
           const filterSize = (size) => {
             return {
               value: clearValue(size),
               isPopular: size.isPopular !== undefined ? mark.isPopular : false,
-              available: sizes.includes(size),
+              available: sizesMatched.includes(size),
             };
           };
 
@@ -364,7 +359,7 @@ export default class CatalogStore {
             return {
               value: clearValue(mark.name),
               isPopular: mark.isPopular !== undefined ? mark.isPopular : false,
-              available: marks.includes(mark.name),
+              available: marksMatched.includes(mark.name),
             };
           };
 
@@ -372,7 +367,7 @@ export default class CatalogStore {
             return {
               value: clearValue(length),
               isPopular: length.isPopular !== undefined ? length.isPopular : false,
-              available: lengths.includes(length),
+              available: lengthsMatched.includes(length),
             };
           };
 

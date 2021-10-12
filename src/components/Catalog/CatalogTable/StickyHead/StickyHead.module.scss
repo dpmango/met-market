@@ -68,6 +68,6 @@
 
 @include r($md) {
   .desktopHead {
-    display: none;
+    display: none !important;
   }
 }

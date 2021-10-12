@@ -38,12 +38,13 @@ const CatalogTable = observer(() => {
   // router for search and regular catalog with filters
   const data = useMemo(() => {
     if (query.search) {
-      const { meta, suggestions } = searchCatalog(query.search, query.category);
-      return suggestions;
+      const { results } = searchCatalog(query.search, query.category);
+      return results;
     }
 
     if (query.category !== 'all') {
-      return catalogContext.catalogList(query.category);
+      const { results } = catalogContext.catalogList(query.category);
+      return results;
     }
 
     return [];
@@ -129,7 +130,7 @@ const CatalogTable = observer(() => {
     if (!loading) {
       uiContext.checkQuery(query.origin);
     }
-  }, [loading, query.product]);
+  }, [query.product]);
 
   // set default page size mobile/desktop
   useEffect(() => {

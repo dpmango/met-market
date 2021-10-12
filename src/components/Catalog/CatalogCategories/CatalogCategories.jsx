@@ -28,16 +28,16 @@ const CatalogCategories = observer(() => {
       const storeData = getCategoryFilters(query.category);
 
       if (query.search) {
-        const data = searchCatalog(query.search, query.category);
+        const { meta } = searchCatalog(query.search, query.category);
 
         //  <br/>по запросу «<span class="w-700 c-link">${search}</span>»`
         return {
           ...storeData,
           head: storeData.title,
           searchtitle: `В категории «<span class="w-700 c-link">${storeData.title}</span>» ${
-            data.meta.total > 0
-              ? `${Plurize(data.meta.total, 'найден', 'найдено', 'найдено')} ${data.meta.total} ${Plurize(
-                  data.meta.total,
+            meta.total > 0
+              ? `${Plurize(meta.total, 'найден', 'найдено', 'найдено')} ${meta.total} ${Plurize(
+                  meta.total,
                   'товар',
                   'товара',
                   'товаров'

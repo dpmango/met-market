@@ -7,7 +7,6 @@ import chunk from 'lodash/chunk';
 import { SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useWindowSize } from '@hooks';
-import { applyNameShort } from '@helpers/Strings';
 
 import CategoryLetter from './CategoryLetter';
 import CategoryMain from './CategoryMain';
@@ -32,11 +31,7 @@ const findCategoryLetter = (list, activeLetters) => {
         .findIndex((word) => word.length > 3 && activeLetters.includes(word[0]));
 
       return aVal - bVal;
-    })
-    .map((x) => ({
-      ...x,
-      name: applyNameShort(x.name),
-    }));
+    });
 };
 
 const CatalogMenu = observer(({ abcOrder, className }) => {

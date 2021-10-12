@@ -96,7 +96,9 @@ export default class UiStore {
         this.setModal('cart-add', { ...item });
       }
     } else {
-      // this.resetModal();
+      if (this.activeModal === 'cart-add') {
+        this.resetModal();
+      }
     }
   }
 }

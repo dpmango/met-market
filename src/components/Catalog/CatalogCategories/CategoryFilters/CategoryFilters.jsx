@@ -18,30 +18,30 @@ const CategoryFilters = observer(({ image, data }) => {
   const firstRender = useFirstRender();
 
   const { filters, someFiltersActive } = useContext(CatalogStoreContext);
-  const catalogContext = useContext(CatalogStoreContext);
   const { query } = useContext(UiStoreContext);
 
-  const resetFilters = (e) => {
-    e && e.preventDefault();
+  const resetFilters = useCallback(
+    (e) => {
+      e && e.preventDefault();
 
-    // catalogContext.resetFilters();
-    updateQueryParams({
-      history,
-      location,
-      payload: {
-        type: 'filter',
-        value: {
-          size: null,
-          length: null,
-          mark: null,
+      updateQueryParams({
+        history,
+        location,
+        payload: {
+          type: 'filter',
+          value: {
+            size: null,
+            length: null,
+            mark: null,
+          },
         },
-      },
-    });
-  };
+      });
+    },
+    [history, location]
+  );
 
   useEffect(() => {
     if (!firstRender) {
-      console.log('reset filters because of category change');
       resetFilters();
     }
   }, [query.category]);

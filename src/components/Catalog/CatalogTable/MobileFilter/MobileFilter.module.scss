@@ -2,6 +2,15 @@
   display: none;
 }
 
+.reset {
+  margin-top: 16px;
+  :global .btn {
+    padding: 9px 15px !important;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+}
+
 @include r($md) {
   .mobFilter {
     position: sticky;
@@ -14,9 +23,17 @@
     margin-left: -16px;
     margin-right: -16px;
     background: #f5f5f5;
-    transition: background 0.25s $ease;
+    border: 1px solid #ccc;
+    border-bottom-color: transparent;
+    border-radius: 5px 5px 0 0;
+    transition: background 0.25s $ease, border 0.25s $ease;
+    &._sticky {
+      border-color: transparent;
+      border-radius: 0;
+    }
     &._active {
       background: white;
+      border-color: transparent;
       .mobFilterToggle {
         background: white;
         border-color: $colorPrimary;

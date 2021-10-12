@@ -56,10 +56,16 @@ const SelectComponent = observer(
       if (!optionsMapped || !filter) return [];
 
       const filterPureValues = filter.map((x) => x.value);
-      const checked = filter.map((f) => ({ value: f.value, label: f.label, disabled: false }));
-      const nonChecked = optionsMapped.filter((x) => !filterPureValues.includes(x.value));
+      // const checked = filter.map((f) => ({ value: f.value, label: f.label, disabled: false }));
+      // const nonChecked = optionsMapped.filter((x) => !filterPureValues.includes(x.value));
 
-      const combined = [...checked, ...nonChecked];
+      // const combined = [...checked, ...nonChecked];
+
+      const checkedButNotListed = filter
+        .map((f) => ({ value: f.value, label: f.label, disabled: false }))
+        .filter((x) => !filterPureValues.includes(x.value));
+
+      const combined = [...checkedButNotListed, ...optionsMapped];
 
       const splited = chunk(combined, Math.ceil(combined.length / colSize));
 

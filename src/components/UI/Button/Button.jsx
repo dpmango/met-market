@@ -61,7 +61,8 @@ const Button = ({
     loading && styles._loading,
     iconLeft && styles._iconLeft,
     iconRight && styles._iconRight,
-    className
+    className,
+    'btn'
   );
 
   if (type === 'link') {

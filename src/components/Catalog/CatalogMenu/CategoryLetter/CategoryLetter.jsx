@@ -38,7 +38,7 @@ const CategoryLetter = observer(({ list }) => {
             href={`?category=${cat.id}`}
             className={styles.categoryTitle}
             onClick={(e) => handleCategoryClick(cat.id, e)}>
-            {cat.name}
+            {cat.short || cat.name}
           </a>
         ))}
     </div>
