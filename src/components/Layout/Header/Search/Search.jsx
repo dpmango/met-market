@@ -133,6 +133,7 @@ const Search = observer(({ className }) => {
         },
       });
       // setSuggestionsOpened(false);
+      setShowRecent(false);
       setSearchText(q);
 
       inputRef && inputRef.current.focus();

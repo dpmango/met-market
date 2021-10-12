@@ -48,9 +48,9 @@ export default class CatalogStore {
   }
 
   applyCatalogFilters(catalog) {
-    const sizeFilter = this.filters.size.map((v) => v.value);
-    const markFilter = this.filters.mark.map((v) => v.value);
-    const lengthFilter = this.filters.length.map((v) => v.value);
+    const sizeFilter = this.filters.size.map((v) => (v.value !== 'не указано' ? v.value : ''));
+    const markFilter = this.filters.mark.map((v) => (v.value !== 'не указано' ? v.value : ''));
+    const lengthFilter = this.filters.length.map((v) => (v.value !== 'не указано' ? v.value : ''));
 
     const filterSize = (item) => {
       if (sizeFilter && sizeFilter.length) {

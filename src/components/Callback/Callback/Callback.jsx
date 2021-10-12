@@ -150,7 +150,7 @@ const Callback = observer(() => {
 
   const handleDeleteClick = useCallback(
     (delFile) => {
-      setFiles([...files.filter((f) => f === delFile)]);
+      setFiles([...files.filter((f) => f !== delFile)]);
     },
     [files]
   );

@@ -47,6 +47,13 @@ const CatalogCategories = observer(() => {
         };
       }
 
+      if (storeData.title) {
+        return {
+          ...storeData,
+          head: storeData.title,
+        };
+      }
+
       return storeData;
     } else if (query.search) {
       const data = searchCatalog(query.search, null);
@@ -54,7 +61,6 @@ const CatalogCategories = observer(() => {
       return data
         ? {
             id: 0,
-
             title: `По запросу «<span class="w-700 c-link">${query.search}</span>» ${
               data.meta.total > 0
                 ? `${Plurize(data.meta.total, 'найден', 'найдено', 'найдено')} ${data.meta.total} ${Plurize(

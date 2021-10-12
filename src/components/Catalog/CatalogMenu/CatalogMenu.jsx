@@ -98,7 +98,6 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
   }, [letters, activeLetters]);
 
   const handleNextClick = useCallback(() => {
-    console.log(list);
     const curIndex = letters.findIndex((x) => activeLetters.includes(x));
 
     const nextLetter = letters[curIndex + 1];
