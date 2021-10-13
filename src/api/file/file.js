@@ -19,21 +19,14 @@ export default {
     // @sessionId string
     // @file binary blob
 
-    // const formData = new FormData();
+    const formData = new FormData();
 
-    // Object.keys(req).forEach((key) => {
-    //   formData.append(key, req[key]);
-    // });
+    Object.keys(req).forEach((key) => {
+      formData.append(key, req[key]);
+    });
 
-    let arrayBuffer = await readBynary(req.file);
+    // let arrayBuffer = await readBynary(req.file);
 
-    return api.post(
-      endpoints.file.upload,
-      {
-        sessionId: req.sessionId,
-        file: arrayBuffer,
-      },
-      { timeout: 120 * 1000 }
-    );
+    return api.post(endpoints.file.upload, formData, { timeout: 120 * 1000 });
   },
 };

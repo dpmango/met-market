@@ -45,16 +45,16 @@
     }
   }
 
-  body {
-    &.catalogOpened,
-    &.ReactModal__Body--open {
-      overflow: hidden;
-    }
-  }
-
   body.scrolled {
     .close {
       top: 52px !important;
     }
+  }
+}
+
+body {
+  &.catalogOpened,
+  &.ReactModal__Body--open {
+    overflow: hidden;
   }
 }
