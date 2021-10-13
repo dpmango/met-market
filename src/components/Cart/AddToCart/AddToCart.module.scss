@@ -144,9 +144,48 @@
     border-bottom: 0;
   }
   .body {
-    margin-left: -16px;
-    margin-right: -16px;
+    padding: 26px 0 20px;
+    margin-left: auto;
+    margin-right: auto;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+      width: 90px;
+      scrollbar-width: 90px;
+      height: 6px;
+      background: transparent;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      max-width: 90px;
+      width: 90px;
+      background: #e5e5e5;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #a1a1a1;
+      border-radius: 10px;
+      border: 0;
+    }
+  }
+
+  .bodyTable {
+    flex: 0 0 260px;
+    max-width: 260px;
+    margin-left: 25px;
+    margin-right: 0;
+  }
+
+  .rowLabel {
+    flex: 0 0 110px;
+    max-width: 110px;
+    padding-right: 20px;
+    font-size: 12px;
+  }
+
+  .rowContent {
+    font-size: 12px;
   }
 
   .incart {
@@ -180,7 +219,7 @@
     }
     button {
       width: 100%;
-      max-width: 360px;
+      max-width: 430px;
     }
   }
 }

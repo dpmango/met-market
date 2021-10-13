@@ -10,10 +10,8 @@ import { updateQueryParams } from '@helpers';
 
 import styles from './CategorySub.module.scss';
 
-const CategoryMain = observer(({ category, handleCategoryClick }) => {
+const CategoryMain = observer(({ category, handleCategoryClick, opened, setOpened }) => {
   const { width } = useWindowSize();
-
-  const [opened, setOpened] = useState(false);
 
   const hasSub = category.categories && category.categories.length > 0;
 
@@ -21,7 +19,7 @@ const CategoryMain = observer(({ category, handleCategoryClick }) => {
     (category, e) => {
       if (width <= 992 && hasSub) {
         e.preventDefault();
-        setOpened(!opened);
+        setOpened && setOpened(!opened);
       } else {
         handleCategoryClick(category.id, e);
       }

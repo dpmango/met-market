@@ -120,9 +120,11 @@ const ModalComponent = observer(({ variant, modifier, name, children }) => {
       onRequestClose={closeModal}
       closeTimeoutMS={300}
       style={CSSinJSstyles}
+      preventScroll={true}
       contentLabel="Modal">
       <div className={cns(styles.container, variant && VariantClasses[variant], modifier && ModifierClasses[modifier])}>
         <div className={cns('close', styles.close)} onClick={closeModal}>
+          <SvgIcon name="arrow-left" />
           <span>Назад</span>
           <SvgIcon name="close" />
         </div>

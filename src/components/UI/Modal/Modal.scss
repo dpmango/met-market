@@ -30,7 +30,7 @@
   }
   .ReactModalPortal {
     .ReactModal__Content {
-      top: 60px !important;
+      top: 52px !important;
       bottom: 0 !important;
       left: 0 !important;
       right: 0 !important;
@@ -45,9 +45,16 @@
     }
   }
 
+  body {
+    &.catalogOpened,
+    &.ReactModal__Body--open {
+      overflow: hidden;
+    }
+  }
+
   body.scrolled {
     .close {
-      top: 50px !important;
+      top: 52px !important;
     }
   }
 }

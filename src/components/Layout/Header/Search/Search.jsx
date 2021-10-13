@@ -117,6 +117,7 @@ const Search = observer(({ className }) => {
 
         // setSuggestionsOpened(false);
         // setSearchText('');
+        inputRef && inputRef.current.blur();
       }
     },
     [searchText, history, location]

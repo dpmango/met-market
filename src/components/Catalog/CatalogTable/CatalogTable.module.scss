@@ -218,7 +218,7 @@
       width: 100%;
       flex-wrap: wrap;
       border-bottom: 1px solid rgba(black, 0.1);
-      padding: 10px 16px;
+      padding: 13px 14px 13px 14px;
       transition: background 0.15s $ease, border 0.15s $ease;
       &:hover {
         background: #f5f5f5;
@@ -230,7 +230,7 @@
     td {
       font-size: 12px;
       font-weight: 600;
-      padding: 2px 5px 2px;
+      padding: 2px 0 2px;
       border-bottom: 1px solid rgba(black, 0.1);
       border: 0;
       &:nth-child(1) {
@@ -265,18 +265,22 @@
         text-align: right;
       }
       &:first-child {
-        padding-left: 5px;
+        padding-left: 2px;
         border-left: 0;
+        margin-bottom: -10px;
       }
       &:last-child {
-        padding-right: 5px;
+        padding-right: 10px;
         border-right: 0;
       }
     }
     tbody {
       td {
-        padding: 2px 5px 2px;
+        padding: 2px 2px 2px;
         align-self: center;
+      }
+      tr:last-child {
+        border-bottom-color: rgba(black, 0.7);
       }
     }
     thead {
@@ -288,7 +292,7 @@
       display: table-row !important;
       font-size: 14px;
       a {
-        padding-left: 16px;
+        padding: 10px 16px;
       }
 
       td {
@@ -374,5 +378,11 @@
     margin-top: 16px;
     flex: 0 0 100%;
     margin-left: 0;
+  }
+}
+
+@include r(414) {
+  .paginationPer {
+    display: none;
   }
 }

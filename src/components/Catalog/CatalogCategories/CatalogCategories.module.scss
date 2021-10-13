@@ -54,6 +54,16 @@
 @include r($md) {
   .head {
     margin-bottom: 0;
+    .everywhere {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      :global .btn {
+        display: block;
+        width: 100%;
+        max-width: 430px;
+      }
+    }
   }
   .tags {
     display: none;

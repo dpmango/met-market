@@ -50,7 +50,7 @@
 
 @include r($lg) {
   .categoryTitle {
-    font-size: 20px;
+    font-size: 16px;
     margin-bottom: 12px;
   }
   .categoryList {
@@ -76,6 +76,7 @@
         background: #eaecf5;
         a {
           color: $colorPrimary;
+          transition: none;
         }
       }
       li::after {
@@ -83,6 +84,7 @@
       }
       a {
         color: white;
+        transition: none;
       }
     }
   }

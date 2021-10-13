@@ -14,6 +14,8 @@ const CategoryMain = observer(({ category }) => {
   const history = useHistory();
   const location = useLocation();
 
+  const [mobOpened, setMobOpened] = useState([]);
+
   const uiContext = useContext(UiStoreContext);
 
   const handleCategoryClick = (id, e) => {
@@ -31,6 +33,14 @@ const CategoryMain = observer(({ category }) => {
     uiContext.setHeaderCatalog(false);
   };
 
+  const handleMobOpened = (id, state) => {
+    if (state) {
+      setMobOpened([id]);
+    } else {
+      setMobOpened([]);
+    }
+  };
+
   return (
     <div className={cns('category', styles.category)} data-id={category.id}>
       <a
@@ -43,7 +53,13 @@ const CategoryMain = observer(({ category }) => {
       <ul className={styles.categoryList}>
         {category.categories &&
           category.categories.map((cat2) => (
-            <CategorySub key={cat2.id} category={cat2} handleCategoryClick={handleCategoryClick} />
+            <CategorySub
+              key={cat2.id}
+              opened={mobOpened.includes(cat2.id)}
+              setOpened={(state) => handleMobOpened(cat2.id, state)}
+              category={cat2}
+              handleCategoryClick={handleCategoryClick}
+            />
           ))}
       </ul>
     </div>

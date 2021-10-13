@@ -39,8 +39,16 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
     });
   };
 
+  const ArrowResponsive = useMemo(() => {
+    if (width < 768) {
+      return <SvgIcon key={'short'} name="arrow-short" />;
+    } else {
+      return <SvgIcon key={'long'} name="arrow-long" />;
+    }
+  }, [width]);
+
   return crumbs && crumbs.length > 0 ? (
-    <div className={cns(styles.breadcrumbsScroll, scrolled && !catalogOpened && width > 768 && styles._sticky)}>
+    <div className={cns(styles.breadcrumbsScroll, scrolled && !catalogOpened && width >= 768 && styles._sticky)}>
       <div className="container">
         <div className={styles.breadcrumbs}>
           <ul className={styles.breadcrumbsList}>
@@ -49,7 +57,7 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
                 Главная
               </a>
 
-              <SvgIcon name="arrow-long" />
+              {ArrowResponsive}
             </li>
             {crumbs.slice(0, crumbs.length - 1).map((crumb, idx) => (
               <li key={idx}>
@@ -59,7 +67,7 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
                   </a>
                 )}
                 {!crumb.href && !crumb.category && <span>{crumb.text}</span>}
-                <SvgIcon name="arrow-long" />
+                {ArrowResponsive}
               </li>
             ))}
 

@@ -160,9 +160,9 @@ const CatalogTable = observer(() => {
     gotoPage(getIndexFromQuery(query));
     setPageIndex(getIndexFromQuery(query));
     if (catalogRef.current && !firstRender) {
-      ScrollTo(catalogRef.current.offsetTop - 84, 300);
+      ScrollTo(catalogRef.current.offsetTop - 60, 300);
     }
-  }, [query.page]);
+  }, [query.page, query.size, query.mark, query.length]);
 
   // filters data
   const categoryData = useMemo(() => {

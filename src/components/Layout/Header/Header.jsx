@@ -5,7 +5,7 @@ import cns from 'classnames';
 import debounce from 'lodash/debounce';
 
 import { SvgIcon, Button } from '@ui';
-import { useOnClickOutside } from '@hooks';
+import { useOnClickOutside, useWindowSize } from '@hooks';
 import { CatalogStoreContext, UiStoreContext } from '@store';
 import { useEventListener } from '@hooks';
 
@@ -22,8 +22,9 @@ import { ReactComponent as LogoTablet } from '@assets/logo-tablet.svg';
 
 const Header = observer(({ className }) => {
   const [abcOrder, setAbcOrder] = useState(false);
-
+  const { width } = useWindowSize();
   const {
+    activeModal,
     catalogOpened,
     header: { scrolled, scrolledSticky },
     query,
@@ -35,7 +36,8 @@ const Header = observer(({ className }) => {
   const handleScroll = useCallback(
     debounce((e) => {
       // const nearFooter = window.scrollY + window.innerHeight > document.body.scrollHeight - 375;
-      const stickyHeader = window.scrollY > 460;
+      const startStickyAt = width < 768 ? 45 : 460;
+      const stickyHeader = window.scrollY > startStickyAt;
 
       if (window.scrollY > 45) {
         if (!scrolled) {
@@ -51,7 +53,7 @@ const Header = observer(({ className }) => {
 
       uiContext.setScrolledSticky(stickyHeader);
     }, 10),
-    [scrolled, uiContext.uiContext]
+    [scrolled, uiContext.uiContext, width]
   );
 
   useOnClickOutside(
@@ -65,10 +67,22 @@ const Header = observer(({ className }) => {
     uiContext.setHeaderCatalog(false);
   }, [query.category, query.search]);
 
+  useEffect(() => {
+    if (activeModal) {
+      uiContext.setHeaderCatalog(false);
+    }
+  }, [activeModal]);
+
   return (
     <>
       <header
-        className={cns(styles.header, scrolled && styles._scrolled, catalogOpened && styles._catalogOpened, className)}
+        className={cns(
+          styles.header,
+          scrolled && styles._scrolled,
+          catalogOpened && styles._catalogOpened,
+          scrolledSticky && styles._sticky,
+          className
+        )}
         ref={headerRef}>
         <TopBar />
 

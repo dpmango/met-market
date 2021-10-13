@@ -42,7 +42,7 @@
   color: $fontColor;
   border: 1px solid $borderColor;
   border-radius: 5px;
-  padding: 10px 60px 10px 20px;
+  padding: 10px 86px 10px 20px;
   transition: border 0.25s $ease, color 0.25s $ease, background 0.25s $ease;
   &::placeholder {
     color: $colorGray;
@@ -100,6 +100,12 @@
   }
   &:hover {
     color: $colorLink;
+  }
+}
+
+@include r(830) {
+  .searchInput {
+    font-size: 12px;
   }
 }
 

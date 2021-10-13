@@ -76,3 +76,19 @@
     }
   }
 }
+
+@include r(414) {
+  .list {
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+  .item {
+    min-width: 22px;
+    span {
+      font-size: 12px;
+    }
+  }
+  .button {
+    font-size: 10px;
+  }
+}
