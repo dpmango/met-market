@@ -9,6 +9,7 @@ import { UiStoreContext, CatalogStoreContext } from '@store';
 import { useOnClickOutside } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
+import CategoryTags from '@c/Catalog/CatalogCategories/CategoryTags';
 import styles from './MobileFilter.module.scss';
 
 const MobileFilter = observer(({ categoryData }) => {
@@ -64,6 +65,10 @@ const MobileFilter = observer(({ categoryData }) => {
 
       {categoryData && (
         <div className={cns(styles.filters, visible && styles._visible)}>
+          <div className={styles.filtersToggle}>
+            <CategoryTags className={styles.tags} data={categoryData.subcategories} />
+          </div>
+
           <SelectFilter
             inline
             optionsClassName={cns(styles.selectOptions, styles.size)}

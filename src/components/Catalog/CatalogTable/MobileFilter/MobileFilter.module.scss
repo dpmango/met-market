@@ -119,4 +119,10 @@
       pointer-events: all;
     }
   }
+
+  .tags {
+    :global div {
+      flex: 0 0 50%;
+    }
+  }
 }
