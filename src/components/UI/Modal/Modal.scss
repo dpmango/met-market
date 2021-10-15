@@ -36,18 +36,12 @@
       right: 0 !important;
       margin: 0 !important;
       transform: none !important;
-      max-height: calc(100% - 54px) !important;
+      max-height: calc(100% - 52px) !important;
       width: 100% !important;
       max-width: 100% !important;
       border-radius: 0 !important;
       overflow-y: auto;
       overflow-x: hidden;
-    }
-  }
-
-  body.scrolled {
-    .close {
-      top: 52px !important;
     }
   }
 }

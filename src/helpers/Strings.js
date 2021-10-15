@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
 
 export const formatUGC = (txt) => {
-  return txt.trim().replace(/<[^>]*(>|$)|&nbsp;|&zwnj;|&raquo;|&laquo;|&gt;/g, '');
+  return txt.replace(/<[^>]*(>|$)|&nbsp;|&zwnj;|&raquo;|&laquo;|&gt;/g, '');
 };
 
 export function prepareSmartSearchRegexp(str) {

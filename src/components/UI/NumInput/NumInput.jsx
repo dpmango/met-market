@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, memo, useEffect } from 'react';
+import React, { useCallback, useState, useMemo, memo, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import cns from 'classnames';
 import uniqueId from 'lodash/uniqueId';
@@ -17,7 +17,9 @@ const VariantClasses = {
   [Variants.SMALL]: styles._small,
 };
 
-const NumInput = ({ className, label, inputRef, variant, value, onChange, error, showError, ...props }) => {
+const NumInput = ({ className, label, variant, value, onChange, error, showError, ...props }) => {
+  const inputRef = useRef(null);
+
   const id = useMemo(() => {
     return uniqueId();
   }, []);
@@ -83,6 +85,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
     (e) => {
       if (e.keyCode === 13) {
         onBlur(e);
+        inputRef && inputRef.current.blur();
         return;
       }
 
@@ -93,7 +96,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
         event.preventDefault();
       }
     },
-    [innerValue]
+    [innerValue, inputRef]
   );
 
   useEffect(() => {

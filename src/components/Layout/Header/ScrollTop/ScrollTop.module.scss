@@ -49,14 +49,17 @@
   }
 }
 
+@include r($xl) {
+  .btn:first-child {
+    display: none;
+  }
+}
+
 @include r($md) {
   .scrolltop {
     right: 26px;
   }
 
-  .btn:first-child {
-    display: none;
-  }
   // .btn {
   //   background: $colorPrimary;
   //   color: white;

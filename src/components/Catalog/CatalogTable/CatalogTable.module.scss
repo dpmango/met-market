@@ -201,7 +201,7 @@
     margin-bottom: 30px;
     button {
       width: 100%;
-      max-width: 400px;
+      max-width: 430px;
     }
   }
   .metaCount {
@@ -375,14 +375,12 @@
     flex-wrap: wrap;
   }
   .paginationPer {
-    margin-top: 16px;
-    flex: 0 0 100%;
-    margin-left: 0;
-  }
-}
-
-@include r(414) {
-  .paginationPer {
     display: none;
   }
+
+  // .paginationPer {
+  //   margin-top: 16px;
+  //   flex: 0 0 100%;
+  //   margin-left: 0;
+  // }
 }

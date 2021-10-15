@@ -37,6 +37,7 @@ const findCategoryLetter = (list, activeLetters) => {
 const CatalogMenu = observer(({ abcOrder, className }) => {
   const { width } = useWindowSize();
   const [activeLetters, setActiveLetters] = useState(['А']);
+  const [mobOpened, setMobOpened] = useState([]);
 
   const { categoriesList, categoriesAbc } = useContext(CatalogStoreContext);
 
@@ -144,17 +145,17 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
           <div className="row">
             <div className="col col-4 col-md-12">
               {list.slice(0, 2).map((cat) => (
-                <CategoryMain key={cat.id} category={cat} />
+                <CategoryMain key={cat.id} category={cat} mobOpened={mobOpened} setMobOpened={setMobOpened} />
               ))}
             </div>
             <div className="col col-4 col-md-12">
               {list.slice(2, 5).map((cat) => (
-                <CategoryMain key={cat.id} category={cat} />
+                <CategoryMain key={cat.id} category={cat} mobOpened={mobOpened} setMobOpened={setMobOpened} />
               ))}
             </div>
             <div className="col col-4 col-md-12">
               {list.slice(5, 7).map((cat) => (
-                <CategoryMain key={cat.id} category={cat} />
+                <CategoryMain key={cat.id} category={cat} mobOpened={mobOpened} setMobOpened={setMobOpened} />
               ))}
             </div>
           </div>

@@ -73,7 +73,7 @@
     align-items: center;
     flex: 0 0 auto;
     font-size: 16px;
-    line-height: 13px;
+    line-height: 1;
     :global .svg-icon {
       font-size: 8px;
       color: rgba(black, 0.3);
@@ -98,8 +98,16 @@
 
 @include r($lg) {
   .breadcrumbsList {
+    margin-top: -5px;
+    margin-bottom: -5px;
+
     li {
       font-size: 12px;
+    }
+    a,
+    span {
+      display: inline-block;
+      padding: 5px 10px;
     }
   }
 }

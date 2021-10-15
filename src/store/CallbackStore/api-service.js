@@ -29,16 +29,21 @@ class CallbackService extends ApiService {
 
   async upload({ sessionId, files }) {
     try {
-      let data = [];
+      const fileUploads = files.map(
+        (file, i) =>
+          new Promise((resolve, reject) => {
+            fileApi
+              .upload({ sessionId, file })
+              .then(({ data }) => resolve(data))
+              .catch((err) => reject(err));
+          })
+      );
 
-      await files.forEach(async (file) => {
-        const upload = await fileApi.upload({ sessionId, file });
-        data = [...data, [upload]];
+      const promises = await Promise.all(fileUploads).then((values) => {
+        return [null, values];
       });
 
-      console.log('upload service data', data);
-
-      return [null, data];
+      return promises;
     } catch (error) {
       this.handleError(error);
 

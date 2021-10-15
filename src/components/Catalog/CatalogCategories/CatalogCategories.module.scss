@@ -52,6 +52,10 @@
 }
 
 @include r($md) {
+  .breadcrumbs {
+    margin: 20px 0 18px;
+  }
+
   .head {
     margin-bottom: 0;
     .everywhere {
@@ -61,6 +65,8 @@
       :global .btn {
         display: block;
         width: 100%;
+        padding-top: 14px;
+        padding-bottom: 14px;
         max-width: 430px;
       }
     }

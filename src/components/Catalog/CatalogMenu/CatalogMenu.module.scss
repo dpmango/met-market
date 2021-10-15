@@ -71,6 +71,11 @@
 }
 
 @include r($md) {
+  .catalog {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .abc {
     padding-left: 0;
     padding-right: 0;

@@ -10,11 +10,9 @@ import { updateQueryParams } from '@helpers';
 import CategorySub from '../CategorySub';
 import styles from './CategoryMain.module.scss';
 
-const CategoryMain = observer(({ category }) => {
+const CategoryMain = observer(({ category, mobOpened, setMobOpened }) => {
   const history = useHistory();
   const location = useLocation();
-
-  const [mobOpened, setMobOpened] = useState([]);
 
   const uiContext = useContext(UiStoreContext);
 

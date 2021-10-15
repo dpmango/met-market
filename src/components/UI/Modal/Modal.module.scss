@@ -75,9 +75,9 @@
   }
   .close {
     order: 1;
-    position: fixed;
+    position: absolute;
     z-index: 3;
-    top: 52px;
+    top: 0;
     left: 0;
     right: 0;
     display: inline-flex;
@@ -109,17 +109,17 @@
   }
 
   ._narrow {
-    padding: 50px 0 40px;
+    padding: 52px 0 40px;
     .close {
-      top: 52px;
+      top: 0;
       right: 0;
     }
   }
 
   ._thanks {
-    padding: 50px 20px 40px;
+    padding: 80px 20px 40px;
     .close {
-      top: 60px;
+      top: 0;
       right: 0;
     }
   }

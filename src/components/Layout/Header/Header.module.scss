@@ -108,7 +108,8 @@
     &._scrolled {
       transform: translateY(0);
     }
-    &._sticky {
+    &._sticky,
+    &._catalogOpened {
       .wrapper {
         padding-bottom: 2px;
       }
@@ -254,8 +255,15 @@
   margin: 0 -10px 22px;
 }
 
+.overlaySearch {
+  display: none;
+  flex: 0 0 auto;
+  margin-bottom: 24px;
+}
+
 .overlayLinks {
   display: none;
+  flex-direction: column;
   margin-top: 16px;
   flex: 0 0 auto;
 }
@@ -345,7 +353,7 @@
     z-index: 2;
     padding-top: 0;
     max-height: 100%;
-    height: calc(100vh - 112px);
+    height: calc(100vh - 52px);
     // overflow: hidden;
     // :global .container {
     //   flex: 0 0 auto;
@@ -377,8 +385,13 @@
     display: flex;
   }
 
-  .overlayLinks {
+  .overlaySearch {
     display: block;
+  }
+
+  .overlayLinks {
+    display: flex;
+    align-items: flex-start;
     margin-bottom: 32px;
     button {
       width: 100%;
@@ -393,7 +406,7 @@
   .header {
     &._scrolled {
       .overlayScroller {
-        height: calc(100vh - 112px);
+        height: calc(100vh - 52px);
       }
       &._sticky {
         .overlayScroller {

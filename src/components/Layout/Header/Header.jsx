@@ -123,6 +123,9 @@ const Header = observer(({ className }) => {
           <div className={styles.overlayScroller}>
             <div className={styles.overlayContent}>
               <div className="container">
+                <div className={styles.overlaySearch}>
+                  <Search className={styles.search} />
+                </div>
                 <div className={styles.overlaySocials}>
                   <a href="https://whatsupp.com" target="_blank" className={styles.overlaySocialLink} rel="noreferrer">
                     <SvgIcon name="social-whatsapp" />
