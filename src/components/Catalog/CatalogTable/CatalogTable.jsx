@@ -26,6 +26,7 @@ const CatalogTable = observer(() => {
 
   const { catalog, loading, filters, getCatalogItem, searchCatalog, getCategoryByName, getCategoryFilters } =
     useContext(CatalogStoreContext);
+
   const catalogContext = useContext(CatalogStoreContext);
   const { activeModal, prevModal, query } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
@@ -171,7 +172,7 @@ const CatalogTable = observer(() => {
     }
 
     return null;
-  }, [query.category, query.search, query.size, query.mark, query.length]);
+  }, [loading, query.category, query.search, filters]);
 
   // do not render table on homepage
   if (query.category === 'all' || (!query.category && !query.search)) return null;

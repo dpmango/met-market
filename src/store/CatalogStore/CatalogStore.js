@@ -323,6 +323,7 @@ export default class CatalogStore {
         const processFilters = (cat_filters) => {
           // passing display list of select filters
 
+          // console.log(JSON.stringify(cat_filters));
           // find store items matching filters (table display list)
           let matchedCatalogList = [];
 
@@ -337,6 +338,8 @@ export default class CatalogStore {
           const mappedFilter = matchedCatalogList.map((x) => {
             return { size: x.size, mark: x.mark, length: x.length };
           });
+
+          // console.log(JSON.stringify(mappedFilter));
 
           const sizesMatched = mappedFilter.map((catMap) => catMap.size);
           const marksMatched = mappedFilter.map((catMap) => catMap.mark);

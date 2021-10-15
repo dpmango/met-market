@@ -124,6 +124,7 @@
       .main {
         background: $colorPrimary;
         color: white;
+        border-bottom-color: transparent;
       }
       :global .cart {
         color: white;
@@ -258,13 +259,14 @@
 .overlaySearch {
   display: none;
   flex: 0 0 auto;
+  margin-top: -3px;
   margin-bottom: 24px;
 }
 
 .overlayLinks {
   display: none;
   flex-direction: column;
-  margin-top: 16px;
+  margin-top: 0;
   flex: 0 0 auto;
 }
 

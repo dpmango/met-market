@@ -73,10 +73,13 @@ const Callback = observer(() => {
 
         buildRequest = {
           ...buildRequest,
-          payload: {
+          payload: [
             ...buildRequest.payload,
-            ...[{ id: 'uploads', content: uploades.map((x) => x.fileId).join(',') }],
-          },
+            ...uploades.map((x, idx) => ({
+              id: `file.${idx}`,
+              content: x.fileId,
+            })),
+          ],
         };
       }
 

@@ -74,4 +74,4 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
   );
 });
 
-export default memo(StickyHead);
+export default StickyHead;

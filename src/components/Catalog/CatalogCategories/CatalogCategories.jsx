@@ -74,7 +74,7 @@ const CatalogCategories = observer(() => {
           }
         : null;
     }
-  }, [loading, searchCatalog, query.search, query.category, filters]);
+  }, [loading, query.search, query.category, filters]);
 
   const breadcrumbs = useMemo(() => {
     if (query.category && categoryData) {

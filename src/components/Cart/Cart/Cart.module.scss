@@ -109,13 +109,9 @@
 
         &:first-child {
           border-left-color: rgba(black, 0.1);
-          // border-top-left-radius: 5px;
-          // border-bottom-left-radius: 5px;
         }
         &:last-child {
           border-right-color: rgba(black, 0.1);
-          // border-top-right-radius: 5px;
-          // border-bottom-right-radius: 5px;
         }
       }
     }
@@ -329,6 +325,13 @@
       tr:hover {
         td {
           background: transparent;
+
+          &:first-child {
+            border-left-color: transparent;
+          }
+          &:last-child {
+            border-right-color: transparent;
+          }
         }
       }
       td {

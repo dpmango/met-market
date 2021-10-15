@@ -160,6 +160,9 @@
       &:nth-child(6) {
         width: 10%;
       }
+      &:nth-child(5) {
+        padding-right: 0;
+      }
 
       &:first-child {
         padding-left: 20px;

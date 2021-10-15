@@ -64,9 +64,14 @@
 }
 
 @include r($md) {
-  // .category {
-  //   // margin-bottom: 0;
-  // }
+  .category {
+    // margin-bottom: 0;
+    &:last-child {
+      .categoryList {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 
 @include r($md) {
