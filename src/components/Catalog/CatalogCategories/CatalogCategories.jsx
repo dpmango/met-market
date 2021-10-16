@@ -30,7 +30,7 @@ const CatalogCategories = observer(() => {
       const storeData = getCategoryFilters(query.category);
 
       if (query.search) {
-        const { meta } = searchCatalog(query.search, query.category);
+        const { meta } = searchCatalog(query.search, query.category, null);
 
         //  <br/>по запросу «<span class="w-700 c-link">${search}</span>»`
         return {
@@ -58,7 +58,7 @@ const CatalogCategories = observer(() => {
 
       return storeData;
     } else if (query.search) {
-      const data = searchCatalog(query.search, null);
+      const data = searchCatalog(query.search, null, null);
 
       return data
         ? {

@@ -38,6 +38,11 @@
       border-bottom-color: rgba(47, 47, 47, 0.3);
     }
     &._active {
+      position: fixed;
+      top: 52px;
+      right: 16px;
+      left: 16px;
+
       background: $colorPrimary;
       border-color: transparent;
       border-radius: 0;
@@ -114,12 +119,13 @@
   // dropdown
   .filters {
     position: absolute;
-    top: calc(100% - 1px);
+    top: 100%;
     z-index: 1;
     left: 0;
     right: 0;
     min-height: 1px;
-    height: calc(100vh - 52px - 52px);
+    // height: calc(100vh - 52px - 52px);
+    height: 100%;
     padding: 20px 16px 120px 16px;
     display: flex;
     flex-direction: column;
@@ -131,7 +137,7 @@
     overflow-y: auto;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
 
-    transition: opacity 0.25s $ease;
+    transition: opacity 0.1s $ease;
     &._visible {
       opacity: 1;
       pointer-events: all;

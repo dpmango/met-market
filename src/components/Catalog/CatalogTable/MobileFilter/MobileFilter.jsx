@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo, useContext, useCallback, useRef, useState, memo } from 'react';
+import React, { useMemo, useContext, useCallback, useRef, useState, memo, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
@@ -16,12 +16,18 @@ import styles from './MobileFilter.module.scss';
 const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
   const location = useLocation();
   const history = useHistory();
-  const [categoriesOpened, setCategoriesOpened] = useState(true);
-
   const height = use100vh();
   const mobRef = useRef(null);
+
   const [visible, setVisible] = useState(false);
+  const [categoriesOpened, setCategoriesOpened] = useState(true);
+
   const { filters, someFiltersActive } = useContext(CatalogStoreContext);
+  const { query } = useContext(UiStoreContext);
+
+  // useEffect(() => {
+  //   setVisible(false);
+  // }, [query.category]);
 
   const {
     catalogOpened,
@@ -52,6 +58,14 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
     return height - 52 - 52;
   }, [height]);
 
+  useEffect(() => {
+    if (visible) {
+      document.body.classList.add('filtersActive');
+    } else {
+      document.body.classList.remove('filtersActive');
+    }
+  }, [visible]);
+
   useOnClickOutside(
     mobRef,
     useCallback((e) => setVisible(false), [setVisible])
@@ -72,7 +86,7 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
 
       {categoryData && (
         <div className={cns(styles.filters, visible && styles._visible)} style={{ height: scrollerHeight }}>
-          <div className={cns(styles.filterTags, categoriesOpened && styles._active)}>
+          <div className={cns(styles.filterTags, visible && categoriesOpened && styles._active)}>
             <div className={styles.filterTagsLabel} onClick={() => setCategoriesOpened(!categoriesOpened)}>
               <span>Тип товара</span>
               <SvgIcon name="caret" />

@@ -47,7 +47,7 @@ export default class CatalogStore {
     return this.catalog.length;
   }
 
-  applyCatalogFilters(catalog) {
+  applyCatalogFilters(catalog, filterType) {
     const sizeFilter = this.filters.size.map((v) => (v.value !== 'не указано' ? v.value : ''));
     const markFilter = this.filters.mark.map((v) => (v.value !== 'не указано' ? v.value : ''));
     const lengthFilter = this.filters.length.map((v) => (v.value !== 'не указано' ? v.value : ''));
@@ -74,12 +74,32 @@ export default class CatalogStore {
       return true;
     };
 
-    const result = catalog.filter(filterSize).filter(filterMark).filter(filterLength);
+    const mergedFilter = (item) => {
+      let matched = true;
+
+      const allFilters = [item.size, item.mark, item.length];
+      const mergedFilter = [sizeFilter, markFilter, lengthFilter];
+
+      if (sizeFilter.length > 0 || markFilter.length > 0 || lengthFilter.length > 0) {
+        matched = allFilters.some((filter, idx) => {
+          return filter.some((val) => mergedFilter[idx].includes(val));
+        });
+      }
+
+      return matched;
+    };
+
+    let result = [];
+    if (filterType === 'merged') {
+      result = catalog.filter(mergedFilter);
+    } else {
+      result = catalog.filter(filterSize).filter(filterMark).filter(filterLength);
+    }
 
     return result;
   }
 
-  catalogList = computedFn((cat_id) => {
+  catalogList = computedFn((cat_id, filterType) => {
     const DEV_perf = performance.now();
 
     let returnable = [];
@@ -104,7 +124,7 @@ export default class CatalogStore {
     }
 
     const result = {
-      results: this.applyCatalogFilters(returnable).map((x) => this.normalizeCatalogItem(x)),
+      results: this.applyCatalogFilters(returnable, filterType).map((x) => this.normalizeCatalogItem(x)),
       // withoutFilter: returnable.map((x) => this.normalizeCatalogItem(x)),
     };
 
@@ -117,7 +137,7 @@ export default class CatalogStore {
   });
 
   // search in catalog searchTerms any match
-  searchCatalog = computedFn((searchInput, category_id) => {
+  searchCatalog = computedFn((searchInput, category_id, filterType) => {
     let source = this.catalog;
     const DEV_perf = performance.now();
 
@@ -152,7 +172,7 @@ export default class CatalogStore {
       return matches || [];
     };
 
-    const searched = doRegexSearch(this.applyCatalogFilters(source));
+    const searched = doRegexSearch(this.applyCatalogFilters(source, filterType));
 
     const result = {
       meta: {
@@ -323,23 +343,20 @@ export default class CatalogStore {
         const processFilters = (cat_filters) => {
           // passing display list of select filters
 
-          // console.log(JSON.stringify(cat_filters));
           // find store items matching filters (table display list)
           let matchedCatalogList = [];
 
           if (ui.query.search) {
-            const { results } = this.searchCatalog(ui.query.search, cat_id);
+            const { results } = this.searchCatalog(ui.query.search, cat_id, 'merged');
             matchedCatalogList = results;
           } else {
-            const { results } = this.catalogList(cat_id);
+            const { results } = this.catalogList(cat_id, 'merged');
             matchedCatalogList = results;
           }
 
           const mappedFilter = matchedCatalogList.map((x) => {
             return { size: x.size, mark: x.mark, length: x.length };
           });
-
-          // console.log(JSON.stringify(mappedFilter));
 
           const sizesMatched = mappedFilter.map((catMap) => catMap.size);
           const marksMatched = mappedFilter.map((catMap) => catMap.mark);

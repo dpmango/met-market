@@ -184,6 +184,10 @@ const Header = observer(({ className }) => {
         </div>
       </header>
 
+      <div className={styles.mobileSearch}>
+        <Search className={styles.mobileSearchSearch} />
+      </div>
+
       <Cart />
       <CartSuccess />
 

@@ -169,7 +169,7 @@ const Search = observer(({ className }) => {
   const haveLog = sessionContext.log && sessionContext.log.search.length > 0;
 
   return (
-    <form className={styles.search} ref={searchRef} onSubmit={handleSearchSubmit}>
+    <form className={cns(className, styles.search)} ref={searchRef} onSubmit={handleSearchSubmit}>
       <input
         className={styles.searchInput}
         placeholder={`Искать среди ${catalogContext.catalogLength} товаров в наличии`}

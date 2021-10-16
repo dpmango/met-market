@@ -39,12 +39,12 @@ const CatalogTable = observer(() => {
   // router for search and regular catalog with filters
   const data = useMemo(() => {
     if (query.search) {
-      const { results } = searchCatalog(query.search, query.category);
+      const { results } = searchCatalog(query.search, query.category, null);
       return results;
     }
 
     if (query.category !== 'all') {
-      const { results } = catalogContext.catalogList(query.category);
+      const { results } = catalogContext.catalogList(query.category, null);
       return results;
     }
 
@@ -178,7 +178,7 @@ const CatalogTable = observer(() => {
   if (query.category === 'all' || (!query.category && !query.search)) return null;
 
   return !loading ? (
-    <div className={styles.catalog} ref={catalogRef}>
+    <div className={cns(styles.catalog, 'catalogTable')} ref={catalogRef}>
       <div className={styles.head}>
         <div className={styles.metaCount}>{metaItemsCount}</div>
         <Button theme="accent" className={styles.headCta} onClick={() => uiContext.setModal('callback')}>
