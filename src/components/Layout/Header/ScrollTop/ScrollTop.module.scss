@@ -68,9 +68,10 @@
   //     color: $colorPrimary;
   //   }
   // }
-  :global body.filtersActive {
-    .scrrollTop {
-      display: none;
-    }
+}
+
+:global body.filtersActive {
+  .scrolltop {
+    display: none;
   }
 }

@@ -16,7 +16,7 @@ const ScrollTop = observer(({ visible, sticky }) => {
   const uiContext = useContext(UiStoreContext);
 
   return (
-    <div className={cns(styles.scrolltop, visible && styles._visible, sticky && styles._sticky)}>
+    <div className={cns(styles.scrolltop, visible && styles._visible, sticky && styles._sticky, 'scrolltop')}>
       <div className={styles.btn} onClick={() => ScrollTo(0, 500)}>
         <SvgIcon name="arrow-top" />
       </div>

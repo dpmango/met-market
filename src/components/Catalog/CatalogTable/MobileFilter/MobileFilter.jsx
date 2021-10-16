@@ -85,18 +85,20 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
       <div className={styles.mobFilterSubtitle}>{visible ? metaItemsCount : 'Цена с НДС'}</div>
 
       {categoryData && (
-        <div className={cns(styles.filters, visible && styles._visible)} style={{ height: scrollerHeight }}>
-          <div className={cns(styles.filterTags, visible && categoriesOpened && styles._active)}>
-            <div className={styles.filterTagsLabel} onClick={() => setCategoriesOpened(!categoriesOpened)}>
-              <span>Тип товара</span>
-              <SvgIcon name="caret" />
-            </div>
-            <div className={styles.filterTagsDropdown}>
-              <div className={styles.filtersToggle}>
-                <CategoryTags className={styles.tags} data={categoryData.subcategories} />
+        <div className={cns(styles.filters, visible && styles._visible)}>
+          {categoryData.subcategories && categoryData.subcategories.length > 0 && (
+            <div className={cns(styles.filterTags, visible && categoriesOpened && styles._active)}>
+              <div className={styles.filterTagsLabel} onClick={() => setCategoriesOpened(!categoriesOpened)}>
+                <span>Тип товара</span>
+                <SvgIcon name="caret" />
+              </div>
+              <div className={styles.filterTagsDropdown}>
+                <div className={styles.filtersToggle}>
+                  <CategoryTags className={styles.tags} data={categoryData.subcategories} />
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           <SelectFilter
             inline
