@@ -3,6 +3,7 @@ import React, { useMemo, useContext, useCallback, useRef, useState, memo } from 
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
+import { use100vh } from 'react-div-100vh';
 
 import { Button, SvgIcon, SelectFilter } from '@ui';
 import { UiStoreContext, CatalogStoreContext } from '@store';
@@ -12,10 +13,12 @@ import { updateQueryParams } from '@helpers';
 import CategoryTags from '@c/Catalog/CatalogCategories/CategoryTags';
 import styles from './MobileFilter.module.scss';
 
-const MobileFilter = observer(({ categoryData }) => {
+const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
   const location = useLocation();
   const history = useHistory();
+  const [categoriesOpened, setCategoriesOpened] = useState(true);
 
+  const height = use100vh();
   const mobRef = useRef(null);
   const [visible, setVisible] = useState(false);
   const { filters, someFiltersActive } = useContext(CatalogStoreContext);
@@ -45,6 +48,10 @@ const MobileFilter = observer(({ categoryData }) => {
     [history, location]
   );
 
+  const scrollerHeight = useMemo(() => {
+    return height - 52 - 52;
+  }, [height]);
+
   useOnClickOutside(
     mobRef,
     useCallback((e) => setVisible(false), [setVisible])
@@ -61,12 +68,20 @@ const MobileFilter = observer(({ categoryData }) => {
           <SvgIcon name="caret" />
         </div>
       </div>
-      <div className={styles.mobFilterSubtitle}>Цена с НДС</div>
+      <div className={styles.mobFilterSubtitle}>{visible ? metaItemsCount : 'Цена с НДС'}</div>
 
       {categoryData && (
-        <div className={cns(styles.filters, visible && styles._visible)}>
-          <div className={styles.filtersToggle}>
-            <CategoryTags className={styles.tags} data={categoryData.subcategories} />
+        <div className={cns(styles.filters, visible && styles._visible)} style={{ height: scrollerHeight }}>
+          <div className={cns(styles.filterTags, categoriesOpened && styles._active)}>
+            <div className={styles.filterTagsLabel} onClick={() => setCategoriesOpened(!categoriesOpened)}>
+              <span>Тип товара</span>
+              <SvgIcon name="caret" />
+            </div>
+            <div className={styles.filterTagsDropdown}>
+              <div className={styles.filtersToggle}>
+                <CategoryTags className={styles.tags} data={categoryData.subcategories} />
+              </div>
+            </div>
           </div>
 
           <SelectFilter
@@ -96,6 +111,12 @@ const MobileFilter = observer(({ categoryData }) => {
           <div className={styles.reset}>
             <Button outline={!someFiltersActive} disabled={!someFiltersActive} onClick={resetFilters}>
               Сбросить фильтры
+            </Button>
+          </div>
+
+          <div className={styles.ok}>
+            <Button theme="link" block onClick={() => setVisible(false)}>
+              ОК
             </Button>
           </div>
         </div>

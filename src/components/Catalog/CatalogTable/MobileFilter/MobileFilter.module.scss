@@ -11,12 +11,18 @@
   }
 }
 
+.ok {
+  position: fixed;
+  bottom: 60px;
+  left: 14px;
+  right: 14px;
+}
+
 @include r($md) {
   .mobFilter {
     position: sticky;
     z-index: 10;
     top: 52px;
-
     display: flex;
     align-items: center;
     padding: 0 16px 0 0;
@@ -32,20 +38,29 @@
       border-bottom-color: rgba(47, 47, 47, 0.3);
     }
     &._active {
-      background: white;
+      background: $colorPrimary;
       border-color: transparent;
+      border-radius: 0;
       .mobFilterToggle {
-        background: white;
-        border-color: $colorPrimary;
+        // background: white;
+        border-color: transparent;
+        color: white;
       }
       .mobFilterIcon {
-        transform: rotate(180deg);
-        color: $colorLink;
+        :global .svg-icon {
+          transform: rotate(180deg);
+        }
+
+        color: white;
       }
       .mobFilterSubtitle {
-        opacity: 0;
-        pointer-events: none;
+        color: white;
+        font-size: 10px;
       }
+      // .mobFilterSubtitle {
+      //   opacity: 0;
+      //   pointer-events: none;
+      // }
     }
   }
 
@@ -80,10 +95,11 @@
   }
   .mobFilterIcon {
     font-size: 0;
-    transform-origin: center center;
-    transition: transform 0.25s $ease, color 0.25s $ease;
+    transition: color 0.25s $ease;
     :global .svg-icon {
       font-size: 7px;
+      transform-origin: center center;
+      transition: transform 0.25s $ease;
     }
   }
 
@@ -102,15 +118,17 @@
     z-index: 1;
     left: 0;
     right: 0;
-    height: calc(100vh - 52px - 54px);
-    padding: 20px 16px 20px 32px;
+    min-height: 1px;
+    height: calc(100vh - 52px - 52px);
+    padding: 20px 16px 120px 16px;
     display: flex;
     flex-direction: column;
     opacity: 0;
     pointer-events: none;
     background: white;
-    border-radius: 0 10px 10px 10px;
-    border: 1px solid $colorPrimary;
+    border-radius: 0;
+    border: 0;
+    overflow-y: auto;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
 
     transition: opacity 0.25s $ease;
@@ -118,6 +136,57 @@
       opacity: 1;
       pointer-events: all;
     }
+  }
+
+  .filterTags {
+    position: relative;
+    &._active {
+      .filterTagsLabel {
+        :global .svg-icon {
+          transform: rotate(-180deg);
+          color: $colorRed;
+        }
+      }
+      .filterTagsDropdown {
+        opacity: 1;
+        pointer-events: all;
+        display: flex;
+      }
+    }
+  }
+
+  .filterTagsLabel {
+    display: flex;
+    align-items: center;
+    padding: 8px 0 7px 0;
+    cursor: pointer;
+    overflow: hidden;
+    user-select: none;
+    span {
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 1;
+      padding-right: 10px;
+    }
+    :global .svg-icon {
+      flex: 0 0 auto;
+      font-size: 9px;
+      margin-left: auto;
+      transition: transform 0.25s $ease;
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+  }
+
+  .filterTagsDropdown {
+    display: none;
+    padding: 16px 0;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 280px;
+    overflow-y: auto;
+    user-select: none;
+    transition: opacity 0.25s $ease;
   }
 
   .tags {

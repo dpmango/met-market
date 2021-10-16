@@ -8,6 +8,7 @@ import cns from 'classnames';
 import { Breadcrumbs, Spinner, Button } from '@ui';
 import { CatalogStoreContext, UiStoreContext } from '@store';
 import { ScrollTo, Plurize, updateQueryParams } from '@helpers';
+import { useWindowSize } from '@hooks';
 
 import { CatalogMenu } from '@c/Catalog';
 import CategoryTags from './CategoryTags';
@@ -17,6 +18,7 @@ import styles from './CatalogCategories.module.scss';
 const CatalogCategories = observer(() => {
   const history = useHistory();
   const location = useLocation();
+  const { width } = useWindowSize();
 
   const { loading, searchCatalog, getCategoryFilters, filters } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
@@ -165,7 +167,7 @@ const CatalogCategories = observer(() => {
             </div>
           )}
 
-          {!query.search && categoryData.filters && (
+          {(!query.search || width >= 768) && categoryData.filters && (
             <div className={styles.filters}>
               <CategoryFilters image={categoryData.image} data={categoryData.filters} />
             </div>

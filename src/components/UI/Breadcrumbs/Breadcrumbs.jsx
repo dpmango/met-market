@@ -48,7 +48,7 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
   }, [width]);
 
   return crumbs && crumbs.length > 0 ? (
-    <div className={cns(styles.breadcrumbsScroll, scrolled && !catalogOpened && width >= 768 && styles._sticky)}>
+    <div className={cns(styles.breadcrumbsScroll, scrolled && width >= 768 && styles._sticky)}>
       <div className="container">
         <div className={styles.breadcrumbs}>
           <ul className={styles.breadcrumbsList}>

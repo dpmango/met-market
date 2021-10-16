@@ -62,14 +62,12 @@ const Callback = observer(() => {
       };
 
       if (files && files.length > 0) {
-        const uploades = await callbackContext.uploadFile(files);
-
-        if (uploades && uploades.length === 0) {
+        const uploades = await callbackContext.uploadFile(files).catch((err) => {
           addToast('Ошибка при загрузке', { appearance: 'error' });
           setLoading(false);
           setFiles([]);
           return;
-        }
+        });
 
         buildRequest = {
           ...buildRequest,
@@ -87,9 +85,11 @@ const Callback = observer(() => {
         .submitForm(buildRequest)
         .then((_res) => {
           resetForm();
+          setFiles([]);
           uiContext.setModal('callbacksuccess');
         })
         .catch((_error) => {
+          setLoading(false);
           addToast('Ошибка при отправке', { appearance: 'error' });
         });
 

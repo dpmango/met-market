@@ -211,7 +211,7 @@
 // OVERLAY
 .overlay {
   position: absolute;
-  top: calc(100% + 0px);
+  top: 100%;
   left: 0;
   right: 0;
   z-index: 1;
@@ -405,18 +405,18 @@
     display: none;
   }
 
-  .header {
-    &._scrolled {
-      .overlayScroller {
-        height: calc(100vh - 52px);
-      }
-      &._sticky {
-        .overlayScroller {
-          height: calc(100vh - 52px);
-        }
-      }
-    }
-  }
+  // .header {
+  //   &._scrolled {
+  //     .overlayScroller {
+  //       height: calc(100vh - 52px);
+  //     }
+  //     &._sticky {
+  //       .overlayScroller {
+  //         height: calc(100vh - 52px);
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 .catLang {

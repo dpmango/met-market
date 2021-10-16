@@ -12,6 +12,7 @@ import { useFirstRender } from '@hooks';
 import { ruPhoneRegex } from '@helpers/Validation';
 
 import CartProduct from './CartProduct';
+import ResetCart from './ResetCart';
 import styles from './Cart.module.scss';
 
 const Cart = observer(() => {
@@ -180,19 +181,11 @@ const Cart = observer(() => {
                     <div className={cns(styles.delete, styles._circle)} onClick={() => setResetContext(true)}>
                       <SvgIcon name="delete" />
 
-                      <div
-                        className={cns(styles.reset, resetContext && styles._active)}
-                        onClick={(e) => e.stopPropagation()}>
-                        <div className={styles.resetTitle}>Очистить корзину?</div>
-                        <div className={styles.resetCta}>
-                          <Button theme="gray" onClick={() => handleCartDelete('batch')}>
-                            Да
-                          </Button>
-                          <Button theme="danger" onClick={() => setResetContext(false)}>
-                            Отмена
-                          </Button>
-                        </div>
-                      </div>
+                      <ResetCart
+                        active={resetContext}
+                        handleCartDelete={handleCartDelete}
+                        setResetContext={setResetContext}
+                      />
                     </div>
                   </th>
                 </tr>
@@ -266,6 +259,12 @@ const Cart = observer(() => {
                     </>
                   )}
                 </div>
+                <div className="col col-md-12 md-visible">
+                  <Button theme="primary" outline onClick={() => setResetContext(true)}>
+                    Очистить
+                  </Button>
+                </div>
+
                 <div className="col col-4 col-md-12">
                   <Input
                     type="tel"
@@ -299,6 +298,13 @@ const Cart = observer(() => {
                   </Button>
                 </div>
               </div>
+
+              <ResetCart
+                className={styles.mobileReset}
+                active={resetContext}
+                handleCartDelete={handleCartDelete}
+                setResetContext={setResetContext}
+              />
             </form>
             {/* <div className="dev-log">{JSON.stringify(cart, null, 2)}</div> */}
           </>

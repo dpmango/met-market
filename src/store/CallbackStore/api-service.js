@@ -39,11 +39,17 @@ class CallbackService extends ApiService {
           })
       );
 
-      const promises = await Promise.all(fileUploads).then((values) => {
-        return [null, values];
-      });
+      let returnable = [];
 
-      return promises;
+      const promises = await Promise.all(fileUploads)
+        .then((values) => {
+          returnable = values;
+        })
+        .catch((err) => {
+          throw err;
+        });
+
+      return [null, returnable];
     } catch (error) {
       this.handleError(error);
 

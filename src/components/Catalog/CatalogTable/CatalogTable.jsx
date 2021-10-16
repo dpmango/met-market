@@ -186,7 +186,7 @@ const CatalogTable = observer(() => {
         </Button>
       </div>
 
-      <MobileFilter categoryData={categoryData} />
+      <MobileFilter metaItemsCount={metaItemsCount} categoryData={categoryData} />
 
       <table {...getTableProps()} className={styles.table}>
         <StickyHead headerGroups={headerGroups} categoryData={categoryData} />

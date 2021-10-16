@@ -3,11 +3,13 @@ import { Link, NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 import debounce from 'lodash/debounce';
+import { use100vh } from 'react-div-100vh';
 
 import { SvgIcon, Button } from '@ui';
 import { useOnClickOutside, useWindowSize } from '@hooks';
 import { CatalogStoreContext, UiStoreContext } from '@store';
 import { useEventListener } from '@hooks';
+import { ScrollTo } from '@helpers';
 
 import { Cart, CartSuccess } from '@c/Cart';
 import { Callback, CallbackSuccess } from '@c/Callback';
@@ -23,6 +25,8 @@ import { ReactComponent as LogoTablet } from '@assets/logo-tablet.svg';
 const Header = observer(({ className }) => {
   const [abcOrder, setAbcOrder] = useState(false);
   const { width } = useWindowSize();
+  const height = use100vh();
+
   const {
     activeModal,
     catalogOpened,
@@ -33,13 +37,22 @@ const Header = observer(({ className }) => {
 
   const headerRef = useRef(null);
 
+  const scrollerHeight = useMemo(() => {
+    if (width < 768) {
+      return height - 52;
+    } else {
+      return '100%';
+    }
+  }, [width, height]);
+
   const handleScroll = useCallback(
     debounce((e) => {
       // const nearFooter = window.scrollY + window.innerHeight > document.body.scrollHeight - 375;
+      const startScrolledAt = width < 768 ? 0 : 45;
       const startStickyAt = width < 768 ? 45 : 460;
       const stickyHeader = window.scrollY > startStickyAt;
 
-      if (window.scrollY > 45) {
+      if (window.scrollY > startScrolledAt) {
         if (!scrolled) {
           uiContext.setScrolled(true);
           document.body.classList.add('scrolled');
@@ -120,7 +133,7 @@ const Header = observer(({ className }) => {
         </div>
 
         <div className={cns(styles.overlay, catalogOpened && styles._active)}>
-          <div className={styles.overlayScroller}>
+          <div className={styles.overlayScroller} style={{ height: scrollerHeight }}>
             <div className={styles.overlayContent}>
               <div className="container">
                 <div className={styles.overlaySearch}>

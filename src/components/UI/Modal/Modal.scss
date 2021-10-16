@@ -44,11 +44,10 @@
       overflow-x: hidden;
     }
   }
-}
-
-body {
-  &.catalogOpened,
-  &.ReactModal__Body--open {
-    overflow: hidden;
+  body {
+    &.catalogOpened,
+    &.ReactModal__Body--open {
+      overflow: hidden;
+    }
   }
 }

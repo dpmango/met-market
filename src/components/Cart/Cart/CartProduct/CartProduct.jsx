@@ -79,7 +79,7 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
         </div>
       </td>
       <td>
-        <div className={styles.delete} onClick={() => handleDeleteClick(product.itemId)}>
+        <div className={styles.delete} key={product.id} onClick={() => handleDeleteClick(product.itemId)}>
           <SvgIcon name="delete" />
           <span className={styles.deleteMob}>удалить товар</span>
         </div>
