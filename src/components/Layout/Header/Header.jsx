@@ -43,7 +43,7 @@ const Header = observer(({ className }) => {
     } else {
       return '100%';
     }
-  }, [width, height]);
+  }, [width, height, catalogOpened]);
 
   const handleScroll = useCallback(
     debounce((e) => {
@@ -133,7 +133,7 @@ const Header = observer(({ className }) => {
         </div>
 
         <div className={cns(styles.overlay, catalogOpened && styles._active)}>
-          <div className={styles.overlayScroller} style={{ height: scrollerHeight }}>
+          <div className={styles.overlayScroller}>
             <div className={styles.overlayContent}>
               <div className="container">
                 <div className={styles.overlaySearch}>
