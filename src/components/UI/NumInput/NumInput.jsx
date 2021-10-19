@@ -26,28 +26,28 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
 
   const [innerValue, setValue] = useState(value);
 
-  const handleUpClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // const handleUpClick = (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
 
-    const newVal = parseFloat(value) + 0.1;
+  //   const newVal = parseFloat(value) + 0.1;
 
-    setValue(newVal.toFixed(1));
-    onChange(newVal.toFixed(1));
-  };
+  //   setValue(newVal.toFixed(1));
+  //   onChange(newVal.toFixed(1));
+  // };
 
-  const handleDownClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // const handleDownClick = (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
 
-    const newVal = parseFloat(value) - 0.1;
-    if (newVal <= 0) {
-      return false;
-    }
+  //   const newVal = parseFloat(value) - 0.1;
+  //   if (newVal <= 0) {
+  //     return false;
+  //   }
 
-    setValue(newVal.toFixed(1));
-    onChange(newVal.toFixed(1));
-  };
+  //   setValue(newVal.toFixed(1));
+  //   onChange(newVal.toFixed(1));
+  // };
 
   const onInputChange = useCallback((e) => {
     const val = e.target.value;
@@ -66,11 +66,11 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
 
       const split = innerValue && innerValue.toString().split('.');
 
-      if (!innerValue || innerValue < 0.1) {
-        setValue(0.1);
-        onChange(0.1);
+      if (!innerValue || innerValue < 0.01) {
+        setValue(0.01);
+        onChange(0.01);
       } else if (split && split.length > 1) {
-        const limited = split[1].slice(0, 1);
+        const limited = split[1].slice(0, 2);
 
         setValue(`${split[0]}.${limited}`);
         onChange(`${split[0]}.${limited}`);
@@ -123,14 +123,14 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       )}
 
       <div className={styles.input_wrapper}>
-        <input type="text" {...inputProps} />
+        <input type="number" step="0.01" min="0.01" max="999" {...inputProps} />
 
-        <div className={cns(styles.arrow, styles._up)} onClick={handleUpClick}>
+        {/* <div className={cns(styles.arrow, styles._up)} onClick={handleUpClick}>
           <SvgIcon name="up"></SvgIcon>
         </div>
         <div className={cns(styles.arrow, styles._down)} onClick={handleDownClick}>
           <SvgIcon name="down"></SvgIcon>
-        </div>
+        </div> */}
         {error && showError && <div className={styles.error}>{error}</div>}
       </div>
     </div>

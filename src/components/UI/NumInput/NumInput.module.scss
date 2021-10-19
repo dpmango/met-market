@@ -20,13 +20,24 @@
     color: $fontColor;
     border: 1px solid $borderColor;
     border-radius: 5px;
-    padding: 14px 30px 13px 10px;
+    padding: 14px 20px 13px 10px;
     transition: border 0.25s $ease, color 0.25s $ease, background 0.25s $ease;
     &::placeholder {
       color: $colorGray;
     }
     &:focus {
       border-color: $colorPrimary;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      opacity: 1;
+      -webkit-appearance: inner-spin-button !important;
+      width: 25px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
     }
 
     &._withError {

@@ -21,7 +21,7 @@
 .abc {
   position: relative;
   padding-left: 120px;
-  padding-right: 120px;
+  padding-right: 100px;
 }
 
 .abcNav {
@@ -59,7 +59,7 @@
 @include r($xl) {
   .abc {
     padding-left: 70px;
-    padding-right: 70px;
+    padding-right: 50px;
   }
 }
 
@@ -81,6 +81,7 @@
     padding-right: 0;
     width: 100%;
     display: flex;
+    margin-bottom: 32px;
   }
   .abcNav {
     display: none;
@@ -97,7 +98,7 @@
   font-weight: 600;
   font-size: 24px;
   line-height: 13px;
-  margin-right: 10px;
+  margin-right: auto;
   margin-bottom: 10px;
   color: $colorPrimary;
   padding: 6px;
@@ -150,6 +151,9 @@
   }
   .letters {
     right: 0;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
     flex: 0 0 48px;
     margin-right: 0;
     padding-left: 16px;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cns from 'classnames';
 import uniqueId from 'lodash/uniqueId';
 import InputMask from 'react-input-mask';
+import TextareaAutosize from 'react-autosize-textarea';
 
 import styles from './Input.module.scss';
 
@@ -82,7 +83,7 @@ const Input = ({
 
       <div className={styles.input_wrapper}>
         {props.type === 'textarea' ? (
-          <textarea {...inputProps} />
+          <TextareaAutosize {...inputProps} />
         ) : mask ? (
           <InputMask mask={mask} {...inputProps} />
         ) : (

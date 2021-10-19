@@ -36,10 +36,9 @@ const CategoryLetter = observer(({ list }) => {
         list.map((cat) => (
           <a
             href={`?category=${cat.id}`}
-            className={styles.categoryTitle}
-            onClick={(e) => handleCategoryClick(cat.id, e)}>
-            {cat.short || cat.name}
-          </a>
+            className={styles.categoryLetterTitle}
+            onClick={(e) => handleCategoryClick(cat.id, e)}
+            dangerouslySetInnerHTML={{ __html: cat.short || cat.name }}></a>
         ))}
     </div>
   );

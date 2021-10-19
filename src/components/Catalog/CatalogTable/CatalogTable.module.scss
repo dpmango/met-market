@@ -132,7 +132,7 @@
   }
   &:hover {
     td {
-      background: $colorLink !important;
+      background: rgba($colorPrimary, 0.8) !important;
     }
   }
 }
@@ -202,13 +202,16 @@
   }
   .head {
     display: block;
-    margin-bottom: 30px;
+    margin-bottom: 16px;
     button {
       width: 100%;
       max-width: 430px;
     }
   }
   .metaCount {
+    font-size: 14px;
+  }
+  .headCta {
     display: none;
   }
 

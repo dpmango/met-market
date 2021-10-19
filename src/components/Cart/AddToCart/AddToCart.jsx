@@ -231,7 +231,7 @@ const AddToCart = observer(() => {
                       variant="small"
                       label="Цена с НДС"
                       placeholder=""
-                      value={`${formatPrice(modalData.price, 0)} /${modalData.priceQuantityUnit}`}
+                      value={`${formatPrice(modalData.price, 0)} ₽/${modalData.priceQuantityUnit}`}
                       disabled
                     />
                   </div>

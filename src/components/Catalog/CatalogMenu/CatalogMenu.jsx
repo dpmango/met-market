@@ -13,25 +13,43 @@ import CategoryMain from './CategoryMain';
 import styles from './CatalogMenu.module.scss';
 
 const findCategoryLetter = (list, activeLetters) => {
-  return list
-    .filter((x) =>
-      x.name
-        .toUpperCase()
-        .split(' ')
-        .some((word) => word.length > 3 && activeLetters.includes(word[0]))
-    )
-    .sort((a, b) => {
-      const aVal = a.name
-        .toUpperCase()
-        .split(' ')
-        .findIndex((word) => word.length > 3 && activeLetters.includes(word[0]));
-      const bVal = a.name
-        .toUpperCase()
-        .split(' ')
-        .findIndex((word) => word.length > 3 && activeLetters.includes(word[0]));
+  // console.log(new RegExp(`/\b${activeLetters[0]}\b/`, 'gi'));
+  return (
+    list
+      .filter((x) =>
+        x.name
+          .toUpperCase()
+          .split(' ')
+          .some((word) => word.length > 3 && activeLetters.includes(word[0]))
+      )
+      // highlight syntax
+      .map((x) => ({
+        ...x,
+        short: x.short
+          .split(' ')
+          .map((word) => {
+            if (word[0].toUpperCase() === activeLetters[0]) {
+              return `<mark>${word[0]}</mark>${word.slice(1, word.length)}`;
+            }
 
-      return aVal - bVal;
-    });
+            return word;
+          })
+          .join(' '),
+      }))
+      // sort by priory - first matching word
+      .sort((a, b) => {
+        const aVal = a.name
+          .toUpperCase()
+          .split(' ')
+          .findIndex((word) => word.length > 3 && activeLetters.includes(word[0]));
+        const bVal = b.name
+          .toUpperCase()
+          .split(' ')
+          .findIndex((word) => word.length > 3 && activeLetters.includes(word[0]));
+
+        return aVal - bVal;
+      })
+  );
 };
 
 const CatalogMenu = observer(({ abcOrder, className }) => {
