@@ -42,7 +42,7 @@
 
 .selectOptions {
   &.size {
-    width: calc((1200px * (0.14 * 3)));
+    width: calc((1200px * ((0.14 * 3) + 0.25)));
     left: 0;
   }
   &.mark {
@@ -55,19 +55,53 @@
   }
 }
 
-@include r($xl) {
+@include r(1280) {
   .selectOptions {
     &.size {
-      width: calc(((100vw - 36px) * (0.14 * 3)));
+      width: calc(((100vw - 80px) * ((0.14 * 3) + 0.25)));
       left: 0;
     }
     &.mark {
-      width: calc(((100vw - 36px) * ((0.14 * 4) + 0.1)));
+      width: calc(((100vw - 80px) * ((0.14 * 4) + 0.1)));
       left: calc(0px - ((100vw - 36px) * 0.14));
     }
     &.length {
-      width: calc(((100vw - 36px) * ((0.14 * 4) + 0.1)));
+      width: calc(((100vw - 80px) * ((0.14 * 4) + 0.1)));
       left: calc(0px - ((100vw - 36px) * (0.14 + 0.14)));
+    }
+  }
+}
+
+@include r($xl) {
+  .selectOptions {
+    &.size {
+      width: calc(((100vw - 80px) * ((0.15 * 3) + 0.25)));
+      left: 0;
+    }
+    &.mark {
+      width: calc(((100vw - 80px) * ((0.15 * 4) + 0.1)));
+      left: calc(0px - ((100vw - 36px) * 0.15));
+    }
+    &.length {
+      width: calc(((100vw - 80px) * ((0.15 * 4) + 0.1)));
+      left: calc(0px - ((100vw - 36px) * (0.15 + 0.15)));
+    }
+  }
+}
+
+@include r($lg) {
+  .selectOptions {
+    &.size {
+      width: calc(((100vw - 32px) * ((0.15 * 3) + 0.25)));
+      left: 0;
+    }
+    &.mark {
+      width: calc(((100vw - 32px) * ((0.15 * 4) + 0.1)));
+      left: calc(0px - ((100vw - 36px) * 0.15));
+    }
+    &.length {
+      width: calc(((100vw - 32px) * ((0.15 * 4) + 0.1)));
+      left: calc(0px - ((100vw - 36px) * (0.15 + 0.15)));
     }
   }
 }

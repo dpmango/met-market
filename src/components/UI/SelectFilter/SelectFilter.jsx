@@ -55,12 +55,12 @@ const SelectComponent = observer(
     }, [filter]);
 
     const columnizeOptions = useMemo(() => {
-      let colSize = 4;
+      let colSize = name === 'size' ? 5 : 4;
 
       if (width < 768) {
-        colSize = 2;
+        colSize = name === 'size' ? 3 : 2;
       } else if (width < 992) {
-        colSize = 3;
+        colSize = name === 'size' ? 4 : 3;
       } else if (width < 1200) {
         colSize = name === 'size' ? 5 : 4;
       }

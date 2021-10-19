@@ -195,6 +195,20 @@
       font-size: 12px;
     }
   }
+
+  .selectOptions {
+    &.size {
+      width: 100%;
+      .selectOptionCol {
+        flex-basis: $col3;
+        max-width: $col3;
+      }
+    }
+  }
+  .selectOptionCol {
+    flex-basis: $col4;
+    max-width: $col4;
+  }
 }
 
 @include r($md) {
