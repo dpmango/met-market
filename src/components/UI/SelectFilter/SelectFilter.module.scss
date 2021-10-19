@@ -95,6 +95,21 @@
   }
 }
 
+// drtopdown
+.selectSearch {
+  flex: 0 0 100%;
+  max-width: 100%;
+  margin-bottom: 8px;
+  :global input {
+    border: 0;
+    padding: 4px 0 12px 0;
+    margin-left: 6px;
+    margin-right: 6px;
+    border-radius: 0;
+    border-bottom: 1px solid $borderColor;
+  }
+}
+
 .selectOptions {
   position: absolute;
   z-index: 3;

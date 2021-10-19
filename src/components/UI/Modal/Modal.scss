@@ -26,17 +26,19 @@
 
 @include r($md) {
   .ReactModal__Overlay {
+    top: 52px !important;
+    z-index: 8 !important;
     background: rgba($fontColor, 0) !important;
   }
   .ReactModalPortal {
     .ReactModal__Content {
-      top: 52px !important;
+      top: 0 !important;
       bottom: 0 !important;
       left: 0 !important;
       right: 0 !important;
       margin: 0 !important;
       transform: none !important;
-      max-height: calc(100% - 52px) !important;
+      max-height: calc(100% - 0px) !important;
       width: 100% !important;
       max-width: 100% !important;
       border-radius: 0 !important;

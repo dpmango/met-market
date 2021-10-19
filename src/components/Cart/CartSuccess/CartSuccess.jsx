@@ -1,17 +1,13 @@
-import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, memo } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useContext, useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react';
 
-import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
-import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
-import { formatPrice } from '@helpers';
+import { Modal, SvgIcon } from '@ui';
+import { UiStoreContext } from '@store';
 
 import styles from './CartSuccess.module.scss';
 
 const CartSuccess = observer(() => {
-  const history = useHistory();
-
-  const { modalParams } = useContext(CartStoreContext);
+  const { modalParams } = useContext(UiStoreContext);
 
   return (
     <Modal name="cartsuccess" variant={'thanks'}>

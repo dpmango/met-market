@@ -1,15 +1,14 @@
-import React, { useCallback, useMemo, useState, useRef, memo, useContext, useEffect } from 'react';
+import React, { useCallback, useMemo, useState, useRef, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
 import cns from 'classnames';
 import chunk from 'lodash/chunk';
-import difference from 'lodash/difference';
 
-import { SvgIcon } from '@ui';
+import { Input, SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useOnClickOutside, useWindowSize, useFirstRender } from '@hooks';
-import { updateQueryParams } from '@helpers';
+import { formatUGC, updateQueryParams } from '@helpers';
 
 import styles from './SelectFilter.module.scss';
 
@@ -33,18 +32,26 @@ const SelectComponent = observer(
     const optionsRef = useRef(null);
     const { width } = useWindowSize();
 
+    const [search, setSearch] = useState('');
     const catalogContext = useContext(CatalogStoreContext);
 
     const optionsMapped = useMemo(() => {
       if (!options) return [];
 
-      return options.map((option) => ({
+      const mapped = options.map((option) => ({
         value: option.value,
         label: option.value,
         isPopular: option.isPopular,
         disabled: !option.available,
       }));
-    }, [options]);
+
+      if (search && search.trim()) {
+        const searchNormalized = formatUGC(search.trim());
+        mapped = mapped.filter((x) => x.label.includes(searchNormalized));
+      }
+
+      return mapped;
+    }, [options, search]);
 
     const filter = useMemo(() => {
       return catalogContext.filters[name];
@@ -121,10 +128,10 @@ const SelectComponent = observer(
 
     // effects
 
-    useOnClickOutside(
-      optionsRef,
-      useCallback((e) => setOpened(false), [setOpened])
-    );
+    // useOnClickOutside(
+    //   optionsRef,
+    //   useCallback((e) => setOpened(false), [setOpened])
+    // );
 
     return (
       <div
@@ -149,6 +156,10 @@ const SelectComponent = observer(
         )}
 
         <div className={cns(styles.selectOptions, optionsClassName, name && styles[name])}>
+          <div className={styles.selectSearch}>
+            <Input placeholder="Поиск..." allowClear value={search} onChange={(v) => setSearch(v)} />
+          </div>
+
           {columnizeOptions &&
             columnizeOptions.length > 0 &&
             columnizeOptions.map((col, idx) => {
