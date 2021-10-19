@@ -129,7 +129,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
     // ui.updateParams(params);
 
     history.push({
-      pathname: location.pathname,
+      pathname: '/',
       search: params.toString(),
     });
   }
