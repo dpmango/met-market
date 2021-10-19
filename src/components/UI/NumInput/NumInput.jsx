@@ -17,8 +17,8 @@ const VariantClasses = {
   [Variants.SMALL]: styles._small,
 };
 
-const NumInput = ({ className, label, variant, value, onChange, error, showError, ...props }) => {
-  const inputRef = useRef(null);
+const NumInput = ({ className, label, inputRef, variant, value, onChange, error, showError, ...props }) => {
+  const innerRef = inputRef || useRef(null);
 
   const id = useMemo(() => {
     return uniqueId();
@@ -85,7 +85,7 @@ const NumInput = ({ className, label, variant, value, onChange, error, showError
     (e) => {
       if (e.keyCode === 13) {
         onBlur(e);
-        inputRef && inputRef.current.blur();
+        innerRef && innerRef.current.blur();
         return;
       }
 
@@ -96,7 +96,7 @@ const NumInput = ({ className, label, variant, value, onChange, error, showError
         event.preventDefault();
       }
     },
-    [innerValue, inputRef]
+    [innerValue, innerRef]
   );
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const NumInput = ({ className, label, variant, value, onChange, error, showError
 
   const inputProps = {
     id,
-    ref: inputRef,
+    ref: innerRef,
     className: cns(styles.input_input, error && styles._withError),
     value: innerValue,
     onChange: onInputChange,

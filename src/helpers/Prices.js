@@ -1,4 +1,6 @@
 /* eslint-disable no-plusplus */
+import { getEnv } from '@helpers';
+
 // 1000.00 -> 1 000.00
 export const formatPrice = (num, digits) => {
   let trailingZeros = digits !== undefined ? digits : 2;
@@ -17,6 +19,18 @@ export const formatPrice = (num, digits) => {
   }
 
   return '';
+};
+
+// price with tonnage
+export const priceWithTonnage = (price, count) => {
+  if (!price) {
+    return 0;
+  }
+
+  if (count && count < 1) {
+    return price * count * (1 + 1 / getEnv('EXTRA_TONNAGE_PERCENT'));
+  }
+  return price * count;
 };
 
 export const priceShort = (num, digits) => {

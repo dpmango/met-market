@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { computedFn } from 'mobx-utils';
 
 import { session } from '@store';
+import { priceWithTonnage } from '@helpers';
 import service from './api-service';
 
 export default class CartStore {
@@ -25,7 +26,7 @@ export default class CartStore {
   }
 
   get cartTotal() {
-    return this.cart.reduce((acc, x) => (acc += x.pricePerItem * x.count), 0);
+    return this.cart.reduce((acc, x) => (acc += priceWithTonnage(x.pricePerItem, x.count)), 0);
   }
 
   // actions

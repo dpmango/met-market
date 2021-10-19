@@ -23,15 +23,15 @@
 .wrapper {
   display: flex;
   align-items: center;
-  padding: 44px 0 32px;
+  padding: 40px 0 28px;
   will-change: padding;
   backface-visibility: hidden;
   transition: padding 0.25s linear;
 }
 
 .colMain {
-  flex: 0 0 280px;
-  max-width: 280px;
+  flex: 0 0 290px;
+  max-width: 290px;
 }
 
 .colSecond {
@@ -82,8 +82,8 @@
     padding: 32px 0 32px;
   }
   .colMain {
-    flex-basis: 160px;
-    max-width: 160px;
+    flex-basis: 176px;
+    max-width: 176px;
   }
   .logo {
     max-width: 116px;
@@ -97,9 +97,13 @@
 }
 
 @include r($lg) {
-  .colSecond {
+  .colMain {
     flex-basis: 146px;
     max-width: 146px;
+  }
+  .colSecond {
+    flex-basis: 150px;
+    max-width: 150px;
   }
 }
 
@@ -434,7 +438,7 @@
     background: $colorRed;
     border-color: $colorRed;
     &::after {
-      transform: translate(16px, -50%);
+      transform: translate(18px, -50%);
     }
   }
   &::after {
@@ -445,7 +449,8 @@
     top: 50%;
     transform: translate(-1px, -50%);
     background: white;
-    border: 1px solid #000;
+    // border: 1px solid #000;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     width: 19px;
     height: 19px;

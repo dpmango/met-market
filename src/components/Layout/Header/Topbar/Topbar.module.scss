@@ -65,6 +65,10 @@
       font-size: 12px;
     }
   }
+  .price {
+    min-width: 136px;
+    justify-content: center;
+  }
   .iconed {
     :global .svg-icon {
       font-size: 16px;

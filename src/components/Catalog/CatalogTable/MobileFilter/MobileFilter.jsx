@@ -7,7 +7,7 @@ import { use100vh } from 'react-div-100vh';
 
 import { Button, SvgIcon, SelectFilter } from '@ui';
 import { UiStoreContext, CatalogStoreContext } from '@store';
-import { useOnClickOutside } from '@hooks';
+import { useOnClickOutside, useEventListener } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import CategoryTags from '@c/Catalog/CatalogCategories/CategoryTags';
@@ -28,6 +28,25 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
   // useEffect(() => {
   //   setVisible(false);
   // }, [query.category]);
+
+  const handleEscapeKey = useCallback(
+    (e) => {
+      let evt = e || window.event;
+      let isEscape = false;
+
+      if ('key' in evt) {
+        isEscape = evt.key === 'Escape' || evt.key === 'Esc';
+      } else {
+        isEscape = evt.keyCode === 27;
+      }
+      if (isEscape) {
+        visible && setVisible(false);
+      }
+    },
+    [visible, setVisible]
+  );
+
+  useEventListener('keydown', handleEscapeKey);
 
   const {
     catalogOpened,

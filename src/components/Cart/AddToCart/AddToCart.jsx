@@ -7,15 +7,16 @@ import cns from 'classnames';
 import { Modal, Spinner, Button, Input, NumInput, SvgIcon } from '@ui';
 import { UiStoreContext, CatalogStoreContext, CartStoreContext } from '@store';
 import { useFirstRender } from '@hooks';
-import { formatPrice } from '@helpers';
+import { priceWithTonnage, formatPrice } from '@helpers';
 
 import styles from './AddToCart.module.scss';
 
 const AddToCart = observer(() => {
   const { addToast } = useToasts();
   const firstRender = useFirstRender();
+  const countRef = useRef(null);
 
-  const { activeModal, modalParams } = useContext(UiStoreContext);
+  const { activeModal, modalParams, query } = useContext(UiStoreContext);
   const { getCategoryByName } = useContext(CatalogStoreContext);
   const cartContext = useContext(CartStoreContext);
   const uiContext = useContext(UiStoreContext);
@@ -138,6 +139,20 @@ const AddToCart = observer(() => {
     return null;
   }, [modalData]);
 
+  const totalPriceWithTonnage = useMemo(() => {
+    if (!modalData) {
+      return 0;
+    }
+
+    return priceWithTonnage(modalData.price, count);
+  }, [modalData, count]);
+
+  useEffect(() => {
+    if (query.product && modalData) {
+      countRef && countRef.current && countRef.current.focus();
+    }
+  }, [query, modalData]);
+
   return (
     <Modal name="cart-add">
       <div className={cns(styles.cart, loading && styles._loading)}>
@@ -207,6 +222,7 @@ const AddToCart = observer(() => {
                       label={`Количество, ${modalData.priceQuantityUnit}`}
                       value={count}
                       onChange={(v) => setCount(v)}
+                      inputRef={countRef}
                     />
                   </div>
 
@@ -224,7 +240,7 @@ const AddToCart = observer(() => {
                       variant="small"
                       label="Сумма"
                       placeholder=""
-                      value={`${formatPrice(modalData.price * count, 0)} /${modalData.priceQuantityUnit}`}
+                      value={`${formatPrice(totalPriceWithTonnage, 0)} ₽`}
                       disabled
                     />
                   </div>

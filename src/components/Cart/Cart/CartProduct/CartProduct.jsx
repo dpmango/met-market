@@ -4,7 +4,7 @@ import cns from 'classnames';
 
 import { CatalogStoreContext } from '@store';
 import { Spinner, NumInput, SvgIcon } from '@ui';
-import { formatPrice } from '@helpers';
+import { formatPrice, priceWithTonnage } from '@helpers';
 
 import styles from './CartProduct.module.scss';
 
@@ -45,6 +45,12 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
     return '';
   }, [product]);
 
+  const totalPriceWithTonnage = useMemo(() => {
+    const { pricePerItem, count } = product;
+
+    return priceWithTonnage(pricePerItem, count);
+  }, [product]);
+
   return (
     <tr key={product.id} className={styles.product}>
       <td>{product.itemFullName}</td>
@@ -68,14 +74,7 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
       <td>
         <div className={styles.cell}>
           <span className={styles.mobtitle}>Сумма</span>
-          {!loading ? (
-            <>
-              {formatPrice(product.pricePerItem * product.count, 0)} ₽/
-              {priceQuantityUnit}
-            </>
-          ) : (
-            <Spinner />
-          )}
+          {!loading ? <>{formatPrice(totalPriceWithTonnage, 0)} ₽</> : <Spinner />}
         </div>
       </td>
       <td>
