@@ -87,7 +87,10 @@ const CallbackHero = observer(() => {
               </ul>
             </div>
             <div className={styles.contentBox}>
-              <div className={styles.formTitle}>Рассчитаем стоимость вашей сметы за 30 минут</div>
+              <div className={styles.formTitle}>
+                Рассчитаем стоимость вашей <br />
+                сметы за 30 минут
+              </div>
 
               <Formik initialValues={formInitial} validate={handleValidation} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (

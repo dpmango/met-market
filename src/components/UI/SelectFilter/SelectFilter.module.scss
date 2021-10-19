@@ -9,7 +9,7 @@
     .selectOptions {
       opacity: 1;
       pointer-events: all;
-      transform: none;
+      // transform: none;
     }
   }
   // &._mini {
@@ -104,17 +104,16 @@
   display: flex;
   flex-wrap: wrap;
   background: #fff;
-  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 5px 15px 20px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   padding: 20px 20px 30px;
   font-size: 12px;
   opacity: 0;
   pointer-events: none;
-  transform: translate(0, -10px);
   max-height: 400px;
   overflow-y: auto;
   user-select: none;
-  transition: opacity 0.25s $ease, transform 0.25s $ease;
+  transition: opacity 0.1s $ease;
   &.size {
     width: 520px;
     .selectOptionCol {

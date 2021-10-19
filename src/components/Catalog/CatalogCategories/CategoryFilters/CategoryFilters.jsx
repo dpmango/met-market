@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { memo, useCallback, useContext, useEffect } from 'react';
+import React, { memo, useCallback, useContext, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
@@ -19,6 +19,7 @@ const CategoryFilters = observer(({ image, data }) => {
 
   const { filters, someFiltersActive } = useContext(CatalogStoreContext);
   const { query } = useContext(UiStoreContext);
+  const [opened, setOpened] = useState(false);
 
   const resetFilters = useCallback(
     (e) => {
@@ -54,13 +55,40 @@ const CategoryFilters = observer(({ image, data }) => {
       <div className={styles.filterContent}>
         <div className={cns('row', styles.filterContentRow)}>
           <div className="col col-4">
-            {data.size && <SelectFilter label="Размер" name="size" value={filters.size} options={data.size} />}
+            {data.size && (
+              <SelectFilter
+                label="Размер"
+                name="size"
+                value={filters.size}
+                options={data.size}
+                opened={opened === 'size'}
+                setOpened={(v) => setOpened(v ? 'size' : false)}
+              />
+            )}
           </div>
           <div className="col col-4">
-            {data.mark && <SelectFilter label="Марка" name="mark" value={filters.mark} options={data.mark} />}
+            {data.mark && (
+              <SelectFilter
+                label="Марка"
+                name="mark"
+                value={filters.mark}
+                options={data.mark}
+                opened={opened === 'mark'}
+                setOpened={(v) => setOpened(v ? 'mark' : false)}
+              />
+            )}
           </div>
           <div className="col col-4">
-            {data.length && <SelectFilter label="Длина" name="length" value={filters.length} options={data.length} />}
+            {data.length && (
+              <SelectFilter
+                label="Длина"
+                name="length"
+                value={filters.length}
+                options={data.length}
+                opened={opened === 'length'}
+                setOpened={(v) => setOpened(v ? 'length' : false)}
+              />
+            )}
           </div>
         </div>
         <div className={styles.filterCta}>

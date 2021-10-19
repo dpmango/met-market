@@ -103,6 +103,9 @@
   line-height: (38 / 28);
   color: $colorPrimary;
   text-align: center;
+  br {
+    display: none;
+  }
 }
 
 .formInput {
@@ -148,6 +151,10 @@
   .hero {
     margin: 32px 0 48px;
   }
+  .contentTitle {
+    font-size: 24px;
+    font-size: calc(12px + 1.2vw);
+  }
   .contentText {
     padding-left: 30px;
   }
@@ -189,7 +196,7 @@
   }
 }
 
-@include r($md) {
+@include r(870) {
   .hero {
     margin-bottom: 36px;
   }
@@ -206,18 +213,21 @@
   }
 
   .contentBox {
-    margin-right: auto;
-    margin-left: 0;
     margin-top: 16px;
-    max-width: 360px;
+    margin-left: 0;
   }
 
   .contentTitle {
-    font-size: 20px;
-    max-width: 480px;
+    font-size: 24px;
+    font-size: calc(18px + 1.5vw);
+    max-width: 520px;
     br {
       display: none;
     }
+  }
+
+  .contentList li {
+    font-size: 14px;
   }
 
   .form {
@@ -235,6 +245,12 @@
     }
   }
 
+  .formTitle {
+    br {
+      display: block;
+    }
+  }
+
   .formButton {
     display: block;
     margin-top: 8px;
@@ -248,8 +264,28 @@
   }
 }
 
-@include r($mobile-s) {
+@include r($sm) {
   .contentTitle {
-    font-size: 18px;
+    font-size: calc(10px + 2.6vw);
+    max-width: 460px;
+  }
+  .contentList li {
+    font-size: 12px;
+  }
+}
+
+@include r($mobile-s) {
+  .hero {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+  .boxWrapper {
+    border-radius: 0;
+  }
+  .contentTitle {
+    font-size: 17px;
+  }
+  .contentList li {
+    font-size: 11px;
   }
 }

@@ -14,13 +14,25 @@ import { updateQueryParams } from '@helpers';
 import styles from './SelectFilter.module.scss';
 
 const SelectComponent = observer(
-  ({ label, mini, inline, value, name, className, optionsClassName, options, onChange, ...props }) => {
+  ({
+    label,
+    mini,
+    inline,
+    value,
+    name,
+    className,
+    optionsClassName,
+    options,
+    onChange,
+    opened,
+    setOpened,
+    ...props
+  }) => {
     const location = useLocation();
     const history = useHistory();
     const optionsRef = useRef(null);
     const { width } = useWindowSize();
 
-    const [opened, setOpened] = useState(false);
     const catalogContext = useContext(CatalogStoreContext);
 
     const optionsMapped = useMemo(() => {
@@ -188,6 +200,8 @@ SelectComponent.propTypes = {
   optionsClassName: PropTypes.string,
   options: PropTypes.array,
   onChange: PropTypes.func,
+  opened: PropTypes.bool,
+  setOpened: PropTypes.func,
 };
 
 export default SelectComponent;

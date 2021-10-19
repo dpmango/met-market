@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo, useContext, memo } from 'react';
+import React, { useMemo, useState, useContext, memo } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { Link, NavLink, useHistory, useLocation } from 'react-router-dom';
@@ -13,6 +13,8 @@ import styles from './StickyHead.module.scss';
 const StickyHead = observer(({ headerGroups, categoryData }) => {
   const { query } = useContext(UiStoreContext);
 
+  const [opened, setOpened] = useState(false);
+
   const {
     catalogOpened,
     header: { scrolledSticky },
@@ -25,7 +27,7 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
         <tr {...headerGroup.getHeaderGroupProps()} className={styles.desktopHead}>
           {headerGroup.headers.map((column) => {
             return (
-              <th {...column.getHeaderProps()}>
+              <th {...column.getHeaderProps()} className={column.id === opened && styles._activeTH}>
                 <div className={styles.cell}>
                   <span>{column.render('Header')}</span>
                   {categoryData && column.id === 'size' && (
@@ -37,6 +39,8 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
                         name="size"
                         value={filters.size}
                         options={categoryData.filters.size}
+                        opened={opened === 'size'}
+                        setOpened={(v) => setOpened(v ? 'size' : false)}
                       />
                     </div>
                   )}
@@ -49,6 +53,8 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
                         name="mark"
                         value={filters.mark}
                         options={categoryData.filters.mark}
+                        opened={opened === 'mark'}
+                        setOpened={(v) => setOpened(v ? 'mark' : false)}
                       />
                     </div>
                   )}
@@ -61,6 +67,8 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
                         name="length"
                         value={filters.length}
                         options={categoryData.filters['length']}
+                        opened={opened === 'length'}
+                        setOpened={(v) => setOpened(v ? 'length' : false)}
                       />
                     </div>
                   )}

@@ -174,6 +174,7 @@ const Cart = observer(() => {
               <thead>
                 <tr>
                   <th>Название</th>
+                  <th></th>
                   <th>Количество</th>
                   <th>Цена с НДС</th>
                   <th>Сумма</th>

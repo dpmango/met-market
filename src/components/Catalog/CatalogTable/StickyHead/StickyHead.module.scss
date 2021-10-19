@@ -19,6 +19,12 @@
       }
     }
   }
+  th {
+    transition: background 0.1s $ease;
+    &._activeTH {
+      background: white;
+    }
+  }
 }
 
 .cell {

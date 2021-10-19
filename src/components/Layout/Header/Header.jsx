@@ -184,7 +184,7 @@ const Header = observer(({ className }) => {
         </div>
       </header>
 
-      <div className={styles.mobileSearch}>
+      <div className={cns(styles.mobileSearch, 'mobileSearch')}>
         <Search className={styles.mobileSearchSearch} />
       </div>
 

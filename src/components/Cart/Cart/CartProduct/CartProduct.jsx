@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import cns from 'classnames';
 
 import { CatalogStoreContext } from '@store';
-import { Spinner, NumInput, SvgIcon } from '@ui';
+import { Spinner, NumInput, SvgIcon, LazyMedia } from '@ui';
 import { formatPrice, priceWithTonnage } from '@helpers';
 
 import styles from './CartProduct.module.scss';
@@ -51,12 +51,33 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
     return priceWithTonnage(pricePerItem, count);
   }, [product]);
 
+  const categoryImage = useMemo(() => {
+    const productCat = catalogContext.getCatalogItem(product.itemId);
+    if (productCat) {
+      const { cat1, cat2, cat3 } = productCat;
+      const name = cat3 || cat2 || cat1 || null;
+
+      const category = catalogContext.getCategoryByName(name);
+
+      return category.image;
+    }
+
+    return '';
+  }, [product]);
+
   return (
     <tr key={product.id} className={styles.product}>
       <td>{product.itemFullName}</td>
       <td>
+        {categoryImage && (
+          <div className={styles.image}>
+            <LazyMedia src={categoryImage} width={240} height={100} />
+          </div>
+        )}
+      </td>
+      <td>
         <div className={styles.cell}>
-          <span className={styles.mobtitle}>Количество</span>
+          <span className={styles.mobtitle}>Количество, {priceQuantityUnit}</span>
           <NumInput
             className={styles.numInput}
             value={product.count}
@@ -67,20 +88,21 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
       <td>
         <div className={styles.cell}>
           <span className={styles.mobtitle}>Цена с НДС</span>
-          {formatPrice(product.pricePerItem, 0)} ₽/
-          {priceQuantityUnit}
+          <span>
+            {formatPrice(product.pricePerItem, 0)} ₽/
+            {priceQuantityUnit}
+          </span>
         </div>
       </td>
       <td>
         <div className={styles.cell}>
           <span className={styles.mobtitle}>Сумма</span>
-          {!loading ? <>{formatPrice(totalPriceWithTonnage, 0)} ₽</> : <Spinner />}
+          {!loading ? <span>{formatPrice(totalPriceWithTonnage, 0)} ₽</span> : <Spinner />}
         </div>
       </td>
       <td>
         <div className={styles.delete} key={product.id} onClick={() => handleDeleteClick(product.itemId)}>
           <SvgIcon name="delete" />
-          <span className={styles.deleteMob}>удалить товар</span>
         </div>
       </td>
     </tr>

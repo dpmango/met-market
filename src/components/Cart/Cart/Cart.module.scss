@@ -62,15 +62,18 @@
       width: 45%;
     }
     &:nth-child(2) {
-      width: 17%;
+      display: none;
     }
     &:nth-child(3) {
-      width: 16%;
+      width: 17%;
     }
     &:nth-child(4) {
-      width: 12%;
+      width: 16%;
     }
     &:nth-child(5) {
+      width: 12%;
+    }
+    &:nth-child(6) {
       width: 10%;
       text-align: right;
     }
@@ -136,9 +139,9 @@
   }
   &._circle {
     position: relative;
-    background: #aaa;
+    background: #fbebef;
     border-radius: 50%;
-    color: white;
+    color: $fontColor;
     &:hover {
       background: $colorRed;
       color: white;
@@ -239,40 +242,48 @@
     th,
     td {
       font-size: 12px;
-      padding: 8px 8px;
+      padding: 10px 0;
       &:nth-child(1) {
         width: 100%;
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 600;
       }
       &:nth-child(2) {
-        width: 100%;
+        display: block;
+        width: $col8;
+        padding-right: 10px;
       }
       &:nth-child(3) {
-        width: 100%;
+        width: $col5;
+        padding-right: 10px;
       }
       &:nth-child(4) {
-        width: 100%;
+        width: $col4;
+        padding-right: 10px;
       }
       &:nth-child(5) {
-        width: 100%;
+        width: $col3;
+        padding-right: 10px;
+      }
+      &:nth-child(6) {
+        width: $col4;
         text-align: left;
       }
       &:first-child {
-        padding-left: 8px;
+        padding-left: 0;
       }
     }
 
     thead {
       th {
-        display: none;
+        display: none !important;
       }
     }
     tbody {
       tr {
         display: flex;
         flex-wrap: wrap;
-        padding: 10px;
+        padding: 10px 0;
       }
       tr:hover {
         td {
@@ -289,7 +300,7 @@
       td {
         width: 100%;
         border: 0;
-        padding: 8px 8px;
+        padding: 10px 0;
       }
     }
   }
@@ -306,5 +317,9 @@
     &::before {
       display: none;
     }
+  }
+
+  .actions {
+    padding: 30px 0 0;
   }
 }

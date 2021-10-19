@@ -201,32 +201,42 @@
   }
 
   .actionsWrapper {
-    display: block;
+    // display: block;
   }
   .actions {
     padding-left: 0;
     padding-right: 0;
   }
   .actionCol {
-    flex: 0 0 100%;
-    max-width: 100%;
+    flex: 0 0 $col5;
+    max-width: $col5;
+    &:nth-child(2),
+    &:nth-child(3) {
+      flex-basis: $col3;
+      max-width: $col3;
+    }
     &.wide {
-      flex: 0 0 100%;
-      max-width: 100%;
+      flex: 0 1 430px;
+      max-width: 430px;
     }
     > div {
-      display: flex;
-      align-items: center;
       label {
         width: 100%;
         max-width: 100px;
         font-size: 12px;
-        margin-bottom: 0;
+        margin-bottom: 12px;
       }
     }
     button {
       width: 100%;
       max-width: 430px;
+    }
+  }
+
+  .clearInputMobile {
+    :global input {
+      border: 0;
+      padding: 0;
     }
   }
 }
