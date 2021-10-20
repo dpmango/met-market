@@ -2,6 +2,7 @@ import React, { useCallback, useState, useMemo, memo, useRef, useEffect } from '
 import PropTypes from 'prop-types';
 import cns from 'classnames';
 import uniqueId from 'lodash/uniqueId';
+import debounce from 'lodash/debounce';
 
 import { SvgIcon } from '@ui';
 import { formatPrice } from '@helpers';
@@ -57,8 +58,20 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       return;
     }
 
-    setValue(e.target.value);
+    setValue(val);
   }, []);
+
+  const updateFunc = useCallback(
+    debounce((innerValue) => {
+      onChange(innerValue);
+      // const { meta } = catalogContext.searchCatalog(textNormalized, null);
+    }, 100),
+    [onChange]
+  );
+
+  useEffect(() => {
+    updateFunc(innerValue);
+  }, [innerValue]);
 
   const onBlur = useCallback(
     (e) => {

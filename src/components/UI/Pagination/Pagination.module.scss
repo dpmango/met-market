@@ -49,7 +49,9 @@
   padding: 6px;
   color: rgba($fontColor, 0.5);
   transition: border 0.25s $ease, color 0.25s $ease;
-
+  :global .svg-icon {
+    display: none;
+  }
   &:hover {
     color: $fontColor;
     z-index: 2;
@@ -90,5 +92,22 @@
   }
   .button {
     font-size: 10px;
+  }
+}
+
+@include r($mobile-s) {
+  .button {
+    font-size: 0;
+    :global .svg-icon {
+      display: block;
+      font-size: 6px;
+      transform: rotate(90deg);
+    }
+    &:last-child {
+      :global .svg-icon {
+        font-size: 6px;
+        transform: rotate(-90deg);
+      }
+    }
   }
 }

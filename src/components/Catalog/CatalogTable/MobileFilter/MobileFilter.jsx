@@ -30,25 +30,6 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
   //   setVisible(false);
   // }, [query.category]);
 
-  const handleEscapeKey = useCallback(
-    (e) => {
-      let evt = e || window.event;
-      let isEscape = false;
-
-      if ('key' in evt) {
-        isEscape = evt.key === 'Escape' || evt.key === 'Esc';
-      } else {
-        isEscape = evt.keyCode === 27;
-      }
-      if (isEscape) {
-        visible && setVisible(false);
-      }
-    },
-    [visible, setVisible]
-  );
-
-  useEventListener('keydown', handleEscapeKey);
-
   const {
     catalogOpened,
     header: { scrolledSticky },
@@ -78,6 +59,23 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
     return height - 52 - 52;
   }, [height]);
 
+  const handleEscapeKey = useCallback(
+    (e) => {
+      let evt = e || window.event;
+      let isEscape = false;
+
+      if ('key' in evt) {
+        isEscape = evt.key === 'Escape' || evt.key === 'Esc';
+      } else {
+        isEscape = evt.keyCode === 27;
+      }
+      if (isEscape) {
+        visible && setVisible(false);
+      }
+    },
+    [visible, setVisible]
+  );
+
   useEffect(() => {
     if (visible) {
       document.body.classList.add('filtersActive');
@@ -86,83 +84,87 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
     }
   }, [visible]);
 
+  useEventListener('keydown', handleEscapeKey);
+
   useOnClickOutside(
     mobRef,
     useCallback((e) => setVisible(false), [setVisible])
   );
 
   return (
-    <div
-      className={cns(styles.mobFilter, scrolledSticky && !catalogOpened && styles._sticky, visible && styles._active)}
-      ref={mobRef}>
-      <div className={cns(styles.mobFilterToggle)} onClick={() => setVisible(!visible)}>
-        <SvgIcon name="filters" />
-        <span>Фильтры</span>
-        <div className={styles.mobFilterIcon}>
-          <SvgIcon name="caret" />
+    <div className={styles.mobFilterWrapper}>
+      <div
+        className={cns(styles.mobFilter, scrolledSticky && !catalogOpened && styles._sticky, visible && styles._active)}
+        ref={mobRef}>
+        <div className={cns(styles.mobFilterToggle)} onClick={() => setVisible(!visible)}>
+          <SvgIcon name="filters" />
+          <span>Фильтры</span>
+          <div className={styles.mobFilterIcon}>
+            <SvgIcon name="caret" />
+          </div>
         </div>
-      </div>
-      <div className={styles.mobFilterSubtitle}>{visible ? metaItemsCount : 'Цена с НДС'}</div>
+        <div className={styles.mobFilterSubtitle}>{visible ? metaItemsCount : 'Цена с НДС'}</div>
 
-      {categoryData && (
-        <div className={cns(styles.filters, visible && styles._visible)}>
-          {categoryData.subcategories && categoryData.subcategories.length > 0 && (
-            <div className={cns(styles.filterTags, visible && categoriesOpened && styles._active)}>
-              <div className={styles.filterTagsLabel} onClick={() => setCategoriesOpened(!categoriesOpened)}>
-                <span>Тип товара</span>
-                <SvgIcon name="caret" />
-              </div>
-              <div className={styles.filterTagsDropdown}>
-                <div className={styles.filtersToggle}>
-                  <CategoryTags className={styles.tags} data={categoryData.subcategories} />
+        {categoryData && (
+          <div className={cns(styles.filters, visible && styles._visible)}>
+            {categoryData.subcategories && categoryData.subcategories.length > 0 && (
+              <div className={cns(styles.filterTags, visible && categoriesOpened && styles._active)}>
+                <div className={styles.filterTagsLabel} onClick={() => setCategoriesOpened(!categoriesOpened)}>
+                  <span>Тип товара</span>
+                  <SvgIcon name="caret" />
+                </div>
+                <div className={styles.filterTagsDropdown}>
+                  <div className={styles.filtersToggle}>
+                    <CategoryTags className={styles.tags} data={categoryData.subcategories} />
+                  </div>
                 </div>
               </div>
+            )}
+
+            <SelectFilter
+              inline
+              optionsClassName={cns(styles.selectOptions, styles.size)}
+              label="Размер"
+              name="size"
+              value={filters.size}
+              options={categoryData.filters.size}
+              opened={opened === 'size'}
+              setOpened={(v) => setOpened(v ? 'size' : false)}
+            />
+            <SelectFilter
+              inline
+              optionsClassName={cns(styles.selectOptions, styles.mark)}
+              label="Марка"
+              name="mark"
+              value={filters.mark}
+              options={categoryData.filters.mark}
+              opened={opened === 'mark'}
+              setOpened={(v) => setOpened(v ? 'mark' : false)}
+            />
+            <SelectFilter
+              inline
+              optionsClassName={cns(styles.selectOptions, styles.length)}
+              label="Длина"
+              name="length"
+              value={filters.length}
+              options={categoryData.filters['length']}
+              opened={opened === 'length'}
+              setOpened={(v) => setOpened(v ? 'length' : false)}
+            />
+            <div className={styles.reset}>
+              <Button outline={!someFiltersActive} disabled={!someFiltersActive} onClick={resetFilters}>
+                Сбросить фильтры
+              </Button>
             </div>
-          )}
 
-          <SelectFilter
-            inline
-            optionsClassName={cns(styles.selectOptions, styles.size)}
-            label="Размер"
-            name="size"
-            value={filters.size}
-            options={categoryData.filters.size}
-            opened={opened === 'size'}
-            setOpened={(v) => setOpened(v ? 'size' : false)}
-          />
-          <SelectFilter
-            inline
-            optionsClassName={cns(styles.selectOptions, styles.mark)}
-            label="Марка"
-            name="mark"
-            value={filters.mark}
-            options={categoryData.filters.mark}
-            opened={opened === 'mark'}
-            setOpened={(v) => setOpened(v ? 'mark' : false)}
-          />
-          <SelectFilter
-            inline
-            optionsClassName={cns(styles.selectOptions, styles.length)}
-            label="Длина"
-            name="length"
-            value={filters.length}
-            options={categoryData.filters['length']}
-            opened={opened === 'length'}
-            setOpened={(v) => setOpened(v ? 'length' : false)}
-          />
-          <div className={styles.reset}>
-            <Button outline={!someFiltersActive} disabled={!someFiltersActive} onClick={resetFilters}>
-              Сбросить фильтры
-            </Button>
+            <div className={styles.ok}>
+              <Button theme="link" block onClick={() => setVisible(false)}>
+                ОК
+              </Button>
+            </div>
           </div>
-
-          <div className={styles.ok}>
-            <Button theme="link" block onClick={() => setVisible(false)}>
-              ОК
-            </Button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 });

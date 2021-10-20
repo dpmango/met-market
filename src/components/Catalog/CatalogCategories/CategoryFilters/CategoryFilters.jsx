@@ -1,17 +1,18 @@
 /* eslint-disable react/jsx-key */
-import React, { memo, useCallback, useContext, useState, useEffect } from 'react';
+import React, { memo, useCallback, useContext, useState, useEffect, useRef } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 
 import { Button, SelectFilter, Spinner, LazyMedia } from '@ui';
 import { CatalogStoreContext, UiStoreContext } from '@store';
-import { useFirstRender } from '@hooks';
+import { useFirstRender, useOnClickOutside } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import styles from './CategoryFilters.module.scss';
 
 const CategoryFilters = observer(({ image, data }) => {
+  const contentRef = useRef(null);
   const location = useLocation();
   const history = useHistory();
 
@@ -47,12 +48,17 @@ const CategoryFilters = observer(({ image, data }) => {
     }
   }, [query.category]);
 
+  useOnClickOutside(
+    contentRef,
+    useCallback((e) => setOpened(false), [setOpened])
+  );
+
   return data ? (
     <div className={styles.filters}>
       <div className={styles.filterImage}>
         <LazyMedia src={image} width={240} height={100} />
       </div>
-      <div className={styles.filterContent}>
+      <div className={styles.filterContent} ref={contentRef}>
         <div className={cns('row', styles.filterContentRow)}>
           <div className="col col-4">
             {data.size && (

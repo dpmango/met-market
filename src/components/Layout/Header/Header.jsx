@@ -49,7 +49,7 @@ const Header = observer(({ className }) => {
     debounce((e) => {
       // const nearFooter = window.scrollY + window.innerHeight > document.body.scrollHeight - 375;
       const startScrolledAt = width < 768 ? 0 : 45;
-      const startStickyAt = width < 768 ? 45 : 460;
+      const startStickyAt = width < 768 ? 300 : 460;
       const stickyHeader = window.scrollY > startStickyAt;
 
       if (window.scrollY > startScrolledAt) {
@@ -124,10 +124,12 @@ const Header = observer(({ className }) => {
                   <span>Каталог</span>
                 </Button>
               </div>
-              <div className={styles.colThrid}>
-                <Search className={styles.search} />
-                <CartMenu className={styles.cartmenu} />
-              </div>
+              {width >= 768 && (
+                <div className={styles.colThrid}>
+                  <Search className={styles.search} />
+                  <CartMenu className={styles.cartmenu} />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -136,9 +138,6 @@ const Header = observer(({ className }) => {
           <div className={styles.overlayScroller}>
             <div className={styles.overlayContent}>
               <div className="container">
-                <div className={styles.overlaySearch}>
-                  <Search className={styles.search} />
-                </div>
                 <div className={styles.overlaySocials}>
                   <a href="https://whatsupp.com" target="_blank" className={styles.overlaySocialLink} rel="noreferrer">
                     <SvgIcon name="social-whatsapp" />
@@ -184,9 +183,11 @@ const Header = observer(({ className }) => {
         </div>
       </header>
 
-      <div className={cns(styles.mobileSearch, 'mobileSearch')}>
-        <Search className={styles.mobileSearchSearch} />
-      </div>
+      {width < 768 && (
+        <div className={cns(styles.mobileSearch, 'mobileSearch')}>
+          <Search className={styles.mobileSearchSearch} />
+        </div>
+      )}
 
       <Cart />
       <CartSuccess />

@@ -186,3 +186,14 @@
     border-bottom-left-radius: 5px;
   }
 }
+
+@include r($mobile-s) {
+  .help {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+
+  .boxWrapper {
+    border-radius: 0;
+  }
+}

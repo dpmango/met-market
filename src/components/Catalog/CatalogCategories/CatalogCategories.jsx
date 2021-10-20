@@ -58,6 +58,9 @@ const CatalogCategories = observer(() => {
 
       return storeData;
     } else if (query.search) {
+      // todo - storeDate - get category filters ?
+      // todo - new methods in store
+
       const data = searchCatalog(query.search, null, null);
 
       return data
@@ -137,6 +140,7 @@ const CatalogCategories = observer(() => {
     catalogContext.queryToFilter(query.origin);
   }, [query.size, query.mark, query.length]);
 
+  console.log(categoryData);
   return (
     <div className={cns(styles.root, 'catalog')}>
       {breadcrumbs && breadcrumbs.length > 0 && (
@@ -167,7 +171,7 @@ const CatalogCategories = observer(() => {
             </div>
           )}
 
-          {(!query.search || width >= 768) && categoryData.filters && (
+          {width >= 768 && categoryData.filters && (
             <div className={styles.filters}>
               <CategoryFilters image={categoryData.image} data={categoryData.filters} />
             </div>

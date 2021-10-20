@@ -162,6 +162,13 @@
   // }
 }
 
+@include r($mobile-s) {
+  .searchInput {
+    font-size: 11px;
+    padding-left: 10px;
+  }
+}
+
 .suggestions {
   position: absolute;
   top: -10px;

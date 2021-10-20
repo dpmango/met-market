@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo, useState, useContext, memo } from 'react';
+import React, { useMemo, useState, useContext, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { Link, NavLink, useHistory, useLocation } from 'react-router-dom';
@@ -7,10 +7,12 @@ import cns from 'classnames';
 
 import { SvgIcon, SelectFilter } from '@ui';
 import { UiStoreContext, CatalogStoreContext } from '@store';
+import { useOnClickOutside } from '@hooks';
 
 import styles from './StickyHead.module.scss';
 
 const StickyHead = observer(({ headerGroups, categoryData }) => {
+  const headRef = useRef(null);
   const { query } = useContext(UiStoreContext);
 
   const [opened, setOpened] = useState(false);
@@ -21,8 +23,13 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
   } = useContext(UiStoreContext);
   const { filters } = useContext(CatalogStoreContext);
 
+  useOnClickOutside(
+    headRef,
+    useCallback((e) => setOpened(false), [setOpened])
+  );
+
   return (
-    <thead className={cns(styles.stickyHead, scrolledSticky && !catalogOpened && styles._sticky)}>
+    <thead className={cns(styles.stickyHead, scrolledSticky && !catalogOpened && styles._sticky)} ref={headRef}>
       {headerGroups.map((headerGroup) => (
         <tr {...headerGroup.getHeaderGroupProps()} className={styles.desktopHead}>
           {headerGroup.headers.map((column) => {

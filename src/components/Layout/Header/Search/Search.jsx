@@ -12,7 +12,7 @@ import { formatUGC, updateQueryParams } from '@helpers';
 import styles from './Search.module.scss';
 
 const settings = {
-  delay: 400,
+  delay: 50,
 };
 
 const Search = observer(({ className }) => {
@@ -89,8 +89,12 @@ const Search = observer(({ className }) => {
   }, [searchText]);
 
   useEffect(() => {
-    if (searchText !== query.search || '') {
+    if (firstRender && (searchText !== query.search || '')) {
       setSearchText(query.search || '');
+    }
+
+    if (!query.search) {
+      setSearchText('');
     }
   }, [query.search]);
 
