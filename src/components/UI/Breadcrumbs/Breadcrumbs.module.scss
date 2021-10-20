@@ -13,7 +13,8 @@
     top: 77px;
     padding: 20px 0;
     max-height: 56px;
-    overflow-y: auto;
+    overflow-x: hidden;
+    overflow-x: auto;
     background: white;
     :global .container {
       padding-left: 40px;

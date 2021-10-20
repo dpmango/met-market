@@ -309,17 +309,21 @@ export default class CatalogStore {
         // todo ability to show filters from parent (not found)
         let parentCategory = [];
         this.categoriesList.forEach((lvl1) => {
+          const matchLvl2 = lvl1.categories ? lvl1.categories.some((x) => x.id === cat_id) : false;
           lvl1.categories.forEach((lvl2) => {
             const matchLvl3 = lvl2.categories ? lvl2.categories.some((x) => x.id === cat_id) : false;
 
             if (matchLvl3) {
               parentCategory = lvl2;
+            } else if (matchLvl2) {
+              parentCategory = lvl1;
             }
           });
         });
 
         const lastLevel = !category.categories;
 
+        console.log(parentCategory);
         const mergedCategories = lastLevel
           ? parentCategory.name
             ? [

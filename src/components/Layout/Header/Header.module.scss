@@ -17,7 +17,7 @@
   z-index: 2;
   background: white;
   border-bottom: 1px solid rgba(47, 47, 47, 0.3);
-  transition: background 0.1s $ease;
+  // transition: background 0.1s $ease;
 }
 
 .wrapper {
@@ -332,6 +332,7 @@
     box-shadow: none;
     border-radius: 0;
     color: white;
+    transition: none;
     :global .catalog {
       padding-left: 0;
     }
@@ -486,7 +487,7 @@
       position: fixed;
       left: 0;
       right: 0;
-      top: 54px;
+      top: 53px;
       margin-top: 0;
       background: $colorPrimary;
     }

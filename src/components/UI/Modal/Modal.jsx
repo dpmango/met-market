@@ -95,7 +95,7 @@ const ModifierClasses = {
   [Modifiers.FULL]: styles._full,
 };
 
-const ModalComponent = observer(({ variant, modifier, name, children }) => {
+const ModalComponent = observer(({ variant, modifier, name, mobTitle, children }) => {
   const uiContext = useContext(UiStoreContext);
 
   const afterOpenModal = () => {};
@@ -127,6 +127,7 @@ const ModalComponent = observer(({ variant, modifier, name, children }) => {
           <SvgIcon name="arrow-left" />
           <span>Назад</span>
           <SvgIcon name="close" />
+          {mobTitle && <div className={styles.mobTitle} dangerouslySetInnerHTML={{ __html: mobTitle }}></div>}
         </div>
 
         <div className={cns(styles.content, modifier && ModifierClasses[modifier])}>{children}</div>
@@ -139,7 +140,7 @@ ModalComponent.propTypes = {
   variant: PropTypes.string,
   modifier: PropTypes.string,
   name: PropTypes.string.isRequired,
-  title: PropTypes.string,
+  mobTitle: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
 };
 

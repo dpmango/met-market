@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Helmet } from 'react-helmet';
 import cns from 'classnames';
 
 import { Button, Breadcrumbs } from '@ui';
+import { UiStoreContext } from '@store';
+import { useQuery } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
 import styles from './NoMatch.module.scss';
@@ -12,6 +14,9 @@ import styles from './NoMatch.module.scss';
 const NoMatchPage = observer(() => {
   const history = useHistory();
   const location = useLocation();
+  const { query } = useQuery();
+
+  const uiContext = useContext(UiStoreContext);
 
   const breadcrumbs = useMemo(() => {
     return [
@@ -24,6 +29,10 @@ const NoMatchPage = observer(() => {
       },
     ];
   }, []);
+
+  useEffect(() => {
+    uiContext.updateParams(query);
+  }, [query]);
 
   return (
     <>

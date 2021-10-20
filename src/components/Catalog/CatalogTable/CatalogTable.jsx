@@ -79,9 +79,10 @@ const CatalogTable = observer(() => {
 
   const metaItemsCount = useMemo(() => {
     const showing = pageSize >= data.length ? data.length : pageSize;
-    const plural = Plurize(showing, 'товар', 'товара', 'товаров');
+    const pluralShowing = Plurize(showing, 'Показан', 'Показано', 'Показано');
+    const pluralProduct = Plurize(showing, 'товар', 'товара', 'товаров');
 
-    return `Показано ${showing} ${plural} из ${data.length}`;
+    return `${pluralShowing} ${showing} ${pluralProduct} из ${data.length}`;
   }, [data, pageSize]);
 
   // click handlers

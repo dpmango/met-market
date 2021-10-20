@@ -184,19 +184,21 @@
   }
   .formButton {
     min-width: 1px;
+    padding: 18px 10px;
+    font-size: 12px;
   }
   .formHelper {
     font-size: 10px;
   }
 
   .contentBox {
-    max-width: 420px;
+    max-width: 340px;
     padding-left: 15px;
     padding-right: 15px;
   }
 }
 
-@include r(870) {
+@include r($md) {
   .hero {
     margin-bottom: 36px;
   }
@@ -214,6 +216,7 @@
 
   .contentBox {
     margin-top: 16px;
+    max-width: 420px;
     margin-left: 0;
   }
 
@@ -259,6 +262,7 @@
     left: 0;
     min-width: 1px;
     width: 100%;
+    font-size: 14px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
   }

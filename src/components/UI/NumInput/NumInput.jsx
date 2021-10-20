@@ -63,7 +63,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
 
   const updateFunc = useCallback(
     debounce((innerValue) => {
-      onChange(innerValue);
+      onChange(parseFloat(innerValue));
       // const { meta } = catalogContext.searchCatalog(textNormalized, null);
     }, 100),
     [onChange]
@@ -85,8 +85,8 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       } else if (split && split.length > 1) {
         const limited = split[1].slice(0, 2);
 
-        setValue(`${split[0]}.${limited}`);
-        onChange(`${split[0]}.${limited}`);
+        setValue(parseFloat(`${split[0]}.${limited}`));
+        onChange(parseFloat(`${split[0]}.${limited}`));
       } else {
         onChange(innerValue);
       }
@@ -105,9 +105,9 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       const isAllowedKey = [8, 190].includes(e.keyCode); // backspace, enter, space
       const isNumber = !Number.isNaN(parseFloat(e.key));
 
-      if (!isNumber && !isAllowedKey) {
-        event.preventDefault();
-      }
+      // if (!isNumber && !isAllowedKey) {
+      //   event.preventDefault();
+      // }
     },
     [innerValue, innerRef]
   );

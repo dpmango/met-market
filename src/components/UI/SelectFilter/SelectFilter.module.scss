@@ -105,6 +105,7 @@
     padding: 4px 0 12px 0;
     margin-left: 6px;
     margin-right: 6px;
+    width: calc(100% - 12px);
     border-radius: 0;
     border-bottom: 1px solid $borderColor;
   }
@@ -128,7 +129,7 @@
   max-height: 400px;
   overflow-y: auto;
   user-select: none;
-  transition: opacity 0.1s $ease;
+  // transition: opacity 0.1s $ease;
   &.size {
     width: 520px;
     .selectOptionCol {

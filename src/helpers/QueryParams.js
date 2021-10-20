@@ -123,7 +123,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
       break;
   }
 
-  if (curParams !== params.toString()) {
+  if (curParams !== params.toString() || location.pathname !== '/') {
     console.log('QUERY :: Push :: ', params.toString());
 
     // ui.updateParams(params);

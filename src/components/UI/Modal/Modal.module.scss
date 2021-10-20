@@ -34,6 +34,10 @@
   }
 }
 
+.mobTitle {
+  display: none;
+}
+
 .content {
   display: block;
   &._full {
@@ -97,7 +101,7 @@
         font-size: 14px;
       }
     }
-    span {
+    > span {
       display: block;
       font-size: 12px;
       font-weight: 600;
@@ -105,6 +109,17 @@
     }
     &:hover {
       color: white;
+    }
+  }
+
+  .mobTitle {
+    margin-left: auto;
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    span {
+      display: inline-block;
     }
   }
   .content {

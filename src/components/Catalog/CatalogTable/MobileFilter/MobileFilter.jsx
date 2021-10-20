@@ -128,7 +128,7 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
               name="size"
               value={filters.size}
               options={categoryData.filters.size}
-              opened={opened === 'size'}
+              opened={visible && opened === 'size'}
               setOpened={(v) => setOpened(v ? 'size' : false)}
             />
             <SelectFilter
@@ -138,7 +138,7 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
               name="mark"
               value={filters.mark}
               options={categoryData.filters.mark}
-              opened={opened === 'mark'}
+              opened={visible && opened === 'mark'}
               setOpened={(v) => setOpened(v ? 'mark' : false)}
             />
             <SelectFilter
@@ -148,7 +148,7 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
               name="length"
               value={filters.length}
               options={categoryData.filters['length']}
-              opened={opened === 'length'}
+              opened={visible && opened === 'length'}
               setOpened={(v) => setOpened(v ? 'length' : false)}
             />
             <div className={styles.reset}>

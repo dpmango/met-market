@@ -45,5 +45,8 @@
   }
   .categoryLetterTitle {
     color: white;
+    &:hover {
+      color: rgba(white, 0.7);
+    }
   }
 }

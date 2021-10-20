@@ -160,7 +160,7 @@ const Cart = observer(() => {
   });
 
   return (
-    <Modal name="cart" variant={cartCount ? 'main' : 'narrow'}>
+    <Modal name="cart" mobTitle={`Корзина &nbsp;<span>#${cartNumber}</span>`} variant={cartCount ? 'main' : 'narrow'}>
       <div className={cns(styles.cart, loading && styles._loading)}>
         {cartCount ? (
           <>

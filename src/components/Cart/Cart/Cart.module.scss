@@ -47,6 +47,7 @@
     text-align: center;
   }
   .headTitle {
+    display: none;
     font-size: 16px;
   }
 }
@@ -139,9 +140,9 @@
   }
   &._circle {
     position: relative;
-    background: #fbebef;
+    background: #aaa;
     border-radius: 50%;
-    color: $fontColor;
+    color: white;
     &:hover {
       background: $colorRed;
       color: white;
@@ -254,7 +255,7 @@
         padding-right: 10px;
       }
       &:nth-child(3) {
-        width: $col5;
+        width: $col4;
         padding-right: 10px;
       }
       &:nth-child(4) {
@@ -262,12 +263,13 @@
         padding-right: 10px;
       }
       &:nth-child(5) {
-        width: $col3;
+        width: $col4;
         padding-right: 10px;
       }
       &:nth-child(6) {
         width: $col4;
-        text-align: left;
+        text-align: center;
+        padding-right: 0;
       }
       &:first-child {
         padding-left: 0;
@@ -312,6 +314,8 @@
     position: fixed;
     top: 50%;
     left: 50%;
+    width: 100%;
+    max-width: 220px;
     text-align: center;
     transform: translate(-50%, -50%) !important;
     &::before {
