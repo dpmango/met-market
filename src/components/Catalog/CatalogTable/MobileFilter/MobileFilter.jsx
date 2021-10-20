@@ -84,6 +84,14 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
     }
   }, [visible]);
 
+  useEffect(() => {
+    if (opened) setCategoriesOpened(false);
+  }, [opened]);
+
+  useEffect(() => {
+    if (categoriesOpened) setOpened(false);
+  }, [categoriesOpened]);
+
   useEventListener('keydown', handleEscapeKey);
 
   useOnClickOutside(

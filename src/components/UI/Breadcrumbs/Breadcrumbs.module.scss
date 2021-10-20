@@ -11,9 +11,9 @@
     right: 0;
     max-width: 100vw;
     top: 77px;
-    padding: 20px 0;
-    max-height: 56px;
-    overflow-x: hidden;
+    padding: 10px 0 16px;
+    max-height: 54px;
+    overflow-y: hidden;
     overflow-x: auto;
     background: white;
     :global .container {
@@ -21,12 +21,19 @@
       padding-right: 40px;
     }
     .breadcrumbsList {
+      display: flex;
       flex-wrap: nowrap;
-    }
-    .breadcrumbsList a {
-      color: $colorPrimary;
-      &:hover {
-        color: $colorLink;
+      a,
+      span {
+        display: inline-flex;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+      a {
+        color: $colorPrimary;
+        &:hover {
+          color: $colorLink;
+        }
       }
     }
   }
@@ -74,13 +81,13 @@
   display: block;
   li {
     position: relative;
+    flex: 0 0 auto;
     display: inline;
     align-items: center;
     font-size: 16px;
     line-height: 1;
-    &:first-child {
-      margin-left: -10px;
-    }
+    margin-right: 10px;
+
     :global .svg-icon {
       font-size: 8px;
       color: rgba(black, 0.3);
@@ -90,7 +97,7 @@
   a,
   span {
     display: inline;
-    padding: 10px;
+    padding: 10px 10px 10px 0;
     line-height: 2;
   }
   a {
@@ -116,7 +123,7 @@
     a,
     span {
       display: inline;
-      padding: 5px 10px;
+      padding: 5px 10px 5px 0;
     }
   }
 }

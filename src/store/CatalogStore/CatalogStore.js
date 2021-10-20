@@ -107,12 +107,13 @@ export default class CatalogStore {
     // firslty iterate items through matching categories
     if (cat_id) {
       const category = findNodeById(this.categoriesList, cat_id);
+
       if (category) {
         const items = this.catalog.filter(
           (x) =>
-            (x.cat3 && x.cat3.includes(category.name)) ||
-            (x.cat2 && x.cat2.includes(category.name)) ||
-            (x.cat1 && x.cat1.includes(category.name))
+            (x.cat3 && x.cat3 == category.name) ||
+            (x.cat2 && x.cat2 == category.name) ||
+            (x.cat1 && x.cat1 == category.name)
         );
 
         if (items && items.length > 0) {
@@ -323,7 +324,6 @@ export default class CatalogStore {
 
         const lastLevel = !category.categories;
 
-        console.log(parentCategory);
         const mergedCategories = lastLevel
           ? parentCategory.name
             ? [

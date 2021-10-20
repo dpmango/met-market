@@ -13,7 +13,9 @@ const CartMenu = observer(({ className, showLabel }) => {
   const uiContext = useContext(UiStoreContext);
 
   return (
-    <div className={cns('cart', styles.cart, className)} onClick={() => uiContext.setModal('cart')}>
+    <div
+      className={cns('cart', styles.cart, className)}
+      onClick={() => (uiContext.activeModal === 'cart' ? uiContext.resetModal() : uiContext.setModal('cart'))}>
       <div className={styles.cartIcon}>
         <SvgIcon name="cart" />
         {cartCount > 0 && (

@@ -45,6 +45,16 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
     return '';
   }, [product]);
 
+  const singlePriceWithTonnage = useMemo(() => {
+    const { pricePerItem, count } = product;
+
+    if (count < 1) {
+      return priceWithTonnage(pricePerItem, true);
+    } else {
+      return pricePerItem;
+    }
+  }, [product]);
+
   const totalPriceWithTonnage = useMemo(() => {
     const { pricePerItem, count } = product;
 
@@ -89,7 +99,7 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
         <div className={styles.cell}>
           <span className={styles.mobtitle}>Цена с НДС</span>
           <span>
-            {formatPrice(product.pricePerItem, 0)} ₽/
+            {formatPrice(singlePriceWithTonnage, 0)} ₽/
             {priceQuantityUnit}
           </span>
         </div>

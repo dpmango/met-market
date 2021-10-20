@@ -26,6 +26,10 @@
     .selectDisplay {
       padding-left: 0;
       padding-right: 0;
+      transition: color 0.15s $ease;
+      &:hover {
+        color: $colorLink;
+      }
     }
     &._active {
       .selectOptions {
@@ -131,7 +135,6 @@
   user-select: none;
   // transition: opacity 0.1s $ease;
   &.size {
-    width: 520px;
     .selectOptionCol {
       flex-basis: 20%;
       max-width: 20%;

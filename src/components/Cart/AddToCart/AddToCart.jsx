@@ -6,7 +6,7 @@ import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, NumInput, SvgIcon } from '@ui';
 import { UiStoreContext, CatalogStoreContext, CartStoreContext } from '@store';
-import { useFirstRender } from '@hooks';
+import { useFirstRender, useWindowSize } from '@hooks';
 import { priceWithTonnage, formatPrice } from '@helpers';
 
 import styles from './AddToCart.module.scss';
@@ -15,6 +15,7 @@ const AddToCart = observer(() => {
   const { addToast } = useToasts();
   const firstRender = useFirstRender();
   const countRef = useRef(null);
+  const { width } = useWindowSize();
 
   const { activeModal, modalParams, query } = useContext(UiStoreContext);
   const { getCategoryByName } = useContext(CatalogStoreContext);
@@ -139,6 +140,17 @@ const AddToCart = observer(() => {
     return null;
   }, [modalData]);
 
+  const singlePriceWithTonnage = useMemo(() => {
+    if (!modalData) {
+      return 0;
+    }
+    if (count < 1) {
+      return priceWithTonnage(modalData.price, true);
+    } else {
+      return modalData.price;
+    }
+  }, [modalData, count]);
+
   const totalPriceWithTonnage = useMemo(() => {
     if (!modalData) {
       return 0;
@@ -148,7 +160,7 @@ const AddToCart = observer(() => {
   }, [modalData, count]);
 
   useEffect(() => {
-    if (query.product && modalData) {
+    if (query.product && modalData && width >= 768) {
       countRef && countRef.current && countRef.current.focus();
     }
   }, [query, modalData]);
@@ -232,7 +244,7 @@ const AddToCart = observer(() => {
                       label="Цена с НДС"
                       placeholder=""
                       className={styles.clearInputMobile}
-                      value={`${formatPrice(modalData.price, 0)} ₽/${modalData.priceQuantityUnit}`}
+                      value={`${formatPrice(singlePriceWithTonnage, 0)} ₽/${modalData.priceQuantityUnit}`}
                       disabled
                     />
                   </div>

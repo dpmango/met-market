@@ -27,8 +27,12 @@ export const priceWithTonnage = (price, count) => {
     return 0;
   }
 
-  if (count && count < 1) {
-    return price * count * (1 + 1 / getEnv('EXTRA_TONNAGE_PERCENT'));
+  const percentile = 1 + 1 / getEnv('EXTRA_TONNAGE_PERCENT');
+
+  if (count === true) {
+    return price * 1 * percentile;
+  } else if (count && count < 1) {
+    return price * count * percentile;
   }
   return price * count;
 };

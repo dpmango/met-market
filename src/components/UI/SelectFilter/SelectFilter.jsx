@@ -38,7 +38,7 @@ const SelectComponent = observer(
     const optionsMapped = useMemo(() => {
       if (!options) return [];
 
-      const mapped = options.map((option) => ({
+      let mapped = options.map((option) => ({
         value: option.value,
         label: option.value,
         isPopular: option.isPopular,
