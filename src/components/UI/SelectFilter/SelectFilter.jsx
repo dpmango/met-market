@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
 import cns from 'classnames';
 import chunk from 'lodash/chunk';
+import uniqueId from 'lodash/uniqueId';
 
 import { Input, SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
@@ -30,10 +31,15 @@ const SelectComponent = observer(
     const location = useLocation();
     const history = useHistory();
     const optionsRef = useRef(null);
+    const searchInputRef = useRef(null);
     const { width } = useWindowSize();
 
     const [search, setSearch] = useState('');
     const catalogContext = useContext(CatalogStoreContext);
+
+    const id = useMemo(() => {
+      return uniqueId();
+    }, []);
 
     const optionsMapped = useMemo(() => {
       if (!options) return [];
@@ -65,7 +71,7 @@ const SelectComponent = observer(
       let colSize = name === 'size' ? 5 : 4;
 
       if (width < 768) {
-        colSize = name === 'size' ? 3 : 2;
+        colSize = name === 'size' ? 2 : 2;
       } else if (width < 992) {
         colSize = name === 'size' ? 4 : 3;
       } else if (width < 1200) {
@@ -84,7 +90,7 @@ const SelectComponent = observer(
         .map((f) => ({ value: f.value, label: f.label, disabled: false }))
         .filter((x) => !filterPureValues.includes(x.value));
 
-      const combined = [...checkedButNotListed, ...optionsMapped];
+      const combined = [{ value: 'all', label: 'Все', disabled: false }, ...checkedButNotListed, ...optionsMapped];
 
       const splited = chunk(combined, Math.ceil(combined.length / colSize));
 
@@ -126,12 +132,28 @@ const SelectComponent = observer(
       }
     }, [allSelected, name, history, location]);
 
+    const onKeyDown = useCallback(
+      (e) => {
+        if (e.keyCode === 13) {
+          searchInputRef && searchInputRef.current.blur();
+          return;
+        }
+      },
+      [searchInputRef]
+    );
+
     // effects
 
     // useOnClickOutside(
     //   optionsRef,
     //   useCallback((e) => setOpened(false), [setOpened])
     // );
+
+    useEffect(() => {
+      if (opened && width >= 768) {
+        searchInputRef && searchInputRef.current.focus();
+      }
+    }, [opened]);
 
     return (
       <div
@@ -150,14 +172,23 @@ const SelectComponent = observer(
             <SvgIcon name="caret" />
           </div>
         ) : (
-          <div className={styles.selectDisplayMini} onClick={() => setOpened(!opened)}>
+          <div className={cns(styles.selectDisplayMini, 'selectDisplayMini')} onClick={() => setOpened(!opened)}>
             <SvgIcon name="filter" />
           </div>
         )}
 
         <div className={cns(styles.selectOptions, optionsClassName, name && styles[name])}>
           <div className={styles.selectSearch}>
-            <Input placeholder="Поиск..." allowClear value={search} onChange={(v) => setSearch(v)} />
+            <Input
+              autoComplete="false"
+              name={`filter_s_${id}`}
+              placeholder="Поиск..."
+              allowClear
+              value={search}
+              onChange={(v) => setSearch(v)}
+              onKeyDown={onKeyDown}
+              inputRef={searchInputRef}
+            />
           </div>
 
           {columnizeOptions &&
@@ -165,17 +196,6 @@ const SelectComponent = observer(
             columnizeOptions.map((col, idx) => {
               return (
                 <div key={`${idx}_${col.id}`} className={styles.selectOptionCol}>
-                  {idx === 0 && (
-                    <div
-                      key={'all'}
-                      className={cns(styles.selectOption, allSelected && styles._active)}
-                      onClick={handleAllClick}>
-                      <i className={styles.selectOptionCheckbox}>
-                        <SvgIcon name="checkmark" />
-                      </i>
-                      <span>Все</span>
-                    </div>
-                  )}
                   {col.opt.map((option) => (
                     <div
                       key={option.value}
@@ -183,9 +203,10 @@ const SelectComponent = observer(
                         styles.selectOption,
                         option.disabled && styles._disabled,
                         option.isPopular && styles._popular,
-                        value.some((x) => x.value === option.value) && styles._active
+                        value.some((x) => x.value === option.value) && styles._active,
+                        option.value === 'all' && allSelected && styles._active
                       )}
-                      onClick={() => handleOptionClick(option)}>
+                      onClick={() => (option.value === 'all' ? handleAllClick() : handleOptionClick(option))}>
                       <i className={styles.selectOptionCheckbox}>
                         <SvgIcon name="checkmark" />
                       </i>

@@ -8,7 +8,10 @@ const AxiosInterceptors = ({ children }) => {
   useMemo(() => {
     api.interceptors.request.use(
       (x) => {
-        setLoading(true);
+        if (!x.url.includes('log')) {
+          setLoading(true);
+        }
+
         return x;
       },
       (error) => {
@@ -19,7 +22,10 @@ const AxiosInterceptors = ({ children }) => {
 
     api.interceptors.response.use(
       (x) => {
-        setLoading(false);
+        if (!x.config.url.includes('log')) {
+          setLoading(false);
+        }
+
         return x;
       },
       (error) => {

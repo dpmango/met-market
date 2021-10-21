@@ -464,6 +464,10 @@
     padding-left: 16px;
     padding-right: 16px;
   }
+  .mobileSearchWrapper {
+    backface-visibility: hidden;
+    will-change: transform;
+  }
   .mobileSearchSearch {
     margin-top: 9px !important;
     &::after {
@@ -483,13 +487,13 @@
 :global body.catalogOpened {
   @include r($md) {
     .mobileSearch {
-      z-index: 10;
+      z-index: 9;
       position: fixed;
       left: 0;
       right: 0;
       top: 53px;
       margin-top: 0;
-      background: $colorPrimary;
+      overflow: hidden;
     }
   }
 }

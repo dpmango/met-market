@@ -23,6 +23,19 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
   } = useContext(UiStoreContext);
   const { filters } = useContext(CatalogStoreContext);
 
+  const handleThClick = useCallback(
+    (id) => {
+      if (['size', 'mark', 'length'].includes(id)) {
+        if (opened === id) {
+          setOpened(false);
+        } else {
+          setOpened(id);
+        }
+      }
+    },
+    [opened]
+  );
+
   useOnClickOutside(
     headRef,
     useCallback((e) => setOpened(false), [setOpened])
@@ -34,7 +47,13 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
         <tr {...headerGroup.getHeaderGroupProps()} className={styles.desktopHead}>
           {headerGroup.headers.map((column) => {
             return (
-              <th {...column.getHeaderProps()} className={column.id === opened && styles._activeTH}>
+              <th
+                {...column.getHeaderProps()}
+                className={cns(
+                  ['size', 'mark', 'length'].includes(column.id) && styles._clickable,
+                  column.id === opened && styles._activeTH
+                )}
+                onClick={() => handleThClick(column.id)}>
                 <div className={styles.cell}>
                   <span>{column.render('Header')}</span>
                   {categoryData && column.id === 'size' && (
@@ -47,7 +66,7 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
                         value={filters.size}
                         options={categoryData.filters.size}
                         opened={opened === 'size'}
-                        setOpened={(v) => setOpened(v ? 'size' : false)}
+                        setOpened={(v) => null}
                       />
                     </div>
                   )}
@@ -61,7 +80,7 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
                         value={filters.mark}
                         options={categoryData.filters.mark}
                         opened={opened === 'mark'}
-                        setOpened={(v) => setOpened(v ? 'mark' : false)}
+                        setOpened={(v) => null}
                       />
                     </div>
                   )}
@@ -75,7 +94,7 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
                         value={filters.length}
                         options={categoryData.filters['length']}
                         opened={opened === 'length'}
-                        setOpened={(v) => setOpened(v ? 'length' : false)}
+                        setOpened={(v) => null}
                       />
                     </div>
                   )}

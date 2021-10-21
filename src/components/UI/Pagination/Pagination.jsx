@@ -27,7 +27,8 @@ const Pagination = ({ page, count, onChange, canPreviousPage, canNextPage, ...pr
     <div className={styles.pagination}>
       <button disabled={!canPreviousPage} className={styles.button} onClick={handlePrev}>
         Предыдущая
-        <SvgIcon name="caret" />
+        <span>Пред</span>
+        {/* <SvgIcon name="caret" /> */}
       </button>
 
       <div className={styles.list}>
@@ -40,7 +41,8 @@ const Pagination = ({ page, count, onChange, canPreviousPage, canNextPage, ...pr
 
       <button disabled={!canNextPage} className={styles.button} onClick={handleNext}>
         Следующая
-        <SvgIcon name="caret" />
+        <span>След</span>
+        {/* <SvgIcon name="caret" /> */}
       </button>
     </div>
   );

@@ -26,6 +26,14 @@
     &._activeTH {
       background: white;
     }
+    &._clickable {
+      cursor: pointer;
+      &:hover {
+        :global .selectDisplayMini {
+          background: $colorLink;
+        }
+      }
+    }
   }
 }
 

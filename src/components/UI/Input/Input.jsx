@@ -5,6 +5,7 @@ import uniqueId from 'lodash/uniqueId';
 import InputMask from 'react-input-mask';
 import TextareaAutosize from 'react-autosize-textarea';
 
+import { SvgIcon } from '@ui';
 import styles from './Input.module.scss';
 
 const Variants = {
@@ -54,7 +55,7 @@ const Input = ({
     if (allowClear && value) {
       return (
         <button type="button" onClick={onCLearInput} className={styles.input_clear} title="Очистить">
-          &#10005;
+          <SvgIcon name="close" />
         </button>
       );
     }

@@ -47,9 +47,20 @@ export default class SessionStore {
     if (err) throw err;
 
     runInAction(() => {
+      const lastLog = this.log[type][0];
+      let restLogs = this.log[type].filter((x) => !payload.startsWith(x.searchTerm));
+
+      if (lastLog) {
+        // most likelly user is deliting type
+        const lastLogMatch = lastLog.searchTerm.startsWith(payload);
+        if (lastLogMatch) {
+          restLogs = this.log[type].filter((x) => !x.searchTerm.startsWith(payload));
+        }
+      }
+
       const newLogs = {
         ...this.log,
-        [type]: [...[request], ...this.log[type].filter((x) => x.searchTerm !== payload)],
+        [type]: [...[request], ...restLogs],
       };
 
       this.log = newLogs;

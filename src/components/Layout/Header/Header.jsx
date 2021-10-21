@@ -24,6 +24,7 @@ import { ReactComponent as LogoTablet } from '@assets/logo-tablet.svg';
 
 const Header = observer(({ className }) => {
   const [abcOrder, setAbcOrder] = useState(false);
+  const [overlayScroll, setOverLayscroll] = useState(0);
   const { width } = useWindowSize();
   const height = use100vh();
 
@@ -36,6 +37,7 @@ const Header = observer(({ className }) => {
   const uiContext = useContext(UiStoreContext);
 
   const headerRef = useRef(null);
+  const scrollerRef = useRef(null);
 
   const scrollerHeight = useMemo(() => {
     if (width < 768) {
@@ -69,12 +71,26 @@ const Header = observer(({ className }) => {
     [scrolled, uiContext.uiContext, width]
   );
 
+  const handleScrollOverlay = useCallback(
+    (e) => {
+      if (width >= 768) return; // mobile only
+      if (!scrollerRef.current) return;
+
+      const { scrollTop } = scrollerRef.current;
+      // const nearFooter = window.scrollY + window.innerHeight > document.body.scrollHeight - 375;
+
+      setOverLayscroll(scrollTop >= 60 ? 60 : scrollTop);
+    },
+    [setOverLayscroll]
+  );
+
   useOnClickOutside(
     headerRef,
     useCallback((e) => uiContext.setHeaderCatalog(false), [uiContext.setHeaderCatalog])
   );
 
   useEventListener('scroll', handleScroll);
+  useEventListener('scroll', handleScrollOverlay, scrollerRef.current);
 
   useEffect(() => {
     uiContext.setHeaderCatalog(false);
@@ -135,7 +151,7 @@ const Header = observer(({ className }) => {
         </div>
 
         <div className={cns(styles.overlay, catalogOpened && styles._active)}>
-          <div className={styles.overlayScroller}>
+          <div className={styles.overlayScroller} ref={scrollerRef}>
             <div className={styles.overlayContent}>
               <div className="container">
                 <div className={styles.overlaySocials}>
@@ -185,7 +201,11 @@ const Header = observer(({ className }) => {
 
       {width < 768 && (
         <div className={cns(styles.mobileSearch, 'mobileSearch')}>
-          <Search className={styles.mobileSearchSearch} />
+          <div
+            className={styles.mobileSearchWrapper}
+            style={{ transform: catalogOpened ? `translate3d(0,-${overlayScroll}px,0)` : 'none' }}>
+            <Search className={styles.mobileSearchSearch} />
+          </div>
         </div>
       )}
 

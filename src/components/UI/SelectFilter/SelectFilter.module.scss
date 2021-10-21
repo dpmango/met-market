@@ -51,7 +51,7 @@
   span {
     font-weight: 600;
     font-size: 15px;
-    line-height: 20px;
+    line-height: (20 / 15);
     padding-right: 10px;
   }
   :global .svg-icon {
@@ -231,6 +231,13 @@
 }
 
 @include r($md) {
+  .selectDisplay {
+    span {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+
   .selectOptions {
     &.size {
       width: 100%;

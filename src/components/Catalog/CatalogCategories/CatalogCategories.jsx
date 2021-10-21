@@ -177,7 +177,7 @@ const CatalogCategories = observer(() => {
           )}
         </>
       ) : !loading ? (
-        <CatalogMenu className="mt-2 mb-2" />
+        <CatalogMenu className="mt-2 mb-2 mt-md-1 mb-md-1" />
       ) : (
         <Spinner />
       )}

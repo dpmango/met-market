@@ -39,11 +39,15 @@ const Header = observer(({ className }) => {
                   </div>
                   <span className="w-600">Telegram</span>
                 </a>
-                <a href="mailto:info@met-market_shop.ru" className={styles.footerContact}>
+                <a
+                  href="mailto:&#105;&#110;&#102;&#111;&#064;&#109;&#101;&#116;&#045;&#109;&#097;&#114;&#107;&#101;&#116;&#095;&#115;&#104;&#111;&#112;&#046;&#114;&#117;"
+                  className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="email" />
                   </div>
-                  <span>info@met-market_shop.ru</span>
+                  <span>
+                    &#105;&#110;&#102;&#111;&#064;&#109;&#101;&#116;&#045;&#109;&#097;&#114;&#107;&#101;&#116;&#095;&#115;&#104;&#111;&#112;&#046;&#114;&#117;
+                  </span>
                 </a>
                 <div className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>

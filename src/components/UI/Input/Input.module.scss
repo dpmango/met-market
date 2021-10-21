@@ -63,11 +63,16 @@
     }
   }
   &_clear {
+    right: 0;
+    color: $colorPrimary;
+    padding: 11px 12px;
+    cursor: pointer;
     transition: color 0.25s $ease;
-    padding: 5px;
-    right: 10px;
+    :global .svg-icon {
+      font-size: 12px;
+    }
     &:hover {
-      color: $colorRed;
+      color: $colorAccent;
     }
   }
   &._small {

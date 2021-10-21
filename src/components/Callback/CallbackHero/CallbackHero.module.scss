@@ -168,7 +168,7 @@
     padding-left: 10px;
   }
   .contentTitle {
-    font-size: 22px;
+    font-size: 21.5px;
   }
   .contentList li {
     font-size: 12px;
@@ -222,7 +222,6 @@
 
   .contentTitle {
     font-size: 24px;
-    font-size: calc(18px + 1.5vw);
     max-width: 520px;
     br {
       display: none;
@@ -279,12 +278,12 @@
 }
 
 @include r($mobile-s) {
-  .hero {
-    margin-left: -16px;
-    margin-right: -16px;
-  }
+  // .hero {
+  // }
   .boxWrapper {
     border-radius: 0;
+    margin-left: -16px;
+    margin-right: -16px;
   }
   .contentTitle {
     font-size: 17px;
