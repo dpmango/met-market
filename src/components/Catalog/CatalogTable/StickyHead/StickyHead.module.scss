@@ -28,11 +28,7 @@
     }
     &._clickable {
       cursor: pointer;
-      &:hover {
-        :global .selectDisplayMini {
-          background: $colorLink;
-        }
-      }
+      user-select: none;
     }
   }
 }

@@ -89,14 +89,14 @@
   font-size: 0;
   line-height: 0;
   cursor: pointer;
-  transition: background 0.25s $ease;
+  // transition: background 0.25s $ease;
   :global .svg-icon {
     font-size: 11px;
     transform: translate(0, 1px);
   }
-  &:hover {
-    background: $colorLink;
-  }
+  // &:hover {
+  //   background: $colorLink;
+  // }
 }
 
 // drtopdown

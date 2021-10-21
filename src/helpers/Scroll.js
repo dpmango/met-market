@@ -37,3 +37,51 @@ export const scrollToPageEnd = (duration) => {
 export const scrollToPageStart = (duration) => {
   ScrollTo(0, duration);
 };
+
+const fillGapMethod = 'padding';
+
+export const fillGapTarget = ($target) => {
+  if ($target instanceof Node) {
+    let scrollBarWidth;
+    scrollBarWidth = getScrollBarWidth($target, true);
+
+    var computedStyle = window.getComputedStyle($target);
+
+    if (fillGapMethod === 'margin') {
+      var currentMargin = parseFloat(computedStyle.marginRight);
+      $target.style.marginRight = `${currentMargin + scrollBarWidth}px`;
+    } else if (fillGapMethod === 'width') {
+      $target.style.width = `calc(100% - ${scrollBarWidth}px)`;
+    } else if (fillGapMethod === 'max-width') {
+      $target.style.maxWidth = `calc(100% - ${scrollBarWidth}px)`;
+    } else if (fillGapMethod === 'padding') {
+      var currentPadding = parseFloat(computedStyle.paddingRight);
+      $target.style.paddingRight = `${currentPadding + scrollBarWidth}px`;
+    }
+  }
+};
+
+export const unfillGapTarget = ($target) => {
+  if ($target instanceof Node) {
+    if (fillGapMethod === 'margin') {
+      $target.style.marginRight = '';
+    } else if (fillGapMethod === 'width') {
+      $target.style.width = '';
+    } else if (fillGapMethod === 'max-width') {
+      $target.style.maxWidth = '';
+    } else if (fillGapMethod === 'padding') {
+      $target.style.paddingRight = '';
+    }
+  }
+};
+
+export const getScrollBarWidth = ($target) => {
+  if ($target instanceof Node) {
+    var documentWidth = document.documentElement.clientWidth;
+    var windowWidth = window.innerWidth;
+    var currentWidth = windowWidth - documentWidth;
+    return currentWidth;
+  } else {
+    return 0;
+  }
+};

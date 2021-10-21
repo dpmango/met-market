@@ -9,7 +9,7 @@ import { SvgIcon, Button } from '@ui';
 import { useOnClickOutside, useWindowSize } from '@hooks';
 import { CatalogStoreContext, UiStoreContext } from '@store';
 import { useEventListener } from '@hooks';
-import { ScrollTo } from '@helpers';
+import { fillGapTarget, unfillGapTarget } from '@helpers';
 
 import { Cart, CartSuccess } from '@c/Cart';
 import { Callback, CallbackSuccess } from '@c/Callback';
@@ -99,6 +99,11 @@ const Header = observer(({ className }) => {
   useEffect(() => {
     if (activeModal) {
       uiContext.setHeaderCatalog(false);
+      fillGapTarget(document.querySelector('header'));
+      fillGapTarget(document.body);
+    } else {
+      unfillGapTarget(document.querySelector('header'));
+      unfillGapTarget(document.body);
     }
   }, [activeModal]);
 

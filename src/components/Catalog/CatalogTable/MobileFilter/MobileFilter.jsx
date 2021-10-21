@@ -79,6 +79,8 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
   useEffect(() => {
     if (visible) {
       document.body.classList.add('filtersActive');
+      setCategoriesOpened(true);
+      setOpened(false);
     } else {
       document.body.classList.remove('filtersActive');
     }
@@ -116,7 +118,7 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
         {categoryData && (
           <div className={cns(styles.filters, visible && styles._visible)}>
             {categoryData.subcategories && categoryData.subcategories.length > 0 && (
-              <div className={cns(styles.filterTags, visible && categoriesOpened && styles._active)}>
+              <div className={cns(styles.filterTags, categoriesOpened && styles._active)}>
                 <div className={styles.filterTagsLabel} onClick={() => setCategoriesOpened(!categoriesOpened)}>
                   <span>Тип товара</span>
                   <SvgIcon name="caret" />

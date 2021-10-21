@@ -44,20 +44,15 @@ const SelectComponent = observer(
     const optionsMapped = useMemo(() => {
       if (!options) return [];
 
-      let mapped = options.map((option) => ({
+      const mapped = options.map((option) => ({
         value: option.value,
         label: option.value,
         isPopular: option.isPopular,
         disabled: !option.available,
       }));
 
-      if (search && search.trim()) {
-        const searchNormalized = formatUGC(search.trim());
-        mapped = mapped.filter((x) => x.label.includes(searchNormalized));
-      }
-
       return mapped;
-    }, [options, search]);
+    }, [options]);
 
     const filter = useMemo(() => {
       return catalogContext.filters[name];
@@ -81,16 +76,19 @@ const SelectComponent = observer(
       if (!optionsMapped || !filter) return [];
 
       const filterPureValues = filter.map((x) => x.value);
-      // const checked = filter.map((f) => ({ value: f.value, label: f.label, disabled: false }));
-      // const nonChecked = optionsMapped.filter((x) => !filterPureValues.includes(x.value));
-
-      // const combined = [...checked, ...nonChecked];
 
       const checkedButNotListed = filter
         .map((f) => ({ value: f.value, label: f.label, disabled: false }))
         .filter((x) => !filterPureValues.includes(x.value));
 
-      const combined = [{ value: 'all', label: 'Все', disabled: false }, ...checkedButNotListed, ...optionsMapped];
+      let combined = [...checkedButNotListed, ...optionsMapped];
+
+      if (search && search.trim()) {
+        const searchNormalized = formatUGC(search.trim().toLowerCase());
+        combined = combined.filter((x) => x.label.toLowerCase().includes(searchNormalized));
+      } else {
+        combined = [{ value: 'all', label: 'Все', disabled: false }, ...combined];
+      }
 
       const splited = chunk(combined, Math.ceil(combined.length / colSize));
 
@@ -102,7 +100,7 @@ const SelectComponent = observer(
             })),
           ]
         : [];
-    }, [filter, optionsMapped, width]);
+    }, [filter, optionsMapped, width, search]);
 
     // click handlers
     const handleOptionClick = (option) => {
@@ -150,6 +148,9 @@ const SelectComponent = observer(
     // );
 
     useEffect(() => {
+      if (opened) {
+        setSearch('');
+      }
       if (opened && width >= 768) {
         searchInputRef && searchInputRef.current.focus();
       }
