@@ -24,8 +24,16 @@ const CatalogTable = observer(() => {
   const { width } = useWindowSize();
   const catalogRef = useRef(null);
 
-  const { catalog, loading, filters, getCatalogItem, searchCatalog, getCategoryByName, getCategoryFilters } =
-    useContext(CatalogStoreContext);
+  const {
+    catalog,
+    loading,
+    filters,
+    getCatalogItem,
+    searchCatalog,
+    getCategoryByName,
+    getCategoryFilters,
+    buildFiltersFromData,
+  } = useContext(CatalogStoreContext);
 
   const catalogContext = useContext(CatalogStoreContext);
   const { activeModal, prevModal, query } = useContext(UiStoreContext);
@@ -170,10 +178,14 @@ const CatalogTable = observer(() => {
   const categoryData = useMemo(() => {
     if (query.category) {
       return getCategoryFilters(query.category);
+    } else if (query.search) {
+      return {
+        filters: buildFiltersFromData(data),
+      };
     }
 
     return null;
-  }, [loading, query.category, query.search, filters]);
+  }, [loading, query.category, query.search, filters, data]);
 
   // do not render table on homepage
   if (query.category === 'all' || (!query.category && !query.search)) return null;

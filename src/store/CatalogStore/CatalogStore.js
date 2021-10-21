@@ -419,6 +419,40 @@ export default class CatalogStore {
     return false;
   });
 
+  buildFiltersFromData = computedFn((data) => {
+    const DEV_perf = performance.now();
+
+    const mappedFilter = data.map((x) => {
+      return { size: x.size, mark: x.mark, length: x.length };
+    });
+
+    const sizesMatched = [...new Set(mappedFilter.map((x) => x.size))];
+    const marksMatched = [...new Set(mappedFilter.map((x) => x.mark))];
+    const lengthsMatched = [...new Set(mappedFilter.map((x) => x.length))];
+
+    const clearValue = (x) => {
+      return !x ? 'не указано' : x;
+    };
+
+    // filtering thought mapped available/disabled state
+    const mapFilter = (val) => {
+      return {
+        value: clearValue(val),
+        isPopular: false,
+        available: true,
+      };
+    };
+
+    const result = {
+      size: sizesMatched.map(mapFilter),
+      mark: marksMatched.map(mapFilter),
+      length: lengthsMatched.map(mapFilter),
+    };
+
+    PerformanceLog(DEV_perf, 'buildFiltersFromData');
+    return result;
+  });
+
   get someFiltersActive() {
     return this.filters.size.length || this.filters.mark.length || this.filters.length.length;
   }

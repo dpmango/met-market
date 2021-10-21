@@ -20,7 +20,7 @@ const CatalogCategories = observer(() => {
   const location = useLocation();
   const { width } = useWindowSize();
 
-  const { loading, searchCatalog, getCategoryFilters, filters } = useContext(CatalogStoreContext);
+  const { loading, searchCatalog, getCategoryFilters, buildFiltersFromData, filters } = useContext(CatalogStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
   const { query } = useContext(UiStoreContext);
 
@@ -58,13 +58,11 @@ const CatalogCategories = observer(() => {
 
       return storeData;
     } else if (query.search) {
-      // todo - storeDate - get category filters ?
-      // todo - new methods in store
-
       const data = searchCatalog(query.search, null, null);
 
       return data
         ? {
+            filters: buildFiltersFromData(data.results || []),
             id: 0,
             title: `По запросу «<span class="w-700 c-link">${query.search}</span>» ${
               data.meta.total > 0

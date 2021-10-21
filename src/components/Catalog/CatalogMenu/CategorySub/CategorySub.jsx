@@ -17,7 +17,7 @@ const CategoryMain = observer(({ category, handleCategoryClick, opened, setOpene
 
   const handleMobileClick = useCallback(
     (category, e) => {
-      if (width <= 992 && hasSub) {
+      if (width <= 768 && hasSub) {
         e.preventDefault();
         setOpened && setOpened(!opened);
       } else {
