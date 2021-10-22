@@ -27,6 +27,11 @@
       border-color: rgba(black, 0.3);
       cursor: not-allowed;
       pointer-events: none;
+      &:hover {
+        background: transparent;
+        color: rgba(black, 0.3);
+        border-color: rgba(black, 0.3);
+      }
     }
   }
   &._accent {
@@ -66,6 +71,9 @@
       background-color: #789fff;
       cursor: not-allowed;
       pointer-events: none;
+      &:hover {
+        background: #789fff;
+      }
     }
   }
   &._gray {
@@ -177,5 +185,8 @@
     color: $fontColor;
     cursor: not-allowed;
     pointer-events: none;
+    &:hover {
+      background: $colorBg;
+    }
   }
 }

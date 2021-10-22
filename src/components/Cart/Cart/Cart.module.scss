@@ -41,7 +41,7 @@
 
 @include r($md) {
   .cart {
-    padding: 16px 0;
+    padding: 4px 0 16px;
   }
   .head {
     text-align: center;
@@ -251,23 +251,24 @@
       }
       &:nth-child(2) {
         display: block;
-        width: $col8;
+        flex: 0 1 250px;
+        width: 250px;
         padding-right: 10px;
       }
       &:nth-child(3) {
         width: $col4;
-        padding-right: 10px;
+        padding-right: 0;
       }
       &:nth-child(4) {
         width: $col4;
-        padding-right: 10px;
+        padding-left: 10px;
       }
       &:nth-child(5) {
         width: $col4;
-        padding-right: 10px;
+        padding-left: 10px;
       }
       &:nth-child(6) {
-        width: $col4;
+        width: calc(100% - 250px);
         text-align: center;
         padding-right: 0;
       }
@@ -283,9 +284,22 @@
     }
     tbody {
       tr {
+        position: relative;
+        max-width: 428px;
         display: flex;
         flex-wrap: wrap;
         padding: 10px 0;
+        border-bottom: 0;
+        &::after {
+          display: inline-block;
+          content: ' ';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: calc(100vw - 32px);
+          height: 1px;
+          background: #c4c4c4;
+        }
       }
       tr:hover {
         td {

@@ -43,7 +43,7 @@ const fillGapMethod = 'padding';
 export const fillGapTarget = ($target) => {
   if ($target instanceof Node) {
     let scrollBarWidth;
-    scrollBarWidth = getScrollBarWidth($target, true);
+    scrollBarWidth = getScrollBarWidth($target);
 
     var computedStyle = window.getComputedStyle($target);
 

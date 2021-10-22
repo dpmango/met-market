@@ -207,16 +207,20 @@ const Callback = observer(() => {
         <div className={styles.formTitle}>Заявка на металл</div>
 
         <div className={styles.formCta}>
-          <a href="https://whatsupp.com" target="_blank" className={styles.formCtaLink} rel="noreferrer">
+          <a
+            href="https://api.whatsapp.com/send/?phone=79584088908"
+            target="_blank"
+            className={styles.formCtaLink}
+            rel="noreferrer">
             <SvgIcon name="social-whatsapp" />
             <span>Whatsapp</span>
           </a>
-          <a href="https://t.me/" target="_blank" className={styles.formCtaLink} rel="noreferrer">
+          <a href="https://t.me/met_market" target="_blank" className={styles.formCtaLink} rel="noreferrer">
             <SvgIcon name="social-telegram" />
             <span>Telegram</span>
           </a>
-          <a href="tel:88003508625" className={styles.formCtaLink}>
-            <span>8-800-350-86-25</span>
+          <a href="tel:84951043130" className={styles.formCtaLink}>
+            <span className="w-700">8-495-104-31-30</span>
           </a>
         </div>
 

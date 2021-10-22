@@ -21,33 +21,33 @@ const Header = observer(({ className }) => {
               <div className={styles.group}>
                 <div className={styles.footerTitle}>Отдел продаж</div>
 
-                <a href="tel:89266074688" className={styles.footerContact}>
+                <a href="tel:84951043130" className={styles.footerContact} rel="noreferrer">
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="phone" />
                   </div>
-                  <span className="w-600">8 (926) 607 46 88</span>
+                  <span className="w-600">8-495-104-31-30</span>
                 </a>
-                <a href="http://whatsup.com" className={styles.footerContact}>
+                <a
+                  href="https://api.whatsapp.com/send/?phone=79584088908"
+                  target="_blank"
+                  className={styles.footerContact}
+                  rel="noreferrer">
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="social-whatsapp" />
                   </div>
                   <span className="w-600">Whatsapp</span>
                 </a>
-                <a href="http://t.me" className={styles.footerContact}>
+                <a href="https://t.me/met_market" target="_blank" className={styles.footerContact} rel="noreferrer">
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="social-telegram" />
                   </div>
                   <span className="w-600">Telegram</span>
                 </a>
-                <a
-                  href="mailto:&#105;&#110;&#102;&#111;&#064;&#109;&#101;&#116;&#045;&#109;&#097;&#114;&#107;&#101;&#116;&#095;&#115;&#104;&#111;&#112;&#046;&#114;&#117;"
-                  className={styles.footerContact}>
+                <a href="mailto:info@met.market" target="_blank" className={styles.footerContact} rel="noreferrer">
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="email" />
                   </div>
-                  <span>
-                    &#105;&#110;&#102;&#111;&#064;&#109;&#101;&#116;&#045;&#109;&#097;&#114;&#107;&#101;&#116;&#095;&#115;&#104;&#111;&#112;&#046;&#114;&#117;
-                  </span>
+                  <span>info@met.market</span>
                 </a>
                 <div className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>

@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
 import { SvgIcon, Spinner } from '@ui';
 import { CatalogStoreContext, SessionStoreContext, UiStoreContext } from '@store';
 import { useOnClickOutside, useFirstRender } from '@hooks';
-import { formatUGC, updateQueryParams } from '@helpers';
+import { formatUGC, updateQueryParams, ScrollTo } from '@helpers';
 
 import styles from './Search.module.scss';
 
@@ -41,6 +41,8 @@ const Search = observer(({ className }) => {
       const textNormalized = formatUGC(txt);
 
       // const { meta } = catalogContext.searchCatalog(textNormalized, null);
+
+      ScrollTo(0, 300);
 
       if (textNormalized.length >= 2) {
         updateQueryParams({
@@ -89,12 +91,13 @@ const Search = observer(({ className }) => {
   }, [searchText]);
 
   useEffect(() => {
-    if (firstRender && (searchText !== query.search || '')) {
-      setSearchText(query.search || '');
-    }
-
-    if (!query.search) {
-      setSearchText('');
+    if (firstRender) {
+      if (searchText !== query.search || '') {
+        setSearchText(query.search || '');
+      }
+      if (!query.search) {
+        setSearchText('');
+      }
     }
   }, [query.search]);
 
@@ -105,6 +108,8 @@ const Search = observer(({ className }) => {
 
       const textNormalized = formatUGC(searchText);
       if (textNormalized.length >= 2) {
+        ScrollTo(0, 300);
+
         updateQueryParams({
           location,
           history,
@@ -129,6 +134,8 @@ const Search = observer(({ className }) => {
 
   const handleSearchTermClick = useCallback(
     (q) => {
+      ScrollTo(0, 300);
+
       updateQueryParams({
         location,
         history,
@@ -169,6 +176,16 @@ const Search = observer(({ className }) => {
     searchRef,
     useCallback((e) => setShowRecent(false), [setShowRecent])
   );
+
+  useEffect(() => {
+    if (showRecent) {
+      document.body.classList.add('searchShowingRecent');
+    } else {
+      setTimeout(() => {
+        document.body.classList.remove('searchShowingRecent');
+      }, 250);
+    }
+  }, [showRecent]);
 
   const haveLog = sessionContext.log && sessionContext.log.search.length > 0;
 

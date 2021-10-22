@@ -79,9 +79,9 @@
   }
   .close {
     order: 1;
-    position: absolute;
+    position: fixed;
     z-index: 3;
-    top: 0;
+    top: 52px;
     left: 0;
     right: 0;
     display: inline-flex;
@@ -129,7 +129,7 @@
   ._narrow {
     padding: 52px 0 40px;
     .close {
-      top: 0;
+      top: 52px;
       right: 0;
     }
   }
@@ -137,7 +137,7 @@
   ._thanks {
     padding: 80px 20px 40px;
     .close {
-      top: 0;
+      top: 52px;
       right: 0;
     }
   }

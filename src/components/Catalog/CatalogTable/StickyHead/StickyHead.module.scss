@@ -3,14 +3,20 @@
 
   &._sticky {
     z-index: 7;
+    // tr {
+    //   width: 100%;
+    // }
+
     th {
-      border-left: 0 !important;
-      border-right: 0 !important;
+      // border-left: 1px solid white !important;
+      // border-right: 1px solid white !important;
       &:first-child {
+        // border-left: 1px solid white !important;
         border-top-left-radius: 0;
         border-bottom-left-radius: 5px;
       }
       &:last-child {
+        // border-right: 1px solid white !important;
         border-top-right-radius: 0;
         border-bottom-right-radius: 5px;
       }
@@ -24,7 +30,15 @@
     }
   }
   th {
+    position: relative;
+    border-top: 0 !important;
     transition: background 0.1s $ease;
+    &:first-child {
+      border-left: 0 !important;
+    }
+    &:last-child {
+      border-right: 0 !important;
+    }
     &._activeTH {
       background: white;
     }
@@ -70,12 +84,12 @@
       left: 0;
     }
     &.mark {
-      width: calc(((100vw - 80px) * ((0.14 * 4) + 0.1)));
-      left: calc(0px - ((100vw - 36px) * 0.14));
+      width: calc(((100vw - 80px) * (0.15 + (0.14 * 3) + 0.1)));
+      left: calc(0px - ((100vw - 80px) * 0.15));
     }
     &.length {
-      width: calc(((100vw - 80px) * ((0.14 * 4) + 0.1)));
-      left: calc(0px - ((100vw - 36px) * (0.14 + 0.14)));
+      width: calc(((100vw - 80px) * (0.15 + (0.14 * 3) + 0.1)));
+      left: calc(0px - ((100vw - 80px) * (0.14 + 0.15)));
     }
   }
 }
@@ -88,11 +102,11 @@
     }
     &.mark {
       width: calc(((100vw - 80px) * ((0.15 * 4) + 0.1)));
-      left: calc(0px - ((100vw - 36px) * 0.15));
+      left: calc(0px - ((100vw - 80px) * 0.15));
     }
     &.length {
       width: calc(((100vw - 80px) * ((0.15 * 4) + 0.1)));
-      left: calc(0px - ((100vw - 36px) * (0.15 + 0.15)));
+      left: calc(0px - ((100vw - 80px) * (0.15 + 0.15)));
     }
   }
 }

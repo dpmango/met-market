@@ -131,7 +131,7 @@ const CatalogCategories = observer(() => {
 
   useEffect(() => {
     ScrollTo(0, 300);
-  }, [query.category, query.search]);
+  }, [query.category]);
 
   // todo - ?? ?
   useEffect(() => {

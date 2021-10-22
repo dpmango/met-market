@@ -63,21 +63,19 @@
   }
   thead {
     text-align: left;
-    tr {
-      width: 100%;
-    }
+    top: 130px;
+    position: -webkit-sticky;
+    position: sticky;
     th {
-      border-top: 1px solid rgba(black, 0.1);
+      // border-top: 1px solid rgba(black, 0.1);
       background: #f5f5f5;
-      top: 130px;
-      position: -webkit-sticky;
-      position: sticky;
+
       &:first-child {
-        border-left-color: rgba(black, 0.1);
+        // border-left-color: rgba(black, 0.1);
         border-top-left-radius: 5px;
       }
       &:last-child {
-        border-right-color: rgba(black, 0.1);
+        // border-right-color: rgba(black, 0.1);
         border-top-right-radius: 5px;
       }
     }
@@ -87,12 +85,12 @@
       background: #eaecf5;
       td {
         cursor: pointer;
-        &:first-child {
-          border-left-color: rgba(black, 0.1);
-        }
-        &:last-child {
-          border-right-color: rgba(black, 0.1);
-        }
+        // &:first-child {
+        //   border-left-color: rgba(black, 0.1);
+        // }
+        // &:last-child {
+        //   border-right-color: rgba(black, 0.1);
+        // }
       }
     }
     td {
@@ -109,8 +107,8 @@
   font-size: 16px;
   line-height: 22px;
   border-radius: 5px;
-  border-left: 2px solid white;
-  border-right: 2px solid white;
+  border-left: 0 solid white;
+  border-right: 0 solid white;
   a {
     display: block;
     padding: 16px 30px;
@@ -140,9 +138,7 @@
 @include r($xl) {
   .table {
     thead {
-      th {
-        top: 128px;
-      }
+      top: 128px;
     }
     td,
     th {
@@ -177,9 +173,7 @@
 @include r($lg) {
   .table {
     thead {
-      th {
-        top: 113px;
-      }
+      top: 113px;
     }
     td,
     th {
@@ -205,7 +199,7 @@
     margin-bottom: 16px;
     button {
       width: 100%;
-      max-width: 430px;
+      max-width: 428px;
     }
   }
   .metaCount {
@@ -291,9 +285,7 @@
       }
     }
     thead {
-      th {
-        top: 140px;
-      }
+      top: 140px;
     }
     .groupTableHeader {
       display: table-row !important;

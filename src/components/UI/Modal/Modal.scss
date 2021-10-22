@@ -25,9 +25,12 @@
 }
 
 body {
-  &.ReactModal__Body--open {
+  &.scroll-locked {
     overflow: hidden;
   }
+  // &.ReactModal__Body--open {
+  //   overflow: hidden;
+  // }
 }
 
 @include r($md) {

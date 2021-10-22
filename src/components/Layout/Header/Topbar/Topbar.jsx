@@ -38,7 +38,7 @@ const Topbar = observer(({ className }) => {
               <span className="w-700">Отправить заявку</span>
             </a>
             <a
-              href="https://whatsapp.com/"
+              href="https://api.whatsapp.com/send/?phone=79584088908"
               target="_blank"
               className={cns(styles.topbarAction, styles.iconed)}
               rel="noreferrer">
@@ -46,15 +46,15 @@ const Topbar = observer(({ className }) => {
               <span className="w-600">Whatsapp</span>
             </a>
             <a
-              href="https://t.me/"
+              href="https://t.me/met_market"
               target="_blank"
               className={cns(styles.topbarAction, styles.iconed)}
               rel="noreferrer">
               <SvgIcon name="social-telegram" />
               <span className="w-600">Telegram</span>
             </a>
-            <a href="tel:88003508625" className={cns(styles.topbarAction)}>
-              <span className="w-700">8-800-350-86-25</span>
+            <a href="tel:84951043130" className={cns(styles.topbarAction)}>
+              <span className="w-700">8-495-104-31-30</span>
             </a>
           </div>
         </div>

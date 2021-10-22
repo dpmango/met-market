@@ -58,6 +58,8 @@
 }
 @include r($lg) {
   .filterContent {
+    padding-top: 25px;
+    padding-bottom: 25px;
     :global .row {
       margin: -5px;
     }

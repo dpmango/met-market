@@ -120,7 +120,7 @@ const ModalComponent = observer(({ variant, modifier, name, mobTitle, children }
       onRequestClose={closeModal}
       closeTimeoutMS={300}
       style={CSSinJSstyles}
-      preventScroll={true}
+      // preventScroll={true}
       contentLabel="Modal">
       <div className={cns(styles.container, variant && VariantClasses[variant], modifier && ModifierClasses[modifier])}>
         <div className={cns('close', styles.close)} onClick={closeModal}>

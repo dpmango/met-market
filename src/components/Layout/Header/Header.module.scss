@@ -214,7 +214,7 @@
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
   border-radius: 0 0 10px 10px;
   opacity: 0;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   pointer-events: none;
   backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
@@ -228,7 +228,7 @@
 .overlayScroller {
   position: relative;
   z-index: 2;
-  height: 100vh;
+  height: 686px;
   max-height: calc(100vh - 170px - 80px);
   display: flex;
   flex-direction: column;
@@ -240,7 +240,7 @@
 .overlayContent {
   flex: 0 0 auto;
   position: relative;
-  padding: 40px 0 32px;
+  padding: 28px 0 32px;
 }
 
 .overlaySocials {
@@ -325,6 +325,7 @@
     right: 12px;
   }
 }
+
 @include r($md) {
   .overlay {
     z-index: 1;
@@ -333,6 +334,8 @@
     border-radius: 0;
     color: white;
     transition: none;
+    overflow-y: auto;
+    overflow-x: hidden;
     :global .catalog {
       padding-left: 0;
     }
@@ -345,6 +348,7 @@
     max-height: calc(100vh - 52px);
     height: calc(100vh - 52px);
     padding-top: 64px;
+    // overflow: hidden;
     // enable scrolling only inside list
     // overflow: hidden;
     // :global .container {
@@ -380,7 +384,7 @@
   .overlayLinks {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 92px;
+    margin-bottom: 36px;
     button {
       width: 100%;
       max-width: 400px;
@@ -494,6 +498,29 @@
       top: 53px;
       margin-top: 0;
       overflow: hidden;
+    }
+  }
+  &.searchShowingRecent {
+    @include r($md) {
+      .mobileSearch {
+        overflow: visible;
+      }
+    }
+  }
+}
+
+:global body.is-mobile {
+  @include r($md) {
+    .overlayLinks {
+      margin-bottom: 92px;
+    }
+  }
+}
+
+:global body.has-scrollbar {
+  @include rmin($lg + 1) {
+    .overlayContent {
+      margin-right: -16px;
     }
   }
 }

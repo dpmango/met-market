@@ -1,3 +1,4 @@
+import { getScrollBarWidth } from '@helpers';
 export default class BrowserInfo {
   constructor() {
     this.setBodyTags();
@@ -39,6 +40,14 @@ export default class BrowserInfo {
     }
   };
 
+  hasScrollbar = () => {
+    if (getScrollBarWidth(document.querySelector('.overlayScroller'))) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   setBodyTags = () => {
     if (!document) return;
     const body = document.querySelector('body');
@@ -53,6 +62,9 @@ export default class BrowserInfo {
 
     if (this.isIosDevice()) {
       body.classList.add('is-ios');
+    }
+    if (this.hasScrollbar()) {
+      body.classList.add('has-scrollbar');
     }
   };
 }

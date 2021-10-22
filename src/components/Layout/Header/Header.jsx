@@ -86,7 +86,14 @@ const Header = observer(({ className }) => {
 
   useOnClickOutside(
     headerRef,
-    useCallback((e) => uiContext.setHeaderCatalog(false), [uiContext.setHeaderCatalog])
+    useCallback(
+      (e) => {
+        if (width >= 768) {
+          uiContext.setHeaderCatalog(false);
+        }
+      },
+      [uiContext.setHeaderCatalog, width]
+    )
   );
 
   useEventListener('scroll', handleScroll);
@@ -97,13 +104,30 @@ const Header = observer(({ className }) => {
   }, [query.category, query.search]);
 
   useEffect(() => {
-    if (activeModal) {
-      uiContext.setHeaderCatalog(false);
-      fillGapTarget(document.querySelector('header'));
-      fillGapTarget(document.body);
-    } else {
-      unfillGapTarget(document.querySelector('header'));
-      unfillGapTarget(document.body);
+    if (width >= 768) {
+      const targets = [
+        document.body,
+        document.querySelector('header'),
+        document.querySelector('.breadcrumbs'),
+        document.querySelector('.scrolltop'),
+      ];
+
+      if (activeModal) {
+        uiContext.setHeaderCatalog(false);
+        targets.forEach((t) => {
+          fillGapTarget(t);
+        });
+
+        document.body.classList.add('scroll-locked');
+      } else {
+        setTimeout(() => {
+          targets.forEach((t) => {
+            unfillGapTarget(t);
+          });
+
+          document.body.classList.remove('scroll-locked');
+        }, 300);
+      }
     }
   }, [activeModal]);
 
@@ -155,21 +179,29 @@ const Header = observer(({ className }) => {
           </div>
         </div>
 
-        <div className={cns(styles.overlay, catalogOpened && styles._active)}>
-          <div className={styles.overlayScroller} ref={scrollerRef}>
-            <div className={styles.overlayContent}>
+        <div className={cns(styles.overlay, catalogOpened && styles._active, 'overlay')}>
+          <div className={cns(styles.overlayScroller, 'overlayScroller')} ref={scrollerRef}>
+            <div className={cns(styles.overlayContent, 'overlayContent')}>
               <div className="container">
                 <div className={styles.overlaySocials}>
-                  <a href="https://whatsupp.com" target="_blank" className={styles.overlaySocialLink} rel="noreferrer">
+                  <a
+                    href="https://api.whatsapp.com/send/?phone=79584088908"
+                    target="_blank"
+                    className={styles.overlaySocialLink}
+                    rel="noreferrer">
                     <SvgIcon name="social-whatsapp" />
                     <span>Whatsapp</span>
                   </a>
-                  <a href="https://t.me/" target="_blank" className={styles.overlaySocialLink} rel="noreferrer">
+                  <a
+                    href="https://t.me/met_market"
+                    target="_blank"
+                    className={styles.overlaySocialLink}
+                    rel="noreferrer">
                     <SvgIcon name="social-telegram" />
                     <span>Telegram</span>
                   </a>
-                  <a href="tel:88003508625" className={styles.overlaySocialLink}>
-                    <span>8-800-350-86-25</span>
+                  <a href="tel:84951043130" className={styles.overlaySocialLink}>
+                    <span>8-495-104-31-30</span>
                   </a>
                 </div>
 
@@ -179,7 +211,7 @@ const Header = observer(({ className }) => {
                 </div>
                 <CatalogMenu abcOrder={abcOrder} />
 
-                <div className={styles.overlayLinks}>
+                <div className={cns(styles.overlayLinks, 'overlayLinks')}>
                   <a href="/catalog.pdf" target="_blank" className={cns(styles.priceList)}>
                     <SvgIcon name="pdf" />
                     <span className="w-700">Прайс-лист</span>
@@ -205,7 +237,7 @@ const Header = observer(({ className }) => {
       </header>
 
       {width < 768 && (
-        <div className={cns(styles.mobileSearch, 'mobileSearch')}>
+        <div className={cns(styles.mobileSearch, 'mobileSearch')} onClick={(e) => e.stopPropagation()}>
           <div
             className={styles.mobileSearchWrapper}
             style={{ transform: catalogOpened ? `translate3d(0,-${overlayScroll}px,0)` : 'none' }}>

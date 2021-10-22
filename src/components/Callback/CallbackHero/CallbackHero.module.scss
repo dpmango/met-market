@@ -278,12 +278,23 @@
 }
 
 @include r($mobile-s) {
-  .boxWrapper {
-    // border-radius: 0;
-    margin-left: -16px;
-    margin-right: -16px;
+  // .boxWrapper {
+  //   // border-radius: 0;
+  //   // margin-left: -16px;
+  //   // margin-right: -16px;
+  // }
+  .contentTitle {
+    font-size: calc(10px + 2vw);
   }
   .contentList li {
     font-size: 11px;
+  }
+
+  .form {
+    margin-top: 18px;
+  }
+
+  .formTitle {
+    font-size: 15px;
   }
 }

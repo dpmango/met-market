@@ -207,8 +207,8 @@
     max-width: 400px;
   }
   .numInput {
-    width: 83px;
     :global input {
+      width: 83px;
       padding-top: 8px;
       padding-bottom: 8px;
     }
@@ -227,8 +227,8 @@
       padding-left: 0;
     }
     &.wide {
-      flex: 0 1 430px;
-      max-width: 430px;
+      flex: 0 1 428px;
+      max-width: 428px;
     }
     > div {
       label {
@@ -240,7 +240,7 @@
     }
     button {
       width: 100%;
-      max-width: 430px;
+      max-width: 428px;
     }
   }
 
