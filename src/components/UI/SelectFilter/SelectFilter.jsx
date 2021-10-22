@@ -117,18 +117,23 @@ const SelectComponent = observer(
     };
 
     const handleAllClick = useCallback(() => {
+      let filterUp = {};
+
       if (!allSelected) {
-        const filterUp = catalogContext.resetFilter(name);
-        updateQueryParams({
-          history,
-          location,
-          payload: {
-            type: 'filter',
-            value: filterUp,
-          },
-        });
+        filterUp = catalogContext.resetFilter(name);
+      } else {
+        filterUp = catalogContext.selectAllFilters(name, optionsMapped);
       }
-    }, [allSelected, name, history, location]);
+
+      updateQueryParams({
+        history,
+        location,
+        payload: {
+          type: 'filter',
+          value: filterUp,
+        },
+      });
+    }, [allSelected, name, history, location, optionsMapped]);
 
     const onKeyDown = useCallback(
       (e) => {

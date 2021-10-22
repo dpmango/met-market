@@ -278,15 +278,10 @@
 }
 
 @include r($mobile-s) {
-  // .hero {
-  // }
   .boxWrapper {
     // border-radius: 0;
     margin-left: -16px;
     margin-right: -16px;
-  }
-  .contentTitle {
-    font-size: 17px;
   }
   .contentList li {
     font-size: 11px;

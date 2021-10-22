@@ -521,6 +521,18 @@ export default class CatalogStore {
     return filters;
   }
 
+  selectAllFilters(name, options) {
+    let newFilter = {
+      ...this.filters,
+      ...{
+        [name]: options,
+      },
+    };
+
+    this.filters = newFilter;
+    return newFilter;
+  }
+
   resetFilter(name) {
     let newFilter = {
       ...this.filters,
