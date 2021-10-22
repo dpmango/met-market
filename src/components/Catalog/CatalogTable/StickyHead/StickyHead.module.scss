@@ -4,6 +4,8 @@
   &._sticky {
     z-index: 7;
     th {
+      border-left: 0 !important;
+      border-right: 0 !important;
       &:first-child {
         border-top-left-radius: 0;
         border-bottom-left-radius: 5px;

@@ -100,3 +100,12 @@
   color: $colorRed;
   font-weight: 500;
 }
+
+:global body.is-mobile {
+  .numinput input {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      display: none;
+    }
+  }
+}

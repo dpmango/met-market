@@ -230,6 +230,7 @@ const AddToCart = observer(() => {
                 <div className={styles.actionsWrapper}>
                   <div className={styles.actionCol}>
                     <NumInput
+                      className={styles.numInput}
                       variant="small"
                       label={`Количество, ${modalData.priceQuantityUnit}`}
                       value={count}

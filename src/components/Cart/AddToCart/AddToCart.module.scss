@@ -202,23 +202,37 @@
 
   .actionsWrapper {
     // display: block;
-    // justify-content: flex-start;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 400px;
   }
+  .numInput {
+    width: 83px;
+    :global input {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+  }
+
   .actions {
     padding-left: 0;
     padding-right: 0;
   }
   .actionCol {
+    width: auto;
     flex: 0 0 $col4;
     max-width: $col4;
-
+    min-width: 1px;
+    &:nth-child(3) {
+      padding-left: 0;
+    }
     &.wide {
       flex: 0 1 430px;
       max-width: 430px;
     }
     > div {
       label {
-        width: 100%;
+        // width: 100%;
         max-width: 100px;
         font-size: 12px;
         margin-bottom: 12px;
@@ -234,6 +248,19 @@
     :global input {
       border: 0;
       padding: 0;
+    }
+  }
+}
+
+@include r($mobile-s) {
+  .actionsWrapper {
+    margin: -10px 0;
+  }
+  .actionCol {
+    padding: 10px 0;
+    &:nth-child(2),
+    &:nth-child(3) {
+      padding-left: 10px;
     }
   }
 }

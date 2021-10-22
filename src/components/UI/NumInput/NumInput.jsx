@@ -128,7 +128,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
   };
 
   return (
-    <div style={props.style} className={cns(styles.input, variant && VariantClasses[variant], className)}>
+    <div style={props.style} className={cns(styles.input, variant && VariantClasses[variant], className, 'numinput')}>
       {label && (
         <label className={styles.label} htmlFor={id}>
           {label}
