@@ -9,7 +9,7 @@ import uniqueId from 'lodash/uniqueId';
 import { Input, SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useOnClickOutside, useWindowSize, useFirstRender } from '@hooks';
-import { formatUGC, updateQueryParams } from '@helpers';
+import { formatUGC, updateQueryParams, isMobile } from '@helpers';
 
 import styles from './SelectFilter.module.scss';
 
@@ -106,6 +106,8 @@ const SelectComponent = observer(
     const handleOptionClick = (option) => {
       const filter = catalogContext.addFilter(option, name);
 
+      onChange && onChange();
+
       updateQueryParams({
         history,
         location,
@@ -124,6 +126,8 @@ const SelectComponent = observer(
       } else {
         filterUp = catalogContext.selectAllFilters(name, optionsMapped);
       }
+
+      onChange && onChange();
 
       updateQueryParams({
         history,
@@ -156,7 +160,7 @@ const SelectComponent = observer(
       if (opened) {
         setSearch('');
       }
-      if (opened && width >= 768) {
+      if (opened && !isMobile()) {
         searchInputRef && searchInputRef.current.focus();
       }
     }, [opened]);
@@ -183,7 +187,9 @@ const SelectComponent = observer(
           </div>
         )}
 
-        <div className={cns(styles.selectOptions, optionsClassName, name && styles[name])}>
+        <div
+          className={cns(styles.selectOptions, optionsClassName, name && styles[name])}
+          onClick={(e) => e.stopPropagation()}>
           <div className={styles.selectSearch}>
             <Input
               autoComplete="false"

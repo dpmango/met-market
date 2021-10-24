@@ -93,7 +93,9 @@ const CatalogTable = observer(() => {
     return `${pluralShowing} ${showing} ${pluralProduct} из ${data.length}`;
   }, [data, pageSize]);
 
+  /////////////////
   // click handlers
+  /////////////////
   const handleAddToCartClick = useCallback(
     (id) => {
       const item = getCatalogItem(id);
@@ -135,7 +137,13 @@ const CatalogTable = observer(() => {
     [history, location]
   );
 
+  const handleFiltersSelect = useCallback(() => {
+    ScrollTo(catalogRef.current.offsetTop - 60, 300);
+  }, [catalogRef]);
+
+  //////////
   // effects
+  //////////
   useEffect(() => {
     if (!loading) {
       uiContext.checkQuery(query.origin);
@@ -199,15 +207,15 @@ const CatalogTable = observer(() => {
         </Button>
       </div>
 
-      <MobileFilter metaItemsCount={metaItemsCount} categoryData={categoryData} />
+      <MobileFilter metaItemsCount={metaItemsCount} categoryData={categoryData} onSelect={handleFiltersSelect} />
 
       <table {...getTableProps()} className={styles.table}>
-        <StickyHead headerGroups={headerGroups} categoryData={categoryData} />
+        <StickyHead headerGroups={headerGroups} categoryData={categoryData} onSelect={handleFiltersSelect} />
 
         {page && page.length > 0 && (
           <tbody {...getTableBodyProps()}>
             {page.map((row, i) => {
-              // Custom grouping functionality
+              // Custom grouping functionality (no such grouping included in react-table)
               const prevRow = page[i - 1] && page[i - 1].original.category.split('||');
               const categories = row.original.category.split('||');
               let category = categories ? categories[categories.length - 1] : null;

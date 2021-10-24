@@ -215,7 +215,7 @@ const Callback = observer(() => {
             <SvgIcon name="social-whatsapp" />
             <span>Whatsapp</span>
           </a>
-          <a href="https://t.me/met_market" target="_blank" className={styles.formCtaLink} rel="noreferrer">
+          <a href="https://t.me/METMarket_bot" target="_blank" className={styles.formCtaLink} rel="noreferrer">
             <SvgIcon name="social-telegram" />
             <span>Telegram</span>
           </a>

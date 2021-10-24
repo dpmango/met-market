@@ -1,15 +1,10 @@
 /* eslint-disable react/jsx-key */
-import React, { useRef, useEffect, useReducer, useContext, useMemo, memo, useCallback } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React, { useContext, memo } from 'react';
 import { observer } from 'mobx-react';
-import { useTable, usePagination } from 'react-table';
-import cns from 'classnames';
 
 import { SvgIcon } from '@ui';
-import { CartStoreContext, CatalogStoreContext } from '@store';
-import { updateQueryParams } from '@helpers';
+import { CartStoreContext } from '@store';
 
-import StickyHead from './StickyHead';
 import styles from './CatalogTable.module.scss';
 
 const TableBody = observer(({ row, prepareRow, handleAddToCartClick }) => {

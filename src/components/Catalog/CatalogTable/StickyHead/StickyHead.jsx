@@ -11,7 +11,7 @@ import { useOnClickOutside } from '@hooks';
 
 import styles from './StickyHead.module.scss';
 
-const StickyHead = observer(({ headerGroups, categoryData }) => {
+const StickyHead = observer(({ headerGroups, categoryData, onSelect }) => {
   const headRef = useRef(null);
   const { query } = useContext(UiStoreContext);
 
@@ -67,6 +67,7 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
                         options={categoryData.filters.size}
                         opened={opened === 'size'}
                         setOpened={(v) => null}
+                        onChange={() => onSelect && onSelect()}
                       />
                     </div>
                   )}
@@ -81,6 +82,7 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
                         options={categoryData.filters.mark}
                         opened={opened === 'mark'}
                         setOpened={(v) => null}
+                        onChange={() => onSelect && onSelect()}
                       />
                     </div>
                   )}
@@ -95,6 +97,7 @@ const StickyHead = observer(({ headerGroups, categoryData }) => {
                         options={categoryData.filters['length']}
                         opened={opened === 'length'}
                         setOpened={(v) => null}
+                        onChange={() => onSelect && onSelect()}
                       />
                     </div>
                   )}

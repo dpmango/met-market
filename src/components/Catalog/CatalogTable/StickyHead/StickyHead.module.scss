@@ -20,6 +20,10 @@
         border-top-right-radius: 0;
         border-bottom-right-radius: 5px;
       }
+      &._clickable {
+        cursor: pointer;
+        user-select: none;
+      }
     }
 
     .cell {
@@ -41,10 +45,6 @@
     }
     &._activeTH {
       background: white;
-    }
-    &._clickable {
-      cursor: pointer;
-      user-select: none;
     }
   }
 }

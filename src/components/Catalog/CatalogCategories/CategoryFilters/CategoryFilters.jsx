@@ -55,7 +55,9 @@ const CategoryFilters = observer(({ image, data }) => {
 
   return data ? (
     <div className={styles.filters}>
-      <div className={styles.filterImage}>{image && <LazyMedia src={image} width={240} height={100} />}</div>
+      <div className={styles.filterImage}>
+        <LazyMedia src={image || 'img/search-placeholder.jpg'} width={240} height={100} />
+      </div>
       <div className={styles.filterContent} ref={contentRef}>
         <div className={cns('row', styles.filterContentRow)}>
           <div className="col col-4">

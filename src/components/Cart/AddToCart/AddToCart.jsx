@@ -7,7 +7,8 @@ import cns from 'classnames';
 import { Modal, Spinner, Button, Input, NumInput, SvgIcon } from '@ui';
 import { UiStoreContext, CatalogStoreContext, CartStoreContext } from '@store';
 import { useFirstRender, useWindowSize } from '@hooks';
-import { priceWithTonnage, formatPrice } from '@helpers';
+import { priceWithTonnage, formatPrice, isMobile } from '@helpers';
+import { browser } from '@src/index';
 
 import styles from './AddToCart.module.scss';
 
@@ -160,7 +161,7 @@ const AddToCart = observer(() => {
   }, [modalData, count]);
 
   useEffect(() => {
-    if (query.product && modalData && width >= 768) {
+    if (query.product && modalData && !isMobile()) {
       countRef && countRef.current && countRef.current.focus();
     }
   }, [query, modalData]);

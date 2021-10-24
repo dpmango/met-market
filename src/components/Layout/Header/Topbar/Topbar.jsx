@@ -46,7 +46,7 @@ const Topbar = observer(({ className }) => {
               <span className="w-600">Whatsapp</span>
             </a>
             <a
-              href="https://t.me/met_market"
+              href="https://t.me/METMarket_bot"
               target="_blank"
               className={cns(styles.topbarAction, styles.iconed)}
               rel="noreferrer">

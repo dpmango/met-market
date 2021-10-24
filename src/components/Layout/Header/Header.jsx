@@ -104,6 +104,8 @@ const Header = observer(({ className }) => {
   }, [query.category, query.search]);
 
   useEffect(() => {
+    uiContext.setHeaderCatalog(false);
+
     if (width >= 768) {
       const targets = [
         document.body,
@@ -193,7 +195,7 @@ const Header = observer(({ className }) => {
                     <span>Whatsapp</span>
                   </a>
                   <a
-                    href="https://t.me/met_market"
+                    href="https://t.me/METMarket_bot"
                     target="_blank"
                     className={styles.overlaySocialLink}
                     rel="noreferrer">

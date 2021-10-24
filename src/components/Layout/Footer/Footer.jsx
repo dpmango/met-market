@@ -37,7 +37,7 @@ const Header = observer(({ className }) => {
                   </div>
                   <span className="w-600">Whatsapp</span>
                 </a>
-                <a href="https://t.me/met_market" target="_blank" className={styles.footerContact} rel="noreferrer">
+                <a href="https://t.me/METMarket_bot" target="_blank" className={styles.footerContact} rel="noreferrer">
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="social-telegram" />
                   </div>

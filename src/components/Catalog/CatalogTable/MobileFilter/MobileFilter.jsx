@@ -13,7 +13,7 @@ import { updateQueryParams } from '@helpers';
 import CategoryTags from '@c/Catalog/CatalogCategories/CategoryTags';
 import styles from './MobileFilter.module.scss';
 
-const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
+const MobileFilter = observer(({ categoryData, metaItemsCount, onSelect }) => {
   const location = useLocation();
   const history = useHistory();
   const height = use100vh();
@@ -58,6 +58,10 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
   const scrollerHeight = useMemo(() => {
     return height - 52 - 52;
   }, [height]);
+
+  const filtersLength = useMemo(() => {
+    return filters.size.length + filters.mark.length + filters.length.length;
+  }, [filters]);
 
   const handleEscapeKey = useCallback(
     (e) => {
@@ -109,6 +113,7 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
         <div className={cns(styles.mobFilterToggle)} onClick={() => setVisible(!visible)}>
           <SvgIcon name="filters" />
           <span>Фильтры</span>
+          {filtersLength > 0 && <div className={styles.mobFilterToggleTag}>{filtersLength}</div>}
           <div className={styles.mobFilterIcon}>
             <SvgIcon name="caret" />
           </div>
@@ -140,6 +145,7 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
               options={categoryData.filters.size}
               opened={visible && opened === 'size'}
               setOpened={(v) => setOpened(v ? 'size' : false)}
+              onChange={() => onSelect && onSelect()}
             />
             <SelectFilter
               inline
@@ -150,6 +156,7 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
               options={categoryData.filters.mark}
               opened={visible && opened === 'mark'}
               setOpened={(v) => setOpened(v ? 'mark' : false)}
+              onChange={() => onSelect && onSelect()}
             />
             <SelectFilter
               inline
@@ -160,6 +167,7 @@ const MobileFilter = observer(({ categoryData, metaItemsCount }) => {
               options={categoryData.filters['length']}
               opened={visible && opened === 'length'}
               setOpened={(v) => setOpened(v ? 'length' : false)}
+              onChange={() => onSelect && onSelect()}
             />
             <div className={styles.reset}>
               <Button outline={!someFiltersActive} disabled={!someFiltersActive} onClick={resetFilters}>

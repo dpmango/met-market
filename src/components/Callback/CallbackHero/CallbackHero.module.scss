@@ -134,6 +134,9 @@
   min-width: 200px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  &.loading {
+    position: absolute;
+  }
 }
 
 .decor {

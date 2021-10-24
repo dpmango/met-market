@@ -63,9 +63,14 @@
         :global .svg-icon {
           transform: rotate(180deg);
         }
-
         color: white;
       }
+
+      .mobFilterToggleTag {
+        background: white;
+        color: $colorPrimary;
+      }
+
       .mobFilterSubtitle {
         color: white;
         font-size: 10px;
@@ -111,9 +116,21 @@
       text-transform: uppercase;
     }
   }
+
+  .mobFilterToggleTag {
+    background: $colorPrimary;
+    color: white;
+    border-radius: 10px;
+    padding: 2px 5px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 1;
+    margin-right: 10px;
+  }
+
   .mobFilterIcon {
     font-size: 0;
-    transition: color 0.25s $ease;
+    // transition: color 0.25s $ease;
     :global .svg-icon {
       font-size: 7px;
       transform-origin: center center;
@@ -134,8 +151,8 @@
     position: absolute;
     top: 100%;
     z-index: 1;
-    left: 0;
-    right: 0;
+    left: -1px;
+    right: -1px;
     min-height: 1px;
     height: calc(100vh - 52px - 52px);
     padding: 20px 16px 120px 16px;

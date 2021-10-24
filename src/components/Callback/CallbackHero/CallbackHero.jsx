@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { Formik, Form, Field } from 'formik';
 import { useToasts } from 'react-toast-notifications';
 import debounce from 'lodash/debounce';
+import cns from 'classnames';
 
 import { Spinner, Button, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CatalogStoreContext, CallbackStoreContext } from '@store';
@@ -19,6 +20,7 @@ const CallbackHero = observer(() => {
 
   const callbackContext = useContext(CallbackStoreContext);
   const { query } = useContext(UiStoreContext);
+  const uiContext = useContext(UiStoreContext);
   const catalogContext = useContext(CatalogStoreContext);
 
   const [loading, setLoading] = useState(false);
@@ -115,7 +117,7 @@ const CallbackHero = observer(() => {
                     <Button
                       type="submit"
                       theme="accent"
-                      className={styles.formButton}
+                      className={cns(styles.formButton, loading && styles._loading)}
                       loading={loading}
                       disabled={isSubmitting}>
                       Рассчитать стоимость

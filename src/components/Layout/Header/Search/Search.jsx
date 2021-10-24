@@ -95,11 +95,14 @@ const Search = observer(({ className }) => {
       if (searchText !== query.search || '') {
         setSearchText(query.search || '');
       }
-      if (!query.search) {
-        setSearchText('');
-      }
     }
   }, [query.search]);
+
+  useEffect(() => {
+    if (!firstRender) {
+      setSearchText('');
+    }
+  }, [query.category]);
 
   // event handlers
   const handleSearchSubmit = useCallback(

@@ -93,8 +93,8 @@
 
 .incartIcon {
   color: $colorPrimary;
-  font-size: 18px;
   margin-right: 20px;
+  font-size: 18px;
 }
 
 .incartTitle {
@@ -107,6 +107,10 @@
   color: $fontColor;
   cursor: pointer;
   transition: color 0.25s $ease;
+  font-size: 0;
+  :global .svg-icon {
+    font-size: 16px;
+  }
   &:hover {
     color: $colorRed;
   }
@@ -200,6 +204,14 @@
     padding-right: 0;
   }
 
+  .incartIcon {
+    margin-right: 14px;
+  }
+
+  .incartTitle {
+    margin-right: 14px;
+  }
+
   .actionsWrapper {
     // display: block;
     align-items: flex-start;
@@ -262,5 +274,13 @@
     &:nth-child(3) {
       padding-left: 10px;
     }
+  }
+
+  .incartIcon {
+    font-size: 16px;
+  }
+
+  .incartTitle {
+    font-size: 13px;
   }
 }
