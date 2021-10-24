@@ -116,6 +116,13 @@ const Cart = observer(() => {
     [cartTotal]
   );
 
+  const preventSubmitOnEnter = useCallback((e) => {
+    if (e.keyCode === 13) {
+      e.target.blur();
+      return;
+    }
+  }, []);
+
   useEffect(() => {
     if (prevModal !== 'cart' && activeModal === 'cart') {
       updateQueryParams({
@@ -228,6 +235,7 @@ const Cart = observer(() => {
                         onChange={(v) => {
                           formik.setFieldValue('delivery', v);
                         }}
+                        onKeyDown={preventSubmitOnEnter}
                       />
 
                       <Button theme="primary" className={styles.actionBtnCta} onClick={() => setDelivery(false)}>
@@ -252,6 +260,7 @@ const Cart = observer(() => {
                         onChange={(v) => {
                           formik.setFieldValue('comment', v);
                         }}
+                        onKeyDown={preventSubmitOnEnter}
                       />
 
                       <Button theme="primary" className={styles.actionBtnCta} onClick={() => setComment(false)}>
@@ -277,6 +286,7 @@ const Cart = observer(() => {
                     onChange={(v) => {
                       formik.setFieldValue('phone', v);
                     }}
+                    onKeyDown={preventSubmitOnEnter}
                   />
 
                   <Checkbox

@@ -70,6 +70,13 @@ const CallbackHero = observer(() => {
     []
   );
 
+  const preventSubmitOnEnter = useCallback((e) => {
+    if (e.keyCode === 13) {
+      e.target.blur();
+      return;
+    }
+  }, []);
+
   if (query.search || query.category) return null;
 
   return (
@@ -110,6 +117,7 @@ const CallbackHero = observer(() => {
                             setFieldValue(field.name, v);
                             submitTyping(field.name, v);
                           }}
+                          onKeyDown={preventSubmitOnEnter}
                         />
                       )}
                     </Field>

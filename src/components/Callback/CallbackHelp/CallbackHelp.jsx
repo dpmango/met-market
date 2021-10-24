@@ -69,6 +69,13 @@ const CallbackHelp = observer(() => {
     []
   );
 
+  const preventSubmitOnEnter = useCallback((e) => {
+    if (e.keyCode === 13) {
+      e.target.blur();
+      return;
+    }
+  }, []);
+
   return (
     <div className={styles.help}>
       <div className="container">
@@ -94,6 +101,7 @@ const CallbackHelp = observer(() => {
                           setFieldValue(field.name, v);
                           submitTyping(field.name, v);
                         }}
+                        onKeyDown={preventSubmitOnEnter}
                       />
                     )}
                   </Field>
