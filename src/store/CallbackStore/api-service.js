@@ -27,13 +27,18 @@ class CallbackService extends ApiService {
     }
   }
 
-  async upload({ sessionId, files }) {
+  async upload({ sessionId, files, progress }) {
     try {
-      const fileUploads = files.map(
+      let uploading = files;
+      if (!Array.isArray(uploading)) {
+        uploading = [files];
+      }
+
+      const fileUploads = uploading.map(
         (file, i) =>
           new Promise((resolve, reject) => {
             fileApi
-              .upload({ sessionId, file })
+              .upload({ sessionId, file, progress })
               .then(({ data }) => resolve(data))
               .catch((err) => reject(err));
           })

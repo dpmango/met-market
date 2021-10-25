@@ -1,0 +1,65 @@
+.file {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.delete {
+  flex: 0 0 34px;
+  position: relative;
+  z-index: 2;
+  color: $colorRed;
+  padding: 5px 10px 5px 5px;
+  cursor: pointer;
+  font-size: 0;
+  transition: color 0.25s $ease;
+  :global .svg-icon {
+    font-size: 14px;
+  }
+  &:hover {
+    color: $colorLink;
+  }
+}
+
+.content {
+  flex: 0 0 calc(100% - 34px);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  span {
+    margin-left: 8px;
+    color: $colorGray;
+  }
+}
+
+.progress {
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 100%;
+  margin-left: 34px;
+  background: $borderColor;
+  width: 100%;
+  max-width: 100px;
+  height: 4px;
+  border-radius: 6px;
+  margin-top: 6px;
+  &._uploaded {
+    .progressInner {
+      background: $colorGreen;
+    }
+  }
+}
+
+.progressInner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  background: $colorLink;
+  transition: width 0.1s linear;
+}

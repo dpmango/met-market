@@ -6,9 +6,15 @@ const AxiosInterceptors = ({ children }) => {
   const { setLoading } = useContext(LoaderContext);
 
   useMemo(() => {
+    const shouldUseInterceptor = (url) => {
+      const keys = ['log', 'file'];
+
+      return keys.every((key) => !url.includes(key));
+    };
+
     api.interceptors.request.use(
       (x) => {
-        if (!x.url.includes('log')) {
+        if (shouldUseInterceptor(x.url)) {
           setLoading(true);
         }
 
@@ -22,7 +28,7 @@ const AxiosInterceptors = ({ children }) => {
 
     api.interceptors.response.use(
       (x) => {
-        if (!x.config.url.includes('log')) {
+        if (shouldUseInterceptor(x.config.url)) {
           setLoading(false);
         }
 

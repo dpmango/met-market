@@ -136,7 +136,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       )}
 
       <div className={styles.input_wrapper}>
-        <input type="number" step="0.01" min="0.01" max="999" {...inputProps} />
+        <input type="number" step="0.01" min="0.01" {...inputProps} />
 
         {/* <div className={cns(styles.arrow, styles._up)} onClick={handleUpClick}>
           <SvgIcon name="up"></SvgIcon>

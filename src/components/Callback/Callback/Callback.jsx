@@ -7,11 +7,11 @@ import { useToasts } from 'react-toast-notifications';
 import cns from 'classnames';
 import debounce from 'lodash/debounce';
 
-import { Modal, Spinner, Button, Checkbox, Input, SvgIcon } from '@ui';
+import { Modal, Button, Checkbox, Input, File, SvgIcon } from '@ui';
 import { UiStoreContext, CallbackStoreContext } from '@store';
 import { useFirstRender } from '@hooks';
 import { ruPhoneRegex } from '@helpers/Validation';
-import { formatBytes, bytesToMegaBytes, updateQueryParams } from '@helpers';
+import { bytesToMegaBytes, updateQueryParams } from '@helpers';
 
 import styles from './Callback.module.scss';
 
@@ -51,9 +51,16 @@ const Callback = observer(() => {
     return errors;
   }, []);
 
+  const someFilesUploading = useMemo(() => {
+    if (files && files.length > 0) {
+      return files.some((f) => !f.upload);
+    }
+    return false;
+  }, [files]);
+
   const handleSubmit = useCallback(
     async (values, { resetForm }) => {
-      if (loading) return true;
+      if (loading || someFilesUploading) return true;
       setLoading(true);
 
       let buildRequest = {
@@ -62,20 +69,13 @@ const Callback = observer(() => {
       };
 
       if (files && files.length > 0) {
-        const uploades = await callbackContext.uploadFile(files).catch((err) => {
-          addToast('Ошибка при загрузке', { appearance: 'error' });
-          setLoading(false);
-          setFiles([]);
-          return;
-        });
-
         buildRequest = {
           ...buildRequest,
           payload: [
             ...buildRequest.payload,
-            ...uploades.map((x, idx) => ({
+            ...files.map((x, idx) => ({
               id: `file.${idx}`,
-              content: x.fileId,
+              content: x.upload.fileId,
             })),
           ],
         };
@@ -95,7 +95,7 @@ const Callback = observer(() => {
 
       setLoading(false);
     },
-    [loading, files]
+    [loading, someFilesUploading, files]
   );
 
   const submitTyping = useCallback(
@@ -116,7 +116,8 @@ const Callback = observer(() => {
 
   const handleInputUpload = useCallback(
     (e) => {
-      let newUpload = [];
+      let newFiles = [];
+
       if (e.target && e.target.files && e.target.files[0]) {
         Array.from(e.target.files).forEach((file) => {
           // limit mime
@@ -139,10 +140,13 @@ const Callback = observer(() => {
             }
           }
 
-          if (file) newUpload.push(file);
+          if (file) {
+            newFiles.push({ file, upload: null });
+          }
         });
 
-        setFiles([...files, ...newUpload]);
+        setFiles([...files, ...newFiles]);
+
         e.target.value = '';
       }
 
@@ -151,13 +155,24 @@ const Callback = observer(() => {
     [files]
   );
 
-  const handleDeleteClick = useCallback(
+  // files methods
+  const handleFileDelete = useCallback(
     (delFile) => {
-      setFiles([...files.filter((f) => f !== delFile)]);
+      setFiles([...files.filter((f) => f.file.name !== delFile.file.name)]);
     },
     [files]
   );
 
+  const handleFileSuccess = useCallback(
+    (upload) => {
+      setFiles((fls) => [
+        ...fls.map((f) => (f.file.name !== upload.file.name ? f : { file: f.file, upload: upload.upload })),
+      ]);
+    },
+    [setFiles]
+  );
+
+  // effects
   useEffect(() => {
     if (prevModal !== 'callback' && activeModal === 'callback') {
       updateQueryParams({
@@ -276,26 +291,15 @@ const Callback = observer(() => {
                 onChange={handleInputUpload}
               />
 
-              {files && files.length > 0 ? (
-                <>
-                  {files.map((x, idx) => (
-                    <div key={idx} className={styles.uploadFile}>
-                      <div className={styles.deleteUpload} onClick={() => handleDeleteClick(x)}>
-                        <SvgIcon name="close" />
-                      </div>
-                      {x.name}
-                      <span>{formatBytes(x.size)}</span>
-                    </div>
-                  ))}
-                  <label htmlFor="fileupload" onClick={() => fileInput.current.click()}>
-                    <Button iconRight="upload">Другой файл</Button>
-                  </label>
-                </>
-              ) : (
-                <label htmlFor="fileupload" onClick={() => fileInput.current.click()}>
-                  <Button iconRight="upload">Загрузить смету</Button>
-                </label>
-              )}
+              {files &&
+                files.length > 0 &&
+                files.map((x, idx) => (
+                  <File key={idx} data={x} onDelete={handleFileDelete} onSuccess={(v) => handleFileSuccess(v)} />
+                ))}
+
+              <label htmlFor="fileupload" onClick={() => fileInput.current.click()}>
+                <Button iconRight="upload">{files && files.length > 0 ? 'Добавить файлы' : 'Загрузить смету'}</Button>
+              </label>
             </div>
           </div>
 
@@ -317,7 +321,7 @@ const Callback = observer(() => {
             </Checkbox>
           </div>
 
-          <Button type="submit" theme="accent" block loading={loading}>
+          <Button type="submit" theme="accent" block loading={loading || someFilesUploading}>
             Отправить
           </Button>
         </div>
