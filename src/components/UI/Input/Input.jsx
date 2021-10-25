@@ -69,6 +69,7 @@ const Input = ({
     className: cns(styles.input_input, allowClear && styles._withClear, error && styles._withError),
     value,
     onChange: onInputChange,
+
     ...props,
   };
 

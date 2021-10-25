@@ -5,7 +5,8 @@ import uniqueId from 'lodash/uniqueId';
 import debounce from 'lodash/debounce';
 
 import { SvgIcon } from '@ui';
-import { formatPrice } from '@helpers';
+import { useFirstRender } from '@hooks';
+
 import styles from './NumInput.module.scss';
 
 const Variants = {
@@ -20,6 +21,8 @@ const VariantClasses = {
 
 const NumInput = ({ className, label, inputRef, variant, value, onChange, error, showError, ...props }) => {
   const innerRef = inputRef || useRef(null);
+
+  const firstRender = useFirstRender();
 
   const id = useMemo(() => {
     return uniqueId();
@@ -70,7 +73,11 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
   );
 
   useEffect(() => {
-    updateFunc(innerValue);
+    if (!firstRender) {
+      if (innerValue && parseFloat(innerValue) > 0) {
+        updateFunc(innerValue);
+      }
+    }
   }, [innerValue]);
 
   const onBlur = useCallback(
@@ -101,6 +108,10 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
         innerRef && innerRef.current.blur();
         return;
       }
+
+      // if (e.keyCode === 190) {
+      //   // event.preventDefault();
+      // }
 
       const isAllowedKey = [8, 190].includes(e.keyCode); // backspace, enter, space
       const isNumber = !Number.isNaN(parseFloat(e.key));
@@ -136,7 +147,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       )}
 
       <div className={styles.input_wrapper}>
-        <input type="number" step="0.01" min="0.01" {...inputProps} />
+        <input type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.01" min="0.01" {...inputProps} />
 
         {/* <div className={cns(styles.arrow, styles._up)} onClick={handleUpClick}>
           <SvgIcon name="up"></SvgIcon>

@@ -37,6 +37,9 @@
 .footerContact {
   display: inline-flex;
   font-size: 14px;
+  img {
+    transform: translateY(1px);
+  }
   &:last-child {
     margin-bottom: 0;
   }
@@ -120,8 +123,14 @@ div.footerContact {
   }
 
   .footerContact {
-    flex-basis: 20px;
     font-size: 12px;
+    img {
+      max-width: 87%;
+    }
+  }
+
+  .footerContactIcon {
+    flex-basis: 20px;
     :global {
       .svg-icon {
         font-size: 12px;
@@ -139,7 +148,7 @@ div.footerContact {
 
 @include r($md) {
   .footerTitle {
-    font-size: 12px;
+    font-size: 14px;
     margin-bottom: 12px;
   }
 
@@ -172,6 +181,28 @@ div.footerContact {
       padding-left: 0;
       padding-right: 0;
       max-width: 100%;
+    }
+  }
+
+  .footerContact {
+    font-size: 13px;
+    img {
+      max-width: 94%;
+    }
+  }
+
+  .footerContactIcon {
+    flex-basis: 22px;
+    :global {
+      .svg-icon {
+        font-size: 13px;
+      }
+      .svg-icon--location {
+        font-size: 17px;
+      }
+      .svg-icon--email {
+        font-size: 9px;
+      }
     }
   }
 }
@@ -210,5 +241,18 @@ div.footerContact {
   }
   .footerBottomText {
     margin-right: 10px;
+  }
+}
+
+@include r($mobile-s) {
+  .footerBottom {
+    font-size: 11px;
+  }
+
+  .copyright {
+    margin-right: 6px;
+  }
+  .footerBottomText {
+    margin-right: 6px;
   }
 }

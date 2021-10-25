@@ -99,7 +99,7 @@ const Search = observer(({ className }) => {
   }, [query.search]);
 
   useEffect(() => {
-    if (!firstRender) {
+    if (!firstRender && query.category) {
       setSearchText('');
     }
   }, [query.category]);

@@ -177,7 +177,9 @@ const AddToCart = observer(() => {
 
             <div className={styles.body}>
               <div className={styles.bodyImage}>
-                {itemCategory && <img src={itemCategory.image} alt={itemCategory.name} />}
+                {itemCategory && (
+                  <img src={itemCategory.image || 'img/search-placeholder.jpg'} alt={itemCategory.name} />
+                )}
               </div>
               <div className={styles.bodyTable}>
                 <>

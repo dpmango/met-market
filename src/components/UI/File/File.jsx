@@ -18,6 +18,11 @@ const File = ({ className, data, onDelete, onSuccess, onError, ...props }) => {
 
   // start upload automatically when file is added
   useEffect(async () => {
+    if (data && data.upload !== null) {
+      setProgress(100);
+      return;
+    }
+
     const upload = await callbackContext
       .uploadFiles([data.file], (progress) => {
         setProgress(progress);

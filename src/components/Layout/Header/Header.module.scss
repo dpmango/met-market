@@ -228,13 +228,14 @@
 .overlayScroller {
   position: relative;
   z-index: 2;
-  height: 686px;
+  height: 645px;
   max-height: calc(100vh - 170px - 80px);
   display: flex;
   flex-direction: column;
   min-height: 1px;
-  overflow-y: auto;
   overflow-x: hidden;
+  overflow-y: auto;
+  overflow-y: overlay;
   -webkit-overflow-scrolling: touch;
 }
 .overlayContent {
@@ -323,6 +324,12 @@
 @include r($hd) {
   .overlayClose {
     right: 12px;
+  }
+}
+
+@include r($lg) {
+  .overlayScroller {
+    height: 603px;
   }
 }
 
@@ -519,9 +526,27 @@
 }
 
 :global body.has-scrollbar {
-  @include rmin($lg + 1) {
+  @include rmin($md + 1) {
+    .overlayScroller {
+      // &::-webkit-scrollbar {
+      //   position: absolute;
+      //   right: 0;
+      //   top: 0;
+      //   width: 16px;
+      // }
+      // &::-webkit-scrollbar-track {
+      //   background: #e5e5e5;
+      //   border-radius: 6px;
+      // }
+
+      // &::-webkit-scrollbar-thumb {
+      //   background-color: #a1a1a1;
+      //   border-radius: 10px;
+      // }
+    }
     .overlayContent {
-      margin-right: -16px;
+      // margin-right: -16px;
+      // padding-right: 16px;
     }
   }
 }

@@ -15,7 +15,7 @@
   li a {
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 16px;
+    font-size: 15px;
     &:hover {
       color: $colorRed !important;
     }
@@ -33,10 +33,18 @@
   }
 }
 
-@include r($lg) {
+@include r($xl) {
   .categoryDropdown {
     li a {
       font-size: 14px;
+    }
+  }
+}
+
+@include r($lg) {
+  .categoryDropdown {
+    li a {
+      font-size: 13px;
     }
   }
 }
@@ -91,8 +99,10 @@
 }
 
 :global .catalog.mt-2 {
-  .categoryDropdown {
-    pointer-events: all;
+  @include r($md) {
+    .categoryDropdown {
+      pointer-events: all;
+    }
   }
 }
 

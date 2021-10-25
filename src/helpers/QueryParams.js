@@ -102,6 +102,8 @@ export const updateQueryParams = ({ history, location, payload }) => {
       break;
 
     case 'cart':
+      params.delete('product');
+      params.delete('callback');
       if (payload.value) {
         mergeParam('cart', payload.value);
       } else {
@@ -111,6 +113,8 @@ export const updateQueryParams = ({ history, location, payload }) => {
       break;
 
     case 'callback':
+      params.delete('product');
+      params.delete('cart');
       if (payload.value) {
         mergeParam('callback', payload.value);
       } else {

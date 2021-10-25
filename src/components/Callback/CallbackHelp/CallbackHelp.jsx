@@ -86,8 +86,12 @@ const CallbackHelp = observer(() => {
               <div className={styles.headSubtitle}>Оставьте номер и мы проконсультируем Вас</div>
             </div>
 
-            <Formik initialValues={formInitial} validate={handleValidation} onSubmit={handleSubmit}>
-              {({ isSubmitting }) => (
+            <Formik
+              initialValues={formInitial}
+              validateOnChange={false}
+              validate={handleValidation}
+              onSubmit={handleSubmit}>
+              {({ isSubmitting, setFieldError }) => (
                 <Form className={styles.form}>
                   <Field type="tel" name="phone">
                     {({ field, form: { setFieldValue }, meta }) => (
@@ -100,6 +104,7 @@ const CallbackHelp = observer(() => {
                         onChange={(v) => {
                           setFieldValue(field.name, v);
                           submitTyping(field.name, v);
+                          setFieldError(field.name);
                         }}
                         onKeyDown={preventSubmitOnEnter}
                       />

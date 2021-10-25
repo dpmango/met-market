@@ -134,7 +134,7 @@
   min-width: 200px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  &.loading {
+  &._loading {
     position: absolute;
   }
 }
@@ -267,6 +267,9 @@
     font-size: 14px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    &._loading {
+      position: relative;
+    }
   }
 }
 

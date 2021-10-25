@@ -8,12 +8,36 @@
     &:last-child {
       .categorySub {
         ul {
-          right: 0;
+          width: calc((1200px / 3) + 80px * -1);
           li a {
             white-space: normal;
           }
         }
       }
+    }
+  }
+}
+
+@include r(1280) {
+  .catalog {
+    :global .col:last-child .categorySub ul {
+      width: calc(((100vw - 40px) / 3) + 80px * -1);
+    }
+  }
+}
+
+@include r($lg) {
+  .catalog {
+    :global .col:last-child .categorySub ul {
+      width: calc(((100vw - 0px) / 3) + 80px * -1);
+    }
+  }
+}
+
+@include r($md) {
+  .catalog {
+    :global .col:last-child .categorySub ul {
+      width: 100%;
     }
   }
 }
@@ -65,8 +89,8 @@
 
 @include r($lg) {
   .catalog {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 

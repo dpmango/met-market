@@ -212,6 +212,7 @@ const Callback = observer(() => {
       product: '',
       agree: false,
     },
+    validateOnChange: false,
     validate: handleValidation,
     onSubmit: handleSubmit,
   });
@@ -248,6 +249,7 @@ const Callback = observer(() => {
               onChange={(v) => {
                 formik.setFieldValue('name', v);
                 submitTyping('name', v);
+                formik.setFieldError('name');
               }}
             />
           </div>
@@ -263,6 +265,7 @@ const Callback = observer(() => {
               onChange={(v) => {
                 formik.setFieldValue('phone', v);
                 submitTyping('phone', v);
+                formik.setFieldError('phone');
               }}
             />
           </div>
@@ -276,6 +279,7 @@ const Callback = observer(() => {
               onChange={(v) => {
                 formik.setFieldValue('product', v);
                 submitTyping('product', v);
+                formik.setFieldError('product');
               }}
             />
           </div>
@@ -314,7 +318,7 @@ const Callback = observer(() => {
               }}>
               <span>
                 Подтверждаю свое согласие на{' '}
-                <a href="policy.pdf" target="_blank">
+                <a href="/Policy.pdf" target="_blank">
                   обработку персональных данных
                 </a>
               </span>

@@ -239,8 +239,8 @@
       padding-left: 0;
     }
     &.wide {
-      flex: 0 1 428px;
-      max-width: 428px;
+      flex: 0 0 calc(100vw - 12px);
+      max-width: calc(100vw - 12px);
     }
     > div {
       label {
@@ -252,7 +252,7 @@
     }
     button {
       width: 100%;
-      max-width: 428px;
+      max-width: 100%;
     }
   }
 
@@ -273,6 +273,10 @@
     &:nth-child(2),
     &:nth-child(3) {
       padding-left: 10px;
+    }
+    &.wide {
+      flex: 0 0 calc(100vw - 32px);
+      max-width: calc(100vw - 32px);
     }
   }
 

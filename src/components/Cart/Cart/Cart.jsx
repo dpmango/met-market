@@ -162,6 +162,7 @@ const Cart = observer(() => {
       comment: '',
       agree: false,
     },
+    validateOnChange: false,
     validate: handleValidation,
     onSubmit: handleSubmit,
   });
@@ -234,6 +235,7 @@ const Cart = observer(() => {
                         error={formik.touched.delivery && formik.errors.delivery}
                         onChange={(v) => {
                           formik.setFieldValue('delivery', v);
+                          formik.setFieldError('delivery');
                         }}
                         onKeyDown={preventSubmitOnEnter}
                       />
@@ -259,6 +261,7 @@ const Cart = observer(() => {
                         error={formik.touched.comment && formik.errors.comment}
                         onChange={(v) => {
                           formik.setFieldValue('comment', v);
+                          formik.setFieldError('comment');
                         }}
                         onKeyDown={preventSubmitOnEnter}
                       />
@@ -285,6 +288,7 @@ const Cart = observer(() => {
                     showError={false}
                     onChange={(v) => {
                       formik.setFieldValue('phone', v);
+                      formik.setFieldError('phone');
                     }}
                     onKeyDown={preventSubmitOnEnter}
                   />
@@ -298,7 +302,7 @@ const Cart = observer(() => {
                     }}>
                     <span>
                       Подтверждаю свое согласие на{' '}
-                      <a href="policy.pdf" target="_blank">
+                      <a href="/Policy.pdf" target="_blank">
                         обработку персональных данных
                       </a>
                     </span>

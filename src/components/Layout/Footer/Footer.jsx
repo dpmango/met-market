@@ -10,7 +10,15 @@ import { SessionStoreContext } from '@store';
 import styles from './Footer.module.scss';
 
 const Header = observer(({ className }) => {
+  const emailRef = useRef(null);
   const { sessionId, cartId, cartNumber } = useContext(SessionStoreContext);
+
+  const handleEmailClick = useCallback(() => {
+    const a = emailRef.current.getAttribute('data-start');
+    const b = emailRef.current.getAttribute('data-end');
+
+    window.open(`mailto:${a}@${b}`);
+  }, [emailRef]);
 
   return (
     <footer className={cns(styles.footer, className)}>
@@ -43,11 +51,19 @@ const Header = observer(({ className }) => {
                   </div>
                   <span className="w-600">Telegram</span>
                 </a>
-                <a href="mailto:info@met.market" target="_blank" className={styles.footerContact} rel="noreferrer">
+                <a
+                  href="#"
+                  data-start="zakaz"
+                  data-end="met.market"
+                  className={styles.footerContact}
+                  onClick={handleEmailClick}
+                  ref={emailRef}>
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="email" />
                   </div>
-                  <span>info@met.market</span>
+                  <span>
+                    <img src="img/mail.png" srcSet="img/mail@2x.png 2x" />
+                  </span>
                 </a>
                 <div className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>
@@ -65,7 +81,10 @@ const Header = observer(({ className }) => {
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="location" />
                   </div>
-                  <span>м. Южная, г. Москва, ул. Дорожная, д. 8, оф. 6</span>
+                  <span>
+                    м. Южная, г. Москва, <br />
+                    ул. Дорожная, д. 8, оф. 6
+                  </span>
                 </div>
               </div>
             </div>

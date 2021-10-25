@@ -51,7 +51,11 @@ const Header = observer(({ className }) => {
     debounce((e) => {
       // const nearFooter = window.scrollY + window.innerHeight > document.body.scrollHeight - 375;
       const startScrolledAt = width < 768 ? 0 : 45;
-      const startStickyAt = width < 768 ? 300 : 460;
+      let startStickyAt = width < 768 ? 300 : 460;
+      if (document.querySelector('.catalogTable')) {
+        startStickyAt = document.querySelector('.catalogTable').offsetTop - (width < 768 ? 32 : 62);
+      }
+
       const stickyHeader = window.scrollY > startStickyAt;
 
       if (window.scrollY > startScrolledAt) {
@@ -104,7 +108,9 @@ const Header = observer(({ className }) => {
   }, [query.category, query.search]);
 
   useEffect(() => {
-    uiContext.setHeaderCatalog(false);
+    if (activeModal) {
+      uiContext.setHeaderCatalog(false);
+    }
 
     if (width >= 768) {
       const targets = [
@@ -162,7 +168,10 @@ const Header = observer(({ className }) => {
                 <Button
                   className={styles.catalogCta}
                   theme="link"
-                  onClick={() => uiContext.setHeaderCatalog(!catalogOpened)}>
+                  onClick={() => {
+                    uiContext.resetModal();
+                    uiContext.setHeaderCatalog(!catalogOpened);
+                  }}>
                   <div className={cns('hamburger', catalogOpened && 'is-active')}>
                     <span></span>
                     <span></span>
