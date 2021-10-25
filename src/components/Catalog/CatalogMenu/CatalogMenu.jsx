@@ -12,46 +12,6 @@ import CategoryLetter from './CategoryLetter';
 import CategoryMain from './CategoryMain';
 import styles from './CatalogMenu.module.scss';
 
-const findCategoryLetter = (list, activeLetters) => {
-  // console.log(new RegExp(`/\b${activeLetters[0]}\b/`, 'gi'));
-  return (
-    list
-      .filter((x) =>
-        x.name
-          .toUpperCase()
-          .split(' ')
-          .some((word) => word.length > 3 && activeLetters.includes(word[0]))
-      )
-      // highlight syntax
-      .map((x) => ({
-        ...x,
-        short: x.short
-          .split(' ')
-          .map((word) => {
-            if (word[0].toUpperCase() === activeLetters[0]) {
-              return `<mark>${word[0]}</mark>${word.slice(1, word.length)}`;
-            }
-
-            return word;
-          })
-          .join(' '),
-      }))
-      // sort by priory - first matching word
-      .sort((a, b) => {
-        const aVal = a.name
-          .toUpperCase()
-          .split(' ')
-          .findIndex((word) => word.length > 3 && activeLetters.includes(word[0]));
-        const bVal = b.name
-          .toUpperCase()
-          .split(' ')
-          .findIndex((word) => word.length > 3 && activeLetters.includes(word[0]));
-
-        return aVal - bVal;
-      })
-  );
-};
-
 const CatalogMenu = observer(({ abcOrder, className }) => {
   const { width } = useWindowSize();
   const [activeLetters, setActiveLetters] = useState(['А']);
@@ -67,7 +27,23 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
       }, []);
 
       if (activeLetters && activeLetters.length > 0) {
-        allSorted = findCategoryLetter(allSorted, activeLetters);
+        // enable per-later basis
+        // allSorted = findCategoryLetter(allSorted, activeLetters);
+
+        allSorted = allSorted.map((x, idx) => {
+          const highlight = activeLetters.includes(x.name[0].toUpperCase());
+          const nextElement = allSorted[idx + 1];
+          let isLastHightlight = false;
+          if (nextElement) {
+            isLastHightlight = !activeLetters.includes(nextElement.name[0].toUpperCase());
+          }
+
+          return {
+            ...x,
+            highlight,
+            isLastHightlight,
+          };
+        });
       }
 
       let colSize = 5;
@@ -184,3 +160,43 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
 });
 
 export default CatalogMenu;
+
+// const findCategoryLetter = (list, activeLetters) => {
+//   // console.log(new RegExp(`/\b${activeLetters[0]}\b/`, 'gi'));
+//   return (
+//     list
+//       .filter((x) =>
+//         x.name
+//           .toUpperCase()
+//           .split(' ')
+//           .some((word) => word.length > 3 && activeLetters.includes(word[0]))
+//       )
+//       // highlight syntax
+//       .map((x) => ({
+//         ...x,
+//         short: x.short
+//           .split(' ')
+//           .map((word) => {
+//             if (word[0].toUpperCase() === activeLetters[0]) {
+//               return `<mark>${word[0]}</mark>${word.slice(1, word.length)}`;
+//             }
+
+//             return word;
+//           })
+//           .join(' '),
+//       }))
+//       // sort by priory - first matching word
+//       .sort((a, b) => {
+//         const aVal = a.name
+//           .toUpperCase()
+//           .split(' ')
+//           .findIndex((word) => word.length > 3 && activeLetters.includes(word[0]));
+//         const bVal = b.name
+//           .toUpperCase()
+//           .split(' ')
+//           .findIndex((word) => word.length > 3 && activeLetters.includes(word[0]));
+
+//         return aVal - bVal;
+//       })
+//   );
+// };

@@ -62,7 +62,7 @@ const Header = observer(({ className }) => {
                     <SvgIcon name="email" />
                   </div>
                   <span>
-                    <img src="img/mail.png" srcSet="img/mail@2x.png 2x" />
+                    <img src="img/mail.svg" />
                   </span>
                 </a>
                 <div className={styles.footerContact}>
