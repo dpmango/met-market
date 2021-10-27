@@ -81,8 +81,16 @@
     }
   }
 
+  .categoryTitle {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
   .categoryList {
     align-items: stretch;
+    a {
+      font-size: 16px;
+    }
   }
 }
 

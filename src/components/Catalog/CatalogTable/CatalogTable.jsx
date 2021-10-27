@@ -138,8 +138,9 @@ const CatalogTable = observer(() => {
   );
 
   const handleFiltersSelect = useCallback(() => {
-    ScrollTo(catalogRef.current.offsetTop - 60, 300);
-  }, [catalogRef]);
+    const offsetPoint = width < 768 ? 16 : 60;
+    ScrollTo(catalogRef.current.offsetTop - offsetPoint, 300);
+  }, [catalogRef, width]);
 
   //////////
   // effects
@@ -178,7 +179,9 @@ const CatalogTable = observer(() => {
     gotoPage(getIndexFromQuery(query));
     setPageIndex(getIndexFromQuery(query));
     if (catalogRef.current && !firstRender && query.page) {
-      ScrollTo(catalogRef.current.offsetTop - 60, 300);
+      const offsetPoint = width < 768 ? 16 : 60;
+
+      ScrollTo(catalogRef.current.offsetTop - offsetPoint, 300);
     }
   }, [query.page, query.size, query.mark, query.length]);
 

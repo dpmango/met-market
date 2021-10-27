@@ -139,6 +139,10 @@ const Header = observer(({ className }) => {
     }
   }, [activeModal]);
 
+  useEffect(() => {
+    setAbcOrder(false);
+  }, [catalogOpened]);
+
   return (
     <>
       <header
