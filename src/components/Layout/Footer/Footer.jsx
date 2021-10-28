@@ -29,7 +29,7 @@ const Header = observer(({ className }) => {
               <div className={styles.group}>
                 <div className={styles.footerTitle}>Отдел продаж</div>
 
-                <a href="tel:84951043130" className={styles.footerContact} rel="noreferrer">
+                <a href="tel:+74951043130" className={styles.footerContact} rel="noreferrer">
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="phone" />
                   </div>

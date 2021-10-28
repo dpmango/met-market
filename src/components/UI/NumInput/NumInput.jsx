@@ -19,7 +19,7 @@ const VariantClasses = {
   [Variants.SMALL]: styles._small,
 };
 
-const NumInput = ({ className, label, inputRef, variant, value, onChange, error, showError, ...props }) => {
+const NumInput = ({ className, label, inputRef, variant, value, onChange, onEnterKey, error, showError, ...props }) => {
   const innerRef = inputRef || useRef(null);
 
   const firstRender = useFirstRender();
@@ -87,8 +87,8 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       const split = innerValue && innerValue.toString().split('.');
 
       if (!innerValue || innerValue < 0.01) {
-        setValue(0.01);
-        onChange(0.01);
+        setValue(1);
+        onChange(1);
       } else if (split && split.length > 1) {
         const limited = split[1].slice(0, 2);
 
@@ -106,6 +106,8 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       if (e.keyCode === 13) {
         onBlur(e);
         innerRef && innerRef.current.blur();
+
+        onEnterKey && onEnterKey();
         return;
       }
 
@@ -120,7 +122,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
       //   event.preventDefault();
       // }
     },
-    [innerValue, innerRef]
+    [innerValue, innerRef, onEnterKey]
   );
 
   useEffect(() => {
@@ -132,6 +134,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, error,
     ref: innerRef,
     className: cns(styles.input_input, error && styles._withError),
     value: innerValue,
+    autoComplete: false,
     onChange: onInputChange,
     onBlur: onBlur,
     onKeyDown: onKeyDown,
@@ -170,6 +173,7 @@ NumInput.propTypes = {
   error: PropTypes.oneOfType([PropTypes.string, PropTypes.boolean]),
   showError: PropTypes.bool,
   onChange: PropTypes.func,
+  onEnterKey: PropTypes.func,
 };
 
 NumInput.defaultProps = {

@@ -36,6 +36,10 @@
   }
 }
 
+.repeat {
+  margin-top: 6px;
+}
+
 .progress {
   position: relative;
   overflow: hidden;
@@ -48,6 +52,7 @@
   border-radius: 6px;
   margin-top: 6px;
   &._uploaded {
+    display: none;
     .progressInner {
       background: $colorGreen;
     }

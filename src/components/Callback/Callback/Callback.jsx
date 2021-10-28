@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, m
 import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useFormik } from 'formik';
+import uniqueId from 'lodash/uniqueId';
 
 import { useToasts } from 'react-toast-notifications';
 import cns from 'classnames';
@@ -141,7 +142,8 @@ const Callback = observer(() => {
           }
 
           if (file) {
-            newFiles.push({ file, upload: null });
+            let id = uniqueId();
+            newFiles.push({ file, id, upload: null, error: null });
           }
         });
 
@@ -158,7 +160,7 @@ const Callback = observer(() => {
   // files methods
   const handleFileDelete = useCallback(
     (delFile) => {
-      setFiles([...files.filter((f) => f.file.name !== delFile.file.name)]);
+      setFiles([...files.filter((f) => f.id !== delFile.id)]);
     },
     [files]
   );
@@ -166,7 +168,16 @@ const Callback = observer(() => {
   const handleFileSuccess = useCallback(
     (upload) => {
       setFiles((fls) => [
-        ...fls.map((f) => (f.file.name !== upload.file.name ? f : { file: f.file, upload: upload.upload })),
+        ...fls.map((f) => (f.id !== upload.id ? f : { file: f.file, id: f.id, upload: upload.upload, error: null })),
+      ]);
+    },
+    [setFiles]
+  );
+
+  const handleFileError = useCallback(
+    (upload) => {
+      setFiles((fls) => [
+        ...fls.map((f) => (f.id !== upload.id ? f : { file: f.file, id: f.id, upload: null, error: upload.error })),
       ]);
     },
     [setFiles]
@@ -235,7 +246,7 @@ const Callback = observer(() => {
             <SvgIcon name="social-telegram" />
             <span>Telegram</span>
           </a>
-          <a href="tel:84951043130" className={styles.formCtaLink}>
+          <a href="tel:+74951043130" className={styles.formCtaLink}>
             <span className="w-700">8-495-104-31-30</span>
           </a>
         </div>
@@ -298,7 +309,13 @@ const Callback = observer(() => {
               {files &&
                 files.length > 0 &&
                 files.map((x, idx) => (
-                  <File key={idx} data={x} onDelete={handleFileDelete} onSuccess={(v) => handleFileSuccess(v)} />
+                  <File
+                    key={idx}
+                    data={x}
+                    onDelete={handleFileDelete}
+                    onSuccess={(v) => handleFileSuccess(v)}
+                    onError={(v) => handleFileError(v)}
+                  />
                 ))}
 
               <label htmlFor="fileupload" onClick={() => fileInput.current.click()}>
