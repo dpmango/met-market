@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
-export const ScrollTo = (to, duration = 800) => {
-  const element = document.scrollingElement || document.documentElement;
+export const ScrollTo = (to, duration = 800, $target) => {
+  const element = $target || document.scrollingElement || document.documentElement;
   const start = element.scrollTop;
   const change = to - start;
   const startDate = +new Date();

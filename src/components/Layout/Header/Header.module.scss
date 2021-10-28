@@ -475,6 +475,9 @@
     margin-top: 54px;
     padding-left: 16px;
     padding-right: 16px;
+    &.hidden {
+      pointer-events: none;
+    }
   }
   .mobileSearchWrapper {
     backface-visibility: hidden;

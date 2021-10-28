@@ -66,12 +66,14 @@
   .letterCategory {
     margin-top: 0;
     margin-bottom: 0;
+    padding-right: 0;
   }
   .category {
     margin-bottom: 0;
   }
   .categoryLetterTitle {
     color: white;
+    transition: none;
     &:hover {
       color: rgba(white, 0.7);
     }

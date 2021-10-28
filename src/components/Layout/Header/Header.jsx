@@ -252,7 +252,9 @@ const Header = observer(({ className }) => {
       </header>
 
       {width < 768 && (
-        <div className={cns(styles.mobileSearch, 'mobileSearch')} onClick={(e) => e.stopPropagation()}>
+        <div
+          className={cns(styles.mobileSearch, overlayScroll >= 60 && styles.hidden, 'mobileSearch')}
+          onClick={(e) => e.stopPropagation()}>
           <div
             className={styles.mobileSearchWrapper}
             style={{ transform: catalogOpened ? `translate3d(0,-${overlayScroll}px,0)` : 'none' }}>

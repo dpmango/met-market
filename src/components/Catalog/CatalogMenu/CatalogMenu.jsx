@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useContext, useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 import chunk from 'lodash/chunk';
@@ -7,6 +7,7 @@ import chunk from 'lodash/chunk';
 import { SvgIcon } from '@ui';
 import { CatalogStoreContext, UiStoreContext } from '@store';
 import { useWindowSize } from '@hooks';
+import { ScrollTo } from '@helpers';
 
 import CategoryLetter from './CategoryLetter';
 import CategoryMain from './CategoryMain';
@@ -78,6 +79,10 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
       className = 'col col-4 col-md-6';
     }
 
+    if (abcOrder) {
+      return [];
+    }
+
     if (type === 'header' || width >= 768) {
       return [
         {
@@ -113,7 +118,7 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
         },
       ];
     }
-  }, [list]);
+  }, [list, abcOrder]);
 
   // click handlers
   const handleLetterClick = (letter) => {
@@ -124,6 +129,21 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
     // } else {
     //   letters = [...letters, letter];
     // }
+
+    // scroll to on mobile
+    if (width < 768) {
+      try {
+        const letters = document.querySelectorAll('.letterCategory a');
+        const firstMatch = [].slice.call(letters).find((x) => x.innerText[0].toUpperCase() === letter);
+
+        if (firstMatch) {
+          const overlay = document.querySelector('.overlay > div');
+          const elTop = firstMatch.getBoundingClientRect().top;
+
+          ScrollTo(elTop + overlay.scrollTop - 53, 300, overlay);
+        }
+      } catch (e) {}
+    }
 
     setActiveLetters([letter]);
   };

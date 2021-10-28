@@ -99,7 +99,7 @@ const CategoryFilters = observer(({ image, data }) => {
         </div>
         <div className={styles.filterCta}>
           <Button outline={true} disabled={!someFiltersActive} onClick={resetFilters}>
-            Сбросить фильтры
+            Сбросить <span>фильтры</span>
           </Button>
         </div>
       </div>
