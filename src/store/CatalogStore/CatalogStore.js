@@ -298,6 +298,17 @@ export default class CatalogStore {
     return false;
   });
 
+  getCategoryById = computedFn((cat_id) => {
+    if (this.categoriesList && this.categoriesList.length) {
+      const category = findNodeById(this.categoriesList, cat_id);
+      if (category) {
+        return category;
+      }
+    }
+
+    return false;
+  });
+
   getCategoryFilters = computedFn((cat_id) => {
     const DEV_perf = performance.now();
 
@@ -462,7 +473,7 @@ export default class CatalogStore {
     let lastDate = null;
 
     if (localStorage.getItem(LOCAL_STORAGE_CATALOG)) {
-      const lsCatalog = JSON.parse(localStorage.getItem(LOCAL_STORAGE_CATALOG));
+      const lsCatalog = JSON.parse(LZString.decompress(localStorage.getItem(LOCAL_STORAGE_CATALOG)));
 
       const { date, data, categories } = lsCatalog;
 
@@ -493,7 +504,7 @@ export default class CatalogStore {
         this.categories = categories.categories;
         this.loading = false;
 
-        localStorage.setItem(LOCAL_STORAGE_CATALOG, JSON.stringify({ date, data, categories }));
+        localStorage.setItem(LOCAL_STORAGE_CATALOG, LZString.compress(JSON.stringify({ date, data, categories })));
       });
     }
 

@@ -1,4 +1,4 @@
-import { ui } from '@store';
+import { ui, catalog } from '@store';
 import { PerformanceLog } from '@helpers';
 
 export const updateQueryParams = ({ history, location, payload }) => {
@@ -65,6 +65,14 @@ export const updateQueryParams = ({ history, location, payload }) => {
     case 'search':
       if (params.get('category') === 'all') {
         params.delete('category');
+      }
+
+      if (params.get('category')) {
+        const categoryExist = catalog.getCategoryById(params.get('category'));
+
+        if (!categoryExist) {
+          params.delete('category');
+        }
       }
 
       if (payload.value) {

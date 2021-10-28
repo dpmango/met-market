@@ -20,11 +20,14 @@
     <meta name="msapplication-config" content="%PUBLIC_URL%/favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
+    <script src="/lz-string.js"></script>
+
     <script>
       window.REACT_ENV = {
         GATEWAY_URL: 'https://steelmarket.pro/',
         API_TIMEOUT: 10000,
         API_RETRY_DELAY: 1500,
+        UPDATE_INTERVAL_MIN: 10,
         EXTRA_TONNAGE_PERCENT: 10,
       };
     </script>

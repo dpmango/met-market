@@ -28,9 +28,7 @@ const HomePage = observer(() => {
       <CallbackHero />
 
       <div className="container">
-        {/* Categories */}
         <CatalogCategories />
-        {/* Catalog Table */}
         <CatalogTable />
       </div>
 

@@ -59,6 +59,14 @@ const CatalogTable = observer(() => {
     return [];
   }, [loading, catalog, query.category, query.search, filters]);
 
+  const categoryExists = useMemo(() => {
+    if (query.category) {
+      return catalogContext.getCategoryById(query.category);
+    }
+
+    return true;
+  }, [query.category]);
+
   // controlled table state
   const [pageIndexControled, setPageIndex] = useState(getIndexFromQuery(query));
 
@@ -199,7 +207,7 @@ const CatalogTable = observer(() => {
   }, [loading, query.category, query.search, filters, data]);
 
   // do not render table on homepage
-  if (query.category === 'all' || (!query.category && !query.search)) return null;
+  if (query.category === 'all' || (!query.category && !query.search) || !categoryExists) return null;
 
   return !loading ? (
     <div className={cns(styles.catalog, 'catalogTable')} ref={catalogRef}>
