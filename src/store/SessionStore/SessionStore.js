@@ -102,6 +102,12 @@ export default class SessionStore {
 
       const { sessionId, cartId, cartNumber } = lsSession;
 
+      runInAction(() => {
+        this.sessionId = sessionId;
+        this.cartId = cartId;
+        this.cartNumber = cartNumber;
+      });
+
       try {
         await this.aliveSession({ sessionId, cartId });
         await cart.getCart({ cartId });
@@ -112,12 +118,6 @@ export default class SessionStore {
       } catch {
         await this.createSession();
       }
-
-      runInAction(() => {
-        this.sessionId = sessionId;
-        this.cartId = cartId;
-        this.cartNumber = cartNumber;
-      });
     } else {
       await this.createSession();
     }
