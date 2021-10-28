@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-key */
-import React, { useContext, useMemo, useState, useCallback, memo } from 'react';
+import React, { useContext, useMemo, useState, useCallback, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 import chunk from 'lodash/chunk';
 
 import { SvgIcon } from '@ui';
-import { CatalogStoreContext } from '@store';
+import { CatalogStoreContext, UiStoreContext } from '@store';
 import { useWindowSize } from '@hooks';
 
 import CategoryLetter from './CategoryLetter';
@@ -18,6 +18,7 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
   const [mobOpened, setMobOpened] = useState([]);
 
   const { categoriesList, categoriesAbc } = useContext(CatalogStoreContext);
+  const { catalogOpened } = useContext(UiStoreContext);
 
   // memo getters
   const list = useMemo(() => {
@@ -100,6 +101,11 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
       setActiveLetters([nextLetter]);
     }
   }, [letters, activeLetters]);
+
+  // reset intial state on menu hide
+  useEffect(() => {
+    setActiveLetters(['А']);
+  }, [catalogOpened]);
 
   return (
     <div className={cns('catalog', styles.catalog, abcOrder && styles._abc, className)}>

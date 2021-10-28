@@ -332,6 +332,7 @@ const Callback = observer(() => {
               onChange={() => {
                 formik.setFieldValue('agree', !formik.values.agree);
                 submitTyping('agree', !formik.values.agree);
+                formik.setFieldError('agree');
               }}>
               <span>
                 Подтверждаю свое согласие на{' '}

@@ -299,6 +299,7 @@ const Cart = observer(() => {
                     error={formik.touched.agree && formik.errors.agree}
                     onChange={() => {
                       formik.setFieldValue('agree', !formik.values.agree);
+                      formik.setFieldError('agree');
                     }}>
                     <span>
                       Подтверждаю свое согласие на{' '}
