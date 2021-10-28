@@ -9,6 +9,9 @@
       .categorySub {
         ul {
           width: calc((1200px / 3) + 80px * -1);
+          li {
+            min-width: 1px;
+          }
           li a {
             white-space: normal;
           }
@@ -29,7 +32,7 @@
 @include r($lg) {
   .catalog {
     :global .col:last-child .categorySub ul {
-      width: calc(((100vw - 0px) / 3) + 80px * -1);
+      width: calc(((100vw - 40px) / 3) + 80px * -1);
     }
   }
 }

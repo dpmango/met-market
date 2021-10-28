@@ -53,7 +53,7 @@ const Topbar = observer(({ className }) => {
               <SvgIcon name="social-telegram" />
               <span className="w-600">Telegram</span>
             </a>
-            <a href="tel:84951043130" className={cns(styles.topbarAction)}>
+            <a href="tel:+74951043130" className={cns(styles.topbarAction)}>
               <span className="w-700">8-495-104-31-30</span>
             </a>
           </div>

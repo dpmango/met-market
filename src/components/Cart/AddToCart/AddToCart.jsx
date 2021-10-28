@@ -39,7 +39,7 @@ const AddToCart = observer(() => {
   // actions
   const handleCartSubmit = useCallback(
     async (event) => {
-      event.preventDefault();
+      event && event.preventDefault();
       if (loading) return;
 
       setLoading(true);
@@ -238,6 +238,7 @@ const AddToCart = observer(() => {
                       label={`Количество, ${modalData.priceQuantityUnit}`}
                       value={count}
                       onChange={(v) => setCount(v)}
+                      onEnterKey={() => width >= 768 && handleCartSubmit()}
                       inputRef={countRef}
                     />
                   </div>

@@ -211,7 +211,7 @@ const Header = observer(({ className }) => {
                     <SvgIcon name="social-telegram" />
                     <span>Telegram</span>
                   </a>
-                  <a href="tel:84951043130" className={styles.overlaySocialLink}>
+                  <a href="tel:+74951043130" className={styles.overlaySocialLink}>
                     <span>8-495-104-31-30</span>
                   </a>
                 </div>
