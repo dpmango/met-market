@@ -2,22 +2,56 @@ import React, { useContext, useState, useRef, useCallback, useMemo } from 'react
 import { Link, NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import cns from 'classnames';
+import { useToasts } from 'react-toast-notifications';
 
 import routes from '@config/routes';
 import { SvgIcon, Button } from '@ui';
 import { SessionStoreContext } from '@store';
+import { isMobile } from '@helpers';
 
 import styles from './Footer.module.scss';
 
 const Header = observer(({ className }) => {
+  const { addToast } = useToasts();
   const emailRef = useRef(null);
   const { sessionId, cartId, cartNumber } = useContext(SessionStoreContext);
 
-  const handleEmailClick = useCallback(() => {
+  const getEmail = useCallback(() => {
     const a = emailRef.current.getAttribute('data-start');
     const b = emailRef.current.getAttribute('data-end');
 
-    window.open(`mailto:${a}@${b}`);
+    return `${a}@${b}`;
+  }, [emailRef]);
+
+  const handleEmailClick = useCallback(
+    (e) => {
+      const email = getEmail();
+
+      e.preventDefault();
+
+      if (isMobile()) {
+        const el = document.createElement('textarea');
+        el.value = email;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+
+        addToast('Cкопировано в буфер обмена', { appearance: 'success' });
+      } else {
+        window.open(`mailto:${email}`);
+      }
+    },
+    [emailRef]
+  );
+
+  const handleEmailHover = useCallback(() => {
+    const email = getEmail();
+
+    emailRef.current.setAttribute('href', `mailto:${email}`);
   }, [emailRef]);
 
   return (
@@ -57,6 +91,7 @@ const Header = observer(({ className }) => {
                   data-end="met.market"
                   className={styles.footerContact}
                   onClick={handleEmailClick}
+                  onMouseEnter={handleEmailHover}
                   ref={emailRef}>
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="email" />
