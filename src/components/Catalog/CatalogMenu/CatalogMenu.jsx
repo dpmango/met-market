@@ -12,7 +12,7 @@ import CategoryLetter from './CategoryLetter';
 import CategoryMain from './CategoryMain';
 import styles from './CatalogMenu.module.scss';
 
-const CatalogMenu = observer(({ abcOrder, className }) => {
+const CatalogMenu = observer(({ abcOrder, type, className }) => {
   const { width } = useWindowSize();
   const [activeLetters, setActiveLetters] = useState(['А']);
   const [mobOpened, setMobOpened] = useState([]);
@@ -71,6 +71,50 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
     return list && list.list ? Object.keys(list.list) : [];
   }, [list]);
 
+  const listRenderer = useMemo(() => {
+    let className = 'col col-4 col-md-12';
+
+    if (type === 'homepage') {
+      className = 'col col-4 col-md-6';
+    }
+
+    if (type === 'header' || width >= 768) {
+      return [
+        {
+          className,
+          list: list.slice(0, 2),
+        },
+        {
+          className,
+          list: list.slice(2, 5),
+        },
+        {
+          className,
+          list: list.slice(5, 7),
+        },
+      ];
+    } else {
+      return [
+        {
+          className,
+          list: list.slice(0, 2),
+        },
+        {
+          className,
+          list: list.slice(2, 5),
+        },
+        {
+          className,
+          list: list.slice(5, 6),
+        },
+        {
+          className,
+          list: list.slice(6, 7),
+        },
+      ];
+    }
+  }, [list]);
+
   // click handlers
   const handleLetterClick = (letter) => {
     // enable multiple select
@@ -108,7 +152,7 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
   }, [catalogOpened]);
 
   return (
-    <div className={cns('catalog', styles.catalog, abcOrder && styles._abc, className)}>
+    <div className={cns('catalog', styles.catalog, styles[type], abcOrder && styles._abc, className)}>
       {abcOrder && list && (
         <div className={styles.abc}>
           <div className={styles.letters}>
@@ -143,21 +187,14 @@ const CatalogMenu = observer(({ abcOrder, className }) => {
       <>
         {list && list.length > 0 && (
           <div className="row">
-            <div className="col col-4 col-md-12">
-              {list.slice(0, 2).map((cat) => (
-                <CategoryMain key={cat.id} category={cat} mobOpened={mobOpened} setMobOpened={setMobOpened} />
+            {listRenderer &&
+              listRenderer.map((r) => (
+                <div className={r.className}>
+                  {r.list.map((cat) => (
+                    <CategoryMain key={cat.id} category={cat} mobOpened={mobOpened} setMobOpened={setMobOpened} />
+                  ))}
+                </div>
               ))}
-            </div>
-            <div className="col col-4 col-md-12">
-              {list.slice(2, 5).map((cat) => (
-                <CategoryMain key={cat.id} category={cat} mobOpened={mobOpened} setMobOpened={setMobOpened} />
-              ))}
-            </div>
-            <div className="col col-4 col-md-12">
-              {list.slice(5, 7).map((cat) => (
-                <CategoryMain key={cat.id} category={cat} mobOpened={mobOpened} setMobOpened={setMobOpened} />
-              ))}
-            </div>
           </div>
         )}
       </>

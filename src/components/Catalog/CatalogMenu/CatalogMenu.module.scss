@@ -172,6 +172,13 @@
         order: 1;
       }
     }
+    &.homepage {
+      // display: none;
+      margin-right: -16px;
+      :global .col-md-6 {
+        padding-right: 20px;
+      }
+    }
   }
   .letters {
     right: 0;
@@ -199,5 +206,18 @@
   .lettercol {
     flex-basis: 100%;
     max-width: 100%;
+  }
+}
+
+@include r($sm) {
+  .catalog {
+    &.homepage {
+      margin-right: 0;
+      :global .col-md-6 {
+        flex-basis: 100%;
+        max-width: 100%;
+        padding-right: 6px;
+      }
+    }
   }
 }

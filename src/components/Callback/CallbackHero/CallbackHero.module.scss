@@ -205,6 +205,77 @@
   .hero {
     margin-bottom: 36px;
   }
+
+  .contentText {
+    flex: 0 0 $col6;
+    max-width: $col6;
+    padding-left: 4px;
+    padding-right: 10px;
+  }
+
+  .contentBox {
+    margin-top: 16px;
+    flex: 0 0 $col6;
+    max-width: $col6;
+    margin-left: 0;
+  }
+
+  .contentTitle {
+    font-size: calc(8px + 1vw);
+    br {
+      display: none;
+    }
+  }
+
+  .contentList li {
+    font-size: 11px;
+    max-width: 200px;
+  }
+
+  .form {
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .formInput {
+    :global input {
+      padding: 16px 20px 16px 20px;
+      font-size: 14px;
+    }
+  }
+
+  .formTitle {
+    font-size: 12px;
+    br {
+      display: block;
+    }
+  }
+
+  .formButton {
+    display: block;
+    margin-top: 8px;
+    position: relative;
+    top: 0;
+    left: 0;
+    min-width: 1px;
+    width: 100%;
+    font-size: 12px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    &._loading {
+      position: relative;
+    }
+  }
+
+  .formHelper {
+    margin-top: 8px;
+  }
+}
+
+@include r(500) {
+  .hero {
+    margin-bottom: 36px;
+  }
   .content {
     flex-wrap: wrap;
     padding-top: 32px;
@@ -219,7 +290,8 @@
 
   .contentBox {
     margin-top: 16px;
-    max-width: 420px;
+    flex: 0 0 100%;
+    max-width: 100%;
     margin-left: 0;
   }
 
@@ -233,14 +305,12 @@
 
   .contentList li {
     font-size: 14px;
+    max-width: 100%;
   }
 
   .form {
     flex-wrap: wrap;
     margin-top: 28px;
-
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .formInput {
@@ -251,35 +321,18 @@
   }
 
   .formTitle {
+    font-size: 16px;
     br {
       display: block;
     }
   }
 
   .formButton {
-    display: block;
-    margin-top: 8px;
-    position: relative;
-    top: 0;
-    left: 0;
-    min-width: 1px;
-    width: 100%;
     font-size: 14px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    &._loading {
-      position: relative;
-    }
   }
-}
 
-@include r($sm) {
-  .contentTitle {
-    font-size: calc(10px + 2.6vw);
-    max-width: 460px;
-  }
-  .contentList li {
-    font-size: 12px;
+  .formHelper {
+    margin-top: 8px;
   }
 }
 
@@ -302,5 +355,9 @@
 
   .formTitle {
     font-size: 15px;
+  }
+
+  .formHelper {
+    margin-top: 16px;
   }
 }

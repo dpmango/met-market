@@ -105,8 +105,12 @@ const AddToCart = observer(() => {
   }, [activeModal]);
 
   useEffect(() => {
-    setСartUpdated(false);
-  }, [count]);
+    if (cartItem) {
+      setСartUpdated(cartItem.count === count);
+    } else {
+      setСartUpdated(false);
+    }
+  }, [count, cartItem]);
 
   useEffect(() => {
     if (cartItem) {

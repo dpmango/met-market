@@ -224,7 +224,7 @@ const Header = observer(({ className }) => {
                   <span>Показать в алфавитном порядке</span>
                   <div className={cns(styles.catLangToggle, abcOrder && styles._active)}></div>
                 </div>
-                <CatalogMenu abcOrder={abcOrder} />
+                <CatalogMenu type="header" abcOrder={abcOrder} />
 
                 <div className={cns(styles.overlayLinks, 'overlayLinks')}>
                   <a href="/catalog.pdf" target="_blank" className={cns(styles.priceList)}>
