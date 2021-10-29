@@ -13,13 +13,14 @@ const File = ({ className, data, onDelete, onSuccess, onError, ...props }) => {
   const { addToast } = useToasts();
 
   const [progress, setProgress] = useState(null);
-
+  const [loadDone, setLoadDone] = useState(false);
   const callbackContext = useContext(CallbackStoreContext);
 
   // start upload automatically when file is added
   const handleUpload = useCallback(async () => {
     if (data && data.upload !== null) {
       setProgress(100);
+      setLoadDone(true);
       return;
     }
 
@@ -29,6 +30,7 @@ const File = ({ className, data, onDelete, onSuccess, onError, ...props }) => {
       })
       .then((res) => {
         onSuccess && onSuccess({ file: data.file, id: data.id, upload: res[0] }); // fileId + name
+        setLoadDone(true);
       })
       .catch((err) => {
         addToast(`Ошибка при загрузке файла ${data.file.name}`, { appearance: 'error' });
@@ -53,7 +55,7 @@ const File = ({ className, data, onDelete, onSuccess, onError, ...props }) => {
         <span>{formatBytes(data.file.size)}</span>
       </div>
 
-      <div className={cns(styles.progress, (progress === 100 || data.error) && styles._uploaded)}>
+      <div className={cns(styles.progress, (loadDone || data.error) && styles._uploaded)}>
         <div className={styles.progressInner} style={{ width: `${progress}%` }}></div>
       </div>
 

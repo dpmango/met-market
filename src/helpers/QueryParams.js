@@ -15,7 +15,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
     }
   };
 
-  // console.log('QUERY :: update payload', payload);
+  console.log('QUERY :: update payload', payload);
 
   switch (payload.type) {
     case 'delete':

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useContext, useRef, useCallback, useEffect, useMemo } from 'react';
 import { observer } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
 import cns from 'classnames';
@@ -8,12 +8,15 @@ import { SvgIcon, Spinner } from '@ui';
 import { CatalogStoreContext, SessionStoreContext, UiStoreContext } from '@store';
 import { useOnClickOutside, useFirstRender } from '@hooks';
 import { formatUGC, updateQueryParams, ScrollTo } from '@helpers';
+import { AnimatedSearchPlaceholder } from '@services';
 
 import styles from './Search.module.scss';
 
 const settings = {
   delay: 50,
 };
+
+const PlaceholderAnimation = new AnimatedSearchPlaceholder();
 
 const Search = observer(({ className }) => {
   const history = useHistory();
@@ -91,18 +94,20 @@ const Search = observer(({ className }) => {
   }, [searchText]);
 
   useEffect(() => {
-    if (firstRender) {
-      if (searchText !== query.search || '') {
-        setSearchText(query.search || '');
-      }
-    }
-  }, [query.search]);
-
-  useEffect(() => {
-    if (!firstRender && query.category) {
+    if (!firstRender && query.category && !query.search) {
       setSearchText('');
     }
   }, [query.category]);
+
+  useEffect(() => {
+    // if (searchText !== query.search || '') {
+    setSearchText(query.search || '');
+  }, [query.search]);
+
+  // memos
+  const searchPlaceholder = useMemo(() => {
+    return `Искать среди ${catalogContext.catalogLength} товаров в наличии`;
+  }, [catalogContext.catalogLength]);
 
   // event handlers
   const handleSearchSubmit = useCallback(
@@ -165,11 +170,15 @@ const Search = observer(({ className }) => {
 
   const handleFocus = useCallback(() => {
     // setSuggestionsOpened(true);
+    PlaceholderAnimation.cancelPrintPhrases();
   }, []);
 
   const handleBlur = useCallback(() => {
     // setSuggestionsOpened(true);
-  }, []);
+    if (showRecent) {
+      PlaceholderAnimation.printPhrases();
+    }
+  }, [showRecent]);
 
   const handleClearClick = useCallback(() => {
     sessionContext.removeLogs('search');
@@ -183,12 +192,41 @@ const Search = observer(({ className }) => {
   useEffect(() => {
     if (showRecent) {
       document.body.classList.add('searchShowingRecent');
+      PlaceholderAnimation.printPhrases();
     } else {
+      PlaceholderAnimation.cancelPrintPhrases();
       setTimeout(() => {
         document.body.classList.remove('searchShowingRecent');
       }, 250);
     }
   }, [showRecent]);
+
+  // search animated placeholder
+  useEffect(() => {
+    if (inputRef) {
+      PlaceholderAnimation.init(
+        [
+          'Мгновенный поиск по каталогу',
+          'Лист горячекатаный',
+          'Лист г/к ст3 1.5',
+          'Трубы электросварные круглые',
+          'Трубы ЭСВ 18 6000',
+          'Просечно-вытяжной лист 306',
+          'ПВЛ 306',
+        ],
+        inputRef.current,
+        searchPlaceholder
+      );
+    }
+  }, [inputRef, searchPlaceholder]);
+
+  // Мгновенный поиск по каталогу (стирается полностью)
+  // Лист горячекатаный (стирается побуквенно "горячекатаный")
+  // Лист г/к ст3 1.5 (стирается полностью)
+  // Трубы электросварные круглые (стирается побуквенно "электросварные круглые")
+  // Трубы ЭСВ 18 6000 (стирается полностью)
+  // Просечно-вытяжной лист 306 (стирается побуквенно полностью)
+  // ПВЛ 306
 
   const haveLog = sessionContext.log && sessionContext.log.search.length > 0;
 
@@ -196,7 +234,7 @@ const Search = observer(({ className }) => {
     <form className={cns(className, styles.search)} ref={searchRef} onSubmit={handleSearchSubmit}>
       <input
         className={styles.searchInput}
-        placeholder={`Искать среди ${catalogContext.catalogLength} товаров в наличии`}
+        placeholder={searchPlaceholder}
         value={searchText}
         // onKeyUp={(e) => setSuggestionsOpened(true)}
         onFocus={handleFocus}
@@ -204,14 +242,14 @@ const Search = observer(({ className }) => {
         onChange={handleSearchChange}
         ref={inputRef}
       />
-      {haveLog && (
-        <button
-          className={cns(styles.searchDropdown, showRecent && styles._active)}
-          type="button"
-          onClick={() => setShowRecent(!showRecent)}>
-          <SvgIcon name="caret" key="caret" />
-        </button>
-      )}
+
+      <button
+        className={cns(styles.searchDropdown, showRecent && styles._active)}
+        type="button"
+        onClick={() => setShowRecent(!showRecent)}>
+        <SvgIcon name="caret" key="caret" />
+      </button>
+
       {searchText.length >= 2 && (
         <button className={cns(styles.searchClear)} type="button" onClick={() => setSearchText('')}>
           <SvgIcon name="close" key="close" />

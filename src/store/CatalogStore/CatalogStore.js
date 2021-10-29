@@ -4,7 +4,7 @@ import { findNodeById, findNodeByName, formatPrice } from '@helpers';
 import qs from 'qs';
 import groupBy from 'lodash/groupBy';
 import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/Strings';
-import { PerformanceLog } from '@helpers';
+import { PerformanceLog, getEnv } from '@helpers';
 import { LOCAL_STORAGE_CATALOG } from '@config/localStorage';
 import { ui } from '@store';
 
@@ -15,6 +15,8 @@ export default class CatalogStore {
   date = null;
   catalog = [];
   categories = [];
+  intervalId = null;
+  lastQuery = null;
   filters = {
     size: [],
     mark: [],
@@ -164,13 +166,23 @@ export default class CatalogStore {
     const searchRegex = prepareSmartSearchRegexp(clearMorphologyInSearchTerm(searchInput.toLowerCase()));
 
     const doRegexSearch = (source) => {
-      const matches = source.filter((x) => {
-        const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
+      let matches = [];
 
-        return terms ? new RegExp(searchRegex, 'i').test(terms) : false;
-      });
+      const isArticleSearch = searchInput.length >= 6 && !isNaN(searchInput);
 
-      return matches || [];
+      if (!isArticleSearch) {
+        matches = source.filter((x) => {
+          const terms = x.searchTerms ? x.searchTerms.toLowerCase() : null;
+
+          return terms ? new RegExp(searchRegex, 'i').test(terms) : false;
+        });
+      } else {
+        matches = source.filter((x) => {
+          return x.idUnique.includes(searchInput);
+        });
+      }
+
+      return matches;
     };
 
     const searched = doRegexSearch(this.applyCatalogFilters(source, filterType));
@@ -469,43 +481,68 @@ export default class CatalogStore {
   }
 
   // API ACTIONS
-  async getCatalog() {
+  async getCatalog(is_repeat) {
     let lastDate = null;
 
-    if (localStorage.getItem(LOCAL_STORAGE_CATALOG)) {
-      const lsCatalog = JSON.parse(LZString.decompress(localStorage.getItem(LOCAL_STORAGE_CATALOG)));
+    // initally, try get data localStorage
+    if (!is_repeat) {
+      if (localStorage.getItem(LOCAL_STORAGE_CATALOG)) {
+        const lsCatalog = JSON.parse(LZString.decompress(localStorage.getItem(LOCAL_STORAGE_CATALOG)));
 
-      const { date, data, categories } = lsCatalog;
+        const { date, data, categories } = lsCatalog;
 
-      runInAction(() => {
-        this.date = date;
-        this.catalog = data;
-        this.categories = categories.categories;
-        this.loading = false;
-      });
+        runInAction(() => {
+          this.date = date;
+          this.catalog = data;
+          this.categories = categories.categories;
+          this.loading = false;
+        });
 
-      lastDate = date;
-    } else {
-      runInAction(() => {
-        this.loading = true;
-      });
+        lastDate = date;
+      } else {
+        runInAction(() => {
+          this.loading = true;
+        });
+      }
     }
 
+    // request
     const [err, result] = await service.get(lastDate);
 
-    if (err) throw err;
+    // if (err) throw err;
 
-    const { date, data, categories, timestamp } = result;
+    if (result) {
+      const { date, data, categories } = result;
 
-    if (lastDate !== date) {
-      runInAction(() => {
-        this.date = date;
-        this.catalog = data;
-        this.categories = categories.categories;
-        this.loading = false;
+      let shouldUpdateInternals = lastDate !== date;
 
-        localStorage.setItem(LOCAL_STORAGE_CATALOG, LZString.compress(JSON.stringify({ date, data, categories })));
-      });
+      if (shouldUpdateInternals && is_repeat) {
+        const routeChanged = this.lastQuery !== ui.query.category;
+        shouldUpdateInternals = routeChanged;
+
+        this.lastQuery = ui.query.category;
+      }
+
+      if (shouldUpdateInternals) {
+        console.log('UPDATING CATALOG');
+        runInAction(() => {
+          this.date = date;
+          this.catalog = data;
+          this.categories = categories.categories;
+          this.loading = false;
+
+          localStorage.setItem(LOCAL_STORAGE_CATALOG, LZString.compress(JSON.stringify({ date, data, categories })));
+        });
+      }
+    }
+
+    // ajax polling, will fetch catalog again and compare changes
+    if (!is_repeat) {
+      this.lastQuery = ui.query.category;
+
+      this.intervalId = setInterval(() => {
+        this.getCatalog(true);
+      }, getEnv('CATALOG_UPDATE_INTERVAL_MINUTES') * 60 * 1000);
     }
 
     return result;

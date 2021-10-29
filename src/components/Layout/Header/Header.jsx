@@ -141,7 +141,8 @@ const Header = observer(({ className }) => {
 
   useEffect(() => {
     setAbcOrder(false);
-  }, [catalogOpened]);
+    scrollerRef.current.scrollTop = 0;
+  }, [catalogOpened, scrollerRef]);
 
   return (
     <>

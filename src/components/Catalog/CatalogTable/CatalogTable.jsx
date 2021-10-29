@@ -150,6 +150,17 @@ const CatalogTable = observer(() => {
     ScrollTo(catalogRef.current.offsetTop - offsetPoint, 300);
   }, [catalogRef, width]);
 
+  const handleSearchEverywhere = useCallback(() => {
+    updateQueryParams({
+      location,
+      history,
+      payload: {
+        type: 'delete',
+        value: ['category', 'page'],
+      },
+    });
+  }, [location, history]);
+
   //////////
   // effects
   //////////
@@ -186,12 +197,12 @@ const CatalogTable = observer(() => {
   useEffect(() => {
     gotoPage(getIndexFromQuery(query));
     setPageIndex(getIndexFromQuery(query));
-    if (catalogRef.current && !firstRender && query.page) {
+    if (catalogRef.current && !firstRender) {
       const offsetPoint = width < 768 ? 16 : 60;
 
       ScrollTo(catalogRef.current.offsetTop - offsetPoint, 300);
     }
-  }, [query.page, query.size, query.mark, query.length]);
+  }, [query.page]);
 
   // filters data
   const categoryData = useMemo(() => {
@@ -291,7 +302,12 @@ const CatalogTable = observer(() => {
         )}
       </table>
 
-      {page && page.length === 0 && <div className={styles.notFound}>Ничего не найдено</div>}
+      {page && page.length === 0 && (
+        <div className={styles.notFound}>
+          Ничего не найдено <span onClick={() => handleSearchEverywhere()}>Искать везде?</span>
+        </div>
+      )}
+
       <div className={styles.pagination}>
         <Pagination
           page={pageIndexControled + 1}

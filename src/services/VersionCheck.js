@@ -4,7 +4,7 @@ import { getEnv } from '@helpers';
 export default class VersionCheck {
   version = null;
   fileName = 'version.txt';
-  interval = parseInt(getEnv('UPDATE_INTERVAL_MIN')) * 60 * 1000;
+  interval = parseInt(getEnv('APP_UPDATE_INTERVAL_MINUTES')) * 60 * 1000;
   lastActivity = new Date();
 
   constructor() {

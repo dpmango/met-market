@@ -368,6 +368,16 @@
   background: #eaecf5;
   border-radius: 5px;
   text-align: center;
+  span {
+    color: $colorLink;
+    text-decoration: underline;
+    transition: color 0.25s $ease;
+    cursor: pointer;
+    &:hover {
+      color: $colorLink;
+      text-decoration: none;
+    }
+  }
 }
 
 @include r($md) {
