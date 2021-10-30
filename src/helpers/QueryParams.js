@@ -15,7 +15,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
     }
   };
 
-  console.log('QUERY :: update payload', payload);
+  // console.log('QUERY :: update payload', payload);
 
   switch (payload.type) {
     case 'delete':
@@ -135,10 +135,35 @@ export const updateQueryParams = ({ history, location, payload }) => {
       break;
   }
 
+  // history options (remember first search option)
+  if (payload.type === 'search') {
+    if (ui.queryHistroy.firstSearch === null) {
+      ui.setHistoryParams(params);
+    } else {
+      const savedSearch = ui.queryHistroy.firstSearch.get('search');
+      const isDeletingSearchStr =
+        payload.value && savedSearch && savedSearch.slice(0, savedSearch.length - 1).includes(payload.value);
+      const isBackNavigation = window.direction === -1 || window.direction === 0;
+
+      if (isDeletingSearchStr) {
+        if (isBackNavigation) {
+          params.delete('search');
+        }
+      } else {
+        ui.setHistoryParams(params);
+      }
+    }
+  } else {
+    if (ui.queryHistroy.firstSearch !== null) {
+      ui.setHistoryParams(null);
+    }
+  }
+
   if (curParams !== params.toString() || location.pathname !== '/') {
     console.log('QUERY :: Push :: ', params.toString());
 
     // ui.updateParams(params);
+    window.listenHistoryState();
 
     history.push({
       pathname: '/',

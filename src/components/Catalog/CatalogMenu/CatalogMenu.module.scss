@@ -181,6 +181,12 @@
       :global .col-md-6 {
         padding-right: 20px;
       }
+      :global li::after {
+        display: none;
+      }
+      :global .categoryTitle {
+        font-weight: normal;
+      }
     }
   }
   .letters {
@@ -220,6 +226,9 @@
         flex-basis: 100%;
         max-width: 100%;
         padding-right: 6px;
+      }
+      :global li::after {
+        display: inline-block;
       }
     }
   }

@@ -15,6 +15,7 @@ const CategoryMain = observer(({ category, mobOpened, setMobOpened }) => {
   const location = useLocation();
 
   const uiContext = useContext(UiStoreContext);
+  const { catalogOpened } = useContext(UiStoreContext);
 
   const handleCategoryClick = (id, e) => {
     e && e.preventDefault();
@@ -39,11 +40,15 @@ const CategoryMain = observer(({ category, mobOpened, setMobOpened }) => {
     }
   };
 
+  useEffect(() => {
+    setMobOpened([]);
+  }, [catalogOpened]);
+
   return (
     <div className={cns('category', styles.category)} data-id={category.id}>
       <a
         href={`?category=${category.id}`}
-        className={styles.categoryTitle}
+        className={cns(styles.categoryTitle, 'categoryTitle')}
         onClick={(e) => handleCategoryClick(category.id, e)}>
         {category.name}
       </a>

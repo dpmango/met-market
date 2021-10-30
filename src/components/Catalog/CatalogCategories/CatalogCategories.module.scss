@@ -60,15 +60,8 @@
     margin-bottom: 0;
     .everywhere {
       display: block;
-      width: 100%;
-      margin-top: 20px;
-      :global .btn {
-        display: block;
-        width: 100%;
-        padding-top: 14px;
-        padding-bottom: 14px;
-        max-width: 428px;
-      }
+      // width: 100%;
+      // margin-top: 20px;
     }
   }
   .tags {

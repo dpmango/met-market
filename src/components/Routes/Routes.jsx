@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Router, Switch, Route, Redirect } from 'react-router-dom';
 
 import routes from '@config/routes';
+import history from '@config/history';
 import Layout from '@c/Layout/';
 
 import NoMatch from './NoMatch';
@@ -21,10 +22,10 @@ const Routes = () => {
   );
 };
 
-const Router = () => (
-  <BrowserRouter>
+const CustomRouter = () => (
+  <Router history={history}>
     <Routes />
-  </BrowserRouter>
+  </Router>
 );
 
-export default Router;
+export default CustomRouter;

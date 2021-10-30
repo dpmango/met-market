@@ -56,7 +56,7 @@ const File = ({ className, data, onDelete, onSuccess, onError, ...props }) => {
       </div>
 
       <div className={cns(styles.progress, (loadDone || data.error) && styles._uploaded)}>
-        <div className={styles.progressInner} style={{ width: `${progress}%` }}></div>
+        <div className={styles.progressInner} style={{ width: `${progress * 0.9}%` }}></div>
       </div>
 
       {data.error && (

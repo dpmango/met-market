@@ -29,7 +29,7 @@ const Header = observer(({ className }) => {
 
       e.preventDefault();
 
-      if (isMobile()) {
+      if (!isMobile()) {
         const el = document.createElement('textarea');
         el.value = email;
         el.setAttribute('readonly', '');
@@ -59,7 +59,7 @@ const Header = observer(({ className }) => {
       <div className={styles.footerMain}>
         <div className="container">
           <div className="row">
-            <div className="col col-4 col-md-12">
+            <div className="col col-4 col-md-6 col-sm-12">
               <div className={styles.group}>
                 <div className={styles.footerTitle}>Отдел продаж</div>
 
@@ -97,7 +97,7 @@ const Header = observer(({ className }) => {
                     <SvgIcon name="email" />
                   </div>
                   <span>
-                    <img src="img/mail.svg" />
+                    <img src="/img/mail.svg" />
                   </span>
                 </a>
                 <div className={styles.footerContact}>
@@ -124,7 +124,7 @@ const Header = observer(({ className }) => {
               </div>
             </div>
 
-            <div className="col col-4 col-md-12">
+            <div className="col col-4 col-md-6 col-sm-12">
               <div className={cns(styles.group, styles._middle)}>
                 <div className={styles.footerTitle}>Склад в Ивантеевке</div>
                 <div className={styles.footerContact}>
@@ -147,9 +147,32 @@ const Header = observer(({ className }) => {
                   </span>
                 </div>
               </div>
+
+              <div className={cns(styles.group, styles._midmd)}>
+                <div className={styles.footerTitle}>Склад в Люберцах</div>
+                <div className={styles.footerContact}>
+                  <div className={styles.footerContactIcon}>
+                    <SvgIcon name="time" />
+                  </div>
+                  <span>
+                    Круглосуточная отгрузка:
+                    <br />
+                    доставка день в день
+                  </span>
+                </div>
+                <div className={styles.footerContact}>
+                  <div className={styles.footerContactIcon}>
+                    <SvgIcon name="location" />
+                  </div>
+                  <span>
+                    МО, г. Люберцы, <br />
+                    ул. Проектируемый проезд 4296, д. 4
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <div className="col col-4  col-md-12">
+            <div className="col col-4 col-md-6 col-sm-12">
               <div className={cns(styles.group, styles._last)}>
                 <div className={styles.footerTitle}>Склад в Люберцах</div>
                 <div className={styles.footerContact}>

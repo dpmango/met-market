@@ -183,6 +183,7 @@
   .formInput {
     :global input {
       padding-left: 15px;
+      padding-right: 160px;
     }
   }
   .formButton {
@@ -221,15 +222,15 @@
   }
 
   .contentTitle {
-    font-size: calc(8px + 1vw);
+    font-size: calc(0px + 2.5vw);
     br {
       display: none;
     }
   }
 
   .contentList li {
-    font-size: 11px;
-    max-width: 200px;
+    font-size: calc(0px + 2vw);
+    // max-width: 200px;
   }
 
   .form {
@@ -245,7 +246,7 @@
   }
 
   .formTitle {
-    font-size: 12px;
+    font-size: calc(0px + 2.3vw);
     br {
       display: block;
     }
@@ -296,7 +297,8 @@
   }
 
   .contentTitle {
-    font-size: 24px;
+    // font-size: 24px;
+    font-size: calc(8px + 3vw);
     max-width: 520px;
     br {
       display: none;
@@ -304,8 +306,10 @@
   }
 
   .contentList li {
-    font-size: 14px;
-    max-width: 100%;
+    // font-size: 13px;
+    font-size: calc(4px + 1.9vw);
+    // max-width: 320px;
+    // max-width: 100%;
   }
 
   .form {
@@ -347,6 +351,7 @@
   }
   .contentList li {
     font-size: 11px;
+    max-width: 320px;
   }
 
   .form {

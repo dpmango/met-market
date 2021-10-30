@@ -32,7 +32,6 @@ export default {
     return api.post(endpoints.file.upload, formData, {
       timeout: 120 * 1000,
       onUploadProgress: (e) => {
-        console.log('progress', e);
         const percentCompleted = Math.round((e.loaded * 100) / e.total);
         req.progress && req.progress(percentCompleted);
       },

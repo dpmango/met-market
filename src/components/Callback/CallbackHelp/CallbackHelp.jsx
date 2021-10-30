@@ -124,7 +124,7 @@ const CallbackHelp = observer(() => {
             </Formik>
           </div>
           <div className={styles.background}>
-            <img src="img/callbackHelp-bg.jpg" alt="Заказать звонок" />
+            <img src="/img/callbackHelp-bg.jpg" alt="Заказать звонок" />
           </div>
         </div>
       </div>

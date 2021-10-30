@@ -145,7 +145,7 @@ const CallbackHero = observer(() => {
             </div>
           </div>
           <div className={styles.background}>
-            <img src="img/callbackHero-bg.jpg" alt="Заказать звонок" />
+            <img src="/img/callbackHero-bg.jpg" alt="Заказать звонок" />
           </div>
         </div>
       </div>

@@ -8,10 +8,7 @@ const App = () => {
   return (
     <>
       <ToastProvider autoDismiss={true} placement="top-center" autoDismissTimeout={10000} components={{ Toast: Toast }}>
-        <LoaderContextProvider>
-          <Routes />
-          <Loader />
-        </LoaderContextProvider>
+        <Routes />
       </ToastProvider>
     </>
   );

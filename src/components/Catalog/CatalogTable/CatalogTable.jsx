@@ -304,7 +304,13 @@ const CatalogTable = observer(() => {
 
       {page && page.length === 0 && (
         <div className={styles.notFound}>
-          Ничего не найдено <span onClick={() => handleSearchEverywhere()}>Искать везде?</span>
+          Ничего не найдено
+          {query.category && (
+            <>
+              <i>.&nbsp;</i>
+              <span onClick={() => handleSearchEverywhere()}>Искать везде?</span>
+            </>
+          )}
         </div>
       )}
 

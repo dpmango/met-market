@@ -5,7 +5,7 @@ import qs from 'qs';
 import groupBy from 'lodash/groupBy';
 import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/Strings';
 import { PerformanceLog, getEnv } from '@helpers';
-import { LOCAL_STORAGE_CATALOG } from '@config/localStorage';
+import { LOCAL_STORAGE_CATALOG, LOCAL_STORAGE_CATALOG_LENGTH } from '@config/localStorage';
 import { ui } from '@store';
 
 import service from './api-service';
@@ -145,17 +145,15 @@ export default class CatalogStore {
     const DEV_perf = performance.now();
 
     if (category_id) {
+      const category = this.getCategoryById(category_id);
+
       source = [
         ...source.filter((cat_item) => {
           const { cat1, cat2, cat3 } = cat_item;
 
-          const category_1 = this.getCategoryByName(cat1);
-          const category_2 = this.getCategoryByName(cat2);
-          const category_3 = this.getCategoryByName(cat3);
-
-          const firstMatch = category_1 && category_1.id.includes(category_id);
-          const secondMatch = category_2 && category_2.id.includes(category_id);
-          const thirdMatch = category_3 && category_3.id.includes(category_id);
+          const firstMatch = category.name === cat1;
+          const secondMatch = category.name === cat2;
+          const thirdMatch = category.name === cat3;
 
           return firstMatch || secondMatch || thirdMatch;
         }),
@@ -481,13 +479,19 @@ export default class CatalogStore {
   }
 
   // API ACTIONS
+
   async getCatalog(is_repeat) {
     let lastDate = null;
 
     // initally, try get data localStorage
     if (!is_repeat) {
       if (localStorage.getItem(LOCAL_STORAGE_CATALOG)) {
-        const lsCatalog = JSON.parse(LZString.decompress(localStorage.getItem(LOCAL_STORAGE_CATALOG)));
+        const decompressedCatalog = window.decompressCatalog(
+          localStorage.getItem(LOCAL_STORAGE_CATALOG_LENGTH),
+          localStorage.getItem(LOCAL_STORAGE_CATALOG)
+        );
+
+        const lsCatalog = JSON.parse(decompressedCatalog);
 
         const { date, data, categories } = lsCatalog;
 
@@ -531,7 +535,10 @@ export default class CatalogStore {
           this.categories = categories.categories;
           this.loading = false;
 
-          localStorage.setItem(LOCAL_STORAGE_CATALOG, LZString.compress(JSON.stringify({ date, data, categories })));
+          const compressedCatalog = window.compressCatalog(JSON.stringify({ date, data, categories }));
+
+          localStorage.setItem(LOCAL_STORAGE_CATALOG, compressedCatalog.data);
+          localStorage.setItem(LOCAL_STORAGE_CATALOG_LENGTH, compressedCatalog.inputLength);
         });
       }
     }

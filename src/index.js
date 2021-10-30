@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '@styles/index.scss';
 import App from '@c/App';
-import { BrowserInfo, VersionCheck } from '@services';
+import { BrowserInfo, VersionCheck, History } from '@services';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,3 +16,4 @@ ReactDOM.render(
 
 new VersionCheck();
 new BrowserInfo();
+new History();

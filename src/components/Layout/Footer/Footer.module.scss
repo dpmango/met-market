@@ -61,6 +61,9 @@
     max-width: 280px;
     margin-left: auto;
   }
+  &._midmd {
+    display: none;
+  }
 }
 
 a.footerContact {
@@ -156,6 +159,66 @@ div.footerContact {
     padding-bottom: 30px;
     :global .col {
       &:nth-child(2) {
+        &::after {
+          display: none;
+        }
+        &::before {
+          top: 0;
+          left: -12px;
+        }
+      }
+    }
+  }
+  .group {
+    padding-right: 0;
+    &._middle {
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+    &._last {
+      display: none;
+      padding-top: 12px;
+      padding-left: 0;
+      padding-right: 0;
+      max-width: 100%;
+    }
+    &._midmd {
+      display: block;
+    }
+  }
+
+  .footerContact {
+    font-size: 13px;
+    width: 100%;
+    img {
+      width: 120px;
+    }
+  }
+
+  .footerContactIcon {
+    flex-basis: 22px;
+    :global {
+      .svg-icon {
+        font-size: 13px;
+      }
+      .svg-icon--location {
+        font-size: 17px;
+      }
+      .svg-icon--email {
+        font-size: 9px;
+      }
+    }
+  }
+}
+
+@include r($sm) {
+  .footerMain {
+    padding-bottom: 30px;
+    :global .col {
+      &:nth-child(2) {
+        &::after {
+          display: block;
+        }
         &::after,
         &::before {
           top: 0;
@@ -175,34 +238,13 @@ div.footerContact {
     &._middle {
       max-width: 100%;
       padding: 12px 0;
+      margin-bottom: 0;
+    }
+    &._midmd {
+      display: none;
     }
     &._last {
-      padding-top: 12px;
-      padding-left: 0;
-      padding-right: 0;
-      max-width: 100%;
-    }
-  }
-
-  .footerContact {
-    font-size: 13px;
-    img {
-      width: 120px;
-    }
-  }
-
-  .footerContactIcon {
-    flex-basis: 22px;
-    :global {
-      .svg-icon {
-        font-size: 13px;
-      }
-      .svg-icon--location {
-        font-size: 17px;
-      }
-      .svg-icon--email {
-        font-size: 9px;
-      }
+      display: block;
     }
   }
 }

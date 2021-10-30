@@ -22,6 +22,9 @@ export default class UiStore {
     callback: null,
     origin: null,
   };
+  queryHistroy = {
+    firstSearch: null,
+  };
 
   constructor() {
     makeAutoObservable(this);
@@ -85,6 +88,11 @@ export default class UiStore {
     };
 
     this.query = obj;
+  }
+
+  // update history params
+  setHistoryParams(query) {
+    this.queryHistroy.firstSearch = query;
   }
 
   checkQuery(query) {

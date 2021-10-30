@@ -83,19 +83,15 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
       return [];
     }
 
-    if (type === 'header' || width >= 768) {
+    if (type === 'homepage' && width < 768) {
       return [
         {
           className,
-          list: list.slice(0, 2),
+          list: [...list.slice(0, 2), ...list.slice(5, 6)],
         },
         {
           className,
-          list: list.slice(2, 5),
-        },
-        {
-          className,
-          list: list.slice(5, 7),
+          list: [...list.slice(2, 5), ...list.slice(6, 7)],
         },
       ];
     } else {
@@ -110,15 +106,11 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
         },
         {
           className,
-          list: list.slice(5, 6),
-        },
-        {
-          className,
-          list: list.slice(6, 7),
+          list: list.slice(5, 7),
         },
       ];
     }
-  }, [list, abcOrder]);
+  }, [list, abcOrder, width]);
 
   // click handlers
   const handleLetterClick = (letter) => {
