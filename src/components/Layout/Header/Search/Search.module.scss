@@ -2,11 +2,23 @@
   position: relative;
   display: flex;
   width: 100%;
-  margin-right: 40px;
+  margin-right: 60px;
   &:hover {
     .searchInput {
       border-color: #4168f1;
     }
+  }
+}
+
+@include r($xl) {
+  // .search {
+  //   // margin-right: 60px;
+  // }
+}
+
+@include r($lg) {
+  .search {
+    margin-right: 32px;
   }
 }
 

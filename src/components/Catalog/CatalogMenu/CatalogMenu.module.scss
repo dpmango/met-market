@@ -40,7 +40,7 @@
 @include r($md) {
   .catalog {
     :global .col:last-child .categorySub ul {
-      width: 100%;
+      width: calc(100% - 10px);
     }
   }
 }
@@ -177,6 +177,7 @@
     }
     &.homepage {
       // display: none;
+      display: block;
       margin-right: -16px;
       :global .col-md-6 {
         padding-right: 20px;

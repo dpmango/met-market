@@ -58,7 +58,7 @@
         API_RETRY_DELAY: 1500,
         APP_UPDATE_INTERVAL_MINUTES: 10,
         CATALOG_UPDATE_INTERVAL_MINUTES: 5,
-        EXTRA_TONNAGE_PERCENT: 10,
+        EXTRA_TONNAGE_PERCENT: 1,
       };
     </script>
 
@@ -81,6 +81,9 @@
 
       var observer = new MutationObserver(observerCallback);
       observer.observe(document, {childList: true,  subtree: true });
+
+      window.loadObserver = observer
+
     </script>
 
     <title>Металлопрокат оптом и в розницу в Москве</title>
