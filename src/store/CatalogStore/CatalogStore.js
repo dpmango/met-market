@@ -289,6 +289,25 @@ export default class CatalogStore {
       });
     }
 
+    result = result.reduce((acc, x) => {
+      const words = x.short.split(' ');
+      let shouldAdd = true;
+
+      if (words.length >= 3) {
+        shouldAdd = !words.some((letter) => {
+          return acc.map((x) => x.short).some((x) => x.includes(letter));
+        });
+      }
+
+      if (shouldAdd) {
+        return [...acc, x];
+      } else {
+        return acc;
+      }
+    }, []);
+
+    //filter duplicaties (matching two or more words)
+
     // first letter grouping
     const grouped = groupBy(result, (x) => x.name && x.name[0].toUpperCase());
     const sortedObject = Object.fromEntries(Object.entries(grouped).sort());
@@ -481,7 +500,7 @@ export default class CatalogStore {
   // API ACTIONS
 
   async getCatalog(is_repeat) {
-    let lastDate = null;
+    let lastDate = this.date;
 
     // initally, try get data localStorage
     if (!is_repeat) {
@@ -516,26 +535,27 @@ export default class CatalogStore {
     // if (err) throw err;
 
     if (result) {
-      const { date, data, categories } = result;
+      const { timestamp, data, categories } = result;
 
-      let shouldUpdateInternals = lastDate !== date;
+      let shouldUpdateInternals = lastDate !== timestamp;
 
       if (shouldUpdateInternals && is_repeat) {
         const routeChanged = this.lastQuery !== ui.query.category;
         shouldUpdateInternals = routeChanged;
 
-        this.lastQuery = ui.query.category;
+        runInAction(() => {
+          this.lastQuery = ui.query.category;
+        });
       }
 
       if (shouldUpdateInternals) {
-        console.log('UPDATING CATALOG');
         runInAction(() => {
-          this.date = date;
+          this.date = timestamp;
           this.catalog = data;
           this.categories = categories.categories;
           this.loading = false;
 
-          const compressedCatalog = window.compressCatalog(JSON.stringify({ date, data, categories }));
+          const compressedCatalog = window.compressCatalog(JSON.stringify({ date: timestamp, data, categories }));
 
           localStorage.setItem(LOCAL_STORAGE_CATALOG, compressedCatalog.data);
           localStorage.setItem(LOCAL_STORAGE_CATALOG_LENGTH, compressedCatalog.inputLength);

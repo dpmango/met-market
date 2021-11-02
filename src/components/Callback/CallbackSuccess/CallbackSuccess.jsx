@@ -4,14 +4,28 @@ import { observer } from 'mobx-react';
 
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
-import { formatPrice } from '@helpers';
+import { formatPrice, updateQueryParams } from '@helpers';
 
 import styles from './CallbackSuccess.module.scss';
 
 const CallbackSuccess = observer(() => {
   const history = useHistory();
 
+  const { activeModal, prevModal } = useContext(UiStoreContext);
   const { modalParams } = useContext(CartStoreContext);
+
+  useEffect(() => {
+    if (prevModal === 'callbacksuccess' && activeModal === null) {
+      updateQueryParams({
+        location,
+        history,
+        payload: {
+          type: 'callback',
+          value: false,
+        },
+      });
+    }
+  }, [activeModal]);
 
   return (
     <Modal name="callbacksuccess" variant={'thanks'}>

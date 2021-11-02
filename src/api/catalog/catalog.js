@@ -1,6 +1,8 @@
 import { api, endpoints } from '@api';
 import mockData from './mockData.json';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 export default {
   get: (lastDate) => {
@@ -8,7 +10,7 @@ export default {
     if (lastDate) {
       params = {
         headers: {
-          'If-Modified-Since': dayjs(lastDate).format('ddd, DD MMM YYYY HH:mm:ss') + ' GMT',
+          'If-Modified-Since': dayjs.utc(lastDate).format('ddd, DD MMM YYYY HH:mm:ss') + ' GMT',
         },
       };
     }

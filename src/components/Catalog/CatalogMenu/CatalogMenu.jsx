@@ -3,6 +3,7 @@ import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } 
 import { observer } from 'mobx-react';
 import cns from 'classnames';
 import chunk from 'lodash/chunk';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 
 import { SvgIcon } from '@ui';
 import { CatalogStoreContext, UiStoreContext } from '@store';
@@ -12,9 +13,10 @@ import { ScrollTo } from '@helpers';
 import CategoryLetter from './CategoryLetter';
 import CategoryMain from './CategoryMain';
 import styles from './CatalogMenu.module.scss';
+import 'swiper/swiper.scss';
 
 const CatalogMenu = observer(({ abcOrder, type, className }) => {
-  const { width } = useWindowSize();
+  const { width, height } = useWindowSize();
   const [activeLetters, setActiveLetters] = useState(['А']);
   const [mobOpened, setMobOpened] = useState([]);
 
@@ -48,14 +50,25 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
         });
       }
 
-      let colSize = 5;
+      let maxHeight = 10;
+      if (height < 740) {
+        maxHeight = 6;
+      } else if (height < 840) {
+        maxHeight = 8;
+      }
+
+      let colsByHeight = Math.ceil(allSorted.length / maxHeight);
+      let colSize = colsByHeight;
+
       if (width < 768) {
         colSize = 1;
-      } else if (width < 992) {
-        colSize = 3;
-      } else if (width < 1200) {
-        colSize = 4;
       }
+
+      // else if (width < 992) {
+      //   colSize = 3;
+      // } else if (width < 1200) {
+      //   colSize = 4;
+      // }
 
       const splited = chunk(allSorted, Math.ceil(allSorted.length / colSize));
 
@@ -66,7 +79,7 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
     }
 
     return categoriesList;
-  }, [categoriesList, categoriesAbc, activeLetters, abcOrder, width]);
+  }, [categoriesList, categoriesAbc, activeLetters, abcOrder, width, height]);
 
   const letters = useMemo(() => {
     return list && list.list ? Object.keys(list.list) : [];
@@ -178,13 +191,13 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
           </div>
 
           {list.categories && list.categories.length > 0 && (
-            <div className="row">
+            <Swiper spaceBetween={20} slidesPerView={'auto'}>
               {list.categories.map((cat, idx) => (
-                <div className={cns('col', styles.lettercol)}>
+                <SwiperSlide className={cns('col', styles.lettercol)}>
                   <CategoryLetter list={cat} key={idx} />
-                </div>
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
           )}
 
           <div className={cns(styles.abcNav, styles._left)} onClick={handlePrevClick}>

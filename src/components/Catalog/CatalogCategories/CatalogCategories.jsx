@@ -130,7 +130,6 @@ const CatalogCategories = observer(() => {
   }, [location, history]);
 
   useEffect(() => {
-    console.log('category changed');
     ScrollTo(0, 300);
   }, [query.category]);
 

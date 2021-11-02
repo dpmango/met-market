@@ -161,15 +161,6 @@
   &:hover {
     color: $colorLink;
   }
-  &._active {
-    .selectOptionCheckbox {
-      background: $colorLink;
-      border-color: $colorLink;
-      :global .svg-icon {
-        opacity: 1;
-      }
-    }
-  }
   &._popular {
     background: #ffe2aa;
   }
@@ -180,6 +171,16 @@
       border-color: rgba(0, 0, 0, 0.3);
       :global .svg-icon {
         display: none;
+      }
+    }
+  }
+  &._active {
+    .selectOptionCheckbox {
+      background: $colorLink;
+      border-color: $colorLink;
+      :global .svg-icon {
+        opacity: 1;
+        display: block;
       }
     }
   }

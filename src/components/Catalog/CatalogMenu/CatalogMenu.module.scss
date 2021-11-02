@@ -168,11 +168,15 @@
   .catalog {
     display: flex;
     &._abc {
-      :global .row {
+      :global .row,
+      :global .swiper {
         display: block;
         flex: 0 0 calc(100% - 48px);
         max-width: calc(100% - 48px);
         order: 1;
+      }
+      :global .swiper {
+        overflow: visible;
       }
     }
     &.homepage {

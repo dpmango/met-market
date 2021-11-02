@@ -8,7 +8,10 @@ export const isRetinaDisplay = () => {
 };
 
 export const isMobile = () => {
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+  if (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 0)
+  ) {
     return true;
   } else {
     return false;

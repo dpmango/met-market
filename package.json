@@ -55,6 +55,7 @@
     "react-table": "^7.7.0",
     "react-toast-notifications": "^2.5.1",
     "retry-axios": "^2.6.0",
+    "swiper": "^7.2.0",
     "viewport-units-buggyfill": "^0.6.2"
   },
   "devDependencies": {

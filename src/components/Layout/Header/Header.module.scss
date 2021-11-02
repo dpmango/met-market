@@ -3,7 +3,7 @@
   z-index: 9;
   transition: transform 0.25s $ease;
   will-change: transform;
-  backface-visibility: hidden;
+  // backface-visibility: hidden;
   &._scrolled {
     transform: translate3d(0, -74px, 0);
     .wrapper {

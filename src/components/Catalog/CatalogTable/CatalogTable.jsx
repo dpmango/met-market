@@ -46,17 +46,17 @@ const CatalogTable = observer(() => {
 
   // router for search and regular catalog with filters
   const data = useMemo(() => {
+    let returnable = [];
     if (query.search) {
       const { results } = searchCatalog(query.search, query.category, null);
-      return results;
-    }
 
-    if (query.category !== 'all') {
+      returnable = results;
+    } else if (query.category !== 'all') {
       const { results } = catalogContext.catalogList(query.category, null);
-      return results;
+      returnable = results;
     }
 
-    return [];
+    return returnable;
   }, [loading, catalog, query.category, query.search, filters]);
 
   const categoryExists = useMemo(() => {
@@ -65,7 +65,7 @@ const CatalogTable = observer(() => {
     }
 
     return true;
-  }, [query.category]);
+  }, [catalog, query.category]);
 
   // controlled table state
   const [pageIndexControled, setPageIndex] = useState(getIndexFromQuery(query));

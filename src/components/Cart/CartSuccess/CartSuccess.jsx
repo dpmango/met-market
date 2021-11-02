@@ -1,13 +1,28 @@
-import React, { useContext, useMemo, useCallback } from 'react';
+import React, { useContext, useMemo, useEffect, useCallback } from 'react';
 import { observer } from 'mobx-react';
 
 import { Modal, SvgIcon } from '@ui';
-import { UiStoreContext } from '@store';
+import { UiStoreContext, CartStoreContext } from '@store';
+import { updateQueryParams } from '@helpers';
 
 import styles from './CartSuccess.module.scss';
 
 const CartSuccess = observer(() => {
-  const { modalParams } = useContext(UiStoreContext);
+  const { activeModal, prevModal } = useContext(UiStoreContext);
+  const { modalParams } = useContext(CartStoreContext);
+
+  useEffect(() => {
+    if (prevModal === 'cartsuccess' && activeModal === null) {
+      updateQueryParams({
+        location,
+        history,
+        payload: {
+          type: 'cart',
+          value: false,
+        },
+      });
+    }
+  }, [activeModal]);
 
   return (
     <Modal name="cartsuccess" variant={'thanks'}>
