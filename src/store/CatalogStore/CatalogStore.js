@@ -7,6 +7,7 @@ import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/
 import { PerformanceLog, getEnv } from '@helpers';
 import { LOCAL_STORAGE_CATALOG, LOCAL_STORAGE_CATALOG_LENGTH } from '@config/localStorage';
 import { ui } from '@store';
+import uniqBy from 'lodash/uniqBy';
 
 import service from './api-service';
 
@@ -289,27 +290,32 @@ export default class CatalogStore {
       });
     }
 
-    result = result.reduce((acc, x) => {
+    //filter duplicaties (matching two or more words)
+    let resultClearDuplicates = [];
+
+    result.forEach((x) => {
       const words = x.short.split(' ');
       let shouldAdd = true;
 
-      if (words.length >= 3) {
-        shouldAdd = !words.some((letter) => {
-          return acc.map((x) => x.short).some((x) => x.includes(letter));
-        });
-      }
+      // if (words.length >= 3) {
+      //   const prevWords = [...resultClearDuplicates.map((x) => x.short)];
+      //   const prevWordsByWord = prevWords[prevWords.length - 1].split(' ');
 
-      if (shouldAdd) {
-        return [...acc, x];
-      } else {
-        return acc;
-      }
-    }, []);
+      //   shouldAdd = prevWordsByWord[0] !== words[0] && prevWordsByWord[1] !== words[1];
+      // }
 
-    //filter duplicaties (matching two or more words)
+      shouldAdd && resultClearDuplicates.push(x);
+      // if (!shouldAdd) {
+      //   console.log('skipping', x.short);
+      // }
+    });
+
+    resultClearDuplicates = uniqBy(resultClearDuplicates, (x) => x.short);
+
+    // console.log('results length', resultClearDuplicates.length);
 
     // first letter grouping
-    const grouped = groupBy(result, (x) => x.name && x.name[0].toUpperCase());
+    const grouped = groupBy(resultClearDuplicates, (x) => x.name && x.name[0].toUpperCase());
     const sortedObject = Object.fromEntries(Object.entries(grouped).sort());
 
     PerformanceLog(DEV_perf, 'categoriesAbc');

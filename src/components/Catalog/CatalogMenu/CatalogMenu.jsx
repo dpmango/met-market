@@ -23,6 +23,8 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
   const { categoriesList, categoriesAbc } = useContext(CatalogStoreContext);
   const { catalogOpened } = useContext(UiStoreContext);
 
+  const swiperRef = useRef(null);
+
   // memo getters
   const list = useMemo(() => {
     if (abcOrder) {
@@ -171,6 +173,20 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
     }
   }, [letters, activeLetters]);
 
+  useEffect(() => {
+    if (swiperRef && swiperRef.current && width >= 768) {
+      list.categories &&
+        list.categories.every((x, idx) => {
+          if (x.some((y) => y.short[0].toUpperCase() === activeLetters[0])) {
+            swiperRef.current.swiper.slideTo(idx);
+            return false;
+          }
+
+          return true;
+        });
+    }
+  }, [activeLetters]);
+
   // reset intial state on menu hide
   useEffect(() => {
     setActiveLetters(['А']);
@@ -191,7 +207,7 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
           </div>
 
           {list.categories && list.categories.length > 0 && (
-            <Swiper spaceBetween={20} slidesPerView={'auto'}>
+            <Swiper spaceBetween={0} slidesPerView={'auto'} ref={swiperRef}>
               {list.categories.map((cat, idx) => (
                 <SwiperSlide className={cns('col', styles.lettercol)}>
                   <CategoryLetter list={cat} key={idx} />

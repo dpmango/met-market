@@ -5,7 +5,7 @@ export default class History {
   direction = 0;
 
   constructor() {
-    sessionStorage.clear();
+    sessionStorage.removeItem('positionLast');
     window.addEventListener('popstate', this.listenHistoryState, false);
     window.addEventListener('pageshow', this.listenHistoryState, false);
 
@@ -13,19 +13,19 @@ export default class History {
   }
 
   listenHistoryState = () => {
-    const positionLastShown = Number(sessionStorage.getItem('positionLastShown'));
+    const positionLast = Number(sessionStorage.getItem('positionLast'));
     let position = history.location.state;
     // let position = window.history.state.state;
 
     if (position === undefined || position === null) {
-      position = positionLastShown + 1;
+      position = positionLast + 1;
 
       history.replace({ pathname: history.location.pathname, search: history.location.search, state: position });
     }
 
-    sessionStorage.setItem('positionLastShown', String(position));
+    sessionStorage.setItem('positionLast', String(position));
 
-    const direction = Math.sign(position - positionLastShown);
+    const direction = Math.sign(position - positionLast);
 
     // One of backward (-1), reload (0) and forward (1)
     // console.log('popstate direction', direction);
