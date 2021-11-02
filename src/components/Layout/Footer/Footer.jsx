@@ -70,7 +70,7 @@ const Header = observer(({ className }) => {
                   <span className="w-600">8-495-104-31-30</span>
                 </a>
                 <a
-                  href="https://api.whatsapp.com/send/?phone=79584088908"
+                  href="https://api.whatsapp.com/send/?phone=74951049686"
                   target="_blank"
                   className={styles.footerContact}
                   rel="noreferrer">

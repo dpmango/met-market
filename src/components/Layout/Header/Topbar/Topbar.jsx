@@ -38,7 +38,7 @@ const Topbar = observer(({ className }) => {
               <span className="w-700">Отправить заявку</span>
             </a>
             <a
-              href="https://api.whatsapp.com/send/?phone=79584088908"
+              href="https://api.whatsapp.com/send/?phone=74951049686"
               target="_blank"
               className={cns(styles.topbarAction, styles.iconed)}
               rel="noreferrer">
