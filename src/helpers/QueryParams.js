@@ -137,10 +137,10 @@ export const updateQueryParams = ({ history, location, payload }) => {
 
   // history options (remember first search option)
   if (payload.type === 'search') {
-    if (ui.queryHistroy.firstSearch === null) {
+    if (ui.queryHistory.firstSearch === null) {
       ui.setHistoryParams(params);
     } else {
-      const savedSearch = ui.queryHistroy.firstSearch.get('search');
+      const savedSearch = ui.queryHistory.firstSearch.get('search');
       const isDeletingSearchStr =
         payload.value && savedSearch && savedSearch.slice(0, savedSearch.length - 1).includes(payload.value);
       const isBackNavigation = window.direction === -1 || window.direction === 0;
@@ -154,7 +154,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
       }
     }
   } else {
-    if (ui.queryHistroy.firstSearch !== null) {
+    if (ui.queryHistory.firstSearch !== null) {
       ui.setHistoryParams(null);
     }
   }

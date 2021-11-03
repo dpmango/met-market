@@ -22,7 +22,7 @@ export default class UiStore {
     callback: null,
     origin: null,
   };
-  queryHistroy = {
+  queryHistory = {
     firstSearch: null,
   };
 
@@ -38,13 +38,16 @@ export default class UiStore {
 
   // assuming only one modal at given time
   setModal(name, params) {
-    this.prevModal = this.activeModal;
-    this.activeModal = name;
-    if (params) {
-      this.modalParams = params;
-    } else {
-      this.modalParams = null;
-    }
+    const timeoutms = this.prevModal ? 100 : 0;
+    setTimeout(() => {
+      this.prevModal = this.activeModal;
+      this.activeModal = name;
+      if (params) {
+        this.modalParams = params;
+      } else {
+        this.modalParams = null;
+      }
+    }, timeoutms);
   }
 
   resetModal() {
@@ -92,7 +95,7 @@ export default class UiStore {
 
   // update history params
   setHistoryParams(query) {
-    this.queryHistroy.firstSearch = query;
+    this.queryHistory.firstSearch = query;
   }
 
   checkQuery(query) {
