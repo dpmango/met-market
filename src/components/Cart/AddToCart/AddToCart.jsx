@@ -18,7 +18,7 @@ const AddToCart = observer(() => {
   const countRef = useRef(null);
   const { width } = useWindowSize();
 
-  const { activeModal, modalParams, query } = useContext(UiStoreContext);
+  const { activeModal, prevModal, modalParams, query } = useContext(UiStoreContext);
   const { getCategoryByName } = useContext(CatalogStoreContext);
   const cartContext = useContext(CartStoreContext);
   const uiContext = useContext(UiStoreContext);
@@ -121,7 +121,7 @@ const AddToCart = observer(() => {
   useEffect(() => {
     if (modalParams && activeModal === 'cart-add') {
       setModalData(modalParams);
-    } else {
+    } else if (prevModal === 'cart-add') {
       if (!firstRender) {
         setTimeout(() => {
           setModalData(null);

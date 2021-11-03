@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
@@ -111,6 +111,12 @@ const ModalComponent = observer(({ variant, modifier, name, mobTitle, children }
       overlay: { ...CSSinJSstyles.overlay, ...VariantStyles[variant].overlay },
     };
   }
+
+  useEffect(() => {
+    if (!uiContext.activeModal) {
+      document.body.classList.remove('ReactModal__Body--open');
+    }
+  }, [uiContext.activeModal]);
 
   return (
     <Modal

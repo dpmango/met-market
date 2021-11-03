@@ -70,7 +70,7 @@ const Header = observer(({ className }) => {
                   <span className="w-600">8-495-104-31-30</span>
                 </a>
                 <a
-                  href="https://api.whatsapp.com/send/?phone=74951049686"
+                  href="https://api.whatsapp.com/send/?phone=74951043130"
                   target="_blank"
                   className={styles.footerContact}
                   rel="noreferrer">
@@ -207,8 +207,8 @@ const Header = observer(({ className }) => {
               <SvgIcon name="copyright" />
               <span>2021</span>
             </div>
-            <span className={styles.footerBottomText}>ООО «МОНОЛИТСТРОЙ»</span>
-            <span className={styles.footerBottomText}>ИНН: 7743935769</span>
+            <span className={styles.footerBottomText}>ООО «БАЗАР МЕТАЛЛ»</span>
+            <span className={styles.footerBottomText}>ИНН: 9725054521</span>
           </div>
         </div>
       </div>

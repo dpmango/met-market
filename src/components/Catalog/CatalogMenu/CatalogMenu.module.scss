@@ -106,7 +106,8 @@
   .abc {
     padding-left: 0;
     padding-right: 0;
-    width: 100%;
+    margin-left: -16px;
+    width: calc(100% + 16px);
     display: flex;
     margin-bottom: 32px;
   }
@@ -158,6 +159,11 @@
   }
 }
 @include r($lg) {
+  .letter {
+    font-size: 20px;
+    min-width: 32px;
+    min-height: 32px;
+  }
   .lettercol {
     flex-basis: $col4;
     max-width: $col4;
@@ -208,9 +214,6 @@
     order: 2;
   }
   .letter {
-    min-width: 32px;
-    min-height: 32px;
-    font-size: 20px;
     margin-bottom: 5px;
     margin-right: 0;
     padding-left: 4px;
@@ -236,5 +239,14 @@
         display: inline-block;
       }
     }
+  }
+}
+
+@include rh(800) {
+  .letter {
+    margin-bottom: 4px;
+    font-size: 18px;
+    min-width: 28px;
+    min-height: 28px;
   }
 }

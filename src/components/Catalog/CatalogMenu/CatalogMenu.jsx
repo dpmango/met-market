@@ -55,7 +55,9 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
       let maxHeight = 10;
       if (height < 740) {
         maxHeight = 6;
-      } else if (height < 840) {
+      } else if (height < 800) {
+        maxHeight = 7;
+      } else if (height < 860) {
         maxHeight = 8;
       }
 

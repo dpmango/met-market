@@ -39,6 +39,7 @@ export default class UiStore {
   // assuming only one modal at given time
   setModal(name, params) {
     const timeoutms = this.prevModal ? 100 : 0;
+
     setTimeout(() => {
       this.prevModal = this.activeModal;
       this.activeModal = name;

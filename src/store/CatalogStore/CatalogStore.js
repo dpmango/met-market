@@ -7,7 +7,7 @@ import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/
 import { PerformanceLog, getEnv } from '@helpers';
 import { LOCAL_STORAGE_CATALOG, LOCAL_STORAGE_CATALOG_LENGTH } from '@config/localStorage';
 import { ui } from '@store';
-import uniqBy from 'lodash/uniqBy';
+// import uniqBy from 'lodash/uniqBy';
 
 import service from './api-service';
 
@@ -310,7 +310,7 @@ export default class CatalogStore {
       // }
     });
 
-    resultClearDuplicates = uniqBy(resultClearDuplicates, (x) => x.short);
+    // resultClearDuplicates = uniqBy(resultClearDuplicates, (x) => x.short);
 
     // console.log('results length', resultClearDuplicates.length);
 

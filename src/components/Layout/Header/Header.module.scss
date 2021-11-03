@@ -423,6 +423,11 @@
   cursor: pointer;
   user-select: none;
 }
+@include rh(740) {
+  .catLang {
+    margin-bottom: 24px;
+  }
+}
 
 .catLangToggle {
   position: relative;
