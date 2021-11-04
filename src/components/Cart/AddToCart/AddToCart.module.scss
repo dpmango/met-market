@@ -37,6 +37,7 @@
 .body {
   padding: 26px 20px 30px;
   display: flex;
+  min-width: 1px;
 }
 
 .bodyImage {
@@ -142,18 +143,60 @@
 @include r($md) {
   .cart {
     padding: 24px 0;
+    :global .swiper-horizontal {
+      margin-left: -16px;
+      margin-right: -16px;
+      & > .swiper-scrollbar {
+        width: 80px;
+        bottom: 10px;
+        background: transparent;
+        height: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: pointer;
+        &::after {
+          display: inline-block;
+          content: ' ';
+          position: absolute;
+          z-index: 1;
+          left: 0;
+          right: 0;
+          top: 10px;
+          height: 4px;
+          background: #e5e5e5;
+        }
+      }
+      & .swiper-scrollbar-drag {
+        background: transparent;
+        z-index: 2;
+        &::after {
+          display: inline-block;
+          content: ' ';
+          position: absolute;
+          z-index: 3;
+          left: 0;
+          right: 0;
+          top: 10px;
+          height: 4px;
+          background: #a1a1a1;
+        }
+      }
+    }
   }
   .head {
     padding: 0;
     border-bottom: 0;
   }
   .body {
-    padding: 26px 0 20px;
-    margin-left: auto;
-    margin-right: auto;
+    flex: 0 0 540px;
+    width: 540px;
+    max-width: 540px;
+    padding: 26px 0 40px;
+    // margin-left: auto;
+    // margin-right: auto;
     align-items: center;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    // overflow-x: auto;
+    // -webkit-overflow-scrolling: touch;
     &::-webkit-scrollbar {
       width: 90px;
       scrollbar-width: 90px;

@@ -6,7 +6,8 @@ import Routes from '@c/Routes';
 
 const App = () => {
   useEffect(() => {
-    window.loadObserver && window.loadObserver.disconnect();
+    console.log('should disconnect loadOBserver?');
+    // window.loadObserver && window.loadObserver.disconnect();
   }, []);
 
   return (

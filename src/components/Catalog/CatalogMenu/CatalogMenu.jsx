@@ -52,13 +52,15 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
         });
       }
 
-      let maxHeight = 10;
-      if (height < 740) {
+      let maxHeight = 12;
+      if (height < 640) {
         maxHeight = 6;
-      } else if (height < 800) {
+      } else if (height < 740) {
         maxHeight = 7;
-      } else if (height < 860) {
+      } else if (height < 800) {
         maxHeight = 8;
+      } else if (height < 900) {
+        maxHeight = 10;
       }
 
       let colsByHeight = Math.ceil(allSorted.length / maxHeight);

@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, m
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useToasts } from 'react-toast-notifications';
+import { Scrollbar, FreeMode, Mousewheel } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import cns from 'classnames';
 
 import { Modal, Spinner, Button, Input, NumInput, SvgIcon } from '@ui';
@@ -11,6 +13,10 @@ import { priceWithTonnage, formatPrice, isMobile } from '@helpers';
 import { browser } from '@src/index';
 
 import styles from './AddToCart.module.scss';
+import 'swiper/swiper.scss';
+import 'swiper/modules/scrollbar/scrollbar.scss';
+import 'swiper/modules/free-mode/free-mode.scss';
+import 'swiper/modules/mousewheel/mousewheel.scss';
 
 const AddToCart = observer(() => {
   const { addToast } = useToasts();
@@ -178,38 +184,44 @@ const AddToCart = observer(() => {
             <div className={styles.head}>
               <div className={styles.headTitle}>{modalData.nameFull}</div>
             </div>
-
-            <div className={styles.body}>
-              <div className={styles.bodyImage}>
-                {itemCategory && (
-                  <img src={itemCategory.image || 'img/search-placeholder.jpg'} alt={itemCategory.name} />
-                )}
-              </div>
-              <div className={styles.bodyTable}>
-                <>
-                  <div className={styles.row}>
-                    <span className={styles.rowLabel}>Тип товара</span>
-                    <span className={styles.rowContent}>{itemCategory ? itemCategory.name : <Spinner />}</span>
-                  </div>
-                  <div className={styles.row}>
-                    <span className={styles.rowLabel}>Код товара</span>
-                    <span className={styles.rowContent}>{modalData.idUnique}</span>
-                  </div>
-                  <div className={styles.row}>
-                    <span className={styles.rowLabel}>Размер</span>
-                    <span className={styles.rowContent}>{modalData.size[0]}</span>
-                  </div>
-                  <div className={styles.row}>
-                    <span className={styles.rowLabel}>Марка</span>
-                    <span className={styles.rowContent}>{modalData.mark[0]}</span>
-                  </div>
-                  <div className={styles.row}>
-                    <span className={styles.rowLabel}>Длина</span>
-                    <span className={styles.rowContent}>{modalData.length[0]}</span>
-                  </div>
-                </>
-              </div>
-            </div>
+            <Swiper
+              modules={[FreeMode, Scrollbar, Mousewheel]}
+              freeMode={{ sticky: false }}
+              scrollbar={{ draggable: true, dragSize: 40, snapOnRelease: false }}
+              mousewheel={{ invert: false }}
+              slidesPerView={'auto'}>
+              <SwiperSlide className={styles.body}>
+                <div className={styles.bodyImage}>
+                  {itemCategory && (
+                    <img src={itemCategory.image || 'img/search-placeholder.jpg'} alt={itemCategory.name} />
+                  )}
+                </div>
+                <div className={styles.bodyTable}>
+                  <>
+                    <div className={styles.row}>
+                      <span className={styles.rowLabel}>Тип товара</span>
+                      <span className={styles.rowContent}>{itemCategory ? itemCategory.name : <Spinner />}</span>
+                    </div>
+                    <div className={styles.row}>
+                      <span className={styles.rowLabel}>Код товара</span>
+                      <span className={styles.rowContent}>{modalData.idUnique}</span>
+                    </div>
+                    <div className={styles.row}>
+                      <span className={styles.rowLabel}>Размер</span>
+                      <span className={styles.rowContent}>{modalData.size[0]}</span>
+                    </div>
+                    <div className={styles.row}>
+                      <span className={styles.rowLabel}>Марка</span>
+                      <span className={styles.rowContent}>{modalData.mark[0]}</span>
+                    </div>
+                    <div className={styles.row}>
+                      <span className={styles.rowLabel}>Длина</span>
+                      <span className={styles.rowContent}>{modalData.length[0]}</span>
+                    </div>
+                  </>
+                </div>
+              </SwiperSlide>
+            </Swiper>
             {cartItem && modalData && (
               <div className={styles.incart}>
                 <div className={styles.incartIcon}>

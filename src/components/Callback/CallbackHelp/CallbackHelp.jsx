@@ -101,6 +101,7 @@ const CallbackHelp = observer(() => {
                         mask="+7 (999) 999-99-99"
                         value={field.value}
                         error={meta.touched && meta.error}
+                        showError={false}
                         onChange={(v) => {
                           setFieldValue(field.name, v);
                           submitTyping(field.name, v);

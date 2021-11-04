@@ -1,6 +1,5 @@
 export default class AnimatedSearchPlaceholder {
-  animatedPhrasesCanceled = false;
-  promiseAnimatedPhrases = null;
+  isCancelled = false;
   typingSpeed = 70;
   delayNextPhrase = 1000;
   phrases = [];
@@ -13,23 +12,36 @@ export default class AnimatedSearchPlaceholder {
     this.defaultPlaceholder = defaultPlaceholder;
   };
 
-  printPhrases = () => {
-    const _this = this;
-    this.animatedPhrasesCanceled = false;
+  printPhrases = async () => {
+    this.isCancelled = false;
 
-    this.promiseAnimatedPhrases = Promise.resolve().then(function resolver() {
-      return _this.phrases
-        .reduce((promise, phrase) => promise.then((_) => _this.printPhrase(phrase)), Promise.resolve())
+    let err = null;
+    let nextIndex = 0;
+
+    const run = async (phrase) => {
+      await this.printPhrase(phrase)
         .then(() => {
-          if (!_this.animatedPhrasesCanceled) {
-            _this.printPhrases();
+          // create loop
+          if (nextIndex === this.phrases.length) {
+            nextIndex = 0;
+          } else {
+            nextIndex++;
           }
+
+          if (!err) {
+            run(this.phrases[nextIndex]);
+          }
+        })
+        .catch((err) => {
+          err = err;
         });
-    });
+    };
+
+    await run(this.phrases[0]);
   };
 
-  printPhrase = (phrase) => {
-    return new Promise((resolve) => {
+  printPhrase = async (phrase) => {
+    return new Promise((resolve, reject) => {
       // Clear placeholder before typing next phrase
       // TODO - remove letters
 
@@ -40,15 +52,18 @@ export default class AnimatedSearchPlaceholder {
       letters.reduce(
         (promise, letter, index) =>
           promise.then((_) => {
-            // Resolve promise when all letters are typed
-            if (index === letters.length - 1) {
-              // Delay before start next phrase "typing"
-              if (!this.animatedPhrasesCanceled) {
+            // stop the chain with flag
+            if (this.isCancelled) {
+              reject('cancelled');
+            } else {
+              // Resolve promise when all letters are typed
+              if (index === letters.length - 1) {
+                // Delay before start next phrase "typing"
                 setTimeout(resolve, this.delayNextPhrase);
               }
-            }
 
-            return this.addToPlaceholder(letter, this.inputElement);
+              return this.addToPlaceholder(letter, this.inputElement);
+            }
           }),
         Promise.resolve()
       );
@@ -61,20 +76,18 @@ export default class AnimatedSearchPlaceholder {
 
   addToPlaceholder = (toAdd, el) => {
     el.setAttribute('placeholder', el.getAttribute('placeholder') + toAdd);
-    if (this.animatedPhrasesCanceled) {
-      return Promise.resolve();
-    } else {
-      return new Promise((resolve) => setTimeout(resolve, this.typingSpeed));
-    }
+
+    return new Promise((resolve) => setTimeout(resolve, this.typingSpeed));
   };
 
   cancelPrintPhrases = () => {
-    this.animatedPhrasesCanceled = true;
-    setTimeout(() => {
-      this.inputElement.setAttribute('placeholder', this.defaultPlaceholder);
-    }, 50);
-    setTimeout(() => {
-      this.inputElement.setAttribute('placeholder', this.defaultPlaceholder);
-    }, 100);
+    this.isCancelled = true;
+    [50, 100, 500, 100].forEach((t) => {
+      setTimeout(() => {
+        if (this.isCancelled) {
+          this.inputElement.setAttribute('placeholder', this.defaultPlaceholder);
+        }
+      }, t);
+    });
   };
 }

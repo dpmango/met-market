@@ -47,8 +47,8 @@
 
 .abc {
   position: relative;
-  padding-left: 120px;
-  padding-right: 100px;
+  padding-left: 60px;
+  padding-right: 60px;
 }
 
 .abcNav {
@@ -80,13 +80,6 @@
     :global .svg-icon {
       transform: rotate(-90deg);
     }
-  }
-}
-
-@include r($xl) {
-  .abc {
-    padding-left: 70px;
-    padding-right: 50px;
   }
 }
 

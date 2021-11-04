@@ -207,7 +207,7 @@ const Header = observer(({ className }) => {
               <SvgIcon name="copyright" />
               <span>2021</span>
             </div>
-            <span className={styles.footerBottomText}>ООО «БАЗАР МЕТАЛЛ»</span>
+            <span className={styles.footerBottomText}>ООО «Базар Металл»</span>
             <span className={styles.footerBottomText}>ИНН: 9725054521</span>
           </div>
         </div>
