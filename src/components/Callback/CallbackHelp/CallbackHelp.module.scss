@@ -189,9 +189,6 @@
 }
 
 @include r($mobile-s) {
-  // .help {
-  // }
-
   .headTitle {
     font-size: 20px;
   }
@@ -203,11 +200,6 @@
     margin-right: auto;
   }
 
-  .boxWrapper {
-    // border-radius: 0;
-    // margin-left: -16px;
-    // margin-right: -16px;
-  }
   .content {
     padding-left: 16px;
     padding-right: 16px;

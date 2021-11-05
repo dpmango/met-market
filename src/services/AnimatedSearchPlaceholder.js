@@ -20,7 +20,7 @@ export default class AnimatedSearchPlaceholder {
     this.nextIndex = 0;
 
     const run = async (phrase) => {
-      console.log('run', phrase);
+      // console.log('run', phrase);
       await this.printPhrase(phrase)
         .then(() => {
           // create loop
@@ -35,7 +35,7 @@ export default class AnimatedSearchPlaceholder {
           }
         })
         .catch((err) => {
-          console.log('rejected', err);
+          // console.log('rejected', err);
           this.err = err;
         });
     };
