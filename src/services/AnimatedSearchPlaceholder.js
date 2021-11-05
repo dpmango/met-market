@@ -5,6 +5,8 @@ export default class AnimatedSearchPlaceholder {
   phrases = [];
   inputElement = null;
   defaultPlaceholder = null;
+  err = null;
+  nextIndex = 0;
 
   init = (phrases, el, defaultPlaceholder = '') => {
     this.phrases = phrases;
@@ -14,26 +16,27 @@ export default class AnimatedSearchPlaceholder {
 
   printPhrases = async () => {
     this.isCancelled = false;
-
-    let err = null;
-    let nextIndex = 0;
+    this.err = null;
+    this.nextIndex = 0;
 
     const run = async (phrase) => {
+      console.log('run', phrase);
       await this.printPhrase(phrase)
         .then(() => {
           // create loop
-          if (nextIndex === this.phrases.length) {
-            nextIndex = 0;
+          if (this.nextIndex === this.phrases.length) {
+            this.nextIndex = 0;
           } else {
-            nextIndex++;
+            this.nextIndex = this.nextIndex + 1;
           }
 
-          if (!err) {
-            run(this.phrases[nextIndex]);
+          if (!this.err) {
+            run(this.phrases[this.nextIndex]);
           }
         })
         .catch((err) => {
-          err = err;
+          console.log('rejected', err);
+          this.err = err;
         });
     };
 
@@ -44,8 +47,9 @@ export default class AnimatedSearchPlaceholder {
     return new Promise((resolve, reject) => {
       // Clear placeholder before typing next phrase
       // TODO - remove letters
-
-      this.clearPlaceholder(this.inputElement);
+      if (!this.isCancelled) {
+        this.clearPlaceholder(this.inputElement);
+      }
 
       let letters = phrase.split('');
       // For each letter in phrase
@@ -55,6 +59,7 @@ export default class AnimatedSearchPlaceholder {
             // stop the chain with flag
             if (this.isCancelled) {
               reject('cancelled');
+              // this.stopAnimation();
             } else {
               // Resolve promise when all letters are typed
               if (index === letters.length - 1) {
@@ -80,9 +85,9 @@ export default class AnimatedSearchPlaceholder {
     return new Promise((resolve) => setTimeout(resolve, this.typingSpeed));
   };
 
-  cancelPrintPhrases = () => {
+  stopAnimation = () => {
     this.isCancelled = true;
-    [50, 100, 500, 100].forEach((t) => {
+    [50, 100, 500, 1000].forEach((t) => {
       setTimeout(() => {
         if (this.isCancelled) {
           this.inputElement.setAttribute('placeholder', this.defaultPlaceholder);

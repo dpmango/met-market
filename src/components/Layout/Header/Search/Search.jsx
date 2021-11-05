@@ -170,7 +170,7 @@ const Search = observer(({ className }) => {
 
   const handleFocus = useCallback(() => {
     // setSuggestionsOpened(true);
-    PlaceholderAnimation.cancelPrintPhrases();
+    PlaceholderAnimation.stopAnimation();
   }, []);
 
   const handleBlur = useCallback(() => {
@@ -181,6 +181,7 @@ const Search = observer(({ className }) => {
   }, [showRecent]);
 
   const handleClearClick = useCallback(() => {
+    PlaceholderAnimation.stopAnimation();
     sessionContext.removeLogs('search');
   }, []);
 
@@ -194,7 +195,7 @@ const Search = observer(({ className }) => {
       document.body.classList.add('searchShowingRecent');
       PlaceholderAnimation.printPhrases();
     } else {
-      PlaceholderAnimation.cancelPrintPhrases();
+      PlaceholderAnimation.stopAnimation();
       setTimeout(() => {
         document.body.classList.remove('searchShowingRecent');
       }, 250);
