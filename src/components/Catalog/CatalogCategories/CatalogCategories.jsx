@@ -131,6 +131,12 @@ const CatalogCategories = observer(() => {
 
   useEffect(() => {
     ScrollTo(0, 300);
+
+    if (!query.page) {
+      setTimeout(() => {
+        ScrollTo(0, 300);
+      }, 300);
+    }
   }, [query.category]);
 
   // todo - ?? ?

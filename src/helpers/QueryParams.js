@@ -155,7 +155,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
     }
   } else {
     if (ui.queryHistory.firstSearch !== null) {
-      ui.setHistoryParams(null);
+      // ui.setHistoryParams(null);
     }
   }
 
