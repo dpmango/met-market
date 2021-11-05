@@ -1,11 +1,10 @@
 export default class AnimatedSearchPlaceholder {
   isCancelled = false;
-  typingSpeed = 70;
-  delayNextPhrase = 1000;
+  typingSpeed = 90;
+  delayNextPhrase = 300;
   phrases = [];
   inputElement = null;
   defaultPlaceholder = null;
-  err = null;
   nextIndex = 0;
 
   init = (phrases, el, defaultPlaceholder = '') => {
@@ -16,27 +15,28 @@ export default class AnimatedSearchPlaceholder {
 
   printPhrases = async () => {
     this.isCancelled = false;
-    this.err = null;
     this.nextIndex = 0;
+    let err = null;
 
     const run = async (phrase) => {
       // console.log('run', phrase);
+
       await this.printPhrase(phrase)
         .then(() => {
           // create loop
-          if (this.nextIndex === this.phrases.length) {
+          if (this.nextIndex === this.phrases.length - 1) {
             this.nextIndex = 0;
           } else {
             this.nextIndex = this.nextIndex + 1;
           }
 
-          if (!this.err) {
+          if (!err) {
             run(this.phrases[this.nextIndex]);
           }
         })
         .catch((err) => {
           // console.log('rejected', err);
-          this.err = err;
+          err = err;
         });
     };
 
@@ -49,29 +49,31 @@ export default class AnimatedSearchPlaceholder {
       // TODO - remove letters
       if (!this.isCancelled) {
         this.clearPlaceholder(this.inputElement);
-      }
 
-      let letters = phrase.split('');
-      // For each letter in phrase
-      letters.reduce(
-        (promise, letter, index) =>
-          promise.then((_) => {
-            // stop the chain with flag
-            if (this.isCancelled) {
-              reject('cancelled');
-              // this.stopAnimation();
-            } else {
-              // Resolve promise when all letters are typed
-              if (index === letters.length - 1) {
-                // Delay before start next phrase "typing"
-                setTimeout(resolve, this.delayNextPhrase);
+        let letters = phrase.split('');
+        // For each letter in phrase
+        letters.reduce(
+          (promise, letter, index) =>
+            promise.then((_) => {
+              // stop the chain with flag
+              if (this.isCancelled) {
+                reject('cancelled');
+                // this.stopAnimation();
+              } else {
+                // Resolve promise when all letters are typed
+                if (index === letters.length - 1) {
+                  // Delay before start next phrase "typing"
+                  setTimeout(resolve, this.delayNextPhrase);
+                }
+
+                return this.addToPlaceholder(letter, this.inputElement);
               }
-
-              return this.addToPlaceholder(letter, this.inputElement);
-            }
-          }),
-        Promise.resolve()
-      );
+            }),
+          Promise.resolve()
+        );
+      } else {
+        reject('cancelled');
+      }
     });
   };
 

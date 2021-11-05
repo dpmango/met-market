@@ -168,7 +168,7 @@ const CatalogTable = observer(() => {
     if (!loading) {
       uiContext.checkQuery(query.origin);
     }
-  }, [query.product]);
+  }, [query.product, catalog]);
 
   // set default page size mobile/desktop
   useEffect(() => {
