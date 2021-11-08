@@ -13,7 +13,7 @@ const CartSuccess = observer(() => {
   const location = useLocation();
 
   const { activeModal, prevModal } = useContext(UiStoreContext);
-  const { modalParams } = useContext(CartStoreContext);
+  const { modalParams } = useContext(UiStoreContext);
 
   useEffect(() => {
     if (prevModal === 'cartsuccess' && activeModal === null) {

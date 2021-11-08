@@ -13,7 +13,7 @@ const CallbackSuccess = observer(() => {
   const location = useLocation();
 
   const { activeModal, prevModal } = useContext(UiStoreContext);
-  const { modalParams } = useContext(CartStoreContext);
+  const { modalParams } = useContext(UiStoreContext);
 
   useEffect(() => {
     if (prevModal === 'callbacksuccess' && activeModal === null) {
