@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useContext, useMemo, useCallback, memo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
@@ -10,6 +10,7 @@ import styles from './CallbackSuccess.module.scss';
 
 const CallbackSuccess = observer(() => {
   const history = useHistory();
+  const location = useLocation();
 
   const { activeModal, prevModal } = useContext(UiStoreContext);
   const { modalParams } = useContext(CartStoreContext);

@@ -1,5 +1,6 @@
 import React, { useContext, useMemo, useEffect, useCallback } from 'react';
 import { observer } from 'mobx-react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { Modal, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext } from '@store';
@@ -8,6 +9,9 @@ import { updateQueryParams } from '@helpers';
 import styles from './CartSuccess.module.scss';
 
 const CartSuccess = observer(() => {
+  const history = useHistory();
+  const location = useLocation();
+
   const { activeModal, prevModal } = useContext(UiStoreContext);
   const { modalParams } = useContext(CartStoreContext);
 
