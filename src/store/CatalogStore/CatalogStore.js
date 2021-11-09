@@ -511,12 +511,12 @@ export default class CatalogStore {
     // initally, try get data localStorage
     if (!is_repeat) {
       if (localStorage.getItem(LOCAL_STORAGE_CATALOG)) {
-        const decompressedCatalog = window.decompressCatalog(
-          localStorage.getItem(LOCAL_STORAGE_CATALOG_LENGTH),
-          localStorage.getItem(LOCAL_STORAGE_CATALOG)
-        );
+        // const decompressedCatalog = window.decompressCatalog(
+        //   localStorage.getItem(LOCAL_STORAGE_CATALOG_LENGTH),
+        //   localStorage.getItem(LOCAL_STORAGE_CATALOG)
+        // );
 
-        const lsCatalog = JSON.parse(decompressedCatalog);
+        const lsCatalog = JSON.parse(localStorage.getItem(LOCAL_STORAGE_CATALOG));
 
         const { date, data, categories } = lsCatalog;
 
@@ -561,10 +561,13 @@ export default class CatalogStore {
           this.categories = categories.categories;
           this.loading = false;
 
-          const compressedCatalog = window.compressCatalog(JSON.stringify({ date: timestamp, data, categories }));
+          localStorage.removeItem(LOCAL_STORAGE_CATALOG);
+          const catalog = JSON.stringify({ date: timestamp, data, categories });
+          localStorage.setItem(LOCAL_STORAGE_CATALOG, catalog);
 
-          localStorage.setItem(LOCAL_STORAGE_CATALOG, compressedCatalog.data);
-          localStorage.setItem(LOCAL_STORAGE_CATALOG_LENGTH, compressedCatalog.inputLength);
+          // const compressedCatalog = window.compressCatalog(JSON.stringify({ date: timestamp, data, categories }));
+          // localStorage.setItem(LOCAL_STORAGE_CATALOG, compressedCatalog.data);
+          // localStorage.setItem(LOCAL_STORAGE_CATALOG_LENGTH, compressedCatalog.inputLength);
         });
       }
     }
