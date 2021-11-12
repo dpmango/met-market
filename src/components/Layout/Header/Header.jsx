@@ -142,6 +142,7 @@ const Header = observer(({ className }) => {
   useEffect(() => {
     setAbcOrder(false);
     scrollerRef.current.scrollTop = 0;
+    setOverLayscroll(0);
   }, [catalogOpened, scrollerRef]);
 
   return (
@@ -254,7 +255,7 @@ const Header = observer(({ className }) => {
 
       {width < 768 && (
         <div
-          className={cns(styles.mobileSearch, overlayScroll >= 60 && styles.hidden, 'mobileSearch')}
+          className={cns(styles.mobileSearch, catalogOpened && overlayScroll >= 60 && styles.hidden, 'mobileSearch')}
           onClick={(e) => e.stopPropagation()}>
           <div
             className={styles.mobileSearchWrapper}

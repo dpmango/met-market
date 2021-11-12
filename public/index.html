@@ -84,6 +84,13 @@
 
       window.loadObserver = observer
 
+
+      window.onerror = function (message, source, lineno, colno, error) {
+        if (error && error.name === 'SyntaxError' && source != null && source.includes('static/js')) {
+          console.log('window.onerror/SyntaxError at ' + source);
+          window.location.reload(true);
+        }
+      };
     </script>
 
     <title>Металлопрокат оптом и в розницу в Москве</title>

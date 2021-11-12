@@ -27,6 +27,7 @@ export default class CatalogStore {
   constructor() {
     makeAutoObservable(this);
 
+    this.clearOldLocalStorageVersions();
     this.getCatalog();
 
     // this.queryToFilter(new URLSearchParams(window.location.search));
@@ -420,7 +421,7 @@ export default class CatalogStore {
           const filterSize = (size) => {
             return {
               value: clearValue(size),
-              isPopular: size.isPopular !== undefined ? mark.isPopular : false,
+              isPopular: size.isPopular !== undefined ? size.isPopular : false,
               available: sizesMatched.includes(size),
             };
           };
@@ -503,6 +504,11 @@ export default class CatalogStore {
     return this.filters.size.length || this.filters.mark.length || this.filters.length.length;
   }
 
+  clearOldLocalStorageVersions() {
+    localStorage.removeItem('metMarketCatalog');
+    localStorage.removeItem('metMarketCatal');
+    localStorage.removeItem('metMarketCatalog_1.1.0');
+  }
   // API ACTIONS
 
   async getCatalog(is_repeat) {

@@ -309,7 +309,7 @@ const Cart = observer(() => {
                     </span>
                   </Checkbox>
 
-                  <Button type="submit" theme="link" className={styles.actionMainBtnCta}>
+                  <Button loading={loading} type="submit" theme="link" className={styles.actionMainBtnCta}>
                     Оформить заказ
                   </Button>
                 </div>
