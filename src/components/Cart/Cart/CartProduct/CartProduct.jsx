@@ -80,7 +80,11 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
       <td>{product.itemFullName}</td>
       <td>
         <div className={styles.image}>
-          <LazyMedia src={categoryImage || 'img/search-placeholder.jpg'} width={240} height={100} />
+          {categoryImage ? (
+            <img src={categoryImage} />
+          ) : (
+            <LazyMedia src={'img/search-placeholder.jpg'} width={240} height={100} />
+          )}
         </div>
       </td>
       <td>

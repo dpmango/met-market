@@ -1,6 +1,8 @@
+import { getEnv } from '@helpers';
+
 export default {
   catalog: {
-    export: 'data/export-collapsed-flat.json',
+    export: getEnv('GATEWAY_CATALOG_JSON'),
   },
   session: {
     create: 'api/session/create',

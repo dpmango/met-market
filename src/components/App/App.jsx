@@ -19,7 +19,6 @@ const App = observer(() => {
   }, []);
 
   const persistTabsStore = useCallback((e) => {
-    console.log(e);
     if (e.key === LOCAL_STORAGE_CART) {
       cartContext.hydrateStore();
     } else if (e.key === LOCAL_STORAGE_SESSION) {

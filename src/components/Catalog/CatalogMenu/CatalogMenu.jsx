@@ -52,13 +52,15 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
         });
       }
 
-      let maxHeight = 12;
+      let maxHeight = 11;
       if (height < 640) {
         maxHeight = 6;
-      } else if (height < 740) {
+      } else if (height < 720) {
         maxHeight = 7;
-      } else if (height < 800) {
+      } else if (height < 780) {
         maxHeight = 8;
+      } else if (height < 850) {
+        maxHeight = 9;
       } else if (height < 900) {
         maxHeight = 10;
       }

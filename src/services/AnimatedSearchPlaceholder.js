@@ -1,6 +1,6 @@
 export default class AnimatedSearchPlaceholder {
   isCancelled = false;
-  typingSpeed = 90;
+  typingSpeed = 70;
   delayNextPhrase = 300;
   phrases = [];
   inputElement = null;
