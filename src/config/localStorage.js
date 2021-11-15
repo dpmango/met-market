@@ -1,5 +1,6 @@
 export const LOCAL_STORAGE_SESSION = 'metMarketSession';
 export const LOCAL_STORAGE_LOG = 'metMarketLog';
+export const LOCAL_STORAGE_CART = 'metMarketCart';
 export const LOCAL_STORAGE_CATALOG = 'metMarketCatalog_1.1.1';
 export const LOCAL_STORAGE_CATALOG_LENGTH = 'metMarketCatalBufferLength';
 

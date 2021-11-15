@@ -1,8 +1,10 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { computedFn } from 'mobx-utils';
+import { makePersistable, hydrateStore } from 'mobx-persist-store';
 
 import { session } from '@store';
 import { priceWithTonnage } from '@helpers';
+import { LOCAL_STORAGE_CART } from '@config/localStorage';
 import service from './api-service';
 
 export default class CartStore {
@@ -10,6 +12,13 @@ export default class CartStore {
 
   constructor() {
     makeAutoObservable(this);
+
+    makePersistable(this, {
+      name: LOCAL_STORAGE_CART,
+      properties: ['cart'],
+      // debugMode: true,
+      storage: window.localStorage,
+    });
   }
 
   // getters
@@ -86,8 +95,11 @@ export default class CartStore {
 
     if (err) throw err;
 
+    const { items } = data;
+
     runInAction(() => {
-      this.cart = this.cart.filter((x) => x.itemId !== req.itemId);
+      this.cart = items;
+      // this.cart = this.cart.filter((x) => x.itemId !== req.itemId);
     });
 
     return data;
@@ -110,5 +122,10 @@ export default class CartStore {
     });
 
     return orderNumber;
+  }
+
+  // multitab ls feature
+  hydrateStore() {
+    hydrateStore(this);
   }
 }

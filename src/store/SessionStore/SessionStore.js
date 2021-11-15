@@ -110,7 +110,11 @@ export default class SessionStore {
 
       try {
         await this.aliveSession({ sessionId, cartId });
-        await cart.getCart({ cartId });
+        try {
+          await cart.getCart({ cartId });
+        } catch {
+          // todo - create new cart
+        }
 
         runInAction(() => {
           this.log = lsLog ? lsLog : this.log;
@@ -144,5 +148,20 @@ export default class SessionStore {
     if (err) throw err;
 
     return result;
+  }
+
+  // multitab ls feature
+  hydrateStore() {
+    const lsSession = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SESSION));
+
+    const { sessionId, cartId, cartNumber } = lsSession;
+
+    runInAction(() => {
+      this.sessionId = sessionId;
+      this.cartId = cartId;
+      this.cartNumber = cartNumber;
+    });
+
+    localStorage.setItem(LOCAL_STORAGE_SESSION, localStorage.getItem(LOCAL_STORAGE_SESSION));
   }
 }

@@ -505,8 +505,9 @@ export default class CatalogStore {
   }
 
   clearOldLocalStorageVersions() {
-    localStorage.removeItem('metMarketCatalog');
+    localStorage.removeItem('metMarketCat');
     localStorage.removeItem('metMarketCatal');
+    localStorage.removeItem('metMarketCatalog');
     localStorage.removeItem('metMarketCatalog_1.1.0');
   }
   // API ACTIONS
@@ -556,6 +557,7 @@ export default class CatalogStore {
         shouldUpdateInternals = routeChanged;
 
         runInAction(() => {
+          this.date = timestamp;
           this.lastQuery = ui.query.category;
         });
       }

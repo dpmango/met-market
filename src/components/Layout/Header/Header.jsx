@@ -229,8 +229,8 @@ const Header = observer(({ className }) => {
                 <CatalogMenu type="header" abcOrder={abcOrder} />
 
                 <div className={cns(styles.overlayLinks, 'overlayLinks')}>
-                  <a href="/catalog.pdf" target="_blank" className={cns(styles.priceList)}>
-                    <SvgIcon name="pdf" />
+                  <a href="/met.market.xlsx" target="_blank" className={cns(styles.priceList)}>
+                    <SvgIcon name="xls" />
                     <span className="w-700">Прайс-лист</span>
                   </a>
 
