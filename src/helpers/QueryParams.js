@@ -1,4 +1,6 @@
 import { ui, catalog } from '@store';
+import ym from 'react-yandex-metrika';
+import ReactGA from 'react-ga';
 import { PerformanceLog } from '@helpers';
 
 export const updateQueryParams = ({ history, location, payload }) => {
@@ -164,6 +166,9 @@ export const updateQueryParams = ({ history, location, payload }) => {
 
     // ui.updateParams(params);
     window.listenHistoryState();
+
+    ym('hit', `${window.location.pathname}/${params.toString()}`);
+    ReactGA.pageview(`${window.location.pathname}/${params.toString()}`);
 
     history.push({
       pathname: '/',

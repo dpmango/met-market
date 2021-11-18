@@ -49,6 +49,7 @@
     "react-autosize-textarea": "^7.1.0",
     "react-div-100vh": "^0.6.0",
     "react-dom": "^17.0.2",
+    "react-ga": "^3.3.0",
     "react-helmet": "^6.1.0",
     "react-input-mask": "^2.0.4",
     "react-modal": "^3.14.3",
@@ -58,6 +59,7 @@
     "react-spinners": "^0.11.0",
     "react-table": "^7.7.0",
     "react-toast-notifications": "^2.5.1",
+    "react-yandex-metrika": "^2.6.0",
     "retry-axios": "^2.6.0",
     "swiper": "^7.2.0",
     "viewport-units-buggyfill": "^0.6.2"

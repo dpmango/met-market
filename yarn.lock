@@ -9142,6 +9142,10 @@ react-fast-compare@^3.1.1:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
 
+react-ga@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-3.3.0.tgz#c91f407198adcb3b49e2bc5c12b3fe460039b3ca"
+
 react-helmet@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-6.1.0.tgz#a750d5165cb13cf213e44747502652e794468726"
@@ -9316,6 +9320,10 @@ react-transition-group@^4.3.0, react-transition-group@^4.4.1:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-yandex-metrika@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/react-yandex-metrika/-/react-yandex-metrika-2.6.0.tgz#9c935c8c7ea5505e34391b9b3e86deb6d50053c9"
 
 react@^17.0.2:
   version "17.0.2"

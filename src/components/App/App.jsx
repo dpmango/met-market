@@ -1,6 +1,8 @@
 import React, { useEffect, useContext, useCallback } from 'react';
 import { observer } from 'mobx-react';
 import { ToastProvider } from 'react-toast-notifications';
+import { YMInitializer } from 'react-yandex-metrika';
+import ReactGA from 'react-ga';
 
 import { Toast, Loader, LoaderContextProvider } from '@ui';
 import { useEventListener } from '@hooks';
@@ -16,6 +18,17 @@ const App = observer(() => {
   useEffect(() => {
     // console.log('should disconnect loadOBserver?');
     window.loadObserver && window.loadObserver.disconnect();
+
+    ReactGA.initialize([
+      {
+        trackingId: 'UA-213145548-1',
+        // gaOptions: {},
+      },
+      {
+        trackingId: 'G-JTR149BB93',
+        gaOptions: { name: 'GA4' },
+      },
+    ]);
   }, []);
 
   const persistTabsStore = useCallback((e) => {
@@ -32,6 +45,10 @@ const App = observer(() => {
     <>
       <ToastProvider autoDismiss={true} placement="top-center" autoDismissTimeout={10000} components={{ Toast: Toast }}>
         <Routes />
+        <YMInitializer
+          accounts={[86522567]}
+          options={{ defer: true, clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true }}
+        />
       </ToastProvider>
     </>
   );
