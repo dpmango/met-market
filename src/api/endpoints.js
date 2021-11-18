@@ -10,6 +10,7 @@ export default {
   },
   cart: {
     getItems: 'api/cart/getItems',
+    new: 'api/cart/newCart',
     addItem: 'api/cart/addItem',
     updateItem: 'api/cart/updateItem',
     removeItem: 'api/cart/removeItem',

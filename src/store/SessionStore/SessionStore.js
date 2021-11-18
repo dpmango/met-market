@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { computedFn } from 'mobx-utils';
+import axios from 'axios';
 
 import { cart } from '@store';
 import { LOCAL_STORAGE_SESSION, LOCAL_STORAGE_LOG } from '@config/localStorage';
@@ -95,6 +96,14 @@ export default class SessionStore {
   }
 
   // api actions
+  /**
+   @action init
+   @description
+    сперва пытаемся получить сессию из localStorage либо создаем новую
+    делаем запрос на alive сессии и получение корзины
+    если корзину не удалось получить, создается новая внутри одной сессии
+    при ошибках пересоздаем сессию
+  **/
   async init() {
     if (localStorage.getItem(LOCAL_STORAGE_SESSION)) {
       const lsSession = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SESSION));
@@ -108,19 +117,32 @@ export default class SessionStore {
         this.cartNumber = cartNumber;
       });
 
+      let newSessionOnErr = true;
       try {
         await this.aliveSession({ sessionId, cartId });
         try {
           await cart.getCart({ cartId });
-        } catch {
-          // todo - create new cart
+        } catch (err) {
+          const isAxiosError = axios.isAxiosError(err);
+
+          if (!isAxiosError) {
+            const status = err.response && err.response.status;
+
+            await cart.createNewCart({ sessionId }).then((res) => {
+              const { sessionId, cartNumber, cartId } = res;
+              newSessionOnErr = false;
+              this.setSession({ sessionId, cartId, cartNumber });
+            });
+          }
         }
 
         runInAction(() => {
           this.log = lsLog ? lsLog : this.log;
         });
       } catch {
-        await this.createSession();
+        if (newSessionOnErr) {
+          await this.createSession();
+        }
       }
     } else {
       await this.createSession();

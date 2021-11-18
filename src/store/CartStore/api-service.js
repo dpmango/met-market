@@ -14,6 +14,18 @@ class CartService extends ApiService {
     }
   }
 
+  async new(req) {
+    try {
+      const { data } = await api.new(req);
+
+      return [null, data];
+    } catch (error) {
+      this.handleError(error);
+
+      return [error, null];
+    }
+  }
+
   async add(req) {
     try {
       const { data } = await api.add(req);

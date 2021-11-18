@@ -43,8 +43,6 @@ const Search = observer(({ className }) => {
     debounce((txt) => {
       const textNormalized = formatUGC(txt);
 
-      // const { meta } = catalogContext.searchCatalog(textNormalized, null);
-
       ScrollTo(0, 300);
 
       if (textNormalized.length >= 2) {
@@ -61,11 +59,6 @@ const Search = observer(({ className }) => {
           type: 'search',
           payload: textNormalized,
         });
-
-        // setSearchMeta({
-        //   total: meta.total,
-        //   query: textNormalized,
-        // });
       } else {
         if (!firstRender) {
           updateQueryParams({
@@ -77,10 +70,6 @@ const Search = observer(({ className }) => {
             },
           });
         }
-
-        // setSearchMeta({
-        //   total: null,
-        // });
       }
 
       setLoading(false);
@@ -88,20 +77,24 @@ const Search = observer(({ className }) => {
     [location, history, firstRender]
   );
 
+  // запуск поисковой функции при изминении внутреннего стейта
   useEffect(() => {
     setLoading(true);
     searchFunc(searchText);
   }, [searchText]);
 
+  // сбрасывать поиск при переходе между категориями
   useEffect(() => {
     if (!firstRender && query.category && !query.search) {
       setSearchText('');
     }
   }, [query.category]);
 
+  // проставляем значение поисковой строки из query при первом рендере
   useEffect(() => {
-    // if (searchText !== query.search || '') {
-    setSearchText(query.search || '');
+    if (firstRender) {
+      setSearchText(query.search || '');
+    }
   }, [query.search]);
 
   // memos

@@ -509,6 +509,7 @@ export default class CatalogStore {
     localStorage.removeItem('metMarketCatal');
     localStorage.removeItem('metMarketCatalog');
     localStorage.removeItem('metMarketCatalog_1.1.0');
+    localStorage.removeItem('metMarketCatalog_1.1.1');
   }
   // API ACTIONS
 

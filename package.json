@@ -1,6 +1,6 @@
 {
   "name": "met-market",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Sergey Khmelevskoy <sergey@khmelevskoy.co> (http://github.com/dpmango/)",
   "private": true,
   "scripts": {
@@ -10,7 +10,6 @@
     "lint": "bash bin/lint.sh",
     "lint:js:fix": "eslint './src/**/*.{js,jsx}' --fix",
     "lint:css:fix": "stylelint './src/**/*.{css,less,scss,sass}' --fix",
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "deploy": "yarn build && cp build/index.html build/200.html && surge --project ./build --domain met-market.surge.sh",
     "eject": "react-scripts eject"
   },

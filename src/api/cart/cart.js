@@ -5,6 +5,10 @@ export default {
     // @cartId string
     return api.post(endpoints.cart.getItems, req);
   },
+  new: async (req) => {
+    // @sessionId string
+    return api.post(endpoints.cart.new, req);
+  },
   add: (req) => {
     // @cartId string
     // @itemId string

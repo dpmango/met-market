@@ -217,6 +217,20 @@ const CatalogTable = observer(() => {
     return null;
   }, [loading, query.category, query.search, filters, data]);
 
+  useEffect(() => {
+    if (pageIndexControled > pageCount) {
+      setPageIndex(0);
+      updateQueryParams({
+        history,
+        location,
+        payload: {
+          type: 'page',
+          value: 0,
+        },
+      });
+    }
+  }, [pageSize]);
+
   // do not render table on homepage
   if (query.category === 'all' || (!query.category && !query.search) || !categoryExists) return null;
 
@@ -305,7 +319,7 @@ const CatalogTable = observer(() => {
       {page && page.length === 0 && (
         <div className={styles.notFound}>
           Ничего не найдено
-          {query.category && (
+          {query.category && query.search && !query.size && !query.mark && !query.length && (
             <>
               <i>.&nbsp;</i>
               <span onClick={() => handleSearchEverywhere()}>Искать везде?</span>

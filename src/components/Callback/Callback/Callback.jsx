@@ -335,7 +335,7 @@ const Callback = observer(() => {
               }}>
               <span>
                 Подтверждаю свое согласие на{' '}
-                <a href="/Policy.pdf" target="_blank">
+                <a href="/policy.pdf" target="_blank">
                   обработку персональных данных
                 </a>
               </span>

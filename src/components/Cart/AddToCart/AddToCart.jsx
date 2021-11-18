@@ -229,7 +229,7 @@ const AddToCart = observer(() => {
                 </div>
                 <div className={styles.incartTitle}>
                   В корзине {cartItem.count} {modalData.priceQuantityUnit} на сумму{' '}
-                  {formatPrice(cartItem.pricePerItem * cartItem.count, 0)} ₽/
+                  {formatPrice(priceWithTonnage(cartItem.pricePerItem, cartItem.count), 0)} ₽/
                   {modalData.priceQuantityUnit}
                 </div>
                 <div className={styles.incartDelete} onClick={handleCartDelete}>
