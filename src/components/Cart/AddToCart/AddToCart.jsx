@@ -9,7 +9,7 @@ import cns from 'classnames';
 import { Modal, Spinner, Button, Input, NumInput, SvgIcon } from '@ui';
 import { UiStoreContext, CatalogStoreContext, CartStoreContext } from '@store';
 import { useFirstRender, useWindowSize } from '@hooks';
-import { priceWithTonnage, formatPrice, isMobile } from '@helpers';
+import { priceWithTonnage, formatPrice, isMobile, EVENTLIST, logEvent } from '@helpers';
 import { browser } from '@src/index';
 
 import styles from './AddToCart.module.scss';
@@ -281,7 +281,16 @@ const AddToCart = observer(() => {
                   </div>
                   <div className={cns(styles.actionCol, styles.wide)}>
                     {!cartItem ? (
-                      <Button theme="link" type="submit" loading={loading}>
+                      <Button
+                        theme="link"
+                        type="submit"
+                        loading={loading}
+                        onClick={() =>
+                          logEvent({
+                            name: EVENTLIST.CLICK_ADDTOCART,
+                            params: { productId: modalData && modalData.idUnique },
+                          })
+                        }>
                         Добавить в корзину
                       </Button>
                     ) : (

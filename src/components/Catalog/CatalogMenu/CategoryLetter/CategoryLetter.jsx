@@ -5,13 +5,15 @@ import { useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
 import { UiStoreContext } from '@store';
-import { updateQueryParams } from '@helpers';
+import { useWindowSize } from '@hooks';
+import { updateQueryParams, EVENTLIST, logEvent } from '@helpers';
 
 import styles from './CategoryLetter.module.scss';
 
 const CategoryLetter = observer(({ list }) => {
   const history = useHistory();
   const location = useLocation();
+  const { width } = useWindowSize();
 
   const uiContext = useContext(UiStoreContext);
 
@@ -25,6 +27,11 @@ const CategoryLetter = observer(({ list }) => {
         type: 'category',
         value: `${id}`,
       },
+    });
+
+    logEvent({
+      name: EVENTLIST.CLICK_CATEGORY,
+      params: { from: width < 768 ? 'popupAbcMobile' : 'popupAbc', categoryId: id },
     });
 
     uiContext.setHeaderCatalog(false);

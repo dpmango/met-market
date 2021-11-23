@@ -5,14 +5,16 @@ import { useHistory, useLocation } from 'react-router-dom';
 import cns from 'classnames';
 
 import { UiStoreContext } from '@store';
-import { updateQueryParams } from '@helpers';
+import { updateQueryParams, EVENTLIST, logEvent } from '@helpers';
+import { useWindowSize } from '@hooks';
 
 import CategorySub from '../CategorySub';
 import styles from './CategoryMain.module.scss';
 
-const CategoryMain = observer(({ category, mobOpened, setMobOpened }) => {
+const CategoryMain = observer(({ category, mobOpened, setMobOpened, type }) => {
   const history = useHistory();
   const location = useLocation();
+  const { width } = useWindowSize();
 
   const uiContext = useContext(UiStoreContext);
   const { catalogOpened } = useContext(UiStoreContext);
@@ -28,6 +30,9 @@ const CategoryMain = observer(({ category, mobOpened, setMobOpened }) => {
         value: `${id}`,
       },
     });
+
+    const logFrom = type === 'homepage' ? 'main' : width < 768 ? 'popupMobile' : 'popup';
+    logEvent({ name: EVENTLIST.CLICK_CATEGORY, params: { from: logFrom, categoryId: id } });
 
     uiContext.setHeaderCatalog(false);
   };

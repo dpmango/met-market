@@ -9,3 +9,4 @@ export { updateQueryParams } from './QueryParams';
 export { formatBytes, bytesToMegaBytes } from './Bytes';
 export { ProfilerLog, PerformanceLog } from './Log';
 export { isMobile, isIosDevice, msieversion } from './Browser';
+export { EVENTLIST, logEvent } from './LogEvent';

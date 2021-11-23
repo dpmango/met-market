@@ -5,6 +5,7 @@ import cns from 'classnames';
 
 import { SvgIcon } from '@ui';
 import { CartStoreContext, UiStoreContext } from '@store';
+import { getEnv, EVENTLIST, logEvent } from '@helpers';
 
 import styles from './CartMenu.module.scss';
 
@@ -15,7 +16,10 @@ const CartMenu = observer(({ className, showLabel }) => {
   return (
     <div
       className={cns('cart', styles.cart, className)}
-      onClick={() => (uiContext.activeModal === 'cart' ? uiContext.resetModal() : uiContext.setModal('cart'))}>
+      onClick={() => {
+        uiContext.activeModal === 'cart' ? uiContext.resetModal() : uiContext.setModal('cart');
+        logEvent({ name: EVENTLIST.CLICK_OPENCART });
+      }}>
       <div className={styles.cartIcon}>
         <SvgIcon name="cart" />
         {cartCount > 0 && (

@@ -5,7 +5,7 @@ import cns from 'classnames';
 
 import { SvgIcon } from '@ui';
 import { UiStoreContext } from '@store';
-import { updateQueryParams } from '@helpers';
+import { updateQueryParams, EVENTLIST, logEvent } from '@helpers';
 import { useWindowSize } from '@hooks';
 
 import styles from './Breadcrumbs.module.scss';
@@ -37,6 +37,8 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
         value: category && `${category}`,
       },
     });
+
+    logEvent({ name: EVENTLIST.CLICK_CATEGORY, params: { from: 'breadcrumbs', categoryId: id } });
   };
 
   const ArrowResponsive = useMemo(() => {

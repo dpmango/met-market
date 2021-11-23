@@ -2,9 +2,8 @@ import React, { useContext, Profiler, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Helmet } from 'react-helmet';
 
-// import { CatalogStoreContext, SessionStoreContext } from '@store';
 import { useQuery } from '@hooks';
-import { UiStoreContext } from '@store';
+import { UiStoreContext, SessionStoreContext } from '@store';
 
 import { CatalogCategories, CatalogTable } from '@c/Catalog';
 import { AddToCart } from '@c/Cart';
@@ -14,9 +13,12 @@ const HomePage = observer(() => {
   const query = useQuery();
 
   const uiContext = useContext(UiStoreContext);
+  const sessionContext = useContext(SessionStoreContext);
 
+  // update queryParams and send UTM marks
   useEffect(() => {
     uiContext.updateParams(query);
+    sessionContext.sendUtmParams(window.location);
   }, [query]);
 
   return (

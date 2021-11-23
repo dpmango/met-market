@@ -8,10 +8,10 @@ import cns from 'classnames';
 import debounce from 'lodash/debounce';
 
 import { Modal, Button, Checkbox, Input, File, SvgIcon } from '@ui';
-import { UiStoreContext, CallbackStoreContext } from '@store';
+import { UiStoreContext, CallbackStoreContext, SessionStoreContext } from '@store';
 import { useFirstRender } from '@hooks';
 import { ruPhoneRegex } from '@helpers/Validation';
-import { bytesToMegaBytes, updateQueryParams } from '@helpers';
+import { getEnv, bytesToMegaBytes, updateQueryParams, EVENTLIST, logEvent } from '@helpers';
 
 import styles from './Callback.module.scss';
 
@@ -34,6 +34,7 @@ const Callback = observer(() => {
   const [files, setFiles] = useState([]);
 
   const { activeModal, prevModal, query } = useContext(UiStoreContext);
+  const { sessionParams } = useContext(SessionStoreContext);
   const callbackContext = useContext(CallbackStoreContext);
   const uiContext = useContext(UiStoreContext);
 
@@ -87,6 +88,7 @@ const Callback = observer(() => {
           resetForm();
           setFiles([]);
           uiContext.setModal('callbacksuccess');
+          logEvent({ name: EVENTLIST.SEND_LEAD_FORM_RFQ, params: { from: 'rfq' } });
         })
         .catch((_error) => {
           setLoading(false);
@@ -110,7 +112,7 @@ const Callback = observer(() => {
             console.warn('error setting typing');
           });
       }
-    }, 3000),
+    }, getEnv('TYPING_SPEED')),
     []
   );
 
@@ -237,15 +239,30 @@ const Callback = observer(() => {
             href="https://api.whatsapp.com/send/?phone=74951043130"
             target="_blank"
             className={styles.formCtaLink}
-            rel="noreferrer">
+            rel="noreferrer"
+            onClick={() => {
+              logEvent({ name: EVENTLIST.CLICK_WHATSAPP, params: { from: 'rfq' } });
+            }}>
             <SvgIcon name="social-whatsapp" />
             <span>Whatsapp</span>
           </a>
-          <a href="https://t.me/METMarket_bot" target="_blank" className={styles.formCtaLink} rel="noreferrer">
+          <a
+            href={`https://t.me/METMarket_bot?start=VisitorUid_${sessionParams.amoVisitorUid}`}
+            target="_blank"
+            className={styles.formCtaLink}
+            rel="noreferrer"
+            onClick={() => {
+              logEvent({ name: EVENTLIST.CLICK_TELEGRAM, params: { from: 'rfq' } });
+            }}>
             <SvgIcon name="social-telegram" />
             <span>Telegram</span>
           </a>
-          <a href="tel:+74951043130" className={styles.formCtaLink}>
+          <a
+            href="tel:+74951043130"
+            className={styles.formCtaLink}
+            onClick={() => {
+              logEvent({ name: EVENTLIST.CLICK_PHONE, params: { from: 'rfq' } });
+            }}>
             <span className="w-700">8-495-104-31-30</span>
           </a>
         </div>

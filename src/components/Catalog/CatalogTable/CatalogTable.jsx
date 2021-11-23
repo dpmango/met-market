@@ -7,7 +7,7 @@ import cns from 'classnames';
 
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
 import { CatalogStoreContext, UiStoreContext } from '@store';
-import { updateQueryParams, Plurize, ScrollTo, ProfilerLog } from '@helpers';
+import { updateQueryParams, Plurize, ScrollTo, ProfilerLog, EVENTLIST, logEvent } from '@helpers';
 import { useWindowSize, useFirstRender } from '@hooks';
 
 import StickyHead from './StickyHead';
@@ -117,6 +117,8 @@ const CatalogTable = observer(() => {
           value: item.idUnique,
         },
       });
+
+      logEvent({ name: EVENTLIST.CLICK_PRODUCT, params: { from: 'row', productId: item.idUnique } });
     },
     [getCatalogItem, history, location]
   );
@@ -141,6 +143,8 @@ const CatalogTable = observer(() => {
           value: `${category.id}`,
         },
       });
+
+      logEvent({ name: EVENTLIST.CLICK_CATEGORY, params: { from: 'productList', categoryId: category.id } });
     },
     [history, location]
   );
@@ -238,7 +242,13 @@ const CatalogTable = observer(() => {
     <div className={cns(styles.catalog, 'catalogTable')} ref={catalogRef}>
       <div className={styles.head}>
         <div className={styles.metaCount}>{metaItemsCount}</div>
-        <Button theme="accent" className={styles.headCta} onClick={() => uiContext.setModal('callback')}>
+        <Button
+          theme="accent"
+          className={styles.headCta}
+          onClick={() => {
+            uiContext.setModal('callback');
+            logEvent({ name: EVENTLIST.CLICK_OPENFORM_RFQ, params: { from: 'productList' } });
+          }}>
           Заказать металлопродукцию
         </Button>
       </div>

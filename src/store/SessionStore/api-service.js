@@ -26,10 +26,34 @@ class SessionService extends ApiService {
     }
   }
 
-  // logs
-  async log(req) {
+  async addParams(req) {
     try {
-      const { data } = await api.log(req);
+      const { data } = await api.addParams(req);
+
+      return [null, data];
+    } catch (error) {
+      this.handleError(error);
+
+      return [error, null];
+    }
+  }
+
+  // logs
+  async logCatalog(req) {
+    try {
+      const { data } = await api.logCatalog(req);
+
+      return [null, data];
+    } catch (error) {
+      this.handleError(error);
+
+      return [error, null];
+    }
+  }
+
+  async logEvent(req) {
+    try {
+      const { data } = await api.logEvent(req);
 
       return [null, data];
     } catch (error) {

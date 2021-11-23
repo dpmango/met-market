@@ -5,7 +5,7 @@ import cns from 'classnames';
 
 import { SvgIcon, Spinner } from '@ui';
 import { UiStoreContext } from '@store';
-import { ScrollTo } from '@helpers';
+import { ScrollTo, EVENTLIST, logEvent } from '@helpers';
 
 import styles from './ScrollTop.module.scss';
 
@@ -17,7 +17,12 @@ const ScrollTop = observer(({ visible, sticky }) => {
 
   return (
     <div className={cns(styles.scrolltop, visible && styles._visible, sticky && styles._sticky, 'scrolltop')}>
-      <div className={styles.btn} onClick={() => ScrollTo(0, 500)}>
+      <div
+        className={styles.btn}
+        onClick={() => {
+          ScrollTo(0, 500);
+          logEvent({ name: EVENTLIST.CLICK_SCROLLTOP });
+        }}>
         <SvgIcon name="arrow-top" />
       </div>
       <div className={styles.btn} onClick={() => uiContext.setModal('callback')}>

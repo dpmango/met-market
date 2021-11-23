@@ -63,13 +63,35 @@ const Input = ({
     return null;
   }, [value, allowClear]);
 
+  const handleMaskFocus = (e) => {
+    if (e.target.selectionStart === 0) {
+      e.target.setSelectionRange(18, 18);
+      setTimeout(() => {
+        e.target.setSelectionRange(18, 18);
+      }, 50);
+    }
+  };
+
+  const beforeMaskedValueChange = (newState, oldState, userInput, mask) => {
+    var { value } = newState;
+    var selection = newState.selection;
+    var cursorPosition = selection ? selection.start : null;
+
+    // cursorPosition--;
+    selection = { start: cursorPosition, end: cursorPosition };
+
+    return {
+      value,
+      selection,
+    };
+  };
+
   const inputProps = {
     id,
     ref: inputRef,
     className: cns(styles.input_input, allowClear && styles._withClear, error && styles._withError),
     value,
     onChange: onInputChange,
-
     ...props,
   };
 
@@ -87,7 +109,12 @@ const Input = ({
         {props.type === 'textarea' ? (
           <TextareaAutosize {...inputProps} />
         ) : mask ? (
-          <InputMask mask={mask} {...inputProps} />
+          <InputMask
+            mask={mask}
+            // beforeMaskedValueChange={beforeMaskedValueChange}
+            onFocus={handleMaskFocus}
+            {...inputProps}
+          />
         ) : (
           <input {...inputProps} />
         )}

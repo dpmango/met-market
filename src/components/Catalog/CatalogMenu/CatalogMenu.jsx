@@ -32,6 +32,12 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
         return [...acc, ...categoriesAbc[x]];
       }, []);
 
+      // sort by names
+      allSorted = allSorted.sort((a, b) => {
+        return a.short.localeCompare(b.short);
+      });
+
+      // set hightlighted flags
       if (activeLetters && activeLetters.length > 0) {
         // enable per-later basis
         // allSorted = findCategoryLetter(allSorted, activeLetters);
@@ -238,7 +244,13 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
               listRenderer.map((r) => (
                 <div className={r.className}>
                   {r.list.map((cat) => (
-                    <CategoryMain key={cat.id} category={cat} mobOpened={mobOpened} setMobOpened={setMobOpened} />
+                    <CategoryMain
+                      type={type}
+                      key={cat.id}
+                      category={cat}
+                      mobOpened={mobOpened}
+                      setMobOpened={setMobOpened}
+                    />
                   ))}
                 </div>
               ))}

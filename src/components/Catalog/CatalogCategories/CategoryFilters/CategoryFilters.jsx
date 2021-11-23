@@ -7,7 +7,7 @@ import cns from 'classnames';
 import { Button, SelectFilter, Spinner, LazyMedia } from '@ui';
 import { CatalogStoreContext, UiStoreContext } from '@store';
 import { useFirstRender, useOnClickOutside } from '@hooks';
-import { updateQueryParams } from '@helpers';
+import { updateQueryParams, EVENTLIST, logEvent } from '@helpers';
 
 import styles from './CategoryFilters.module.scss';
 
@@ -98,7 +98,13 @@ const CategoryFilters = observer(({ image, data }) => {
           </div>
         </div>
         <div className={styles.filterCta}>
-          <Button outline={true} disabled={!someFiltersActive} onClick={resetFilters}>
+          <Button
+            outline={true}
+            disabled={!someFiltersActive}
+            onClick={(e) => {
+              resetFilters(e);
+              logEvent({ name: EVENTLIST.CLICK_CLEAR_FILTERS });
+            }}>
             Сбросить <span>фильтры</span>
           </Button>
         </div>

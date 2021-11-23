@@ -5,7 +5,7 @@ import qs from 'qs';
 import groupBy from 'lodash/groupBy';
 import { prepareSmartSearchRegexp, clearMorphologyInSearchTerm } from '@helpers/Strings';
 import { PerformanceLog, getEnv } from '@helpers';
-import { LOCAL_STORAGE_CATALOG, LOCAL_STORAGE_CATALOG_LENGTH } from '@config/localStorage';
+import { LOCAL_STORAGE_CATALOG } from '@config/localStorage';
 import { ui } from '@store';
 // import uniqBy from 'lodash/uniqBy';
 
@@ -267,6 +267,7 @@ export default class CatalogStore {
           id: lvl1.id,
           name: lvl1.name,
           short: lvl1.shortName,
+          isShownInAbc: lvl1.isShownInAbc,
         });
 
         if (lvl1.categories && lvl1.categories.length > 0) {
@@ -275,6 +276,7 @@ export default class CatalogStore {
               id: lvl2.id,
               name: lvl2.name,
               short: lvl2.shortName,
+              isShownInAbc: lvl2.isShownInAbc,
             });
 
             if (lvl2.categories && lvl2.categories.length > 0) {
@@ -283,6 +285,7 @@ export default class CatalogStore {
                   id: lvl3.id,
                   name: lvl3.name,
                   short: lvl3.shortName,
+                  isShownInAbc: lvl3.isShownInAbc,
                 });
               });
             }
@@ -291,32 +294,11 @@ export default class CatalogStore {
       });
     }
 
-    //filter duplicaties (matching two or more words)
-    let resultClearDuplicates = [];
-
-    result.forEach((x) => {
-      const words = x.short.split(' ');
-      let shouldAdd = true;
-
-      // if (words.length >= 3) {
-      //   const prevWords = [...resultClearDuplicates.map((x) => x.short)];
-      //   const prevWordsByWord = prevWords[prevWords.length - 1].split(' ');
-
-      //   shouldAdd = prevWordsByWord[0] !== words[0] && prevWordsByWord[1] !== words[1];
-      // }
-
-      shouldAdd && resultClearDuplicates.push(x);
-      // if (!shouldAdd) {
-      //   console.log('skipping', x.short);
-      // }
-    });
-
-    // resultClearDuplicates = uniqBy(resultClearDuplicates, (x) => x.short);
-
-    // console.log('results length', resultClearDuplicates.length);
+    // filter by isShownInAbc flag
+    const resultCleared = result.filter((x) => x.isShownInAbc);
 
     // first letter grouping
-    const grouped = groupBy(resultClearDuplicates, (x) => x.name && x.name[0].toUpperCase());
+    const grouped = groupBy(resultCleared, (x) => x.name && x.name[0].toUpperCase());
     const sortedObject = Object.fromEntries(Object.entries(grouped).sort());
 
     PerformanceLog(DEV_perf, 'categoriesAbc');
@@ -505,11 +487,18 @@ export default class CatalogStore {
   }
 
   clearOldLocalStorageVersions() {
-    localStorage.removeItem('metMarketCat');
-    localStorage.removeItem('metMarketCatal');
-    localStorage.removeItem('metMarketCatalog');
-    localStorage.removeItem('metMarketCatalog_1.1.0');
-    localStorage.removeItem('metMarketCatalog_1.1.1');
+    const versionsList = [
+      'metMarketCat',
+      'metMarketCatal',
+      'metMarketCatalog',
+      'metMarketCatalog_1.1.0',
+      'metMarketCatalog_1.1.1',
+      'metMarketCatalog_1.1.2',
+    ];
+
+    versionsList.forEach((key) => {
+      localStorage.removeItem(key);
+    });
   }
   // API ACTIONS
 

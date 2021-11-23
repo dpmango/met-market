@@ -13,7 +13,11 @@ import { getEnv } from '@helpers';
 Sentry.init({
   environment: 'production',
   dsn: getEnv('SENTRY_DSN'),
-  integrations: [new Integrations.BrowserTracing()],
+  integrations: [
+    new Integrations.BrowserTracing({
+      tracingOrigins: ['steelmarket.pro', 'www.steelmarket.pro'],
+    }),
+  ],
   tracesSampleRate: getEnv('SENTRY_TRACES_SAMPLE_RATE'),
 });
 

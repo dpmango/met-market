@@ -7,9 +7,9 @@ import { use100vh } from 'react-div-100vh';
 
 import { SvgIcon, Button } from '@ui';
 import { useOnClickOutside, useWindowSize } from '@hooks';
-import { CatalogStoreContext, UiStoreContext } from '@store';
+import { CatalogStoreContext, UiStoreContext, SessionStoreContext } from '@store';
 import { useEventListener } from '@hooks';
-import { fillGapTarget, unfillGapTarget } from '@helpers';
+import { fillGapTarget, unfillGapTarget, EVENTLIST, logEvent } from '@helpers';
 
 import { Cart, CartSuccess } from '@c/Cart';
 import { Callback, CallbackSuccess } from '@c/Callback';
@@ -34,10 +34,21 @@ const Header = observer(({ className }) => {
     header: { scrolled, scrolledSticky },
     query,
   } = useContext(UiStoreContext);
+  const { sessionParams } = useContext(SessionStoreContext);
   const uiContext = useContext(UiStoreContext);
 
   const headerRef = useRef(null);
   const scrollerRef = useRef(null);
+
+  const handleAbcOrderClick = useCallback(() => {
+    setAbcOrder(!abcOrder);
+    logEvent({
+      name: EVENTLIST.CLICK_ABC_CATEGORIES_SWITCH,
+      params: {
+        from: width < 768 ? 'mobile' : 'desktop',
+      },
+    });
+  }, [abcOrder, width]);
 
   const scrollerHeight = useMemo(() => {
     if (width < 768) {
@@ -177,6 +188,7 @@ const Header = observer(({ className }) => {
                   onClick={() => {
                     uiContext.resetModal();
                     uiContext.setHeaderCatalog(!catalogOpened);
+                    logEvent({ name: EVENTLIST.CLICK_CATALOGBUTTON });
                   }}>
                   <div className={cns('hamburger', catalogOpened && 'is-active')}>
                     <span></span>
@@ -205,31 +217,46 @@ const Header = observer(({ className }) => {
                     href="https://api.whatsapp.com/send/?phone=74951043130"
                     target="_blank"
                     className={styles.overlaySocialLink}
-                    rel="noreferrer">
+                    rel="noreferrer"
+                    onClick={() => {
+                      logEvent({ name: EVENTLIST.CLICK_WHATSAPP, params: { from: 'header' } });
+                    }}>
                     <SvgIcon name="social-whatsapp" />
                     <span>Whatsapp</span>
                   </a>
                   <a
-                    href="https://t.me/METMarket_bot"
+                    href={`https://t.me/METMarket_bot?start=VisitorUid_${sessionParams.amoVisitorUid}`}
                     target="_blank"
                     className={styles.overlaySocialLink}
-                    rel="noreferrer">
+                    rel="noreferrer"
+                    onClick={() => {
+                      logEvent({ name: EVENTLIST.CLICK_TELEGRAM, params: { from: 'header' } });
+                    }}>
                     <SvgIcon name="social-telegram" />
                     <span>Telegram</span>
                   </a>
-                  <a href="tel:+74951043130" className={styles.overlaySocialLink}>
+                  <a
+                    href="tel:+74951043130"
+                    className={styles.overlaySocialLink}
+                    onClick={() => {
+                      logEvent({ name: EVENTLIST.CLICK_PHONE, params: { from: 'header' } });
+                    }}>
                     <span>8-495-104-31-30</span>
                   </a>
                 </div>
 
-                <div className={styles.catLang} onClick={() => setAbcOrder(!abcOrder)}>
+                <div className={styles.catLang} onClick={handleAbcOrderClick}>
                   <span>Показать в алфавитном порядке</span>
                   <div className={cns(styles.catLangToggle, abcOrder && styles._active)}></div>
                 </div>
                 <CatalogMenu type="header" abcOrder={abcOrder} />
 
                 <div className={cns(styles.overlayLinks, 'overlayLinks')}>
-                  <a href="/met.market.xlsx" target="_blank" className={cns(styles.priceList)}>
+                  <a
+                    href="/met.market.xlsx"
+                    target="_blank"
+                    className={cns(styles.priceList)}
+                    onClick={() => logEvent({ name: EVENTLIST.CLICK_PRICELIST })}>
                     <SvgIcon name="xls" />
                     <span className="w-700">Прайс-лист</span>
                   </a>
@@ -239,6 +266,7 @@ const Header = observer(({ className }) => {
                     onClick={(e) => {
                       e.preventDefault();
                       uiContext.setModal('callback');
+                      logEvent({ name: EVENTLIST.CLICK_OPENFORM_RFQ, params: { from: 'header' } });
                     }}>
                     Отправить заявку
                   </Button>

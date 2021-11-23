@@ -9,7 +9,7 @@ import uniqueId from 'lodash/uniqueId';
 import { Input, SvgIcon } from '@ui';
 import { CatalogStoreContext } from '@store';
 import { useOnClickOutside, useWindowSize, useFirstRender } from '@hooks';
-import { formatUGC, updateQueryParams, isMobile } from '@helpers';
+import { formatUGC, updateQueryParams, isMobile, EVENTLIST, logEvent } from '@helpers';
 
 import styles from './SelectFilter.module.scss';
 
@@ -103,6 +103,18 @@ const SelectComponent = observer(
     }, [filter, optionsMapped, width, search]);
 
     // click handlers
+    const handleDisplayClick = useCallback(() => {
+      setOpened(!opened);
+
+      logEvent({
+        name: EVENTLIST.CLICK_FILTERLIST,
+        params: {
+          from: mini ? 'productsListHeader' : 'filters',
+          list: name,
+        },
+      });
+    }, [setOpened, opened, name, mini]);
+
     const handleOptionClick = (option) => {
       const filter = catalogContext.addFilter(option, name);
 
@@ -112,8 +124,17 @@ const SelectComponent = observer(
         history,
         location,
         payload: {
-          type: 'filter',
+          type: 'filters',
           value: filter,
+        },
+      });
+
+      logEvent({
+        name: EVENTLIST.CLICK_FILTER,
+        params: {
+          value: option.value,
+          list: name,
+          checked: `${filter[name].some((x) => x.value === option.value)}`,
         },
       });
     };
@@ -135,6 +156,15 @@ const SelectComponent = observer(
         payload: {
           type: 'filter',
           value: filterUp,
+        },
+      });
+
+      logEvent({
+        name: EVENTLIST.CLICK_FILTER,
+        params: {
+          value: '@all',
+          list: name,
+          checked: !allSelected,
         },
       });
     }, [allSelected, name, history, location, optionsMapped]);
@@ -176,13 +206,13 @@ const SelectComponent = observer(
         )}
         ref={optionsRef}>
         {!mini ? (
-          <div className={styles.selectDisplay} onClick={() => setOpened(!opened)}>
+          <div className={styles.selectDisplay} onClick={handleDisplayClick}>
             <span>{label}</span>
             {value.length > 0 && <div className={styles.selectDisplayTag}>{value.length}</div>}
             <SvgIcon name="caret" />
           </div>
         ) : (
-          <div className={cns(styles.selectDisplayMini, 'selectDisplayMini')} onClick={() => setOpened(!opened)}>
+          <div className={cns(styles.selectDisplayMini, 'selectDisplayMini')} onClick={handleDisplayClick}>
             <SvgIcon name="filter" />
           </div>
         )}

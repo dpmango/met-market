@@ -7,6 +7,7 @@ export default {
   session: {
     create: 'api/session/create',
     alive: 'api/session/alive',
+    addParams: 'api/session/addParams',
   },
   cart: {
     getItems: 'api/cart/getItems',
@@ -22,8 +23,10 @@ export default {
   },
   file: {
     upload: 'api/file/upload',
+    delete: 'api/file/delete',
   },
   log: {
-    addSearchTerm: 'api/log/addSearchTerm',
+    addCatalogState: 'api/log/addCatalogState',
+    addEvent: 'api/log/addEvent',
   },
 };

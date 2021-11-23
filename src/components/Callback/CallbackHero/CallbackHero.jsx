@@ -7,6 +7,7 @@ import cns from 'classnames';
 
 import { Spinner, Button, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CatalogStoreContext, CallbackStoreContext } from '@store';
+import { getEnv, EVENTLIST, logEvent } from '@helpers';
 import { ruPhoneRegex } from '@helpers/Validation';
 
 import styles from './CallbackHero.module.scss';
@@ -46,6 +47,7 @@ const CallbackHero = observer(() => {
       .then((_res) => {
         resetForm();
         uiContext.setModal('callbacksuccess');
+        logEvent({ name: EVENTLIST.SEND_LEAD_FORM_HELP, params: { from: 'hero' } });
       })
       .catch((_error) => {
         addToast('Ошибка при отправке', { appearance: 'error' });
@@ -66,7 +68,7 @@ const CallbackHero = observer(() => {
             console.warn('error setting typing');
           });
       }
-    }, 3000),
+    }, getEnv('TYPING_SPEED')),
     []
   );
 

@@ -5,7 +5,7 @@ import cns from 'classnames';
 
 import { SvgIcon, Button } from '@ui';
 import { CallbackStoreContext } from '@store';
-import { formatBytes } from '@helpers';
+import { formatBytes, EVENTLIST, logEvent } from '@helpers';
 
 import styles from './File.module.scss';
 
@@ -31,6 +31,7 @@ const File = ({ className, data, onDelete, onSuccess, onError, ...props }) => {
       .then((res) => {
         onSuccess && onSuccess({ file: data.file, id: data.id, upload: res[0] }); // fileId + name
         setLoadDone(true);
+        logEvent({ name: EVENTLIST.FILE_UPLOAD });
       })
       .catch((err) => {
         addToast(`Ошибка при загрузке файла ${data.file.name}`, { appearance: 'error' });

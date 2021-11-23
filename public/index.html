@@ -60,6 +60,7 @@
         APP_UPDATE_INTERVAL_MINUTES: 60,
         CATALOG_UPDATE_INTERVAL_MINUTES: 5,
         EXTRA_TONNAGE_PERCENT: 1,
+        TYPING_SPEED: 1000,
         SENTRY_DSN: 'https://1a0ad3dd350f4718b38ddf68d5449b4b@o1068843.ingest.sentry.io/6063116',
         SENTRY_TRACES_SAMPLE_RATE: 1
       };
@@ -96,14 +97,69 @@
       };
     </script>
 
+
+
+    <!-- AmoCrm pixel code -->
+    <script type="text/javascript">
+      window.AMOPIXEL_IDENTIFIER_PARAMS = window.AMOPIXEL_IDENTIFIER_PARAMS || { } ;
+      window.AMOPIXEL_IDENTIFIER_PARAMS.onload = function (pixel_identifier) {
+        var visitor_uid = pixel_identifier.getVisitorUid ( ) ;
+
+        window.sessionStore && window.sessionStore.addSessionParams({
+          amoVisitorUid: visitor_uid
+        })
+      } ;
+    </script>
+    <script 
+      type="text/javascript" 
+      id="amo_pixel_identifier_js" 
+      async="async"
+      src="https://piper.amocrm.ru/pixel/js/identifier/pixel_identifier.js">
+    </script>
+
     <script type="text/javascript">
       var __cs = __cs || [];
       __cs.push(["setCsAccount", "oc3ghoG66vQzGiZiY9BW7Dg0fLcqUaGc"]);
     </script>
-    <script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js"></script>
-      
+    <!-- <script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js"></script> -->
+
+    <!-- Google analytics code -->
+    <script>
+      var gaClientIdSend = false
+
+      window.setGaClientId = function(){
+        if (window.sessionStore && !gaClientIdSend) {
+          ga.getAll && ga.getAll().forEach(gi => {
+            window.sessionStore.addSessionParams({
+              gaClientId: gi.get('clientId')
+            })
+          })
+
+          gaClientIdSend = true
+        }
+      }
+
+      ;(function() {
+        var el = document.createElement('script');
+        el.src = 'https://www.googletagmanager.com/gtag/js?id=UA-213145548-1';
+        el.async = 'true';
+        el.addEventListener('load', function() {
+          window.setGaClientId()
+        });
+        document.head.appendChild(el);
+      })();
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      gtag('js', new Date());  
+      gtag('config', 'UA-213145548-1');
+      gtag('config', 'G-JTR149BB93');
+    </script>
+
     <title>Металлопрокат оптом и в розницу в Москве</title>
   </head>
+
   <body>
    <div id="root"></div>
   </body>

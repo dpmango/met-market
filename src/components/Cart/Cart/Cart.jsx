@@ -4,10 +4,11 @@ import { observer } from 'mobx-react';
 import { useToasts } from 'react-toast-notifications';
 import { useFormik } from 'formik';
 import cns from 'classnames';
+import debounce from 'lodash/debounce';
 
 import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
-import { UiStoreContext, CartStoreContext, SessionStoreContext } from '@store';
-import { formatPrice, updateQueryParams } from '@helpers';
+import { UiStoreContext, CartStoreContext, SessionStoreContext, CallbackStoreContext } from '@store';
+import { getEnv, formatPrice, updateQueryParams, EVENTLIST, logEvent } from '@helpers';
 import { useFirstRender } from '@hooks';
 import { ruPhoneRegex } from '@helpers/Validation';
 
@@ -26,6 +27,7 @@ const Cart = observer(() => {
   const { activeModal, prevModal, modalParams, query } = useContext(UiStoreContext);
   const cartContext = useContext(CartStoreContext);
   const sessionContext = useContext(SessionStoreContext);
+  const callbackContext = useContext(CallbackStoreContext);
   const uiContext = useContext(UiStoreContext);
 
   const [loading, setLoading] = useState(false);
@@ -106,6 +108,7 @@ const Cart = observer(() => {
         })
         .then((orderNumber) => {
           uiContext.setModal('cartsuccess', { orderNumber });
+          logEvent({ name: EVENTLIST.MAKE_ORDER });
         })
         .catch((_error) => {
           addToast('Ошибка при отправке', { appearance: 'error' });
@@ -122,6 +125,22 @@ const Cart = observer(() => {
       return;
     }
   }, []);
+
+  const submitTyping = useCallback(
+    debounce((name, val) => {
+      if (name && val) {
+        callbackContext
+          .typingForm({
+            type: 'Cart',
+            payload: { id: name, content: `${val}` },
+          })
+          .catch((_error) => {
+            console.warn('error setting typing');
+          });
+      }
+    }, getEnv('TYPING_SPEED')),
+    []
+  );
 
   useEffect(() => {
     if (prevModal !== 'cart' && activeModal === 'cart') {
@@ -235,6 +254,7 @@ const Cart = observer(() => {
                         error={formik.touched.delivery && formik.errors.delivery}
                         onChange={(v) => {
                           formik.setFieldValue('delivery', v);
+                          submitTyping('delivery', v);
                           formik.setFieldError('delivery');
                         }}
                         onKeyDown={preventSubmitOnEnter}
@@ -261,6 +281,7 @@ const Cart = observer(() => {
                         error={formik.touched.comment && formik.errors.comment}
                         onChange={(v) => {
                           formik.setFieldValue('comment', v);
+                          submitTyping('comment', v);
                           formik.setFieldError('comment');
                         }}
                         onKeyDown={preventSubmitOnEnter}
@@ -288,6 +309,7 @@ const Cart = observer(() => {
                     showError={false}
                     onChange={(v) => {
                       formik.setFieldValue('phone', v);
+                      submitTyping('phone', v);
                       formik.setFieldError('phone');
                     }}
                     onKeyDown={preventSubmitOnEnter}

@@ -3,13 +3,15 @@ import { observer } from 'mobx-react';
 import cns from 'classnames';
 
 import { SvgIcon } from '@ui';
-import { UiStoreContext } from '@store';
+import { UiStoreContext, SessionStoreContext } from '@store';
+import { EVENTLIST, logEvent } from '@helpers';
 
 import styles from './Topbar.module.scss';
 import rootStyles from '../Header.module.scss';
 
 const Topbar = observer(({ className }) => {
   const uiContext = useContext(UiStoreContext);
+  const { sessionParams } = useContext(SessionStoreContext);
 
   return (
     <div className={styles.topbar}>
@@ -25,7 +27,8 @@ const Topbar = observer(({ className }) => {
             <a
               href="/met.market.xlsx"
               target="_blank"
-              className={cns(styles.topbarAction, styles.iconed, styles.price)}>
+              className={cns(styles.topbarAction, styles.iconed, styles.price)}
+              onClick={() => logEvent({ name: EVENTLIST.CLICK_PRICELIST })}>
               <SvgIcon name="xls" />
               <span className="w-700">Прайс-лист</span>
             </a>
@@ -37,6 +40,7 @@ const Topbar = observer(({ className }) => {
               onClick={(e) => {
                 e.preventDefault();
                 uiContext.setModal('callback');
+                logEvent({ name: EVENTLIST.CLICK_OPENFORM_RFQ, params: { from: 'header' } });
               }}>
               <span className="w-700">Отправить заявку</span>
             </a>
@@ -44,19 +48,30 @@ const Topbar = observer(({ className }) => {
               href="https://api.whatsapp.com/send/?phone=74951043130"
               target="_blank"
               className={cns(styles.topbarAction, styles.iconed)}
-              rel="noreferrer">
+              rel="noreferrer"
+              onClick={() => {
+                logEvent({ name: EVENTLIST.CLICK_WHATSAPP, params: { from: 'header' } });
+              }}>
               <SvgIcon name="social-whatsapp" />
               <span className="w-600">Whatsapp</span>
             </a>
             <a
-              href="https://t.me/METMarket_bot"
+              href={`https://t.me/METMarket_bot?start=VisitorUid_${sessionParams.amoVisitorUid}`}
               target="_blank"
               className={cns(styles.topbarAction, styles.iconed)}
-              rel="noreferrer">
+              rel="noreferrer"
+              onClick={() => {
+                logEvent({ name: EVENTLIST.CLICK_TELEGRAM, params: { from: 'header' } });
+              }}>
               <SvgIcon name="social-telegram" />
               <span className="w-600">Telegram</span>
             </a>
-            <a href="tel:+74951043130" className={cns(styles.topbarAction)}>
+            <a
+              href="tel:+74951043130"
+              className={cns(styles.topbarAction)}
+              onClick={() => {
+                logEvent({ name: EVENTLIST.CLICK_PHONE, params: { from: 'header' } });
+              }}>
               <span className="w-700">8-495-104-31-30</span>
             </a>
           </div>

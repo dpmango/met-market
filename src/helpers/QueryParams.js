@@ -1,6 +1,6 @@
 import { ui, catalog } from '@store';
 import ym from 'react-yandex-metrika';
-import ReactGA from 'react-ga';
+import { UtmWhitelist } from '@helpers/Utm';
 import { PerformanceLog } from '@helpers';
 
 export const updateQueryParams = ({ history, location, payload }) => {
@@ -18,6 +18,9 @@ export const updateQueryParams = ({ history, location, payload }) => {
   };
 
   // console.log('QUERY :: update payload', payload);
+
+  // clear utm
+  UtmWhitelist.forEach((key) => params.delete(key));
 
   switch (payload.type) {
     case 'delete':
@@ -168,7 +171,7 @@ export const updateQueryParams = ({ history, location, payload }) => {
     window.listenHistoryState();
 
     ym('hit', `${window.location.pathname}/${params.toString()}`);
-    ReactGA.pageview(`${window.location.pathname}/${params.toString()}`);
+    window.gtag('pageview', `${window.location.pathname}/${params.toString()}`);
 
     history.push({
       pathname: '/',

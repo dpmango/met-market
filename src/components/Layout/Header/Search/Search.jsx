@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
 import { SvgIcon, Spinner } from '@ui';
 import { CatalogStoreContext, SessionStoreContext, UiStoreContext } from '@store';
 import { useOnClickOutside, useFirstRender } from '@hooks';
-import { formatUGC, updateQueryParams, ScrollTo } from '@helpers';
+import { formatUGC, updateQueryParams, ScrollTo, EVENTLIST, logEvent } from '@helpers';
 import { AnimatedSearchPlaceholder } from '@services';
 
 import styles from './Search.module.scss';
@@ -85,7 +85,7 @@ const Search = observer(({ className }) => {
 
   // сбрасывать поиск при переходе между категориями
   useEffect(() => {
-    if (!firstRender && query.category && !query.search) {
+    if (!firstRender && !query.search) {
       setSearchText('');
     }
   }, [query.category]);
@@ -150,6 +150,8 @@ const Search = observer(({ className }) => {
       setSearchText(q);
 
       inputRef && inputRef.current.focus();
+
+      logEvent({ name: EVENTLIST.CLICK_SEARCH_HISTORYITEM, params: { value: q } });
     },
     [catalogContext.getCatalogItem, history, location, inputRef]
   );
@@ -240,12 +242,21 @@ const Search = observer(({ className }) => {
       <button
         className={cns(styles.searchDropdown, showRecent && styles._active)}
         type="button"
-        onClick={() => setShowRecent(!showRecent)}>
+        onClick={() => {
+          setShowRecent(!showRecent);
+          logEvent({ name: EVENTLIST.CLICK_SEARCH_HISTORYLIST });
+        }}>
         <SvgIcon name="caret" key="caret" />
       </button>
 
       {searchText.length >= 2 && (
-        <button className={cns(styles.searchClear)} type="button" onClick={() => setSearchText('')}>
+        <button
+          className={cns(styles.searchClear)}
+          type="button"
+          onClick={() => {
+            setSearchText('');
+            logEvent({ name: EVENTLIST.CLICK_SEARCH_CLEAR });
+          }}>
           <SvgIcon name="close" key="close" />
         </button>
       )}

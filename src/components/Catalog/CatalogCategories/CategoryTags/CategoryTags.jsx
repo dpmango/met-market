@@ -6,6 +6,7 @@ import cns from 'classnames';
 
 import { UiStoreContext } from '@store';
 import { updateQueryParams } from '@helpers';
+import { EVENTLIST, logEvent } from '@helpers';
 
 import styles from './CategoryTags.module.scss';
 
@@ -26,6 +27,8 @@ const CategoryTags = observer(({ data }) => {
         value: `${id}`,
       },
     });
+
+    logEvent({ name: EVENTLIST.CLICK_CATEGORY, params: { from: 'tags', categoryId: id } });
   };
 
   return (

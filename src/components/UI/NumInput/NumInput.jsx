@@ -68,7 +68,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, onEnte
     debounce((innerValue) => {
       onChange(parseFloat(innerValue));
       // const { meta } = catalogContext.searchCatalog(textNormalized, null);
-    }, 100),
+    }, 0),
     [onChange]
   );
 

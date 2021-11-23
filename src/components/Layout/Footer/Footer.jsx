@@ -7,14 +7,14 @@ import { useToasts } from 'react-toast-notifications';
 import routes from '@config/routes';
 import { SvgIcon, Button } from '@ui';
 import { SessionStoreContext } from '@store';
-import { isMobile } from '@helpers';
+import { isMobile, EVENTLIST, logEvent } from '@helpers';
 
 import styles from './Footer.module.scss';
 
 const Header = observer(({ className }) => {
   const { addToast } = useToasts();
   const emailRef = useRef(null);
-  const { sessionId, cartId, cartNumber } = useContext(SessionStoreContext);
+  const { sessionParams } = useContext(SessionStoreContext);
 
   const getEmail = useCallback(() => {
     const a = emailRef.current.getAttribute('data-start');
@@ -44,6 +44,8 @@ const Header = observer(({ className }) => {
       } else {
         window.open(`mailto:${email}`);
       }
+
+      logEvent({ name: EVENTLIST.CLICK_EMAIL, params: { from: 'footer' } });
     },
     [emailRef]
   );
@@ -63,7 +65,13 @@ const Header = observer(({ className }) => {
               <div className={styles.group}>
                 <div className={styles.footerTitle}>Отдел продаж</div>
 
-                <a href="tel:+74951043130" className={styles.footerContact} rel="noreferrer">
+                <a
+                  href="tel:+74951043130"
+                  className={styles.footerContact}
+                  rel="noreferrer"
+                  onClick={() => {
+                    logEvent({ name: EVENTLIST.CLICK_PHONE, params: { from: 'footer' } });
+                  }}>
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="phone" />
                   </div>
@@ -73,13 +81,23 @@ const Header = observer(({ className }) => {
                   href="https://api.whatsapp.com/send/?phone=74951043130"
                   target="_blank"
                   className={styles.footerContact}
-                  rel="noreferrer">
+                  rel="noreferrer"
+                  onClick={() => {
+                    logEvent({ name: EVENTLIST.CLICK_WHATSAPP, params: { from: 'footer' } });
+                  }}>
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="social-whatsapp" />
                   </div>
                   <span className="w-600">Whatsapp</span>
                 </a>
-                <a href="https://t.me/METMarket_bot" target="_blank" className={styles.footerContact} rel="noreferrer">
+                <a
+                  href={`https://t.me/METMarket_bot?start=VisitorUid_${sessionParams.amoVisitorUid}`}
+                  target="_blank"
+                  className={styles.footerContact}
+                  rel="noreferrer"
+                  onClick={() => {
+                    logEvent({ name: EVENTLIST.CLICK_TELEGRAM, params: { from: 'footer' } });
+                  }}>
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="social-telegram" />
                   </div>
@@ -112,7 +130,11 @@ const Header = observer(({ className }) => {
                     сб-вс – выходной
                   </span>
                 </div>
-                <div className={styles.footerContact}>
+                <div
+                  className={styles.footerContact}
+                  onMouseUp={() => {
+                    logEvent({ name: EVENTLIST.CLICK_COMPANYADDRESS });
+                  }}>
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="location" />
                   </div>
@@ -207,8 +229,12 @@ const Header = observer(({ className }) => {
               <SvgIcon name="copyright" />
               <span>2021</span>
             </div>
-            <span className={styles.footerBottomText}>ООО «МОНОЛИТСТРОЙ»</span>
-            <span className={styles.footerBottomText}>ИНН: 7743935769</span>
+            <span className={styles.footerBottomText} onMouseUp={() => logEvent({ name: EVENTLIST.CLICK_COMPANYNAME })}>
+              ООО «МОНОЛИТСТРОЙ»
+            </span>
+            <span className={styles.footerBottomText} onMouseUp={() => logEvent({ name: EVENTLIST.CLICK_COMPANYINN })}>
+              ИНН: 7743935769
+            </span>
           </div>
         </div>
       </div>

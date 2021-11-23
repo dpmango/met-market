@@ -8,6 +8,7 @@ import debounce from 'lodash/debounce';
 
 import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CallbackStoreContext } from '@store';
+import { getEnv, EVENTLIST, logEvent } from '@helpers';
 import { ruPhoneRegex } from '@helpers/Validation';
 
 import styles from './CallbackHelp.module.scss';
@@ -45,6 +46,7 @@ const CallbackHelp = observer(() => {
       .then((_res) => {
         resetForm();
         uiContext.setModal('callbacksuccess');
+        logEvent({ name: EVENTLIST.SEND_LEAD_FORM_HELP, params: { from: 'help' } });
       })
       .catch((_error) => {
         addToast('Ошибка при отправке', { appearance: 'error' });
@@ -65,7 +67,7 @@ const CallbackHelp = observer(() => {
             // console.log('error setting typing');
           });
       }
-    }, 3000),
+    }, getEnv('TYPING_SPEED')),
     []
   );
 

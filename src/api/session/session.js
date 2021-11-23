@@ -1,20 +1,48 @@
 import { api, endpoints } from '@api';
 
 export default {
-  create: async (req) => {
+  create: async () => {
     return api.post(endpoints.session.create);
   },
   alive: async (req) => {
-    // @sessionId string
-    // @cartId string
+    /**
+      @sessionId string
+      @cartId string
+    */
     return api.post(endpoints.session.alive, req);
   },
-  log: async (req) => {
+  addParams: async (req) => {
+    // @sessionId string
+    // @params object (key: string)
+    return api.post(endpoints.session.addParams, req);
+  },
+  logCatalog: async (req) => {
     /** 
       @sessionId string
+      @eventId string
       @searchTerm string
       @categoryId string
+
+      @filterSize Array[string]
+      @filterMark Array[string]
+      @filterLength Array[string]
+      @productsCount Number
     */
-    return api.post(endpoints.log.addSearchTerm, req);
+    return api.post(endpoints.log.addCatalogState, {
+      eventId: crypto.randomUUID(),
+      ...req,
+    });
+  },
+  logEvent: async (req) => {
+    /** 
+      @sessionId string
+      @eventId string
+      @eventName string
+      @params Object (key: string)
+    */
+    return api.post(endpoints.log.addEvent, {
+      eventId: crypto.randomUUID(),
+      ...req,
+    });
   },
 };
