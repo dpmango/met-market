@@ -38,7 +38,7 @@ const Breadcrumbs = observer(({ className, crumbs, ...props }) => {
       },
     });
 
-    logEvent({ name: EVENTLIST.CLICK_CATEGORY, params: { from: 'breadcrumbs', categoryId: id } });
+    logEvent({ name: EVENTLIST.CLICK_CATEGORY, params: { from: 'breadcrumbs', categoryId: category } });
   };
 
   const ArrowResponsive = useMemo(() => {

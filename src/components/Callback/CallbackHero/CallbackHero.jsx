@@ -47,7 +47,7 @@ const CallbackHero = observer(() => {
       .then((_res) => {
         resetForm();
         uiContext.setModal('callbacksuccess');
-        logEvent({ name: EVENTLIST.SEND_LEAD_FORM_HELP, params: { from: 'hero' } });
+        logEvent({ name: EVENTLIST.SEND_LEAD_FORM_HERO, params: { from: 'hero' } });
       })
       .catch((_error) => {
         addToast('Ошибка при отправке', { appearance: 'error' });

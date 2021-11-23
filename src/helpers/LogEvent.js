@@ -128,7 +128,12 @@ export const EVENTLIST = {
     backend: 'clickClearFilters',
   },
   SEARCH: {
-    backend: 'search',
+    backend: 'search', // also routed to addCatalogState
+    ym: 'search',
+    ga: {
+      category: 'catalog',
+      action: 'search',
+    },
   },
   CLICK_SEARCH_CLEAR: {
     backend: 'clickSearchClear',

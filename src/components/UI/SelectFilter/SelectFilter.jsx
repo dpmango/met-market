@@ -124,7 +124,7 @@ const SelectComponent = observer(
         history,
         location,
         payload: {
-          type: 'filters',
+          type: 'filter',
           value: filter,
         },
       });

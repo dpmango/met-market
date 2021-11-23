@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { cart } from '@store';
 import { UtmWhitelist } from '@helpers/Utm';
+// import { EVENTLIST, logEvent } from '@helpers';
 import { LOCAL_STORAGE_SESSION, LOCAL_STORAGE_LOG, LOCAL_STORAGE_UTM_PARAMS } from '@config/localStorage';
 import service from './api-service';
 
@@ -227,7 +228,6 @@ export default class SessionStore {
   // метод отправки параметров к сессии
   // через запрос к бекенду
   async addSessionParams(params) {
-    console.log({ params });
     const [err, result] = await service.addParams({
       sessionId: this.sessionId,
       params: { ...params },

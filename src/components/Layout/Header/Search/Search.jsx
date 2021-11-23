@@ -236,6 +236,7 @@ const Search = observer(({ className }) => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleSearchChange}
+        onClick={() => logEvent({ name: EVENTLIST.SEARCH })}
         ref={inputRef}
       />
 
