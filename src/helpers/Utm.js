@@ -11,8 +11,9 @@ export const UtmWhitelist = [
   'utm_content',
   'utm_term',
   'utm_referrer',
-  'gсlid',
+  'gclid',
   'fbclid',
   'yclid',
+  'cm_id',
   'referrer',
 ];

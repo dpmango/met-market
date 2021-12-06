@@ -44,7 +44,9 @@ const NoMatchPage = observer(() => {
       <div className="container">
         <div className={styles.page404}>
           <div className={styles.page404_Title}>404</div>
-          <div className={styles.page404_Subtitle}>К сожалению, страница не найдена</div>
+          <div className={styles.page404_Subtitle}>
+            К сожалению, страница <strong>{location.pathname}</strong> не найдена
+          </div>
           <div className={styles.page404_Cta}>
             <Button
               theme="accent"

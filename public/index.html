@@ -53,8 +53,8 @@
 
     <script>
       window.REACT_ENV = {
-        GATEWAY_URL: 'https://steelmarket.pro/',
-        GATEWAY_CATALOG_JSON: 'https://steelmarket.pro/data/export-collapsed-flat.json',
+        GATEWAY_URL: '%REACT_APP_GATEWAY_URL%',
+        GATEWAY_CATALOG_JSON: '%REACT_APP_GATEWAY_CATALOG_JSON%',
         API_TIMEOUT: 10000,
         API_RETRY_DELAY: 1500,
         APP_UPDATE_INTERVAL_MINUTES: 60,
@@ -62,7 +62,8 @@
         EXTRA_TONNAGE_PERCENT: 1,
         TYPING_SPEED: 1000,
         SENTRY_DSN: 'https://1a0ad3dd350f4718b38ddf68d5449b4b@o1068843.ingest.sentry.io/6063116',
-        SENTRY_TRACES_SAMPLE_RATE: 1
+        SENTRY_TRACES_SAMPLE_RATE: 1,
+        SENTRY_TRACING_ORIGINS: %REACT_APP_SENTRY_TRACING_ORIGINS%,
       };
     </script>
 
@@ -97,65 +98,26 @@
       };
     </script>
 
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-
-    <!-- AmoCrm pixel code -->
-    <script type="text/javascript">
-      window.AMOPIXEL_IDENTIFIER_PARAMS = window.AMOPIXEL_IDENTIFIER_PARAMS || { } ;
-      window.AMOPIXEL_IDENTIFIER_PARAMS.onload = function (pixel_identifier) {
-        var visitor_uid = pixel_identifier.getVisitorUid ( ) ;
-
-        window.sessionStore && window.sessionStore.addSessionParams({
-          amoVisitorUid: visitor_uid
-        })
-      } ;
-    </script>
-    <script 
-      type="text/javascript" 
-      id="amo_pixel_identifier_js" 
-      async="async"
-      src="https://piper.amocrm.ru/pixel/js/identifier/pixel_identifier.js">
-    </script>
-
-    <script type="text/javascript">
-      var __cs = __cs || [];
-      __cs.push(["setCsAccount", "oc3ghoG66vQzGiZiY9BW7Dg0fLcqUaGc"]);
-    </script>
-    <!-- <script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js"></script> -->
-
-    <!-- Google analytics code -->
-    <script>
-      var gaClientIdSend = false
-
-      window.setGaClientId = function(){
-        if (window.sessionStore && !gaClientIdSend) {
-          ga.getAll && ga.getAll().forEach(gi => {
-            window.sessionStore.addSessionParams({
-              gaClientId: gi.get('clientId')
-            })
-          })
-
-          gaClientIdSend = true
-        }
-      }
-
-      ;(function() {
-        var el = document.createElement('script');
-        el.src = 'https://www.googletagmanager.com/gtag/js?id=UA-213145548-1';
-        el.async = 'true';
-        el.addEventListener('load', function() {
-          window.setGaClientId()
+      window.initMetrika = function(){
+        ym(86522567, "init", {
+          defer: true,
+          clickmap: true,
+          trackLinks: true,
+          accurateTrackBounce: true,
+          webvisor: true,
+          triggerEvent: true,
         });
-        document.head.appendChild(el);
-      })();
-
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-
-      gtag('js', new Date());  
-      gtag('config', 'UA-213145548-1');
-      gtag('config', 'G-JTR149BB93');
+      }
     </script>
+
+    <noscript><div><img src="https://mc.yandex.ru/watch/86522567" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 
     <title>Металлопрокат оптом и в розницу в Москве</title>
   </head>

@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { catalog } from '@store';
 
 export default class UiStore {
+  pageLoaded = false;
   prevModal = null;
   activeModal = null;
   modalParams = null;
@@ -49,6 +50,12 @@ export default class UiStore {
         this.modalParams = null;
       }
     }, timeoutms);
+  }
+
+  setPageLoaded(v) {
+    if (v !== this.pageLoaded) {
+      this.pageLoaded = v;
+    }
   }
 
   resetModal() {

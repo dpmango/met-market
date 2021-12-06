@@ -4,9 +4,10 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useTable, usePagination } from 'react-table';
 import cns from 'classnames';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { Pagination, Button, Select, Spinner, SvgIcon } from '@ui';
-import { CatalogStoreContext, UiStoreContext } from '@store';
+import { CatalogStoreContext, UiStoreContext, SessionStoreContext } from '@store';
 import { updateQueryParams, Plurize, ScrollTo, ProfilerLog, EVENTLIST, logEvent } from '@helpers';
 import { useWindowSize, useFirstRender } from '@hooks';
 
@@ -36,8 +37,9 @@ const CatalogTable = observer(() => {
   } = useContext(CatalogStoreContext);
 
   const catalogContext = useContext(CatalogStoreContext);
-  const { activeModal, prevModal, query } = useContext(UiStoreContext);
+  const { pageLoaded, activeModal, prevModal, query } = useContext(UiStoreContext);
   const uiContext = useContext(UiStoreContext);
+  const sessionContext = useContext(SessionStoreContext);
 
   // helper function
   const getIndexFromQuery = (query) => {
@@ -235,6 +237,26 @@ const CatalogTable = observer(() => {
     }
   }, [pageSize]);
 
+  const logCatalog = () => {
+    window.logCatalogEvent &&
+      window.logCatalogEvent({
+        categoryId: query.category,
+        searchTerm: sessionContext.savedSearch,
+        filterSize: filters.size.map((x) => x.value),
+        filterMark: filters.mark.map((x) => x.value),
+        filterLength: filters.length.map((x) => x.value),
+        productsCount: data.length,
+      });
+  };
+
+  const logCatalogDebounce = useDebouncedCallback(() => {
+    logCatalog();
+  }, 400);
+
+  useEffect(() => {
+    logCatalogDebounce();
+  }, [pageLoaded, query.category, query.size, query.mark, query.length, query.search]);
+
   // do not render table on homepage
   if (query.category === 'all' || (!query.category && !query.search) || !categoryExists) return null;
 
@@ -316,10 +338,10 @@ const CatalogTable = observer(() => {
               return groupingHeader ? (
                 <>
                   {groupingHeader}
-                  <TableBody row={row} prepareRow={prepareRow} handleAddToCartClick={handleAddToCartClick} />
+                  <TableBody key={i} row={row} prepareRow={prepareRow} handleAddToCartClick={handleAddToCartClick} />
                 </>
               ) : (
-                <TableBody row={row} prepareRow={prepareRow} handleAddToCartClick={handleAddToCartClick} />
+                <TableBody key={i} row={row} prepareRow={prepareRow} handleAddToCartClick={handleAddToCartClick} />
               );
             })}
           </tbody>

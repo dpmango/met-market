@@ -15,7 +15,7 @@ Sentry.init({
   dsn: getEnv('SENTRY_DSN'),
   integrations: [
     new Integrations.BrowserTracing({
-      tracingOrigins: ['steelmarket.pro', 'www.steelmarket.pro'],
+      tracingOrigins: getEnv('SENTRY_TRACING_ORIGINS'),
     }),
   ],
   tracesSampleRate: getEnv('SENTRY_TRACES_SAMPLE_RATE'),

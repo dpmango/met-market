@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, memo } from 'react';
+import React, { useCallback, useMemo, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import cns from 'classnames';
 import uniqueId from 'lodash/uniqueId';
@@ -63,29 +63,6 @@ const Input = ({
     return null;
   }, [value, allowClear]);
 
-  const handleMaskFocus = (e) => {
-    if (e.target.selectionStart === 0) {
-      e.target.setSelectionRange(18, 18);
-      setTimeout(() => {
-        e.target.setSelectionRange(18, 18);
-      }, 50);
-    }
-  };
-
-  const beforeMaskedValueChange = (newState, oldState, userInput, mask) => {
-    var { value } = newState;
-    var selection = newState.selection;
-    var cursorPosition = selection ? selection.start : null;
-
-    // cursorPosition--;
-    selection = { start: cursorPosition, end: cursorPosition };
-
-    return {
-      value,
-      selection,
-    };
-  };
-
   const inputProps = {
     id,
     ref: inputRef,
@@ -112,7 +89,6 @@ const Input = ({
           <InputMask
             mask={mask}
             // beforeMaskedValueChange={beforeMaskedValueChange}
-            onFocus={handleMaskFocus}
             {...inputProps}
           />
         ) : (

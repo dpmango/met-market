@@ -134,7 +134,7 @@ const NumInput = ({ className, label, inputRef, variant, value, onChange, onEnte
     ref: innerRef,
     className: cns(styles.input_input, error && styles._withError),
     value: innerValue,
-    autoComplete: false,
+    autoComplete: `${false}`,
     onChange: onInputChange,
     onBlur: onBlur,
     onKeyDown: onKeyDown,

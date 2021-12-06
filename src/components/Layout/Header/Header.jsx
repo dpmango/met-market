@@ -34,7 +34,7 @@ const Header = observer(({ className }) => {
     header: { scrolled, scrolledSticky },
     query,
   } = useContext(UiStoreContext);
-  const { sessionParams } = useContext(SessionStoreContext);
+  const { telegramLink, whatsappLink } = useContext(SessionStoreContext);
   const uiContext = useContext(UiStoreContext);
 
   const headerRef = useRef(null);
@@ -214,7 +214,7 @@ const Header = observer(({ className }) => {
               <div className="container">
                 <div className={styles.overlaySocials}>
                   <a
-                    href="https://api.whatsapp.com/send/?phone=74951043130"
+                    href={whatsappLink}
                     target="_blank"
                     className={styles.overlaySocialLink}
                     rel="noreferrer"
@@ -225,7 +225,7 @@ const Header = observer(({ className }) => {
                     <span>Whatsapp</span>
                   </a>
                   <a
-                    href={`https://t.me/METMarket_bot?start=VisitorUid_${sessionParams.amoVisitorUid}`}
+                    href={telegramLink}
                     target="_blank"
                     className={styles.overlaySocialLink}
                     rel="noreferrer"

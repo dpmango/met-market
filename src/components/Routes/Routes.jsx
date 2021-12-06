@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
 
-import routes from '@config/routes';
 import history from '@config/history';
 import Layout from '@c/Layout/';
 
@@ -12,7 +11,7 @@ const Routes = () => {
   return (
     <Layout variant="main">
       <Switch>
-        <Route exact path={routes.HOME}>
+        <Route exact path="/">
           <Home />
         </Route>
 

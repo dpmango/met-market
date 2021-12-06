@@ -10,7 +10,7 @@ import { Modal, Spinner, Button, Input, Checkbox, SvgIcon } from '@ui';
 import { UiStoreContext, CartStoreContext, SessionStoreContext, CallbackStoreContext } from '@store';
 import { getEnv, formatPrice, updateQueryParams, EVENTLIST, logEvent } from '@helpers';
 import { useFirstRender } from '@hooks';
-import { ruPhoneRegex } from '@helpers/Validation';
+import { ruPhoneRegex, phoneMaskCleared } from '@helpers/Validation';
 
 import CartProduct from './CartProduct';
 import ResetCart from './ResetCart';
@@ -87,7 +87,7 @@ const Cart = observer(() => {
     const errors = {};
     if (!values.phone) {
       errors.phone = 'Введите телефон';
-    } else if (!ruPhoneRegex.test(values.phone)) {
+    } else if (!ruPhoneRegex.test(phoneMaskCleared(values.phone))) {
       errors.phone = 'Неверный номер телефона';
     } else if (!values.agree) {
       errors.agree = 'Необходимо согласие';
@@ -126,17 +126,47 @@ const Cart = observer(() => {
     }
   }, []);
 
-  const submitTyping = useCallback(
-    debounce((name, val) => {
-      if (name && val) {
-        callbackContext
-          .typingForm({
-            type: 'Cart',
-            payload: { id: name, content: `${val}` },
-          })
-          .catch((_error) => {
-            console.warn('error setting typing');
-          });
+  const submitTypingDelivery = useCallback(
+    debounce((val) => {
+      if (val) {
+        callbackContext.typingForm({
+          type: 'Cart',
+          payload: { id: 'delivery', content: `${val}` },
+        });
+      }
+    }, getEnv('TYPING_SPEED')),
+    []
+  );
+
+  const submitTypingComment = useCallback(
+    debounce((val) => {
+      if (val) {
+        callbackContext.typingForm({
+          type: 'Cart',
+          payload: { id: 'comment', content: `${val}` },
+        });
+      }
+    }, getEnv('TYPING_SPEED')),
+    []
+  );
+  const submitTypingPhone = useCallback(
+    debounce((val) => {
+      if (val) {
+        callbackContext.typingForm({
+          type: 'Cart',
+          payload: { id: 'phone', content: `${val}` },
+        });
+      }
+    }, getEnv('TYPING_SPEED')),
+    []
+  );
+  const submitTypingAgree = useCallback(
+    debounce((val) => {
+      if (val) {
+        callbackContext.typingForm({
+          type: 'Cart',
+          payload: { id: 'agree', content: `${val}` },
+        });
       }
     }, getEnv('TYPING_SPEED')),
     []
@@ -254,7 +284,7 @@ const Cart = observer(() => {
                         error={formik.touched.delivery && formik.errors.delivery}
                         onChange={(v) => {
                           formik.setFieldValue('delivery', v);
-                          submitTyping('delivery', v);
+                          submitTypingDelivery(v);
                           formik.setFieldError('delivery');
                         }}
                         onKeyDown={preventSubmitOnEnter}
@@ -281,7 +311,7 @@ const Cart = observer(() => {
                         error={formik.touched.comment && formik.errors.comment}
                         onChange={(v) => {
                           formik.setFieldValue('comment', v);
-                          submitTyping('comment', v);
+                          submitTypingComment(v);
                           formik.setFieldError('comment');
                         }}
                         onKeyDown={preventSubmitOnEnter}
@@ -309,7 +339,7 @@ const Cart = observer(() => {
                     showError={false}
                     onChange={(v) => {
                       formik.setFieldValue('phone', v);
-                      submitTyping('phone', v);
+                      submitTypingPhone(v);
                       formik.setFieldError('phone');
                     }}
                     onKeyDown={preventSubmitOnEnter}
@@ -321,6 +351,7 @@ const Cart = observer(() => {
                     error={formik.touched.agree && formik.errors.agree}
                     onChange={() => {
                       formik.setFieldValue('agree', !formik.values.agree);
+                      submitTypingAgree(!formik.values.agree);
                       formik.setFieldError('agree');
                     }}>
                     <span>

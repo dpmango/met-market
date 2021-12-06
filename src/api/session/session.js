@@ -29,7 +29,6 @@ export default {
       @productsCount Number
     */
     return api.post(endpoints.log.addCatalogState, {
-      eventId: crypto.randomUUID(),
       ...req,
     });
   },
@@ -41,7 +40,6 @@ export default {
       @params Object (key: string)
     */
     return api.post(endpoints.log.addEvent, {
-      eventId: crypto.randomUUID(),
       ...req,
     });
   },

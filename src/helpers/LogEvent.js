@@ -1,10 +1,15 @@
-import { session } from '@store';
-import ym from 'react-yandex-metrika';
+import { session, ui, catalog } from '@store';
+import { v4 } from 'uuid';
 import service from '@store/SessionStore/api-service';
+
+const rememberEvents = {
+  search: false,
+};
 
 export const EVENTLIST = {
   PAGELOAD: {
     backend: 'pageLoad',
+    shouldLogCatalogState: true,
   },
   CLICK_PRICELIST: {
     backend: 'clickPriceList',
@@ -20,8 +25,8 @@ export const EVENTLIST = {
   FILE_UPLOAD: {
     ym: 'fileUpload',
     ga: {
-      category: 'fileUpload',
-      action: 'form',
+      category: 'form',
+      action: 'fileUpload',
     },
   },
   CLICK_OPENCART: {
@@ -109,6 +114,7 @@ export const EVENTLIST = {
   },
   CLICK_CATEGORY: {
     backend: 'clickCategory',
+    shouldLogCatalogState: true,
   },
   CLICK_ABC_CATEGORIES_SWITCH: {
     backend: 'clickAbcCategoriesSwitch',
@@ -123,9 +129,11 @@ export const EVENTLIST = {
       category: 'catalog',
       action: 'clickFilter',
     },
+    shouldLogCatalogState: true,
   },
   CLICK_CLEAR_FILTERS: {
     backend: 'clickClearFilters',
+    shouldLogCatalogState: true,
   },
   SEARCH: {
     backend: 'search', // also routed to addCatalogState
@@ -134,9 +142,12 @@ export const EVENTLIST = {
       category: 'catalog',
       action: 'search',
     },
+    once: true,
+    shouldLogCatalogState: true,
   },
   CLICK_SEARCH_CLEAR: {
     backend: 'clickSearchClear',
+    shouldLogCatalogState: true,
   },
   CLICK_SEARCH_HISTORYLIST: {
     backend: 'clickSearchHistoryList',
@@ -182,9 +193,13 @@ export const EVENTLIST = {
 };
 
 export const logEvent = async ({ name, params }) => {
+  // eventID shouild be same for logEvent and catalogLogEvent
+  const eventId = v4();
+
   // backend events
   if (name.backend) {
     let request = {
+      eventId: eventId,
       sessionId: session.sessionId,
       eventName: name.backend,
     };
@@ -196,18 +211,16 @@ export const logEvent = async ({ name, params }) => {
       };
     }
 
-    const [err, data] = await service.logEvent(request);
-
-    if (err) throw err;
+    service.logEvent(request);
   }
 
   // yandex metrika
-  if (name.ym) {
-    ym('reachGoal', name.ym, params || {});
+  if (name.ym && !rememberEvents[name.backend]) {
+    window.ym(86522567, 'reachGoal', name.ym, params || {});
   }
 
   // google analytics
-  if (name.ga) {
+  if (name.ga && !rememberEvents[name.backend]) {
     let gtagParams = {};
 
     if (name.ga.category) {
@@ -224,13 +237,24 @@ export const logEvent = async ({ name, params }) => {
     }
 
     window.gtag('event', name.ga.action || 'event', gtagParams);
+  }
 
-    // window.ga('send', {
-    //   hitType: 'event',
-    //   eventCategory: name.ga.category,
-    //   eventAction: name.ga.action,
-    //   eventLabel: name.ga.label,
-    // });
+  // some evens should be triggered once for ga & ym
+  if (name.once) {
+    rememberEvents[name.backend] = true;
+  }
+
+  // catalog log
+  if (name.shouldLogCatalogState) {
+    window.logCatalogEvent = (req) => {
+      const catalogLogRequest = {
+        eventId: eventId || v4(),
+        ...req,
+      };
+      session.logCatalog(catalogLogRequest);
+    };
+
+    ui.setPageLoaded(true);
   }
 
   return true;

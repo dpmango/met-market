@@ -9,7 +9,7 @@ import debounce from 'lodash/debounce';
 import { Modal, Spinner, Button, Input, SvgIcon } from '@ui';
 import { UiStoreContext, CallbackStoreContext } from '@store';
 import { getEnv, EVENTLIST, logEvent } from '@helpers';
-import { ruPhoneRegex } from '@helpers/Validation';
+import { ruPhoneRegex, phoneMaskCleared } from '@helpers/Validation';
 
 import styles from './CallbackHelp.module.scss';
 
@@ -29,7 +29,7 @@ const CallbackHelp = observer(() => {
     const errors = {};
     if (!values.phone) {
       errors.phone = 'Введите телефон';
-    } else if (!ruPhoneRegex.test(values.phone)) {
+    } else if (!ruPhoneRegex.test(phoneMaskCleared(values.phone))) {
       errors.phone = 'Неверный номер телефона';
     }
     return errors;

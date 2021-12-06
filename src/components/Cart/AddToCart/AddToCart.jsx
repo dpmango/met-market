@@ -25,7 +25,7 @@ const AddToCart = observer(() => {
   const { width } = useWindowSize();
 
   const { activeModal, prevModal, modalParams, query } = useContext(UiStoreContext);
-  const { getCategoryByName } = useContext(CatalogStoreContext);
+  const { getCategoryById } = useContext(CatalogStoreContext);
   const cartContext = useContext(CartStoreContext);
   const uiContext = useContext(UiStoreContext);
 
@@ -139,16 +139,11 @@ const AddToCart = observer(() => {
   // memos
   const itemCategory = useMemo(() => {
     if (!modalData) return;
-    const { cat1, cat2, cat3 } = modalData;
-    const name = cat3 || cat2 || cat1 || null;
+    const { categoryId } = modalData;
 
-    if (name) {
-      const category = getCategoryByName(name);
+    const category = getCategoryById(categoryId);
 
-      return category;
-    }
-
-    return null;
+    return category || null;
   }, [modalData]);
 
   const singlePriceWithTonnage = useMemo(() => {

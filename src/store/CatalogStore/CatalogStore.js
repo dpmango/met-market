@@ -103,26 +103,37 @@ export default class CatalogStore {
     return result;
   }
 
+  // получение вложенного списка id категорий (если есть категории внутри категории)
+  catalogCategoriesIds = computedFn((cat_id) => {
+    const category = findNodeById(this.categoriesList, cat_id);
+    let subcategoriesIds = [];
+
+    if (category) {
+      subcategoriesIds = category.categories
+        ? category.categories.reduce(
+            (acc, x) => {
+              const xCategories = x.categories ? x.categories.map((y) => y.id) : [];
+              return [...acc, x.id, ...xCategories];
+            },
+            [category.id]
+          )
+        : [category.id];
+    }
+
+    return subcategoriesIds;
+  });
+
+  // главная функция на получние элементов каталога по id категории и фильтрам
   catalogList = computedFn((cat_id, filterType) => {
     const DEV_perf = performance.now();
 
     let returnable = [];
 
-    // firslty iterate items through matching categories
     if (cat_id) {
-      const category = findNodeById(this.categoriesList, cat_id);
+      const items = this.catalog.filter((x) => this.catalogCategoriesIds(cat_id).includes(x.categoryId));
 
-      if (category) {
-        const items = this.catalog.filter(
-          (x) =>
-            (x.cat3 && x.cat3 == category.name) ||
-            (x.cat2 && x.cat2 == category.name) ||
-            (x.cat1 && x.cat1 == category.name)
-        );
-
-        if (items && items.length > 0) {
-          returnable = items;
-        }
+      if (items && items.length > 0) {
+        returnable = items;
       }
     } else {
       returnable = this.catalog;
@@ -147,19 +158,7 @@ export default class CatalogStore {
     const DEV_perf = performance.now();
 
     if (category_id) {
-      const category = this.getCategoryById(category_id);
-
-      source = [
-        ...source.filter((cat_item) => {
-          const { cat1, cat2, cat3 } = cat_item;
-
-          const firstMatch = category.name === cat1;
-          const secondMatch = category.name === cat2;
-          const thirdMatch = category.name === cat3;
-
-          return firstMatch || secondMatch || thirdMatch;
-        }),
-      ];
+      source = source.filter((x) => this.catalogCategoriesIds(category_id).includes(x.categoryId));
     }
 
     // generate regex with simple morhpology
@@ -495,6 +494,12 @@ export default class CatalogStore {
       'metMarketCatalog_1.1.1',
       'metMarketCatalog_1.1.2',
       'metMarketCatalog_1.1.3',
+      'metMarketCatalog_1.1.4',
+      'metMarketCatalog_1.1.5',
+      'metMarketCatalog_1.1.6',
+      'metMarketCatalog_1.2.0',
+      'metMarketCatalog_1.2.1',
+      'metMarketCatalog_1.2.2',
     ];
 
     versionsList.forEach((key) => {

@@ -1,5 +1,4 @@
 import { ui, catalog } from '@store';
-import ym from 'react-yandex-metrika';
 import { UtmWhitelist } from '@helpers/Utm';
 import { PerformanceLog } from '@helpers';
 
@@ -170,11 +169,16 @@ export const updateQueryParams = ({ history, location, payload }) => {
     // ui.updateParams(params);
     window.listenHistoryState();
 
-    ym('hit', `${window.location.pathname}/${params.toString()}`);
-    window.gtag('pageview', `${window.location.pathname}/${params.toString()}`);
+    window.ym(86522567, 'hit', `${window.location.pathname}?${params.toString()}`);
+    // window.gtag('pageview', `${window.location.pathname}?${params.toString()}`);
+
+    window.gtag('event', 'page_view', {
+      page_location: window.location.host,
+      page_path: `${window.location.pathname}?${params.toString()}`,
+    });
 
     history.push({
-      pathname: '/',
+      pathname: '',
       search: params.toString(),
     });
   }

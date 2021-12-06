@@ -64,12 +64,11 @@ const CartProduct = observer(({ product, handleCartUpdate, handleCartDelete }) =
   const categoryImage = useMemo(() => {
     const productCat = catalogContext.getCatalogItem(product.itemId);
     if (productCat) {
-      const { cat1, cat2, cat3 } = productCat;
-      const name = cat3 || cat2 || cat1 || null;
+      const { categoryId } = productCat;
 
-      const category = catalogContext.getCategoryByName(name);
+      const category = catalogContext.getCategoryById(categoryId);
 
-      return category.image;
+      return category && category.image;
     }
 
     return '';

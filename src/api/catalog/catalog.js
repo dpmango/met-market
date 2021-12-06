@@ -1,5 +1,4 @@
 import { api, endpoints } from '@api';
-import mockData from './mockData.json';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
@@ -16,6 +15,5 @@ export default {
     }
 
     return api.get(endpoints.catalog.export, params);
-    // return mockData;
   },
 };

@@ -44,4 +44,15 @@ export default class SessionStore {
 
     return data;
   }
+
+  async deleteFile(id) {
+    const [err, data] = await service.delete({
+      sessionId: session.sessionId,
+      fileId: id,
+    });
+
+    if (err) throw err;
+
+    return data;
+  }
 }

@@ -41,23 +41,21 @@ const Search = observer(({ className }) => {
 
   const searchFunc = useCallback(
     debounce((txt) => {
-      const textNormalized = formatUGC(txt);
-
       ScrollTo(0, 300);
 
-      if (textNormalized.length >= 2) {
+      if (txt.length >= 2) {
         updateQueryParams({
           location,
           history,
           payload: {
             type: 'search',
-            value: `${textNormalized}`,
+            value: `${txt}`,
           },
         });
 
         sessionContext.setLog({
           type: 'search',
-          payload: textNormalized,
+          payload: txt,
         });
       } else {
         if (!firstRender) {
@@ -72,6 +70,8 @@ const Search = observer(({ className }) => {
         }
       }
 
+      logEvent({ name: EVENTLIST.SEARCH, params: { value: txt } });
+
       setLoading(false);
     }, settings.delay),
     [location, history, firstRender]
@@ -80,19 +80,23 @@ const Search = observer(({ className }) => {
   // запуск поисковой функции при изминении внутреннего стейта
   useEffect(() => {
     setLoading(true);
-    searchFunc(searchText);
+    const textNormalized = formatUGC(searchText);
+    sessionContext.saveSearch(textNormalized);
+    searchFunc(textNormalized);
   }, [searchText]);
 
   // сбрасывать поиск при переходе между категориями
   useEffect(() => {
     if (!firstRender && !query.search) {
+      sessionContext.saveSearch('');
       setSearchText('');
     }
   }, [query.category]);
 
   // проставляем значение поисковой строки из query при первом рендере
   useEffect(() => {
-    if (firstRender) {
+    if (firstRender || searchText.length >= 2) {
+      sessionContext.saveSearch(query.search || '');
       setSearchText(query.search || '');
     }
   }, [query.search]);
@@ -215,14 +219,6 @@ const Search = observer(({ className }) => {
       );
     }
   }, [inputRef, searchPlaceholder]);
-
-  // Мгновенный поиск по каталогу (стирается полностью)
-  // Лист горячекатаный (стирается побуквенно "горячекатаный")
-  // Лист г/к ст3 1.5 (стирается полностью)
-  // Трубы электросварные круглые (стирается побуквенно "электросварные круглые")
-  // Трубы ЭСВ 18 6000 (стирается полностью)
-  // Просечно-вытяжной лист 306 (стирается побуквенно полностью)
-  // ПВЛ 306
 
   const haveLog = sessionContext.log && sessionContext.log.search.length > 0;
 

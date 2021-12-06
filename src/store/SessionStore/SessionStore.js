@@ -4,15 +4,17 @@ import axios from 'axios';
 
 import { cart } from '@store';
 import { UtmWhitelist } from '@helpers/Utm';
-// import { EVENTLIST, logEvent } from '@helpers';
+import { EVENTLIST, logEvent } from '@helpers';
 import { LOCAL_STORAGE_SESSION, LOCAL_STORAGE_LOG, LOCAL_STORAGE_UTM_PARAMS } from '@config/localStorage';
 import service from './api-service';
 
 export default class SessionStore {
   sessionId = null;
   sessionParams = {};
+  sessionNumber = null;
   cartId = null;
   cartNumber = null;
+  savedSearch = '';
   log = {
     search: [],
     carts: [],
@@ -26,12 +28,31 @@ export default class SessionStore {
     window.sessionStore = this;
   }
 
+  get telegramLink() {
+    const base = 'https://t.me/METMarket_bot';
+    if (this.sessionParams.amoVisitorUid) {
+      return `${base}?start=VisitorUid_${this.sessionParams.amoVisitorUid}`;
+    }
+
+    return base;
+  }
+
+  get whatsappLink() {
+    const base = 'https://api.whatsapp.com/send/?phone=74951043130';
+    if (this.cartNumber) {
+      return `${base}&text=%D0%92%D0%B0%D1%88+%D0%BD%D0%BE%D0%BC%D0%B5%D1%80+%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82%D0%B0%3A+${this.cartNumber}%2C+%D0%BE%D1%82%D0%BF%D1%80%D0%B0%D0%B2%D1%8C%D1%82%D0%B5+%D1%8D%D1%82%D0%BE+%D1%81%D0%BE%D0%BE%D0%B1%D1%89%D0%B5%D0%BD%D0%B8%D0%B5+%D0%B4%D0%BB%D1%8F+%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F+%D0%BA%D0%BE%D0%BD%D1%81%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%86%D0%B8%D0%B8.&app_absent=0`;
+    }
+
+    return base;
+  }
+
   // inner actions
   setSession(newSession) {
-    const { sessionId, cartId, cartNumber } = newSession;
+    const { sessionId, cartId, sessionNumber, cartNumber } = newSession;
 
     runInAction(() => {
       this.sessionId = sessionId;
+      this.sessionNumber = sessionNumber;
       this.cartId = cartId;
       this.cartNumber = cartNumber;
 
@@ -39,17 +60,17 @@ export default class SessionStore {
     });
   }
 
-  async setLog({ type, payload }) {
+  saveSearch(txt) {
+    runInAction(() => {
+      this.savedSearch = txt;
+    });
+  }
+
+  setLog({ type, payload }) {
     const request = {
       sessionId: this.sessionId,
       searchTerm: payload,
-      categoryId: type,
     };
-
-    // data is empty here
-    const [err, data] = await service.logCatalog(request);
-
-    if (err) throw err;
 
     runInAction(() => {
       const lastLog = this.log[type][0];
@@ -72,8 +93,6 @@ export default class SessionStore {
 
       localStorage.setItem(LOCAL_STORAGE_LOG, JSON.stringify(newLogs));
     });
-
-    return data;
   }
 
   removeLog(log) {
@@ -109,14 +128,59 @@ export default class SessionStore {
     при ошибках пересоздаем сессию
   **/
   async init() {
-    if (localStorage.getItem(LOCAL_STORAGE_SESSION)) {
-      const lsSession = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SESSION));
-      const lsLog = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LOG));
+    // migration
+    let useMigration = false;
+    let sessionId = null;
+    let sessionNumber = null;
+    let cartId = null;
+    let cartNumber = null;
 
-      const { sessionId, cartId, cartNumber } = lsSession;
+    // ищет последнюю актуальную версию сессии. every позволяет выйти из цикла
+    const versionsList = [
+      'metMarketSession',
+      'metMarketSession_1.1.6',
+      'metMarketSession_1.2.0',
+      'metMarketSession_1.2.1',
+      'metMarketSession_1.2.2',
+    ];
+    versionsList.reverse().every((key) => {
+      const lsSession = localStorage.getItem(key);
+      if (lsSession) {
+        const lsSessionObj = JSON.parse(lsSession);
+
+        sessionId = lsSessionObj.sessionId;
+        sessionNumber = lsSessionObj.sessionNumber;
+        cartId = lsSessionObj.cartId;
+        cartNumber = lsSessionObj.cartNumber;
+
+        useMigration = true;
+
+        return false;
+      }
+
+      return true;
+    });
+
+    // уже запомнили в переменную, очищаем старые версии
+    versionsList.forEach((key) => {
+      localStorage.removeItem(key);
+    });
+
+    if (localStorage.getItem(LOCAL_STORAGE_SESSION) || useMigration) {
+      if (localStorage.getItem(LOCAL_STORAGE_SESSION)) {
+        // даже если используются миграция, в приоритете данные из актуальной версии LS
+        const lsSession = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SESSION));
+
+        sessionId = lsSession.sessionId;
+        sessionNumber = lsSession.sessionNumber;
+        cartId = lsSession.cartId;
+        cartNumber = lsSession.cartNumber;
+      }
 
       runInAction(() => {
         this.sessionId = sessionId;
+        this.sessionNumber = sessionNumber;
+        this.cartId = cartId;
         this.cartNumber = cartNumber;
       });
 
@@ -126,24 +190,27 @@ export default class SessionStore {
         try {
           await cart.getCart({ cartId: cartId });
 
-          this.setSession({ sessionId, cartId, cartNumber });
+          this.setSession({ sessionId, sessionNumber, cartId, cartNumber });
         } catch (err) {
           if (err.response && [400, 404].includes(err.response.status)) {
             const status = err.response && err.response.status;
 
             await cart.createNewCart({ sessionId }).then((res) => {
-              const { sessionId, cartNumber, cartId } = res;
+              const { sessionId, sessionNumber, cartNumber, cartId } = res;
               newSessionOnErr = false;
-              this.setSession({ sessionId, cartId, cartNumber });
+              this.setSession({ sessionId, sessionNumber, cartId, cartNumber });
             });
           }
         }
 
+        // установка лога поиска
+        const lsLog = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LOG));
+
         runInAction(() => {
           this.log = lsLog ? lsLog : this.log;
         });
-      } catch {
-        if (newSessionOnErr) {
+      } catch (err) {
+        if (newSessionOnErr && err.response && [400, 404].includes(err.response.status)) {
           await this.createSession();
         }
       }
@@ -151,19 +218,31 @@ export default class SessionStore {
       await this.createSession();
     }
 
-    // external methods
-    window.setGaClientId();
+    // external methods for metrics
+    logEvent({
+      name: EVENTLIST.PAGELOAD,
+      params: {
+        url: window.location.href,
+      },
+    });
+
+    window.createGATag(this.sessionNumber);
+    window.initMetrika();
+    window.createAmoTag();
+    if (process.env.NODE_ENV === 'production') {
+      window.createComagicTag(this.sessionNumber);
+    }
   }
 
   async createSession() {
-    localStorage.removeItem(LOCAL_STORAGE_SESSION);
+    // localStorage.removeItem(LOCAL_STORAGE_SESSION);
     const [err, data] = await service.create();
 
     if (err) throw err;
 
-    const { sessionId, cartId, cartNumber } = data;
+    const { sessionId, sessionNumber, cartId, cartNumber } = data;
 
-    this.setSession({ sessionId, cartId, cartNumber });
+    this.setSession({ sessionId, sessionNumber, cartId, cartNumber });
 
     await cart.getCart({ cartId });
 
@@ -225,6 +304,25 @@ export default class SessionStore {
     }
   }
 
+  async logCatalog({ eventId, categoryId, searchTerm, productsCount, filterSize, filterMark, filterLength }) {
+    const request = {
+      sessionId: this.sessionId,
+      eventId,
+      categoryId,
+      searchTerm,
+      filterSize,
+      filterMark,
+      filterLength,
+      productsCount,
+    };
+
+    const [err, data] = await service.logCatalog(request);
+
+    if (err) throw err;
+
+    return data;
+  }
+
   // метод отправки параметров к сессии
   // через запрос к бекенду
   async addSessionParams(params) {
@@ -248,10 +346,11 @@ export default class SessionStore {
   hydrateStore() {
     const lsSession = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SESSION));
 
-    const { sessionId, cartId, cartNumber } = lsSession;
+    const { sessionId, sessionNumber, cartId, cartNumber } = lsSession;
 
     runInAction(() => {
       this.sessionId = sessionId;
+      this.sessionNumber = sessionNumber;
       this.cartId = cartId;
       this.cartNumber = cartNumber;
     });

@@ -10,7 +10,7 @@ import debounce from 'lodash/debounce';
 import { Modal, Button, Checkbox, Input, File, SvgIcon } from '@ui';
 import { UiStoreContext, CallbackStoreContext, SessionStoreContext } from '@store';
 import { useFirstRender } from '@hooks';
-import { ruPhoneRegex } from '@helpers/Validation';
+import { ruPhoneRegex, phoneMaskCleared } from '@helpers/Validation';
 import { getEnv, bytesToMegaBytes, updateQueryParams, EVENTLIST, logEvent } from '@helpers';
 
 import styles from './Callback.module.scss';
@@ -34,7 +34,7 @@ const Callback = observer(() => {
   const [files, setFiles] = useState([]);
 
   const { activeModal, prevModal, query } = useContext(UiStoreContext);
-  const { sessionParams } = useContext(SessionStoreContext);
+  const { telegramLink, whatsappLink } = useContext(SessionStoreContext);
   const callbackContext = useContext(CallbackStoreContext);
   const uiContext = useContext(UiStoreContext);
 
@@ -44,7 +44,7 @@ const Callback = observer(() => {
     const errors = {};
     if (!values.phone) {
       errors.phone = 'Введите телефон';
-    } else if (!ruPhoneRegex.test(values.phone)) {
+    } else if (!ruPhoneRegex.test(phoneMaskCleared(values.phone))) {
       errors.phone = 'Неверный номер телефона';
     } else if (!values.agree) {
       errors.agree = 'Необходимо согласие';
@@ -100,17 +100,49 @@ const Callback = observer(() => {
     [loading, someFilesUploading, files]
   );
 
-  const submitTyping = useCallback(
-    debounce((name, val) => {
-      if (name && val) {
-        callbackContext
-          .typingForm({
-            type: 'RFQ',
-            payload: { id: name, content: `${val}` },
-          })
-          .catch((_error) => {
-            console.warn('error setting typing');
-          });
+  const submitTypingName = useCallback(
+    debounce((val) => {
+      if (val) {
+        callbackContext.typingForm({
+          type: 'RFQ',
+          payload: { id: 'name', content: `${val}` },
+        });
+      }
+    }, getEnv('TYPING_SPEED')),
+    []
+  );
+
+  const submitTypingPhone = useCallback(
+    debounce((val) => {
+      if (val) {
+        callbackContext.typingForm({
+          type: 'RFQ',
+          payload: { id: 'phone', content: `${val}` },
+        });
+      }
+    }, getEnv('TYPING_SPEED')),
+    []
+  );
+
+  const submitTypingProduct = useCallback(
+    debounce((val) => {
+      if (val) {
+        callbackContext.typingForm({
+          type: 'RFQ',
+          payload: { id: 'product', content: `${val}` },
+        });
+      }
+    }, getEnv('TYPING_SPEED')),
+    []
+  );
+
+  const submitTypingAgree = useCallback(
+    debounce((val) => {
+      if (val) {
+        callbackContext.typingForm({
+          type: 'RFQ',
+          payload: { id: 'agree', content: `${val}` },
+        });
       }
     }, getEnv('TYPING_SPEED')),
     []
@@ -236,7 +268,7 @@ const Callback = observer(() => {
 
         <div className={styles.formCta}>
           <a
-            href="https://api.whatsapp.com/send/?phone=74951043130"
+            href={whatsappLink}
             target="_blank"
             className={styles.formCtaLink}
             rel="noreferrer"
@@ -247,7 +279,7 @@ const Callback = observer(() => {
             <span>Whatsapp</span>
           </a>
           <a
-            href={`https://t.me/METMarket_bot?start=VisitorUid_${sessionParams.amoVisitorUid}`}
+            href={telegramLink}
             target="_blank"
             className={styles.formCtaLink}
             rel="noreferrer"
@@ -275,7 +307,7 @@ const Callback = observer(() => {
               error={formik.touched.name && formik.errors.name}
               onChange={(v) => {
                 formik.setFieldValue('name', v);
-                submitTyping('name', v);
+                submitTypingName(v);
                 formik.setFieldError('name');
               }}
             />
@@ -291,7 +323,7 @@ const Callback = observer(() => {
               error={formik.touched.phone && formik.errors.phone}
               onChange={(v) => {
                 formik.setFieldValue('phone', v);
-                submitTyping('phone', v);
+                submitTypingPhone(v);
                 formik.setFieldError('phone');
               }}
             />
@@ -305,7 +337,7 @@ const Callback = observer(() => {
               error={formik.touched.product && formik.errors.product}
               onChange={(v) => {
                 formik.setFieldValue('product', v);
-                submitTyping('product', v);
+                submitTypingProduct(v);
                 formik.setFieldError('product');
               }}
             />
@@ -347,7 +379,7 @@ const Callback = observer(() => {
               error={formik.touched.agree && formik.errors.agree}
               onChange={() => {
                 formik.setFieldValue('agree', !formik.values.agree);
-                submitTyping('agree', !formik.values.agree);
+                submitTypingAgree(!formik.values.agree);
                 formik.setFieldError('agree');
               }}>
               <span>

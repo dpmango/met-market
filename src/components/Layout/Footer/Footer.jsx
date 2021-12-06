@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import cns from 'classnames';
 import { useToasts } from 'react-toast-notifications';
 
-import routes from '@config/routes';
 import { SvgIcon, Button } from '@ui';
 import { SessionStoreContext } from '@store';
 import { isMobile, EVENTLIST, logEvent } from '@helpers';
@@ -14,7 +13,7 @@ import styles from './Footer.module.scss';
 const Header = observer(({ className }) => {
   const { addToast } = useToasts();
   const emailRef = useRef(null);
-  const { sessionParams } = useContext(SessionStoreContext);
+  const { telegramLink, whatsappLink } = useContext(SessionStoreContext);
 
   const getEmail = useCallback(() => {
     const a = emailRef.current.getAttribute('data-start');
@@ -63,7 +62,7 @@ const Header = observer(({ className }) => {
           <div className="row">
             <div className="col col-4 col-md-6 col-sm-12">
               <div className={styles.group}>
-                <div className={styles.footerTitle}>Отдел продаж</div>
+                <div className={cns(styles.footerTitle, styles._main)}>Отдел продаж</div>
 
                 <a
                   href="tel:+74951043130"
@@ -78,7 +77,7 @@ const Header = observer(({ className }) => {
                   <span className="w-600">8-495-104-31-30</span>
                 </a>
                 <a
-                  href="https://api.whatsapp.com/send/?phone=74951043130"
+                  href={whatsappLink}
                   target="_blank"
                   className={styles.footerContact}
                   rel="noreferrer"
@@ -91,7 +90,7 @@ const Header = observer(({ className }) => {
                   <span className="w-600">Whatsapp</span>
                 </a>
                 <a
-                  href={`https://t.me/METMarket_bot?start=VisitorUid_${sessionParams.amoVisitorUid}`}
+                  href={telegramLink}
                   target="_blank"
                   className={styles.footerContact}
                   rel="noreferrer"
@@ -107,7 +106,7 @@ const Header = observer(({ className }) => {
                   href="#"
                   data-start="zakaz"
                   data-end="met.market"
-                  className={styles.footerContact}
+                  className={cns(styles.footerContact, styles.email)}
                   onClick={handleEmailClick}
                   onMouseEnter={handleEmailHover}
                   ref={emailRef}>
@@ -118,103 +117,97 @@ const Header = observer(({ className }) => {
                     <img src="/img/mail.svg" />
                   </span>
                 </a>
-                <div className={styles.footerContact}>
-                  <div className={styles.footerContactIcon}>
+                <div className={cns(styles.footerContact, styles.time)}>
+                  <div className={cns(styles.footerContactIcon, styles._noalign)}>
                     <SvgIcon name="time" />
                   </div>
                   <span>
-                    пн-чт: 09:00-17:00
+                    пн-чт: 08:00-17:00
                     <br />
-                    пт: 09:00-15:00
+                    пт: 08:00-15:00
                     <br />
                     сб-вс – выходной
                   </span>
                 </div>
                 <div
-                  className={styles.footerContact}
+                  className={cns(styles.footerContact, styles.address)}
                   onMouseUp={() => {
                     logEvent({ name: EVENTLIST.CLICK_COMPANYADDRESS });
                   }}>
                   <div className={styles.footerContactIcon}>
                     <SvgIcon name="location" />
                   </div>
-                  <span>
-                    м. Южная, г. Москва, <br />
-                    ул. Дорожная, д. 8, оф. 6
-                  </span>
+                  <span>г. Москва, ул. Автозаводская, 23Бк2</span>
                 </div>
               </div>
             </div>
 
             <div className="col col-4 col-md-6 col-sm-12">
               <div className={cns(styles.group, styles._middle)}>
-                <div className={styles.footerTitle}>Склад в Ивантеевке</div>
+                <div className={styles.footerTitle}>Оформление заказа</div>
                 <div className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>
-                    <SvgIcon name="time" />
+                    <SvgIcon name="count-1" />
                   </div>
-                  <span>
-                    Круглосуточная отгрузка:
-                    <br />
-                    доставка день в день
-                  </span>
+                  <span>Отправить заявку в отдел продаж</span>
                 </div>
                 <div className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>
-                    <SvgIcon name="location" />
+                    <SvgIcon name="count-2" />
                   </div>
-                  <span>
-                    МО, г. Ивантеевка, <br />
-                    ул. Железнодорожная, д. 1
-                  </span>
+                  <span>Получить счет на оплату и договор поставки</span>
+                </div>
+                <div className={styles.footerContact}>
+                  <div className={styles.footerContactIcon}>
+                    <SvgIcon name="count-3" />
+                  </div>
+                  <span>Товар будет отгружен на ваш объект за 24 часа</span>
                 </div>
               </div>
 
               <div className={cns(styles.group, styles._midmd)}>
-                <div className={styles.footerTitle}>Склад в Люберцах</div>
+                <div className={styles.footerTitle}>Услуги</div>
                 <div className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>
-                    <SvgIcon name="time" />
+                    <SvgIcon name="service-cut" />
                   </div>
-                  <span>
-                    Круглосуточная отгрузка:
-                    <br />
-                    доставка день в день
-                  </span>
+                  <span>Резка и рубка металла</span>
                 </div>
                 <div className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>
-                    <SvgIcon name="location" />
+                    <SvgIcon name="service-24" />
                   </div>
-                  <span>
-                    МО, г. Люберцы, <br />
-                    ул. Проектируемый проезд 4296, д. 4
-                  </span>
+                  <span>Круглосуточная доставка</span>
+                </div>
+                <div className={styles.footerContact}>
+                  <div className={styles.footerContactIcon}>
+                    <SvgIcon name="service-transport" />
+                  </div>
+                  <span>Логистика и экспедирование груза</span>
                 </div>
               </div>
             </div>
 
             <div className="col col-4 col-md-6 col-sm-12">
               <div className={cns(styles.group, styles._last)}>
-                <div className={styles.footerTitle}>Склад в Люберцах</div>
+                <div className={styles.footerTitle}>Услуги</div>
                 <div className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>
-                    <SvgIcon name="time" />
+                    <SvgIcon name="service-cut" />
                   </div>
-                  <span>
-                    Круглосуточная отгрузка:
-                    <br />
-                    доставка день в день
-                  </span>
+                  <span>Резка и рубка металла</span>
                 </div>
                 <div className={styles.footerContact}>
                   <div className={styles.footerContactIcon}>
-                    <SvgIcon name="location" />
+                    <SvgIcon name="service-24" />
                   </div>
-                  <span>
-                    МО, г. Люберцы, <br />
-                    ул. Проектируемый проезд 4296, д. 4
-                  </span>
+                  <span>Круглосуточная доставка</span>
+                </div>
+                <div className={styles.footerContact}>
+                  <div className={styles.footerContactIcon}>
+                    <SvgIcon name="service-transport" />
+                  </div>
+                  <span>Логистика и экспедирование груза</span>
                 </div>
               </div>
             </div>

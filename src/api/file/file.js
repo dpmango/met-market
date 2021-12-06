@@ -37,4 +37,7 @@ export default {
       },
     });
   },
+  delete: async (req) => {
+    return api.post(endpoints.file.delete, req);
+  },
 };

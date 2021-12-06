@@ -19,10 +19,10 @@
         background: rgba(black, 0.3);
       }
       &::after {
-        right: 12px;
+        right: 0px;
       }
       &::before {
-        left: 12px;
+        left: 0px;
       }
     }
   }
@@ -32,10 +32,14 @@
   font-weight: 600;
   font-size: 16px;
   margin-bottom: 24px;
+  &._main {
+    margin-bottom: 19px;
+  }
 }
 
 .footerContact {
   display: inline-flex;
+  height: 100%;
   font-size: 14px;
   img {
     width: 125px;
@@ -49,37 +53,50 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   &._middle {
-    max-width: 245px;
-    margin-left: auto;
-    margin-right: auto;
     padding-left: 20px;
     padding-right: 0;
   }
   &._last {
-    max-width: 280px;
     margin-left: auto;
+    padding-left: 24px;
   }
   &._midmd {
     display: none;
   }
 }
 
-a.footerContact {
+.footerContact {
   align-items: center;
+  &.email {
+    margin-top: 8px;
+  }
+  &.time {
+    margin-top: 8px;
+  }
+  &.address {
+    margin-top: 8px;
+  }
+}
+
+a.footerContact {
   padding: 5px 0;
   margin-bottom: 5px;
 }
 div.footerContact {
-  margin-bottom: 20px;
-  min-height: 32px;
+  margin-bottom: 16px;
 }
 
 .footerContactIcon {
   flex: 0 0 24px;
+  width: 24px;
   font-size: 0;
   color: $colorPrimary;
+  &._noalign {
+    align-self: flex-start;
+  }
   :global {
     .svg-icon {
       font-size: 14px;
@@ -91,6 +108,15 @@ div.footerContact {
     .svg-icon--email {
       font-size: 10px;
     }
+    .svg-icon--service-cut {
+      font-size: 16px;
+    }
+    .svg-icon--service-24 {
+      font-size: 10px;
+    }
+    .svg-icon--service-transport {
+      font-size: 11px;
+    }
   }
 }
 
@@ -98,6 +124,9 @@ div.footerContact {
   .footerTitle {
     font-size: 14px;
     margin-bottom: 16px;
+    &._main {
+      margin-bottom: 11px;
+    }
   }
 
   .footerMain {
@@ -115,13 +144,10 @@ div.footerContact {
   .group {
     padding-right: 20px;
     &._middle {
-      max-width: 205px;
       padding-left: 0;
     }
     &._last {
-      padding-left: 20px;
-      padding-right: 0;
-      max-width: 220px;
+      padding-left: 24px;
     }
   }
 
@@ -134,6 +160,7 @@ div.footerContact {
 
   .footerContactIcon {
     flex-basis: 20px;
+    width: 20px;
     :global {
       .svg-icon {
         font-size: 12px;
@@ -145,14 +172,27 @@ div.footerContact {
       .svg-icon--email {
         font-size: 9px;
       }
+      .svg-icon--service-cut {
+        font-size: 14px;
+      }
+      .svg-icon--service-24 {
+        font-size: 10px;
+        transform: translateX(-1.5px);
+      }
+      .svg-icon--service-transport {
+        font-size: 11px;
+      }
     }
   }
 }
 
 @include r($md) {
   .footerTitle {
-    font-size: 14px;
-    margin-bottom: 12px;
+    font-size: 15px;
+    margin-bottom: 20px;
+    &._main {
+      margin-bottom: 15px;
+    }
   }
 
   .footerMain {
@@ -183,13 +223,13 @@ div.footerContact {
       max-width: 100%;
     }
     &._midmd {
-      display: block;
+      display: flex;
     }
   }
 
   .footerContact {
-    font-size: 13px;
-    width: 100%;
+    font-size: 14px;
+    // width: 100%;
     img {
       width: 120px;
     }
@@ -197,6 +237,7 @@ div.footerContact {
 
   .footerContactIcon {
     flex-basis: 22px;
+    width: 22px;
     :global {
       .svg-icon {
         font-size: 13px;
@@ -206,6 +247,15 @@ div.footerContact {
       }
       .svg-icon--email {
         font-size: 9px;
+      }
+      .svg-icon--service-cut {
+        font-size: 14px;
+      }
+      .svg-icon--service-24 {
+        font-size: 10px;
+      }
+      .svg-icon--service-transport {
+        font-size: 11px;
       }
     }
   }
@@ -235,6 +285,7 @@ div.footerContact {
   }
   .group {
     padding-right: 0;
+    margin-bottom: 12px;
     &._middle {
       max-width: 100%;
       padding: 12px 0;
@@ -244,8 +295,13 @@ div.footerContact {
       display: none;
     }
     &._last {
-      display: block;
+      display: flex;
+      margin-bottom: 0;
     }
+  }
+
+  .footerContact {
+    font-size: 14px;
   }
 }
 

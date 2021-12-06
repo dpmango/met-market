@@ -40,6 +40,12 @@ const File = ({ className, data, onDelete, onSuccess, onError, ...props }) => {
       });
   }, [data, onSuccess, onError]);
 
+  const handleDeleteClick = useCallback(async () => {
+    await callbackContext.deleteFile(data.upload.fileId || data.id);
+
+    onDelete(data);
+  }, [onDelete, data]);
+
   useEffect(async () => {
     if (!data.error) {
       await handleUpload();
@@ -48,7 +54,7 @@ const File = ({ className, data, onDelete, onSuccess, onError, ...props }) => {
 
   return (
     <div className={cns(styles.file, className)} data-id={data.id}>
-      <div className={styles.delete} onClick={() => onDelete(data)}>
+      <div className={styles.delete} onClick={handleDeleteClick}>
         <SvgIcon name="close" />
       </div>
       <div className={styles.content}>

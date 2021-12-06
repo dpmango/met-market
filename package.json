@@ -1,16 +1,17 @@
 {
   "name": "met-market",
-  "version": "1.1.2",
+  "version": "1.1.6",
   "author": "Sergey Khmelevskoy <sergey@khmelevskoy.co> (http://github.com/dpmango/)",
   "private": true,
   "scripts": {
-    "start": "craco start",
-    "build": "cross-env GENERATE_SOURCEMAP=false craco build",
+    "start": "env-cmd -f ./.env.dev.json cross-env craco start",
+    "build": "env-cmd -f ./.env.prod.json cross-env GENERATE_SOURCEMAP=false craco build",
+    "build:test": "env-cmd -f ./.env.dev.json cross-env GENERATE_SOURCEMAP=false craco build",
     "test": "craco test",
     "lint": "bash bin/lint.sh",
     "lint:js:fix": "eslint './src/**/*.{js,jsx}' --fix",
     "lint:css:fix": "stylelint './src/**/*.{css,less,scss,sass}' --fix",
-    "deploy": "yarn build && cp build/index.html build/200.html && surge --project ./build --domain met-market.surge.sh",
+    "deploy": "yarn build:test && cp build/index.html build/200.html && surge --project ./build --domain met-market.surge.sh",
     "eject": "react-scripts eject"
   },
   "husky": {
@@ -58,9 +59,10 @@
     "react-spinners": "^0.11.0",
     "react-table": "^7.7.0",
     "react-toast-notifications": "^2.5.1",
-    "react-yandex-metrika": "^2.6.0",
     "retry-axios": "^2.6.0",
     "swiper": "^7.2.0",
+    "use-debounce": "^7.0.1",
+    "uuid": "^8.3.2",
     "viewport-units-buggyfill": "^0.6.2"
   },
   "devDependencies": {
@@ -68,6 +70,7 @@
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
+    "env-cmd": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",

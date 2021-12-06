@@ -1,29 +1,26 @@
 import React, { useEffect, useContext, useCallback } from 'react';
 import { observer } from 'mobx-react';
 import { ToastProvider } from 'react-toast-notifications';
-import { YMInitializer } from 'react-yandex-metrika';
 
 import { Toast, Loader, LoaderContextProvider } from '@ui';
 import { useEventListener } from '@hooks';
 import { CartStoreContext, SessionStoreContext } from '@store';
-import { EVENTLIST, logEvent } from '@helpers';
-import { LOCAL_STORAGE_CART, LOCAL_STORAGE_SESSION } from '@config/localStorage';
+import { initTrackers, EVENTLIST, logEvent } from '@helpers';
+import { LOCAL_STORAGE_CART, LOCAL_STORAGE_SESSION, LOCAL_STORAGE_YM } from '@config/localStorage';
 
 import Routes from '@c/Routes';
+
+const ymCounterId = 86522567;
 
 const App = observer(() => {
   const cartContext = useContext(CartStoreContext);
   const sessionContext = useContext(SessionStoreContext);
+  const { sessionNumber } = useContext(SessionStoreContext);
 
   useEffect(() => {
     window.loadObserver && window.loadObserver.disconnect();
 
-    logEvent({
-      name: EVENTLIST.PAGELOAD,
-      params: {
-        url: window.location.href,
-      },
-    });
+    initTrackers();
   }, []);
 
   const persistTabsStore = useCallback((e) => {
@@ -35,31 +32,31 @@ const App = observer(() => {
   }, []);
 
   const onYMLoaded = useCallback(() => {
-    const ymId = window[`yaCounter${86522567}`].getClientID();
+    const ymId = window[`yaCounter${ymCounterId}`].getClientID();
+    var ymTagSend = JSON.parse(localStorage.getItem(LOCAL_STORAGE_YM));
 
-    sessionContext.addSessionParams({
-      ymClientId: ymId,
+    window.ym(ymCounterId, 'userParams', {
+      session_number: sessionNumber,
+      UserID: sessionNumber,
     });
-  }, []);
+
+    if (ymTagSend !== ymId) {
+      sessionContext.addSessionParams({
+        ymClientId: ymId,
+        ymCounterId: `${ymCounterId}`,
+      });
+
+      localStorage.setItem(LOCAL_STORAGE_YM, JSON.stringify(ymId));
+    }
+  }, [sessionNumber]);
 
   useEventListener('storage', persistTabsStore);
-  useEventListener(`yacounter${86522567}inited`, onYMLoaded, document);
+  useEventListener(`yacounter${ymCounterId}inited`, onYMLoaded, document);
 
   return (
     <>
       <ToastProvider autoDismiss={true} placement="top-center" autoDismissTimeout={10000} components={{ Toast: Toast }}>
         <Routes />
-        <YMInitializer
-          accounts={[86522567]}
-          options={{
-            defer: true,
-            clickmap: true,
-            trackLinks: true,
-            accurateTrackBounce: true,
-            webvisor: true,
-            triggerEvent: true,
-          }}
-        />
       </ToastProvider>
     </>
   );

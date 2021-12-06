@@ -11,7 +11,7 @@ import rootStyles from '../Header.module.scss';
 
 const Topbar = observer(({ className }) => {
   const uiContext = useContext(UiStoreContext);
-  const { sessionParams } = useContext(SessionStoreContext);
+  const { telegramLink, whatsappLink } = useContext(SessionStoreContext);
 
   return (
     <div className={styles.topbar}>
@@ -45,7 +45,7 @@ const Topbar = observer(({ className }) => {
               <span className="w-700">Отправить заявку</span>
             </a>
             <a
-              href="https://api.whatsapp.com/send/?phone=74951043130"
+              href={whatsappLink}
               target="_blank"
               className={cns(styles.topbarAction, styles.iconed)}
               rel="noreferrer"
@@ -56,7 +56,7 @@ const Topbar = observer(({ className }) => {
               <span className="w-600">Whatsapp</span>
             </a>
             <a
-              href={`https://t.me/METMarket_bot?start=VisitorUid_${sessionParams.amoVisitorUid}`}
+              href={telegramLink}
               target="_blank"
               className={cns(styles.topbarAction, styles.iconed)}
               rel="noreferrer"

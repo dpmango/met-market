@@ -43,6 +43,7 @@ const CategoryLetter = observer(({ list }) => {
         list.map((cat) => (
           <a
             href={`?category=${cat.id}`}
+            key={cat.id}
             className={cns(
               styles.categoryLetterTitle,
               cat.highlight && styles._highlight,

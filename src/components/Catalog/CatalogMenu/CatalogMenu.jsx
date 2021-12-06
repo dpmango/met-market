@@ -43,7 +43,7 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
         // allSorted = findCategoryLetter(allSorted, activeLetters);
 
         allSorted = allSorted.map((x, idx) => {
-          const highlight = activeLetters.includes(x.name[0].toUpperCase());
+          const highlight = activeLetters.includes(x.short[0].toUpperCase());
           const nextElement = allSorted[idx + 1];
           let isLastHightlight = false;
           if (nextElement) {
@@ -211,6 +211,7 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
           <div className={styles.letters}>
             {Object.keys(list.list).map((letter) => (
               <div
+                key={letter}
                 className={cns(styles.letter, activeLetters.includes(letter) && styles._active)}
                 onClick={() => handleLetterClick(letter)}>
                 {letter}
@@ -221,8 +222,8 @@ const CatalogMenu = observer(({ abcOrder, type, className }) => {
           {list.categories && list.categories.length > 0 && (
             <Swiper spaceBetween={0} slidesPerView={'auto'} ref={swiperRef}>
               {list.categories.map((cat, idx) => (
-                <SwiperSlide className={cns('col', styles.lettercol)}>
-                  <CategoryLetter list={cat} key={idx} />
+                <SwiperSlide className={cns('col', styles.lettercol)} key={idx}>
+                  <CategoryLetter list={cat} />
                 </SwiperSlide>
               ))}
             </Swiper>

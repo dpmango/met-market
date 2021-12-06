@@ -61,6 +61,18 @@ class CallbackService extends ApiService {
       return [error, null];
     }
   }
+
+  async delete(req) {
+    try {
+      const { data } = await fileApi.delete(req);
+
+      return [null, data];
+    } catch (error) {
+      this.handleError(error);
+
+      return [error, null];
+    }
+  }
 }
 
 export default new CallbackService();
