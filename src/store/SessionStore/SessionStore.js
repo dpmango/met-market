@@ -142,6 +142,7 @@ export default class SessionStore {
       'metMarketSession_1.2.0',
       'metMarketSession_1.2.1',
       'metMarketSession_1.2.2',
+      'metMarketCatalog_1.2.3',
     ];
     versionsList.reverse().every((key) => {
       const lsSession = localStorage.getItem(key);

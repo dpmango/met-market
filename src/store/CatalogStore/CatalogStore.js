@@ -500,6 +500,7 @@ export default class CatalogStore {
       'metMarketCatalog_1.2.0',
       'metMarketCatalog_1.2.1',
       'metMarketCatalog_1.2.2',
+      'metMarketCatalog_1.2.3',
     ];
 
     versionsList.forEach((key) => {

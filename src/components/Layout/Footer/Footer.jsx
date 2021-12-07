@@ -13,13 +13,17 @@ import styles from './Footer.module.scss';
 const Header = observer(({ className }) => {
   const { addToast } = useToasts();
   const emailRef = useRef(null);
-  const { telegramLink, whatsappLink } = useContext(SessionStoreContext);
+  const { telegramLink, whatsappLink, cartNumber } = useContext(SessionStoreContext);
 
   const getEmail = useCallback(() => {
     const a = emailRef.current.getAttribute('data-start');
     const b = emailRef.current.getAttribute('data-end');
 
-    return `${a}@${b}`;
+    if (cartNumber) {
+      return `${a}+${cartNumber}@${b}`;
+    } else {
+      return `${a}@${b}`;
+    }
   }, [emailRef]);
 
   const handleEmailClick = useCallback(
