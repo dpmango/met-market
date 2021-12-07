@@ -24,7 +24,7 @@ const Header = observer(({ className }) => {
     } else {
       return `${a}@${b}`;
     }
-  }, [emailRef]);
+  }, [emailRef, cartNumber]);
 
   const handleEmailClick = useCallback(
     (e) => {
