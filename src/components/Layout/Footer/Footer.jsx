@@ -50,14 +50,14 @@ const Header = observer(({ className }) => {
 
       logEvent({ name: EVENTLIST.CLICK_EMAIL, params: { from: 'footer' } });
     },
-    [emailRef]
+    [emailRef, cartNumber]
   );
 
   const handleEmailHover = useCallback(() => {
     const email = getEmail();
 
     emailRef.current.setAttribute('href', `mailto:${email}`);
-  }, [emailRef]);
+  }, [emailRef, cartNumber]);
 
   return (
     <footer className={cns(styles.footer, className)}>
