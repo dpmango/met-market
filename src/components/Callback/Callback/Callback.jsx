@@ -9,7 +9,7 @@ import debounce from 'lodash/debounce';
 
 import { Modal, Button, Checkbox, Input, File, SvgIcon } from '@ui';
 import { UiStoreContext, CallbackStoreContext, SessionStoreContext } from '@store';
-import { useFirstRender } from '@hooks';
+import { useFirstRender, useEmailHook } from '@hooks';
 import { ruPhoneRegex, phoneMaskCleared } from '@helpers/Validation';
 import { getEnv, bytesToMegaBytes, updateQueryParams, EVENTLIST, logEvent } from '@helpers';
 
@@ -30,6 +30,7 @@ const Callback = observer(() => {
   const history = useHistory();
   const location = useLocation();
   const firstRender = useFirstRender();
+  const emailHook = useEmailHook('rfq');
 
   const [files, setFiles] = useState([]);
 
@@ -298,7 +299,22 @@ const Callback = observer(() => {
             <span className="w-700">8-495-104-31-30</span>
           </a>
         </div>
+        <div className={styles.formEmail}>
+          <a
+            href="#"
+            data-start="zakaz"
+            data-end="met.market"
+            className={cns(styles.formCtaLink, styles.formCtaEmail)}
+            onClick={emailHook.handleEmailClick}
+            onMouseEnter={emailHook.handleEmailHover}
+            ref={emailHook.emailRef}>
+            <SvgIcon name="email" />
 
+            <span>
+              <img src="/img/mail-blue.svg" />
+            </span>
+          </a>
+        </div>
         <div className={styles.formFields}>
           <div className={styles.group}>
             <Input

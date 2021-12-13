@@ -4,3 +4,4 @@ export { useWindowSize } from './useWindowSize';
 export { useQuery } from './useQuery';
 export { useFirstRender } from './useFirstRender';
 export { useIntersection } from './useIntersection';
+export { useEmailHook } from './useEmailHook';

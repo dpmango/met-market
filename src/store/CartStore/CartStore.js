@@ -54,12 +54,15 @@ export default class CartStore {
   }
 
   async createNewCart(req) {
-    const [err, data] = await service.new(req);
+    const [err, data] = await service.new({
+      sessionId: session.sessionId,
+    });
 
     if (err) throw err;
 
     const { cartId } = data;
 
+    session.setSession(data);
     await this.getCart({ cartId });
 
     return data;

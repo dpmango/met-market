@@ -255,7 +255,7 @@
 
 .overlayLinks {
   display: none;
-  flex-direction: column;
+  flex-wrap: wrap;
   margin-top: 0;
   flex: 0 0 auto;
 }
@@ -266,8 +266,9 @@
   font-size: 0;
   color: white;
   padding: 10px;
-  transition: color 0.25s $ease;
+  transition: color 0.25s $ease, opacity 0.25s $ease;
   :global .svg-icon {
+    flex: 0 0 auto;
     font-size: 16px;
     margin-right: 8px;
   }
@@ -275,6 +276,20 @@
     display: inline-block;
     font-size: 14px;
     font-weight: 600;
+  }
+  &.email {
+    margin-left: auto;
+    margin-right: -10px;
+    :global .svg-icon {
+      font-size: 22px;
+    }
+    span {
+      transform: translateY(2px);
+    }
+    &:hover {
+      color: white;
+      opacity: 0.7;
+    }
   }
   &:hover {
     color: $colorLink;

@@ -84,7 +84,7 @@ const CallbackHelp = observer(() => {
         <div className={styles.boxWrapper}>
           <div className={styles.content}>
             <div className={styles.head}>
-              <div className={styles.headTitle}>Не нашли, что искали?</div>
+              <div className={styles.headTitle}>Не нашли что искали?</div>
               <div className={styles.headSubtitle}>Оставьте номер и мы проконсультируем Вас</div>
             </div>
 

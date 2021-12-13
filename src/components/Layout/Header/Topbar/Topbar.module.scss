@@ -28,6 +28,11 @@
     display: inline-block;
     font-size: 14px;
   }
+  &.email {
+    span {
+      transform: translateY(2px);
+    }
+  }
   &:hover {
     background: $colorLink;
   }
@@ -51,6 +56,14 @@
   }
 }
 
+@include r(1110) {
+  .topbarAction {
+    &.rfq {
+      display: none;
+    }
+  }
+}
+
 @include r($lg) {
   .colSecond {
     flex: 0 0 auto;
@@ -63,6 +76,14 @@
   .topbarAction {
     span {
       font-size: 12px;
+    }
+    &.email {
+      span {
+        img {
+          max-width: 115px;
+        }
+        transform: translateY(1px);
+      }
     }
   }
   .price {

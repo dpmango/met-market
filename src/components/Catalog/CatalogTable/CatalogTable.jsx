@@ -203,7 +203,7 @@ const CatalogTable = observer(() => {
   useEffect(() => {
     gotoPage(getIndexFromQuery(query));
     setPageIndex(getIndexFromQuery(query));
-    if (catalogRef.current && !firstRender) {
+    if (catalogRef.current && !firstRender && query.page) {
       const offsetPoint = width < 768 ? 16 : 60;
 
       ScrollTo(catalogRef.current.offsetTop - offsetPoint, 300);

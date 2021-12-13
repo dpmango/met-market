@@ -51,7 +51,7 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 14px -10px 20px;
+  margin: 14px -10px -5px;
 }
 
 .formCtaLink {
@@ -72,6 +72,23 @@
   }
   &:hover {
     color: $colorLink;
+  }
+}
+
+.formEmail {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.formCtaEmail {
+  :global .svg-icon {
+    flex: 0 0 auto;
+    font-size: 11px;
+    margin-right: 10px;
+  }
+  span {
+    transform: translateY(2px);
   }
 }
 

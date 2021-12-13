@@ -41,7 +41,7 @@ const Cart = observer(() => {
       setResetContext(false);
 
       if (id === 'batch') {
-        sessionContext.createSession();
+        cartContext.createNewCart();
         uiContext.resetModal();
         return;
       }

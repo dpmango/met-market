@@ -8,7 +8,7 @@ import { use100vh } from 'react-div-100vh';
 import { SvgIcon, Button } from '@ui';
 import { useOnClickOutside, useWindowSize } from '@hooks';
 import { CatalogStoreContext, UiStoreContext, SessionStoreContext } from '@store';
-import { useEventListener } from '@hooks';
+import { useEventListener, useEmailHook } from '@hooks';
 import { fillGapTarget, unfillGapTarget, EVENTLIST, logEvent } from '@helpers';
 
 import { Cart, CartSuccess } from '@c/Cart';
@@ -27,6 +27,7 @@ const Header = observer(({ className }) => {
   const [overlayScroll, setOverLayscroll] = useState(0);
   const { width } = useWindowSize();
   const height = use100vh();
+  const emailHook = useEmailHook('header-mobile');
 
   const {
     activeModal,
@@ -259,6 +260,19 @@ const Header = observer(({ className }) => {
                     onClick={() => logEvent({ name: EVENTLIST.CLICK_PRICELIST })}>
                     <SvgIcon name="xls" />
                     <span className="w-700">Прайс-лист</span>
+                  </a>
+                  <a
+                    href="#"
+                    data-start="zakaz"
+                    data-end="met.market"
+                    className={cns(styles.overlaySocialLink, styles.email)}
+                    onClick={emailHook.handleEmailClick}
+                    onMouseEnter={emailHook.handleEmailHover}
+                    ref={emailHook.emailRef}>
+                    <SvgIcon name="social-email" key="email" />
+                    <span>
+                      <img src="/img/mail-white.svg" />
+                    </span>
                   </a>
 
                   <Button

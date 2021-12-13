@@ -59,6 +59,14 @@
   .scrolltop {
     right: 26px;
   }
+  .btn {
+    background: $colorPrimary;
+    color: white;
+    &:hover {
+      background: white;
+      color: $colorPrimary;
+    }
+  }
 
   // .btn {
   //   background: $colorPrimary;

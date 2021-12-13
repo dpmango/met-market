@@ -5,6 +5,7 @@ import cns from 'classnames';
 import { SvgIcon } from '@ui';
 import { UiStoreContext, SessionStoreContext } from '@store';
 import { EVENTLIST, logEvent } from '@helpers';
+import { useEmailHook } from '@hooks';
 
 import styles from './Topbar.module.scss';
 import rootStyles from '../Header.module.scss';
@@ -12,6 +13,8 @@ import rootStyles from '../Header.module.scss';
 const Topbar = observer(({ className }) => {
   const uiContext = useContext(UiStoreContext);
   const { telegramLink, whatsappLink } = useContext(SessionStoreContext);
+
+  const emailHook = useEmailHook('header');
 
   return (
     <div className={styles.topbar}>
@@ -36,13 +39,26 @@ const Topbar = observer(({ className }) => {
           <div className={cns(rootStyles.colThrid, styles.topbarLinks)}>
             <a
               href="#"
-              className={cns(styles.topbarAction)}
+              className={cns(styles.topbarAction, styles.rfq)}
               onClick={(e) => {
                 e.preventDefault();
                 uiContext.setModal('callback');
                 logEvent({ name: EVENTLIST.CLICK_OPENFORM_RFQ, params: { from: 'header' } });
               }}>
               <span className="w-700">Отправить заявку</span>
+            </a>
+            <a
+              href="#"
+              data-start="zakaz"
+              data-end="met.market"
+              className={cns(styles.topbarAction, styles.iconed, styles.email)}
+              onClick={emailHook.handleEmailClick}
+              onMouseEnter={emailHook.handleEmailHover}
+              ref={emailHook.emailRef}>
+              <SvgIcon name="social-email" key="email" />
+              <span>
+                <img src="/img/mail-white.svg" />
+              </span>
             </a>
             <a
               href={whatsappLink}
@@ -52,7 +68,7 @@ const Topbar = observer(({ className }) => {
               onClick={() => {
                 logEvent({ name: EVENTLIST.CLICK_WHATSAPP, params: { from: 'header' } });
               }}>
-              <SvgIcon name="social-whatsapp" />
+              <SvgIcon name="social-whatsapp" key="whatsapp" />
               <span className="w-600">Whatsapp</span>
             </a>
             <a
@@ -63,7 +79,7 @@ const Topbar = observer(({ className }) => {
               onClick={() => {
                 logEvent({ name: EVENTLIST.CLICK_TELEGRAM, params: { from: 'header' } });
               }}>
-              <SvgIcon name="social-telegram" />
+              <SvgIcon name="social-telegram" key="telegram" />
               <span className="w-600">Telegram</span>
             </a>
             <a
