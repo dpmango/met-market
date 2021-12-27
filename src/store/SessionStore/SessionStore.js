@@ -144,6 +144,7 @@ export default class SessionStore {
       'metMarketSession_1.2.2',
       'metMarketSession_1.2.3',
       'metMarketSession_1.2.4',
+      'metMarketSession_1.2.5',
     ];
     versionsList.reverse().every((key) => {
       const lsSession = localStorage.getItem(key);
@@ -301,6 +302,12 @@ export default class SessionStore {
         });
 
       await this.addSessionParams(utmParams);
+
+      const routeParams = new URLSearchParams();
+      Object.keys(utmParams).forEach((key) => {
+        routeParams.set(key, utmParams[key]);
+      });
+      window.ym(86522567, 'hit', `${window.location.pathname}?${routeParams.toString()}`);
 
       localStorage.setItem(LOCAL_STORAGE_UTM_PARAMS, JSON.stringify(qParamsCleared));
     }

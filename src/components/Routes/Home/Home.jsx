@@ -17,9 +17,11 @@ const HomePage = observer(() => {
 
   // update queryParams and send UTM marks
   useEffect(() => {
-    uiContext.updateParams(query);
-    sessionContext.sendUtmParams(window.location);
-  }, [query]);
+    if (sessionContext.sessionId) {
+      uiContext.updateParams(query);
+      sessionContext.sendUtmParams(window.location);
+    }
+  }, [query, sessionContext.sessionId]);
 
   return (
     <>

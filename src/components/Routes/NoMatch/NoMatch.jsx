@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import cns from 'classnames';
 
 import { Button, Breadcrumbs } from '@ui';
-import { UiStoreContext } from '@store';
+import { UiStoreContext, SessionStoreContext } from '@store';
 import { useQuery } from '@hooks';
 import { updateQueryParams } from '@helpers';
 
@@ -17,6 +17,7 @@ const NoMatchPage = observer(() => {
   const { query } = useQuery();
 
   const uiContext = useContext(UiStoreContext);
+  const sessionContext = useContext(SessionStoreContext);
 
   const breadcrumbs = useMemo(() => {
     return [
@@ -30,9 +31,13 @@ const NoMatchPage = observer(() => {
     ];
   }, []);
 
+  // update queryParams and send UTM marks
   useEffect(() => {
-    uiContext.updateParams(query);
-  }, [query]);
+    if (sessionContext.sessionId) {
+      uiContext.updateParams(query);
+      sessionContext.sendUtmParams(window.location);
+    }
+  }, [query, sessionContext.sessionId]);
 
   return (
     <>

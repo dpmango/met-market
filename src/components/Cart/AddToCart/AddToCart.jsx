@@ -182,6 +182,7 @@ const AddToCart = observer(() => {
             <Swiper
               modules={[FreeMode, Scrollbar, Mousewheel]}
               freeMode={{ sticky: false }}
+              focusableElements="input, select, option, textarea, button, video, label, span"
               scrollbar={{ draggable: true, dragSize: 40, snapOnRelease: false }}
               mousewheel={{ invert: false }}
               slidesPerView={'auto'}>

@@ -57,6 +57,8 @@ const Search = observer(({ className }) => {
           type: 'search',
           payload: txt,
         });
+
+        logEvent({ name: EVENTLIST.SEARCH, params: { value: txt } });
       } else {
         if (!firstRender) {
           updateQueryParams({
@@ -69,8 +71,6 @@ const Search = observer(({ className }) => {
           });
         }
       }
-
-      logEvent({ name: EVENTLIST.SEARCH, params: { value: txt } });
 
       setLoading(false);
     }, settings.delay),
@@ -174,9 +174,6 @@ const Search = observer(({ className }) => {
 
   const handleBlur = useCallback(() => {
     // setSuggestionsOpened(true);
-    if (showRecent) {
-      PlaceholderAnimation.printPhrases();
-    }
   }, [showRecent]);
 
   const handleClearClick = useCallback(() => {
@@ -192,9 +189,9 @@ const Search = observer(({ className }) => {
   useEffect(() => {
     if (showRecent) {
       document.body.classList.add('searchShowingRecent');
-      PlaceholderAnimation.printPhrases();
+      // PlaceholderAnimation.printPhrases();
     } else {
-      PlaceholderAnimation.stopAnimation();
+      // PlaceholderAnimation.stopAnimation();
       setTimeout(() => {
         document.body.classList.remove('searchShowingRecent');
       }, 250);
@@ -217,6 +214,8 @@ const Search = observer(({ className }) => {
         inputRef.current,
         searchPlaceholder
       );
+
+      PlaceholderAnimation.printPhrases();
     }
   }, [inputRef, searchPlaceholder]);
 
@@ -232,7 +231,7 @@ const Search = observer(({ className }) => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleSearchChange}
-        onClick={() => logEvent({ name: EVENTLIST.SEARCH })}
+        onClick={() => logEvent({ name: EVENTLIST.CLICK_SEARCH })}
         ref={inputRef}
       />
 

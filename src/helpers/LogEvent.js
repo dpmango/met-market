@@ -145,6 +145,9 @@ export const EVENTLIST = {
     once: true,
     shouldLogCatalogState: true,
   },
+  CLICK_SEARCH: {
+    backend: 'clickSearch',
+  },
   CLICK_SEARCH_CLEAR: {
     backend: 'clickSearchClear',
     shouldLogCatalogState: true,
