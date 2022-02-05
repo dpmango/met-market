@@ -145,6 +145,7 @@ export default class SessionStore {
       'metMarketSession_1.2.3',
       'metMarketSession_1.2.4',
       'metMarketSession_1.2.5',
+      'metMarketSession_1.2.6',
     ];
     versionsList.reverse().every((key) => {
       const lsSession = localStorage.getItem(key);
@@ -272,18 +273,18 @@ export default class SessionStore {
     let utmParams = {};
 
     // clear and compare anly allowed utm marks
-    const qParamsCleared =
-      qParamsString &&
-      qParamsString
-        .split('&')
-        .filter((param) => {
-          const [key] = param.split('=');
-          return UtmWhitelist.includes(key);
-        })
-        .join('&');
+    // const qParamsCleared =
+    //   qParamsString &&
+    //   qParamsString
+    //     .split('&')
+    //     .filter((param) => {
+    //       const [key] = param.split('=');
+    //       return UtmWhitelist.includes(key);
+    //     })
+    //     .join('&');
 
     // send new params only if changed and any present
-    if (qParamsCleared.length && savedParams !== qParamsCleared) {
+    if (qParamsString.length && savedParams !== qParamsString) {
       if (!['met.market'].includes(host)) {
         utmParams = {
           ...utmParams,
@@ -291,8 +292,8 @@ export default class SessionStore {
         };
       }
 
-      qParamsCleared &&
-        qParamsCleared.split('&').forEach((param) => {
+      qParamsString &&
+        qParamsString.split('&').forEach((param) => {
           const [key, value] = param.split('=');
 
           utmParams = {
@@ -309,7 +310,7 @@ export default class SessionStore {
       });
       window.ym(86522567, 'hit', `${window.location.pathname}?${routeParams.toString()}`);
 
-      localStorage.setItem(LOCAL_STORAGE_UTM_PARAMS, JSON.stringify(qParamsCleared));
+      localStorage.setItem(LOCAL_STORAGE_UTM_PARAMS, JSON.stringify(qParamsString));
     }
   }
 

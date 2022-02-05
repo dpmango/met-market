@@ -103,7 +103,10 @@ const Search = observer(({ className }) => {
 
   // memos
   const searchPlaceholder = useMemo(() => {
-    return `Искать среди ${catalogContext.catalogLength} товаров в наличии`;
+    if (catalogContext.catalogLength) {
+      return `Искать среди ${catalogContext.catalogLength} товаров в наличии`;
+    }
+    return null;
   }, [catalogContext.catalogLength]);
 
   // event handlers
@@ -200,7 +203,7 @@ const Search = observer(({ className }) => {
 
   // search animated placeholder
   useEffect(() => {
-    if (inputRef) {
+    if (inputRef && searchPlaceholder) {
       PlaceholderAnimation.init(
         [
           'Мгновенный поиск по каталогу   ',

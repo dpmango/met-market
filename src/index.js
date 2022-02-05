@@ -21,12 +21,7 @@ Sentry.init({
   tracesSampleRate: getEnv('SENTRY_TRACES_SAMPLE_RATE'),
 });
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById('root'));
 
 new VersionCheck();
 new BrowserInfo();
